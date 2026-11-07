@@ -45,7 +45,7 @@ Requirements: Node 20+, pnpm 9+, Python 3.11+, uv.
 
 ```bash
 pnpm install
-uv sync --extra dev
+uv sync --project apps/server --extra dev
 ```
 
 Terminal 1 — local API:
@@ -62,6 +62,22 @@ pnpm dev
 
 Then load `.output/chrome-mv3` in `chrome://extensions` (Developer mode → Load unpacked),
 open `https://safinum.cm/hackathon-test`, and click the extension.
+
+### Optional heavy dependencies
+
+The scaffold installs the web and API dependencies needed to build, test and run the
+extension with the stub speech backend. Two large optional extras are installed on demand:
+
+```bash
+# Playwright + Chromium: string extraction, coverage, e2e
+pnpm setup:e2e
+
+# PyTorch, Transformers, CTranslate2: real TTS / local MT (large download)
+uv sync --project apps/server --extra speech
+```
+
+The `stub` TTS returns a short silent WAV and is marked with `X-ZTeam-Stub: 1`. It is a
+plumbing placeholder, not Fulfulde speech.
 
 ## Repository map
 
@@ -82,7 +98,7 @@ e2e/                     Playwright smoke test
 | Command | What it does |
 |---|---|
 | `pnpm install` | Install JS dependencies |
-| `uv sync --extra dev` | Install Python dependencies |
+| `uv sync --project apps/server --extra dev` | Install Python dependencies |
 | `pnpm dev` | WXT dev server with HMR |
 | `pnpm build` | Build all packages and the extension |
 | `pnpm test` | Vitest across packages |
