@@ -28,6 +28,10 @@ submission/
 
 ## Before submitting
 
+- [ ] `pnpm ci:local` passes.
+- [ ] `pnpm audit --audit-level high` reports no high or critical vulnerabilities.
+- [ ] `pnpm e2e` passes against the built extension.
+- [ ] `sh scripts/tests/test-githooks.sh` and `bash scripts/check-repo-hygiene.sh` pass.
 - [ ] `pnpm verify` passes (or the individual checks pass).
 - [ ] The extension installs from the ZIP in a clean Chrome profile.
 - [ ] The full journey works on the live test page in French and English.

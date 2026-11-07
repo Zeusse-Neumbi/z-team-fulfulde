@@ -16,16 +16,16 @@
     "dom-accessibility-api": "^0.7.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "zod": "^3.23.8"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/chrome": "latest",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@wxt-dev/module-react": "latest",
-    "happy-dom": "^15.0.0",
+    "happy-dom": "^21.0.4",
     "typescript": "^5.6.0",
-    "vitest": "^3.0.0",
+    "vitest": "^4.1.12",
     "wxt": "latest"
   }
 }

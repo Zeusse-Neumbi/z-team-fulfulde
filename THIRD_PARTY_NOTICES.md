@@ -1,7 +1,9 @@
 # Third-party notices
 
 This project uses the following components. The list is kept in sync with
-`package.json`, `apps/server/pyproject.toml` and the model/dataset documentation.
+`package.json`, `pnpm-lock.yaml`, `apps/server/pyproject.toml`, `uv.lock` and the
+model/dataset documentation. Dependabot pull requests must update this file when
+they change a listed component.
 
 ## Runtime and build
 
@@ -10,12 +12,13 @@ This project uses the following components. The list is kept in sync with
 | WXT | current | MIT | Browser extension framework |
 | React / React DOM | 19 | MIT | Side panel UI |
 | `dom-accessibility-api` | 0.7.1 | MIT | Accessible name/role computation |
-| Zod | 3 | MIT | Runtime schema validation |
+| Zod | 4 | MIT | Runtime schema validation |
 | FastAPI | current | MIT | Local API |
 | Uvicorn | current | BSD-3-Clause | Local API server |
 | Pydantic / pydantic-settings | 2 | MIT | API models and settings |
 | httpx | current | BSD-3-Clause | Test client and local HTTP |
-| Playwright | current | Apache-2.0 | Optional: string extraction, e2e |
+| Playwright | current | Apache-2.0 | String extraction and e2e |
+| fflate | 0.8.3 | MIT | Extension ZIP packaging |
 | Vitest | current | MIT | Unit tests |
 | oxlint | current | MIT | Lint |
 

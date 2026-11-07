@@ -21,8 +21,8 @@
     "@zteam/shared": "workspace:*"
   },
   "devDependencies": {
-    "happy-dom": "^15.0.0",
+    "happy-dom": "^21.0.4",
     "typescript": "^5.6.0",
-    "vitest": "^3.0.0"
+    "vitest": "^4.1.12"
   }
 }

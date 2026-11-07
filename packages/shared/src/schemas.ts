@@ -122,6 +122,7 @@ export const phraseEntrySchema = z.object({
   ff: z.string(),
   segments: z.array(z.union([z.object({ audio: z.string() }), z.object({ slot: z.string() })])),
   slots: z.record(
+    z.string(),
     z.object({
       type: z.string(),
       currency: z.string().optional(),
@@ -138,7 +139,7 @@ export const analysisSchema = z.object({
   phrasebankVersion: z.string(),
   pageType: z.string(),
   confidence: z.number().min(0).max(1),
-  say: z.array(z.object({ key: z.string(), slots: z.record(z.string()).optional() })),
+  say: z.array(z.object({ key: z.string(), slots: z.record(z.string(), z.string()).optional() })),
   actions: z.array(
     z.object({
       id: z.string(),

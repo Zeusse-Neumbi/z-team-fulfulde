@@ -1,0 +1,31 @@
+name: PR
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  title:
+    name: PR title
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check conventional commit title
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          pattern='^(feat|fix|docs|chore|refactor|test|perf|build|ci|style|revert)(\([a-z0-9._-]+\))?!?: .+'
+          if ! printf '%s' "$TITLE" | grep -Eq "$pattern"; then
+            echo "::error::PR title must follow Conventional Commits, e.g. 'feat(translator): keep protected values'."
+            echo "Got: $TITLE"
+            exit 1
+          fi
+          echo "Title ok: $TITLE"

@@ -1,0 +1,61 @@
+#!/bin/sh
+
+set -eu
+
+branch=$(git symbolic-ref --short -q HEAD || true)
+
+case "$branch" in
+    main|master)
+        printf 'Commit blocked: direct commits to %s are forbidden. Create a feature branch and open a pull request.\n' "$branch" >&2
+        exit 1
+        ;;
+esac
+
+max_blob_size=5242880
+staged_paths=$(git diff --cached --name-only --diff-filter=ACMRT)
+
+if [ -z "$staged_paths" ]; then
+    exit 0
+fi
+
+violations=$(
+    printf '%s\n' "$staged_paths" |
+        while IFS= read -r file; do
+            [ -n "$file" ] || continue
+
+            case "$file" in
+                .env.example)
+                    continue
+                    ;;
+                .env|*/.env|.env.*|*/.env.*)
+                    printf '  %s (local environment file)\n' "$file"
+                    continue
+                    ;;
+                *.onnx|*.pt|*.pth|*.safetensors)
+                    printf '  %s (model weight)\n' "$file"
+                    continue
+                    ;;
+            esac
+
+            if ! blob_size=$(git cat-file -s ":$file" 2>/dev/null); then
+                printf '  %s (could not read staged blob)\n' "$file"
+                continue
+            fi
+
+            case "$blob_size" in
+                ''|*[!0-9]*)
+                    printf '  %s (invalid staged blob size)\n' "$file"
+                    continue
+                    ;;
+            esac
+
+            if [ "$blob_size" -gt "$max_blob_size" ]; then
+                printf '  %s (%s bytes)\n' "$file" "$blob_size"
+            fi
+        done
+)
+
+if [ -n "$violations" ]; then
+    printf 'Commit blocked: staged files must not exceed 5 MiB and must not contain secrets or model weights.\n%s\n' "$violations" >&2
+    exit 1
+fi

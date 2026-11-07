@@ -1,7 +1,6 @@
-import { createWriteStream, existsSync } from "node:fs";
-import { mkdir, rm, stat } from "node:fs/promises";
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import archiver from "archiver";
+import { zipSync } from "fflate";
 
 const root = path.resolve(import.meta.dirname, "..");
 const source = path.join(root, "apps/extension/.output/chrome-mv3");
@@ -13,27 +12,28 @@ if (!existsSync(source)) {
   process.exit(1);
 }
 
-await mkdir(outDir, { recursive: true });
-await rm(out, { force: true });
+function collectFiles(directory, base = directory, files = {}) {
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    const fullPath = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      collectFiles(fullPath, base, files);
+      continue;
+    }
+    if (!entry.isFile()) continue;
 
-const output = createWriteStream(out);
-const archive = archiver("zip", { zlib: { level: 9 } });
+    const relativePath = path.relative(base, fullPath).split(path.sep).join("/");
+    files[relativePath] = new Uint8Array(readFileSync(fullPath));
+  }
+  return files;
+}
 
-const done = new Promise((resolve, reject) => {
-  output.on("close", resolve);
-  output.on("error", reject);
-  archive.on("warning", (error) => {
-    if (error.code === "ENOENT") console.warn(error);
-    else reject(error);
-  });
-  archive.on("error", reject);
-});
+mkdirSync(outDir, { recursive: true });
+rmSync(out, { force: true });
 
-archive.pipe(output);
-archive.directory(source, false);
-await archive.finalize();
-await done;
+const files = collectFiles(source);
+const archive = zipSync(files, { level: 9 });
+writeFileSync(out, archive);
 
-const { size } = await stat(out);
+const { size } = statSync(out);
 console.log(`[package] ${out}`);
-console.log(`[package] ${size} bytes (${(size / 1024 / 1024).toFixed(2)} MB)`);
+console.log(`[package] ${size} bytes (${(size / 1024 / 1024).toFixed(2)} MB), ${Object.keys(files).length} files`);

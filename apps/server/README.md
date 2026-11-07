@@ -28,9 +28,12 @@ with `X-ZTeam-Stub: 1` and must never be presented as Fulfulde speech.
 The stub translation returns the source unchanged with `translated: false`. The
 project never invents an untranslated string.
 
-## Tests
+## Tests and checks
 
 ```bash
+uv run ruff check .
+uv run ruff format --check .
+uv run mypy app
 uv run pytest
 ```
 

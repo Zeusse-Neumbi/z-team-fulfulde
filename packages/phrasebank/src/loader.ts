@@ -19,7 +19,7 @@ const phraseFileSchema = z.object({
 const numbersSchema = z.object({
   version: z.string(),
   units: z.array(z.string()),
-  tens: z.record(z.string()),
+  tens: z.record(z.string(), z.string()),
   hundred: z.string(),
   thousand: z.string(),
   million: z.string(),

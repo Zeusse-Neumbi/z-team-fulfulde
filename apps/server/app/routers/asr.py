@@ -19,6 +19,6 @@ async def classify(audio: UploadFile = File(...)) -> ASRResponse:  # noqa: B008
     return ASRResponse(
         intent=str(result["intent"]),
         confidence=float(result["confidence"]),
-        alternatives=list(result["alternatives"]),  # type: ignore[arg-type]
+        alternatives=result["alternatives"],
         stub=bool(result["stub"]),
     )

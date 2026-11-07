@@ -1,0 +1,68 @@
+name: Blocked dependency upgrade
+description: Track an upgrade that cannot merge as a routine bump
+title: "chore(deps): upgrade <package> to <version>"
+labels: ["dependencies"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this when a Dependabot or manual upgrade is blocked by a real
+        constraint (a pin, a build-tool migration, a model smoke test) rather
+        than a conflict. The closed PR should link here and this issue should
+        link back to it.
+
+  - type: input
+    id: package
+    attributes:
+      label: Package
+      placeholder: "zod"
+    validations:
+      required: true
+
+  - type: input
+    id: versions
+    attributes:
+      label: Version range
+      placeholder: "3.23.8 -> 4.6.7"
+    validations:
+      required: true
+
+  - type: textarea
+    id: blocker
+    attributes:
+      label: Why it cannot merge as-is
+      description: Paste the failing check, the pin, or the constraint that blocks it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification required before merging
+      description: Concrete steps and commands that prove the upgrade is safe.
+      placeholder: |
+        - pnpm install
+        - pnpm ci:local
+        - pnpm audit --audit-level high
+        - smoke test on the real model stack, when applicable
+    validations:
+      required: true
+
+  - type: input
+    id: pr
+    attributes:
+      label: Related pull request
+      placeholder: "#12"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: ecosystem
+    attributes:
+      label: Ecosystem
+      options:
+        - npm
+        - uv / Python
+        - GitHub Actions
+    validations:
+      required: true

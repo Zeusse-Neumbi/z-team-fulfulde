@@ -1,0 +1,56 @@
+name: Bug report
+description: Report a reproducible defect in the extension, API or phrasebank
+title: "fix: <short description>"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include real personal or banking data, page values, credentials,
+        or private security details. Report vulnerabilities through the private
+        security advisory link instead.
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Use fictional data only.
+      placeholder: |
+        1. Build the extension with `pnpm build`
+        2. Load `.output/chrome-mv3`
+        3. Open the test page and click the extension
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: "Ubuntu 24.04, Node 24, pnpm 11.9.0, Chrome 140"
+    validations:
+      required: true
+
+  - type: textarea
+    id: checks
+    attributes:
+      label: Checks already run
+      placeholder: |
+        - pnpm ci:local
+        - pnpm e2e
+        - Browser console output
+    validations:
+      required: false
