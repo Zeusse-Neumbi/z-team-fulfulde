@@ -66,8 +66,10 @@ export default function App() {
     await withTab(async (activeTab) => {
       const origin = originOf(activeTab.url);
       if (!origin) throw new Error("Origine de la page introuvable.");
-      const granted = await requestOriginPermission(origin);
-      if (!granted) throw new Error("Permission refusée.");
+      if (!(await hasOriginPermission(origin))) {
+        const granted = await requestOriginPermission(origin);
+        if (!granted) throw new Error("Permission refusée.");
+      }
       setPermitted(true);
       try {
         await injectContentScript(activeTab.id as number);

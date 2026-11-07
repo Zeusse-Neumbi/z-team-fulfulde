@@ -1,2 +1,6 @@
 [tool.uv.workspace]
 members = ["apps/server"]
+
+[tool.pytest.ini_options]
+testpaths = ["apps/server/tests"]
+asyncio_default_fixture_loop_scope = "function"
