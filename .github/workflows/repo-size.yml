@@ -1,0 +1,63 @@
+name: Repository size
+
+on:
+  schedule:
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repo-size:
+    name: Repository size and guards
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Test git hooks
+        run: sh scripts/tests/test-githooks.sh
+
+      - name: Check repository hygiene
+        run: bash scripts/check-repo-hygiene.sh
+
+      - name: Check unreachable object garbage
+        run: |
+          git count-objects -vH | tee "$RUNNER_TEMP/git-count-objects.txt"
+          awk '
+            $1 == "size-garbage:" {
+              found = 1
+              amount = $2 + 0
+              unit = $3
+              if (unit == "bytes") {
+                multiplier = 1
+              } else if (unit == "KiB") {
+                multiplier = 1024
+              } else if (unit == "MiB") {
+                multiplier = 1024 * 1024
+              } else if (unit == "GiB") {
+                multiplier = 1024 * 1024 * 1024
+              } else if (unit == "TiB") {
+                multiplier = 1024 * 1024 * 1024 * 1024
+              } else {
+                parse_error = 1
+              }
+              garbage = amount * multiplier
+            }
+            END {
+              if (!found || parse_error) {
+                print "Could not parse size-garbage from git count-objects output."
+                exit 2
+              }
+              if (garbage > 200 * 1024 * 1024) {
+                printf "Repository garbage is %.0f bytes; limit is 200 MiB.\n", garbage
+                exit 1
+              }
+              printf "Repository garbage is %.0f bytes; within the 200 MiB limit.\n", garbage
+            }
+          ' "$RUNNER_TEMP/git-count-objects.txt"

@@ -1,5 +1,19 @@
 # Security policy
 
+## Supported versions
+
+The latest commit on `main` is the only supported version. This is a hackathon
+prototype, not a long-lived release line.
+
+## Repository controls
+
+- Secret scanning and push protection are enabled.
+- Dependabot alerts and security updates are enabled.
+- Every pull request runs gitleaks, npm audit and a Python dependency audit.
+- `main` is protected by the `main protection` ruleset; `ci-required` must pass.
+- Model weights, archives, audio and files over 5 MiB are blocked by the local
+  pre-commit hook and by the `Repository guard` CI job.
+
 ## Scope
 
 This is a hackathon prototype and a research artefact. It is not a production banking
@@ -13,8 +27,15 @@ component. The security properties it does claim are:
 
 ## Reporting
 
-Please open a private GitHub security advisory or email the team. Do not open a public
-issue for a vulnerability that could affect the demo environment.
+Open a private GitHub security advisory at
+<https://github.com/Zeusse-Neumbi/z-team-fulfulde/security/advisories/new> or
+email the team. Do not open a public issue for a vulnerability that could affect
+the demo environment.
+
+Include the affected component, a minimal reproduction, the likely impact and a
+suggested fix if you have one. If a credential may have leaked, say so
+immediately so it can be revoked or rotated. Never attach real page values,
+personal data, credentials or private learner material to a report.
 
 ## Out of scope
 

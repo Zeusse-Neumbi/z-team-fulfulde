@@ -12,6 +12,11 @@ dist/
 .output/
 .wxt/
 coverage/
+.cache/
+SHA256SUMS.txt
+test-results/
+playwright-report/
+blob-report/
 *.tsbuildinfo
 
 # Local configuration and secrets

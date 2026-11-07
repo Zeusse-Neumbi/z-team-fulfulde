@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -eu
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+    case "$remote_ref" in
+        refs/heads/main|refs/heads/master)
+            printf 'Push blocked: %s is PR-only. Push a feature branch and open a pull request.\n' "$remote_ref" >&2
+            exit 1
+            ;;
+    esac
+done
+
+exit 0

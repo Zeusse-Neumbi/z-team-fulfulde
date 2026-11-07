@@ -1,12 +1,21 @@
 from __future__ import annotations
 
 from functools import lru_cache
+from typing import TypedDict
+
+
+class ASRResult(TypedDict):
+    intent: str
+    confidence: float
+    alternatives: list[str]
+    stub: bool
+    bytes: int
 
 
 class StubASR:
     name = "stub"
 
-    def classify(self, audio: bytes) -> dict[str, object]:
+    def classify(self, audio: bytes) -> ASRResult:
         return {
             "intent": "UNKNOWN",
             "confidence": 0.0,

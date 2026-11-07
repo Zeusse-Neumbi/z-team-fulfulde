@@ -18,16 +18,20 @@
     "package": "node scripts/package-extension.mjs",
     "size:check": "node scripts/size-check.mjs",
     "e2e": "playwright test",
-    "setup:e2e": "pnpm add -D @playwright/test && pnpm exec playwright install chromium",
+    "setup:e2e": "pnpm exec playwright install chromium",
     "strings": "tsx scripts/extract-strings.ts",
     "coverage": "tsx scripts/coverage.ts",
     "prewarm": "python3 scripts/prewarm.py",
-    "verify": "bash scripts/verify-submission.sh"
+    "hooks": "git config core.hooksPath .githooks",
+    "audit": "pnpm audit --audit-level high",
+    "verify": "bash scripts/verify-submission.sh",
+    "ci:local": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm package && pnpm size:check && uv run --project apps/server ruff check apps/server && uv run --project apps/server ruff format --check apps/server && uv run --project apps/server mypy apps/server/app --config-file apps/server/pyproject.toml && uv run --project apps/server pytest"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.0",
     "@types/node": "^22.0.0",
     "@zteam/translator": "workspace:*",
-    "archiver": "^7.0.0",
+    "fflate": "^0.8.3",
     "oxlint": "latest",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0",

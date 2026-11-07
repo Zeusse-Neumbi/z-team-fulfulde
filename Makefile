@@ -1,8 +1,11 @@
-.PHONY: install dev build test lint format package size e2e strings prewarm verify clean
+.PHONY: install hooks dev build test lint format audit ci package size e2e strings prewarm verify clean
 
 install:
 	pnpm install
 	uv sync --project apps/server --extra dev
+
+hooks:
+	pnpm hooks
 
 dev:
 	pnpm dev
@@ -21,6 +24,12 @@ lint:
 format:
 	pnpm lint:fix
 	uv run --project apps/server ruff format apps/server
+
+audit:
+	pnpm audit --audit-level high
+
+ci:
+	pnpm ci:local
 
 package:
 	pnpm package

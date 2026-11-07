@@ -41,7 +41,7 @@ mismatch reverts the node and aborts the plan.
 
 ## Quickstart
 
-Requirements: Node 20+, pnpm 9+, Python 3.11+, uv.
+Requirements: Node 20+, pnpm 11+, Python 3.11+, uv.
 
 ```bash
 pnpm install
@@ -69,7 +69,7 @@ The scaffold installs the web and API dependencies needed to build, test and run
 extension with the stub speech backend. Two large optional extras are installed on demand:
 
 ```bash
-# Playwright + Chromium: string extraction, coverage, e2e
+# Chromium for Playwright: string extraction, coverage, e2e
 pnpm setup:e2e
 
 # PyTorch, Transformers, CTranslate2: real TTS / local MT (large download)
@@ -106,10 +106,38 @@ e2e/                     Playwright smoke test
 | `pnpm typecheck` | TypeScript across packages |
 | `pnpm package` | Zip the built extension into `dist/` |
 | `pnpm size:check` | Fail if the ZIP exceeds 8 MB |
-| `pnpm setup:e2e` | Install Playwright on demand (large download) |
+| `pnpm setup:e2e` | Install Chromium for the Playwright smoke test |
+| `pnpm e2e` | Load the built extension and check the side panel |
+| `pnpm audit --audit-level high` | Fail on high or critical JS vulnerabilities |
+| `pnpm ci:local` | Run the web and API checks in one command |
+| `pnpm hooks` | Enable the repository hooks once per clone |
 | `pnpm strings` | Extract visible page strings with Playwright |
 | `pnpm coverage` | Compute translation coverage from two text dumps |
 | `uv run --project apps/server pytest` | API tests |
+
+## Contributing and repository rules
+
+`main` is PR-only. Work on a `<type>/<slug>` branch, use a Conventional Commit
+and open a pull request; `ci-required` must be green against the current base
+before merge. Squash is the only merge method and head branches are deleted
+automatically.
+
+The full workflow is in [`CONTRIBUTING.md`](CONTRIBUTING.md) and the agent
+contract is in [`AGENTS.md`](AGENTS.md). Repository decisions live under
+[`docs/decisions/`](docs/decisions/README.md).
+
+The CI wall runs Web (lint, typecheck, unit, build, package, size, audit), API
+(Ruff, MyPy, Pytest, audit), E2E/Playwright, workflow linting, secret and
+dependency scanning, and a repository guard. The aggregate `ci-required` job is
+the only required status check. A nightly workflow repeats the e2e smoke test,
+and a `v*` tag publishes the package plus `SHA256SUMS.txt` through the release
+workflow.
+
+Local guards are installed with `pnpm hooks`: the hooks block direct commits and
+pushes to `main`, staged `.env` files, model weights, files over 5 MiB and
+non-Conventional commit messages. Dependabot checks npm, uv and GitHub Actions
+weekly; blocked upgrades are tracked with the **Blocked dependency upgrade**
+issue template rather than a permanently red pull request.
 
 ## Privacy
 
@@ -126,7 +154,10 @@ e2e/                     Playwright smoke test
 - [`docs/LINGUISTIC_VALIDATION.md`](docs/LINGUISTIC_VALIDATION.md) — native-speaker protocol
 - [`docs/TTS_REPORT.md`](docs/TTS_REPORT.md) — voice track (template, not yet run)
 - [`docs/DEMO.md`](docs/DEMO.md) — 3-minute video and live demo script
-- [`docs/REPO_AUDIT.md`](docs/REPO_AUDIT.md) — minimal repository checklist
+- [`docs/REPO_AUDIT.md`](docs/REPO_AUDIT.md) — minimal repository checklist and CI wall
+- [`docs/decisions/`](docs/decisions/README.md) — squash, protection, CI and guard decisions
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) — branches, commits, merge policy and verification
+- [`AGENTS.md`](AGENTS.md) — the short contract for agent sessions
 - [`docs/SUBMISSION.md`](docs/SUBMISSION.md) — form fields and package
 - [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) — components, models and licences
 

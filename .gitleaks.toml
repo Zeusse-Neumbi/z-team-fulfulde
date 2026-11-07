@@ -1,0 +1,11 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Local-only placeholders and public documentation examples. Never add production secrets here."
+paths = [
+  '''(^|/)\.env\.example$''',
+]
+regexes = [
+  '''zteam-local''',
+]

@@ -3,13 +3,17 @@
 These tests load the built extension into Chromium. Run them locally:
 
 ```bash
+pnpm setup:e2e   # once per machine: install Chromium
 pnpm build
 pnpm e2e
 ```
 
-They are intentionally not part of the default CI job: the live test page can change,
-and extension tests need a bundled Chromium. The CI job covers unit, contract, build and
-package size; e2e is the evening regression ritual.
+The CI `E2E / Playwright` job runs the same flow on every pull request, and the
+nightly workflow repeats it to catch regressions from dependency updates. A
+failure opens a deduplicated GitHub issue.
+
+The smoke test only proves that the extension loads and the side panel renders.
+It does not replace the live-page regression ritual below.
 
 ## What to test manually each evening
 

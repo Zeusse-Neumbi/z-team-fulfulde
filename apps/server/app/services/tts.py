@@ -52,10 +52,7 @@ class MMSTTS:
         import numpy as np
 
         normalized = (
-            text.replace("ɲ", "ny")
-            .replace("ꞌ", "'")
-            .replace("\u00a0", " ")
-            .replace("\u202f", " ")
+            text.replace("ɲ", "ny").replace("ꞌ", "'").replace("\u00a0", " ").replace("\u202f", " ")
         )
         inputs = self._tokenizer(normalized, return_tensors="pt")
         with self._torch.no_grad():

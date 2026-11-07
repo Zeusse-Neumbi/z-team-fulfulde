@@ -1,0 +1,75 @@
+name: Nightly e2e
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  e2e:
+    name: Nightly extension smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          version: 11.9.0
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build extension
+        run: pnpm build
+
+      - name: Run Playwright
+        run: pnpm e2e
+
+      - name: Open issue on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPOSITORY: ${{ github.repository }}
+          ACTIONS_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          today="$(date -u +%F)"
+          title="Nightly e2e failed on $today"
+          open_issues="$(gh issue list --repo "$GH_REPOSITORY" --state open --search 'Nightly e2e failed' --json title --jq '.[].title')"
+
+          if grep -Fxq "$title" <<< "$open_issues"; then
+            echo "An open issue already exists for $today: $title"
+            exit 0
+          fi
+
+          body="$(cat <<EOF
+          The nightly extension smoke test failed.
+
+          Inspect the failed step(s) in the [workflow run]($ACTIONS_RUN_URL).
+
+          Run: $ACTIONS_RUN_URL
+          EOF
+          )"
+
+          gh issue create \
+            --repo "$GH_REPOSITORY" \
+            --title "$title" \
+            --body "$body"
