@@ -1,0 +1,5 @@
+id,source_fr,source_en,target_ff,back_translation_fr,meaning_1_5,naturalness_1_5,critical_error,fix
+tm.balance.available,Solde disponible,Available balance,,,,,,,
+tm.fees.fee,Frais,Fee,,,,,,,
+tm.summary.reference,Référence,Reference,,,,,,,
+tm.warn.verify_beneficiary,Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un transfert.,Always verify the beneficiary name and number before confirming a transfer.,,,,,,,

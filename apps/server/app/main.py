@@ -1,0 +1,62 @@
+from __future__ import annotations
+
+import time
+
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+
+from .config import settings
+from .metrics import metrics
+from .routers import asr, health, translate, tts
+
+app = FastAPI(
+    title="Z-Team Local API",
+    version="0.1.0",
+    description="Local-only speech and translation services. No page data leaves the machine.",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"^(chrome-extension://.*|http://localhost(:\d+)?|http://127\.0\.0\.1(:\d+)?)$",
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.middleware("http")
+async def timing_middleware(request: Request, call_next):
+    started = time.perf_counter()
+    response = await call_next(request)
+    elapsed_ms = (time.perf_counter() - started) * 1000
+    metrics.record(f"{request.method} {request.url.path}", elapsed_ms)
+    response.headers["X-Request-Duration-Ms"] = f"{elapsed_ms:.2f}"
+    return response
+
+
+app.include_router(health.router)
+app.include_router(tts.router)
+app.include_router(asr.router)
+app.include_router(translate.router)
+
+
+@app.get("/metrics")
+def get_metrics() -> dict[str, object]:
+    return metrics.snapshot()
+
+
+@app.post("/demo/reset")
+def demo_reset() -> dict[str, bool]:
+    metrics.reset()
+    return {"ok": True}
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(
+        "app.main:app",
+        host=settings.host,
+        port=settings.port,
+        log_level=settings.log_level,
+    )

@@ -1,0 +1,36 @@
+{
+  "name": "z-team-fulfulde",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local-first Fulfulde accessibility layer for digital financial services.",
+  "license": "MIT",
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @zteam/extension dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "lint": "oxlint apps packages scripts e2e",
+    "lint:fix": "oxlint --fix apps packages scripts e2e",
+    "package": "node scripts/package-extension.mjs",
+    "size:check": "node scripts/size-check.mjs",
+    "e2e": "playwright test",
+    "setup:e2e": "pnpm add -D @playwright/test && pnpm exec playwright install chromium",
+    "strings": "tsx scripts/extract-strings.ts",
+    "coverage": "tsx scripts/coverage.ts",
+    "prewarm": "python3 scripts/prewarm.py",
+    "verify": "bash scripts/verify-submission.sh"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@zteam/translator": "workspace:*",
+    "archiver": "^7.0.0",
+    "oxlint": "latest",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "yaml": "^2.5.0"
+  }
+}

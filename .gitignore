@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Builds and generated output
+dist/
+.output/
+.wxt/
+coverage/
+*.tsbuildinfo
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+# Data, models and recordings
+data/*
+!data/README.md
+models/*
+!models/README.md
+assets/audio/raw/
+assets/audio/*.wav
+assets/audio/*.mp3
+*.onnx
+*.pt
+*.pth
+*.safetensors
+
+# Evaluation artifacts
+eval/latency/*.csv
+eval/visual/*.png
+eval/visual/*.jpg
+
+# Packages
+*.zip
+*.log
+.DS_Store
+Thumbs.db

@@ -1,0 +1,51 @@
+# Third-party notices
+
+This project uses the following components. The list is kept in sync with
+`package.json`, `apps/server/pyproject.toml` and the model/dataset documentation.
+
+## Runtime and build
+
+| Component | Version | Licence | Use |
+|---|---|---|---|
+| WXT | current | MIT | Browser extension framework |
+| React / React DOM | 19 | MIT | Side panel UI |
+| `dom-accessibility-api` | 0.7.1 | MIT | Accessible name/role computation |
+| Zod | 3 | MIT | Runtime schema validation |
+| FastAPI | current | MIT | Local API |
+| Uvicorn | current | BSD-3-Clause | Local API server |
+| Pydantic / pydantic-settings | 2 | MIT | API models and settings |
+| httpx | current | BSD-3-Clause | Test client and local HTTP |
+| Playwright | current | Apache-2.0 | Optional: string extraction, e2e |
+| Vitest | current | MIT | Unit tests |
+| oxlint | current | MIT | Lint |
+
+## Speech and translation (optional, local only)
+
+| Asset | Licence | Use | Obligation |
+|---|---|---|---|
+| `facebook/mms-tts-ful` | CC-BY-NC-4.0 | TTS base | Non-commercial; declare |
+| Fine-tuned TTS | CC-BY-NC-4.0 (inherits) | Optional voice | Non-commercial; declare |
+| `flagship-ai/francais-fufulde` | CC-BY-4.0 | Optional local FR→FF fallback | Attribution |
+| `DS4H-ICTU/linguo_mt_en_fub` | Apache-2.0 | Optional local EN→FUB fallback | Attribution |
+| CTranslate2 | MIT | Local MT runtime | Attribution |
+| Transformers / PyTorch | Apache-2.0 / BSD-3-Clause | Model runtime | Attribution |
+
+## Data
+
+| Dataset | Licence | Use |
+|---|---|---|
+| Mozilla Common Voice 27.0 — Adamawa Fulfulde (`fub`) | CC0-1.0 | ASR evaluation; CC0 reading prompts |
+| WAXAL (`google/WaxalNLP`) | CC-BY-4.0 / CC-BY-SA-4.0 | Auxiliary transfer only |
+| Adamawa Fulfulde-TTS-Dataset (CLARIN / Mozilla Data Collective) | NOODL-1.0 | **Not used for training**; listening reference only |
+| `BATBAINA/fulfulde-dataset-asr-agri` | Not stated | ASR sanity check only |
+| `abdouaziiz/fulfulde_clean` | Not stated | Not shipped |
+| `FredMike23/french-FULFULDE-ADAMAOUA` | Not stated | Terminology only |
+
+## Rules
+
+- No CC-BY-NC model is used in a commercial path. The prototype is a research demo and
+  declares the licence.
+- The NOODL dataset is not used for generative training. The project records its own
+  corpus with a consenting speaker.
+- Scripture-derived text is not redistributed as if it were openly licensed.
+- Any new dependency or asset must be added to this file before release.

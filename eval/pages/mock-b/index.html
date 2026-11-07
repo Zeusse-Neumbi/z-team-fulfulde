@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Banque Démo — Test de généricité</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #182230;
+        --muted: #5b6b82;
+        --line: #d7dee9;
+        --accent: #7a1f5c;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        color: var(--ink);
+        background: #fbfaf7;
+      }
+      header {
+        background: var(--accent);
+        color: #fff;
+        padding: 18px 24px;
+      }
+      header h1 { margin: 0; font-size: 22px; letter-spacing: 0.04em; }
+      main { max-width: 860px; margin: 0 auto; padding: 24px; }
+      table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+      th, td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; }
+      th { background: #f0edf6; font-weight: 700; }
+      .warning {
+        border-left: 4px solid #b54708;
+        background: #fff7ed;
+        padding: 12px 14px;
+        margin: 18px 0;
+      }
+      .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+      button, a.button {
+        display: inline-block;
+        padding: 10px 16px;
+        border: 1px solid var(--line);
+        background: #fff;
+        color: var(--ink);
+        font: inherit;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+      label { display: block; margin-top: 12px; font-weight: 700; }
+      input { width: 100%; padding: 10px; margin-top: 4px; font: inherit; }
+      footer { max-width: 860px; margin: 0 auto; padding: 24px; color: var(--muted); font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Banque Démo</h1>
+    </header>
+    <main>
+      <p>Bienvenue sur l'espace de démonstration. Toutes les données sont fictives.</p>
+
+      <table>
+        <tbody>
+          <tr>
+            <th scope="row">Solde disponible</th>
+            <td>175 000 FCFA</td>
+          </tr>
+          <tr>
+            <th scope="row">Numéro de compte</th>
+            <td>CM 999 8887 7776 55</td>
+          </tr>
+          <tr>
+            <th scope="row">Compte courant</th>
+            <td>Ouvert le 12 mars 2021</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Frais de transfert</h2>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Type d'opération</th>
+            <th scope="col">Frais</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Compte Safinum</td>
+            <td>Gratuit</td>
+          </tr>
+          <tr>
+            <td>Mobile Money</td>
+            <td>1,5 % (min. 100 FCFA, max. 2 500 FCFA)</td>
+          </tr>
+          <tr>
+            <td>Autre banque</td>
+            <td>2 % (min. 200 FCFA, max. 5 000 FCFA)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warning">
+        <strong>Attention :</strong> ne communiquez jamais votre code secret. Vérifiez toujours le
+        nom et le numéro du bénéficiaire avant de confirmer un transfert.
+      </div>
+
+      <h2>Préparer un transfert</h2>
+      <form>
+        <label for="destinataire">Nom du bénéficiaire</label>
+        <input id="destinataire" name="beneficiary" value="Aïssatou Bello" />
+
+        <label for="telephone">Numéro de téléphone</label>
+        <input id="telephone" name="phone" value="+237 6 77 88 99 00" />
+
+        <label for="motif">Motif du transfert</label>
+        <input id="motif" name="reason" value="Frais de scolarité" />
+
+        <div class="actions">
+          <button type="button" class="primary">Confirmer le transfert</button>
+          <button type="button">Annuler</button>
+          <a class="button" href="#frais">Consulter les frais</a>
+        </div>
+      </form>
+    </main>
+    <footer>
+      Banque Démo — environnement de test. Aucune transaction réelle. Aucune donnée personnelle.
+    </footer>
+  </body>
+</html>
