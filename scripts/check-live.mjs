@@ -49,6 +49,35 @@ async function status() {
   return send("GET_STATUS");
 }
 
+async function loadLivePage(page) {
+  let lastError;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      await page.goto(liveUrl, { waitUntil: "domcontentloaded", timeout: 45_000 });
+      await page.waitForTimeout(2000);
+      return;
+    } catch (error) {
+      lastError = error;
+      console.error(`[live] load attempt ${attempt} failed: ${String(error).slice(0, 120)}`);
+      await page.waitForTimeout(1500);
+    }
+  }
+  throw lastError ?? new Error("live page did not load");
+}
+
+async function ping() {
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    try {
+      const response = await send("PING");
+      if (response?.ok) return;
+    } catch {
+      // The content script may still be starting.
+    }
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  throw new Error("content script did not answer PING");
+}
+
 async function waitForStep(step, timeout = 5000) {
   const started = Date.now();
   while (Date.now() - started < timeout) {
@@ -63,8 +92,8 @@ const summary = {};
 
 try {
   const page = await context.newPage();
-  await page.goto(liveUrl, { waitUntil: "networkidle", timeout: 45_000 });
-  await page.waitForTimeout(800);
+  await loadLivePage(page);
+  await ping();
 
   const initial = clean(await page.locator("body").innerText());
   for (const value of [
