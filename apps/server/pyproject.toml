@@ -5,7 +5,7 @@ description = "Local-only speech and translation services for the Z-Team Fulfuld
 requires-python = ">=3.11"
 dependencies = [
   "fastapi>=0.115",
-  "uvicorn[standard]>=0.30",
+  "uvicorn[standard]>=0.54.0",
   "pydantic>=2.8",
   "pydantic-settings>=2.4",
   "httpx>=0.27",
