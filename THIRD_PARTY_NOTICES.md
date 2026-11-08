@@ -26,6 +26,7 @@ terms.
 | Pydantic / pydantic-settings | 2 | MIT | API models and settings |
 | httpx | current | BSD-3-Clause | Test client and local HTTP |
 | Playwright | current | Apache-2.0 | String extraction and e2e |
+| `@axe-core/playwright` | 4.14 | MPL-2.0 | Accessibility audit in e2e |
 | fflate | 0.8.3 | MIT | Extension ZIP packaging |
 | Vitest | current | MIT | Unit tests |
 | oxlint | current | MIT | Lint |

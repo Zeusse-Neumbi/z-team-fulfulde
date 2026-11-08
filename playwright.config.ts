@@ -2,11 +2,17 @@ import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./e2e",
-  timeout: 60_000,
+  timeout: 90_000,
   fullyParallel: false,
   retries: 0,
   reporter: [["list"]],
   use: {
     trace: "retain-on-failure",
+  },
+  webServer: {
+    command: "node scripts/serve-eval.mjs",
+    url: "http://127.0.0.1:4173/journey/",
+    reuseExistingServer: !process.env.CI,
+    timeout: 30_000,
   },
 });

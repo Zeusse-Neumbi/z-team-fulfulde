@@ -1,0 +1,708 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Banque Démo — parcours de test</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #172033;
+        --muted: #5b6779;
+        --line: #d7deea;
+        --surface: #ffffff;
+        --bg: #eef3fa;
+        --brand: #0d5c63;
+        --brand-ink: #ffffff;
+        --warn: #9a3412;
+        --danger: #b42318;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      }
+      header {
+        background: var(--brand);
+        color: var(--brand-ink);
+        padding: 14px 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      header h1 { margin: 0; font-size: 19px; letter-spacing: 0.02em; }
+      header .tagline { margin: 2px 0 0; font-size: 11px; opacity: 0.85; }
+      header button {
+        min-height: 44px;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        border-radius: 8px;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        font-weight: 700;
+        padding: 4px 12px;
+        cursor: pointer;
+      }
+      .steps {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        padding: 10px 22px;
+        background: #f8fafc;
+        border-bottom: 1px solid var(--line);
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .steps span { display: inline-flex; gap: 5px; }
+      .steps span.active { color: var(--brand); font-weight: 800; }
+      .layout {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 22px;
+        display: grid;
+        gap: 18px;
+        grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr);
+      }
+      @media (max-width: 760px) { .layout { grid-template-columns: 1fr; } }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 20px;
+      }
+      .kicker {
+        margin: 0 0 6px;
+        color: var(--brand);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      h2 { margin: 0 0 8px; font-size: 20px; }
+      h3 { margin: 0 0 8px; font-size: 14px; }
+      p { line-height: 1.5; }
+      dl { margin: 0; }
+      .rows { display: grid; gap: 8px; margin-top: 14px; }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 8px;
+      }
+      .row dt { color: var(--muted); }
+      .row dd { margin: 0; font-weight: 800; text-align: right; }
+      label { display: block; margin-top: 12px; font-weight: 700; font-size: 13px; }
+      input, select {
+        width: 100%;
+        min-height: 44px;
+        margin-top: 5px;
+        padding: 8px 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        font: inherit;
+      }
+      .check {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        margin-top: 14px;
+        font-weight: 400;
+        font-size: 13px;
+      }
+      .check input { width: 18px; min-height: 18px; margin: 2px 0 0; }
+      .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+      .actions button, .harness button {
+        min-height: 44px;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        background: var(--surface);
+        color: var(--ink);
+        font: inherit;
+        font-weight: 700;
+        padding: 8px 16px;
+        cursor: pointer;
+      }
+      .actions button.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+      .harness { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+      .harness button {
+        min-height: 44px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .alert {
+        border: 1px solid #f1c0bb;
+        border-left: 5px solid var(--danger);
+        background: #fff5f4;
+        color: #7a1f18;
+        border-radius: 10px;
+        padding: 12px;
+        margin-top: 14px;
+      }
+      .alert h3 { color: var(--danger); }
+      .alert code { font-weight: 800; }
+      .warning {
+        border-left: 4px solid #b45309;
+        background: #fffbeb;
+        padding: 10px 12px;
+        margin-top: 14px;
+        font-size: 13px;
+      }
+      aside .card { margin-bottom: 14px; }
+      .muted { color: var(--muted); font-size: 12px; }
+      footer {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 0 22px 28px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      #novel, #novel-unknown {
+        border-left: 4px solid var(--brand);
+        background: #f0fdfa;
+        padding: 10px 12px;
+        margin-top: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Safinum Pay</h1>
+        <p class="tagline">Banque en ligne</p>
+      </div>
+      <button id="lang" type="button" aria-label="EN — changer la langue">EN</button>
+    </header>
+
+    <div class="steps" aria-label="Étapes">
+      <span data-step="1">1 · Solde</span>
+      <span data-step="2">2 · Frais</span>
+      <span data-step="3">3 · Bénéficiaire</span>
+      <span data-step="4">4 · Récapitulatif</span>
+      <span data-step="5">5 · Confirmation</span>
+    </div>
+
+    <div class="layout">
+      <section class="card" id="step" aria-live="polite"></section>
+      <aside>
+        <div class="card">
+          <h3 id="aside-account">Votre compte</h3>
+          <p><strong>Aïssatou Bello</strong></p>
+          <p class="muted" id="aside-account-type">Compte courant</p>
+          <dl class="rows">
+            <div class="row">
+              <dt id="aside-balance-label">Solde disponible</dt>
+              <dd id="aside-balance">175 000 FCFA</dd>
+            </div>
+            <div class="row">
+              <dt id="aside-number-label">Numéro de compte</dt>
+              <dd>CM 999 8887 7776 55</dd>
+            </div>
+          </dl>
+        </div>
+        <div class="card">
+          <h3 id="aside-security">Sécurité</h3>
+          <p class="muted" id="aside-security-text">
+            Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un transfert.
+          </p>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      <p id="footer-text">
+        Safinum Pay — environnement de démonstration. Ne saisissez aucune donnée personnelle réelle.
+      </p>
+    </footer>
+
+    <script>
+      const state = {
+        lang: "fr",
+        step: 1,
+        amount: 25000,
+        operation: "safinum",
+        beneficiary: "Aïssatou Bello",
+        phone: "+237 6 77 88 99 00",
+        reason: "Frais de scolarité",
+        note: "",
+        reference: "SAF-2026-TEST01",
+        beneficiaryVerified: false,
+        summaryConfirmed: false,
+      };
+
+      const copy = {
+        fr: {
+          tagline: "Banque en ligne",
+          asideAccount: "Votre compte",
+          asideAccountType: "Compte courant",
+          asideBalance: "Solde disponible",
+          asideNumber: "Numéro de compte",
+          asideSecurity: "Sécurité",
+          asideSecurityText:
+            "Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un transfert.",
+          footer:
+            "Safinum Pay — environnement de démonstration. Ne saisissez aucune donnée personnelle réelle.",
+          steps: ["Solde", "Frais", "Bénéficiaire", "Récapitulatif", "Confirmation"],
+          balanceTitle: "Solde disponible",
+          greeting: "Bonjour, Aïssatou",
+          subtitle: "Consultez votre solde et lancez un transfert en toute sécurité.",
+          recent: "Transactions récentes",
+          merchant: "Paiement marchand",
+          salary: "Salaire reçu",
+          received: "Transfert reçu",
+          electricity: "Facture électricité",
+          startTransfer: "Effectuer un transfert",
+          seeFees: "Consulter les frais",
+          feesTitle: "Frais de transfert",
+          feesSubtitle:
+            "Choisissez le type de transfert et le montant. Les frais sont calculés automatiquement.",
+          operationType: "Type d'opération",
+          safinum: "Compte Safinum",
+          mobile: "Mobile Money",
+          otherBank: "Autre banque",
+          safinumDesc: "Transfert instantané et gratuit",
+          mobileDesc: "Frais de 1,5 % (min. 100 FCFA, max. 2 500 FCFA)",
+          otherDesc: "Frais de 2 % (min. 200 FCFA, max. 5 000 FCFA)",
+          amountLabel: "Montant à envoyer",
+          fee: "Frais",
+          free: "Gratuit",
+          total: "Total à débiter",
+          after: "Solde après opération",
+          back: "Retour",
+          next: "Continuer",
+          benTitle: "Bénéficiaire",
+          benSubtitle:
+            "Renseignez les informations du destinataire. Vérifiez toujours le numéro avant de valider.",
+          benWarning:
+            "Ce bénéficiaire n'a jamais été utilisé sur ce compte. Vérifiez le numéro avant de continuer.",
+          benName: "Nom du bénéficiaire",
+          benPhone: "Numéro de téléphone",
+          benReason: "Motif du transfert",
+          benNote: "Note (optionnel)",
+          verified: "J'ai vérifié le nom et le numéro du bénéficiaire.",
+          summaryTitle: "Récapitulatif",
+          summarySubtitle: "Vérifiez les informations avant de confirmer le transfert.",
+          amount: "Montant",
+          totalDebited: "Total débité",
+          beneficiary: "Bénéficiaire",
+          phoneLabel: "Téléphone",
+          reference: "Référence",
+          operation: "Opération",
+          confirmCheck: "Je confirme que les informations ci-dessus sont correctes.",
+          edit: "Modifier",
+          confirm: "Confirmer le transfert",
+          receiptTitle: "Transfert effectué",
+          receiptSubtitle: "Votre transfert a été envoyé avec succès.",
+          status: "Statut",
+          success: "Succès",
+          newTransfer: "Nouveau transfert",
+          amountZero: "Le montant doit être supérieur à zéro.",
+          insufficient: "Solde insuffisant pour effectuer ce transfert.",
+          missingBen: "Veuillez renseigner le nom et le numéro du bénéficiaire.",
+          securityError: "Alerte de sécurité : vérifiez le numéro du bénéficiaire avant de continuer.",
+          confirmError: "Vous devez confirmer les informations avant de valider le transfert.",
+          errorTitle: "Une erreur est survenue",
+          novel: "Un message important pour les clients…",
+        },
+        en: {
+          tagline: "Online banking",
+          asideAccount: "Your account",
+          asideAccountType: "Current account",
+          asideBalance: "Available balance",
+          asideNumber: "Account number",
+          asideSecurity: "Security",
+          asideSecurityText:
+            "Always verify the beneficiary name and number before confirming a transfer.",
+          footer:
+            "Safinum Pay — demonstration environment. Do not enter real personal data.",
+          steps: ["Balance", "Fees", "Beneficiary", "Summary", "Confirmation"],
+          balanceTitle: "Available balance",
+          greeting: "Hello, Aïssatou",
+          subtitle: "Check your balance and start a secure transfer.",
+          recent: "Recent transactions",
+          merchant: "Merchant payment",
+          salary: "Salary received",
+          received: "Transfer received",
+          electricity: "Electricity bill",
+          startTransfer: "Make a transfer",
+          seeFees: "View fees",
+          feesTitle: "Transfer fees",
+          feesSubtitle: "Choose the transfer type and amount. Fees are calculated automatically.",
+          operationType: "Operation type",
+          safinum: "Safinum account",
+          mobile: "Mobile Money",
+          otherBank: "Other bank",
+          safinumDesc: "Instant, free transfer",
+          mobileDesc: "1.5% fee (min. 100 FCFA, max. 2,500 FCFA)",
+          otherDesc: "2% fee (min. 200 FCFA, max. 5,000 FCFA)",
+          amountLabel: "Amount to send",
+          fee: "Fee",
+          free: "Free",
+          total: "Total debited",
+          after: "Balance after transfer",
+          back: "Back",
+          next: "Continue",
+          benTitle: "Beneficiary",
+          benSubtitle:
+            "Enter the recipient details. Always verify the number before validating.",
+          benWarning: "This beneficiary has never been used on this account. Verify the number before continuing.",
+          benName: "Beneficiary name",
+          benPhone: "Phone number",
+          benReason: "Transfer reason",
+          benNote: "Note (optional)",
+          verified: "I have verified the beneficiary name and number.",
+          summaryTitle: "Summary",
+          summarySubtitle: "Verify the information before confirming the transfer.",
+          amount: "Amount",
+          totalDebited: "Total debited",
+          beneficiary: "Beneficiary",
+          phoneLabel: "Phone",
+          reference: "Reference",
+          operation: "Operation",
+          confirmCheck: "I confirm that the information above is correct.",
+          edit: "Edit",
+          confirm: "Confirm the transfer",
+          receiptTitle: "Transfer successful",
+          receiptSubtitle: "Your transfer has been sent successfully.",
+          status: "Status",
+          success: "Success",
+          newTransfer: "New transfer",
+          amountZero: "The amount must be greater than zero.",
+          insufficient: "Insufficient balance for this transfer.",
+          missingBen: "Please provide the beneficiary name and phone number.",
+          securityError: "Security warning: verify the beneficiary phone number before continuing.",
+          confirmError: "You must confirm the details before validating the transfer.",
+          errorTitle: "An error occurred",
+          novel: "An important message for customers…",
+        },
+      };
+
+      const t = () => copy[state.lang];
+      const stepRoot = document.getElementById("step");
+      const langButton = document.getElementById("lang");
+
+      function money(value) {
+        return `${new Intl.NumberFormat(state.lang === "fr" ? "fr-FR" : "en-US").format(value)} FCFA`;
+      }
+
+      function feeFor() {
+        if (state.operation === "mobile") {
+          return Math.min(2500, Math.max(100, Math.round(state.amount * 0.015)));
+        }
+        if (state.operation === "other") {
+          return Math.min(5000, Math.max(200, Math.round(state.amount * 0.02)));
+        }
+        return 0;
+      }
+
+      function opLabel() {
+        if (state.operation === "mobile") return t().mobile;
+        if (state.operation === "other") return t().otherBank;
+        return t().safinum;
+      }
+
+      function opDescription() {
+        if (state.operation === "mobile") return t().mobileDesc;
+        if (state.operation === "other") return t().otherDesc;
+        return t().safinumDesc;
+      }
+
+      function renderChrome() {
+        document.documentElement.lang = state.lang;
+        langButton.textContent = state.lang === "fr" ? "EN" : "FR";
+        langButton.setAttribute(
+          "aria-label",
+          `${langButton.textContent} — ${state.lang === "fr" ? "changer la langue" : "change language"}`,
+        );
+        document.getElementById("aside-account").textContent = t().asideAccount;
+        document.getElementById("aside-account-type").textContent = t().asideAccountType;
+        document.getElementById("aside-balance-label").textContent = t().asideBalance;
+        document.getElementById("aside-number-label").textContent = t().asideNumber;
+        document.getElementById("aside-security").textContent = t().asideSecurity;
+        document.getElementById("aside-security-text").textContent = t().asideSecurityText;
+        document.getElementById("aside-balance").textContent = money(175000);
+        document.getElementById("footer-text").textContent = t().footer;
+        document.querySelectorAll(".steps span").forEach((element) => {
+          const step = Number(element.dataset.step);
+          element.innerHTML = `<span class="step-num">${step}</span><span class="step-name">${t().steps[step - 1]}</span>`;
+          element.classList.toggle("active", step === state.step);
+        });
+      }
+
+      function rows(items) {
+        return `<dl class="rows">${items
+          .map(
+            ([label, value]) =>
+              `<div class="row"><dt>${label}</dt><dd>${value}</dd></div>`,
+          )
+          .join("")}</dl>`;
+      }
+
+      function renderStep() {
+        renderChrome();
+        const fee = feeFor();
+        const total = state.amount + fee;
+        const after = 175000 - total;
+        if (state.step === 1) {
+          stepRoot.innerHTML = `
+            <p class="kicker">${t().balanceTitle}</p>
+            <h2>${t().greeting}</h2>
+            <p>${t().subtitle}</p>
+            ${rows([
+              [t().asideBalance, money(175000)],
+              [t().asideNumber, "CM 999 8887 7776 55"],
+            ])}
+            <h3 style="margin-top:18px">${t().recent}</h3>
+            ${rows([
+              [t().merchant, "-12 500 FCFA"],
+              [t().salary, "+180 000 FCFA"],
+              [t().received, "+50 000 FCFA"],
+              [t().electricity, "-7 500 FCFA"],
+            ])}
+            <div class="actions">
+              <button id="to-fees" type="button" class="primary">${t().startTransfer}</button>
+              <button id="see-fees" type="button">${t().seeFees}</button>
+            </div>`;
+        } else if (state.step === 2) {
+          stepRoot.innerHTML = `
+            <p class="kicker">${t().feesTitle}</p>
+            <h2>${t().feesSubtitle}</h2>
+            <label for="operation">${t().operationType}</label>
+            <select id="operation">
+              <option value="safinum"${state.operation === "safinum" ? " selected" : ""}>${t().safinum}</option>
+              <option value="mobile"${state.operation === "mobile" ? " selected" : ""}>${t().mobile}</option>
+              <option value="other"${state.operation === "other" ? " selected" : ""}>${t().otherBank}</option>
+            </select>
+            <p class="muted" id="operation-description">${opDescription()}</p>
+            <label for="amount">${t().amountLabel}</label>
+            <input id="amount" type="number" min="0" step="100" value="${state.amount}" />
+            ${rows([
+              [t().fee, fee === 0 ? t().free : money(fee)],
+              [t().total, money(total)],
+              [t().after, money(after)],
+            ])}
+            <div class="actions">
+              <button id="back" type="button">${t().back}</button>
+              <button id="continue" type="button" class="primary">${t().next}</button>
+            </div>`;
+        } else if (state.step === 3) {
+          stepRoot.innerHTML = `
+            <p class="kicker">${t().benTitle}</p>
+            <h2>${t().benSubtitle}</h2>
+            <div class="warning">${t().benWarning}</div>
+            <label for="beneficiary">${t().benName}</label>
+            <input id="beneficiary" type="text" value="${state.beneficiary}" />
+            <label for="phone">${t().benPhone}</label>
+            <input id="phone" type="tel" value="${state.phone}" />
+            <label for="reason">${t().benReason}</label>
+            <input id="reason" type="text" value="${state.reason}" />
+            <label for="note">${t().benNote}</label>
+            <input id="note" type="text" value="${state.note}" />
+            <label class="check">
+              <input id="beneficiary-verified" type="checkbox"${state.beneficiaryVerified ? " checked" : ""} />
+              <span>${t().verified}</span>
+            </label>
+            <div class="actions">
+              <button id="back" type="button">${t().back}</button>
+              <button id="continue" type="button" class="primary">${t().next}</button>
+            </div>`;
+        } else if (state.step === 4) {
+          stepRoot.innerHTML = `
+            <p class="kicker">${t().summaryTitle}</p>
+            <h2>${t().summarySubtitle}</h2>
+            ${rows([
+              [t().amount, money(state.amount)],
+              [t().fee, money(fee)],
+              [t().totalDebited, money(total)],
+              [t().beneficiary, state.beneficiary],
+              [t().phoneLabel, state.phone],
+              [t().reference, state.reference],
+              [t().operation, opLabel()],
+            ])}
+            <label class="check">
+              <input id="summary-confirmed" type="checkbox"${state.summaryConfirmed ? " checked" : ""} />
+              <span>${t().confirmCheck}</span>
+            </label>
+            <div class="actions">
+              <button id="edit" type="button">${t().edit}</button>
+              <button id="confirm" type="button" class="primary">${t().confirm}</button>
+            </div>`;
+        } else {
+          stepRoot.innerHTML = `
+            <p class="kicker">${t().receiptTitle}</p>
+            <h2>${t().receiptSubtitle}</h2>
+            ${rows([
+              [t().reference, state.reference],
+              [t().amount, money(state.amount)],
+              [t().fee, money(fee)],
+              [t().totalDebited, money(total)],
+              [t().beneficiary, state.beneficiary],
+              [t().status, t().success],
+            ])}
+            <div class="actions">
+              <button id="new-transfer" type="button" class="primary">${t().newTransfer}</button>
+            </div>`;
+        }
+        renderHarness();
+        bindStep();
+        document.querySelectorAll(".steps span").forEach((element) => {
+          element.classList.toggle("active", Number(element.dataset.step) === state.step);
+        });
+      }
+
+      function renderError(code, message) {
+        const existing = document.getElementById("error");
+        if (existing) existing.remove();
+        const error = document.createElement("div");
+        error.id = "error";
+        error.className = "alert";
+        error.setAttribute("role", "alert");
+        error.innerHTML = `<h3>${t().errorTitle}</h3><p>${message}</p><code>${code}</code>`;
+        stepRoot.appendChild(error);
+      }
+
+      function clearError() {
+        document.getElementById("error")?.remove();
+      }
+
+      function renderHarness() {
+        const harness = document.createElement("div");
+        harness.className = "harness";
+        const inject = document.createElement("button");
+        inject.id = "inject-novel";
+        inject.type = "button";
+        inject.setAttribute("aria-label", "Injecter un message");
+        inject.textContent = "+";
+        inject.addEventListener("click", () => injectNovel());
+        const unknown = document.createElement("button");
+        unknown.id = "inject-unknown";
+        unknown.type = "button";
+        unknown.setAttribute("aria-label", "Message inconnu");
+        unknown.textContent = "?";
+        unknown.addEventListener("click", () => injectUnknown());
+        const fail = document.createElement("button");
+        fail.id = "trigger-error";
+        fail.type = "button";
+        fail.setAttribute("aria-label", "Solde insuffisant");
+        fail.textContent = "!";
+        fail.addEventListener("click", () => renderError("AMOUNT_002", t().insufficient));
+        harness.append(inject, unknown, fail);
+        stepRoot.appendChild(harness);
+      }
+
+      function injectNovel() {
+        document.getElementById("novel")?.remove();
+        const element = document.createElement("p");
+        element.id = "novel";
+        element.textContent = t().novel;
+        stepRoot.appendChild(element);
+      }
+
+      function injectUnknown() {
+        document.getElementById("novel-unknown")?.remove();
+        const element = document.createElement("p");
+        element.id = "novel-unknown";
+        element.textContent =
+          state.lang === "fr"
+            ? "Le service sera indisponible demain matin."
+            : "The service will be unavailable tomorrow morning.";
+        stepRoot.appendChild(element);
+      }
+
+      function bindStep() {
+        document.getElementById("to-fees")?.addEventListener("click", () => {
+          state.step = 2;
+          renderStep();
+        });
+        document.getElementById("see-fees")?.addEventListener("click", () => {
+          state.step = 2;
+          renderStep();
+        });
+        document.getElementById("back")?.addEventListener("click", () => {
+          state.step = Math.max(1, state.step - 1);
+          clearError();
+          renderStep();
+        });
+        document.getElementById("operation")?.addEventListener("change", (event) => {
+          state.operation = event.target.value;
+          renderStep();
+        });
+        document.getElementById("amount")?.addEventListener("input", (event) => {
+          state.amount = Math.max(0, Math.round(Number(event.target.value) || 0));
+          renderStep();
+        });
+        document.getElementById("beneficiary-verified")?.addEventListener("change", (event) => {
+          state.beneficiaryVerified = event.target.checked;
+        });
+        document.getElementById("summary-confirmed")?.addEventListener("change", (event) => {
+          state.summaryConfirmed = event.target.checked;
+        });
+        document.getElementById("continue")?.addEventListener("click", () => {
+          if (state.step === 2) {
+            if (state.amount <= 0) {
+              renderError("AMOUNT_001", t().amountZero);
+              return;
+            }
+            if (state.amount + feeFor() > 175000) {
+              renderError("AMOUNT_002", t().insufficient);
+              return;
+            }
+            state.step = 3;
+            clearError();
+            renderStep();
+            return;
+          }
+          if (state.step === 3) {
+            if (!state.beneficiary.trim() || !state.phone.trim()) {
+              renderError("BENEFICIARY_001", t().missingBen);
+              return;
+            }
+            if (!state.beneficiaryVerified) {
+              renderError("SECURITY_001", t().securityError);
+              return;
+            }
+            state.step = 4;
+            clearError();
+            renderStep();
+          }
+        });
+        document.getElementById("edit")?.addEventListener("click", () => {
+          state.step = 3;
+          clearError();
+          renderStep();
+        });
+        document.getElementById("confirm")?.addEventListener("click", () => {
+          if (!state.summaryConfirmed) {
+            renderError("CONFIRM_001", t().confirmError);
+            return;
+          }
+          state.step = 5;
+          clearError();
+          renderStep();
+        });
+        document.getElementById("new-transfer")?.addEventListener("click", () => {
+          state.step = 1;
+          state.beneficiaryVerified = false;
+          state.summaryConfirmed = false;
+          state.amount = 25000;
+          state.operation = "safinum";
+          state.reference = "SAF-2026-TEST02";
+          clearError();
+          renderStep();
+        });
+      }
+
+      langButton.addEventListener("click", () => {
+        state.lang = state.lang === "fr" ? "en" : "fr";
+        renderStep();
+      });
+
+      renderStep();
+    </script>
+  </body>
+</html>
