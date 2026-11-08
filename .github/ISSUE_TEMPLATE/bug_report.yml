@@ -1,7 +1,7 @@
 name: Bug report
 description: Report a reproducible defect in the extension, API or phrasebank
 title: "fix: <short description>"
-labels: ["bug"]
+labels: ["type/bug"]
 body:
   - type: markdown
     attributes:

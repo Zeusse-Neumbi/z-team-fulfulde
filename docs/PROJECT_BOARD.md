@@ -51,7 +51,7 @@ gantt
 | Board | Board | `is:open` | Daily status flow |
 | Backlog | Table | `is:open` | Plan area, phase, size and target |
 | Blocked | Table | `status:"Blocked"` | Decisions and external dependencies |
-| Bugs | Table | `label:bug` | Defects only |
+| Bugs | Table | `label:"type/bug"` | Defects only |
 | Submission | Table | `phase:"D6 Submission"` | Final package |
 | Done | Table | `is:closed` | Evidence of what shipped |
 | My items | Table | `assignee:@me` | Personal next action |
