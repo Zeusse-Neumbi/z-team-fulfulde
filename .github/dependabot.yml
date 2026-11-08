@@ -30,6 +30,18 @@ updates:
       prefix: "chore(deps)"
     labels:
       - "dependencies"
+    ignore:
+      # Major JS toolchain upgrades need a dedicated migration and a WXT smoke
+      # test. See issue #47 and the closed grouped PR #2.
+      - dependency-name: "typescript"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "vitest"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "@types/node"
+        update-types:
+          - "version-update:semver-major"
     groups:
       js-minor:
         patterns:
