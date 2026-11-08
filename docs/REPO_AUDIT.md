@@ -49,6 +49,9 @@ weakening the value or privacy rules.
       deduplicated issue on failure.
 - [x] 30. A tag-driven release workflow re-runs the checks, packages the extension,
       writes `SHA256SUMS.txt` and creates the GitHub release.
+- [x] 31. A public GitHub Project tracks the D1–D7 plan, milestones, risks and
+      submission; `scripts/bootstrap-github-project.mjs` recreates it from
+      `scripts/project-plan.json`.
 
 ## Release checks
 
