@@ -96,8 +96,9 @@ bash scripts/check-repo-hygiene.sh
 
 `pnpm ci:local` runs the web and API checks in one command. `pnpm e2e` uses the
 test-only fixture build and needs Chromium: run `pnpm setup:e2e` once per
-machine. `pnpm check:live` is the manual live-site check; it is not part of
-`ci:local`.
+machine. `pnpm check:live` is the manual live-site check; `pnpm check:sites` is the
+30-page canary sweep. Neither is part of `ci:local`; both need network. The
+fixture build is the only broad-host build and is never packaged.
 
 ## Git hooks
 

@@ -18,7 +18,13 @@ processing happens on the user's machine.
 | Local API requests | `/health` and, with a real voice, `/tts` | No request bodies logged |
 
 The current browser build does **not** store a page signature, a plan id, an
-audio cache on disk, or page text in any extension storage. The scaffold
+audio cache on disk, or page text in any extension storage.
+
+The test-only fixture build declares `<all_urls>` so the generalization harness
+can inject the runtime into public test pages. It is written to
+`apps/extension/.output-test/`, is gitignored, and the package script refuses a
+manifest with `<all_urls>` or a fixture token. The production manifest keeps the
+narrow host list. The scaffold
 privacy table previously listed those features before they were implemented;
 this table describes what ships.
 

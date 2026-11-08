@@ -15,3 +15,4 @@ accepted record.
 | [0007](0007-browser-translation-runtime.md) | Protect mixed values, make passes idempotent and abort on integrity failure |
 | [0008](0008-panel-guided-actions.md) | Guided panel actions; no auto-click and no auto-check |
 | [0009](0009-fr-en-first-test-fixture.md) | Support FR/EN sources now; keep Fulfulde behind the validated pack |
+| [0010](0010-generalization-harness.md) | Test-only generic fallback, broad-host fixture build and 30-page canary sweep |

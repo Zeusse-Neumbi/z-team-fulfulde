@@ -80,6 +80,7 @@ To exercise the translation pipeline before the pack, build the test fixture ins
 pnpm build:test
 pnpm e2e          # local five-step mock
 pnpm check:live   # real SAFINUM page, test tokens only
+pnpm check:sites  # 30 public pages, canary values, dynamic content, restore
 ```
 
 The fixture target is `⟦FF:<id>⟧` plus the source string, so every protected value stays
@@ -128,6 +129,7 @@ e2e/                     Playwright smoke test
 | `pnpm test` | Vitest across packages |
 | `pnpm e2e` | Local five-step journey, English page, novel content, a11y |
 | `pnpm check:live` | Run the fixture mechanics against the live SAFINUM page |
+| `pnpm check:sites` | Run the canary sweep over 30 public pages (network needed) |
 | `pnpm serve:eval` | Serve the local mock pages on `127.0.0.1:4173` |
 | `pnpm lint` | oxlint |
 | `pnpm typecheck` | TypeScript across packages |

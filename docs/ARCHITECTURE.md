@@ -177,6 +177,27 @@ but the classifier is not wired yet.
 - The production build has empty Fulfulde targets, leaves the source page intact and shows the
   “no pack” warning in the panel.
 
+## General pages
+
+The runtime is not tied to the SAFINUM DOM. On a page outside the manifest
+matches, the panel requests the site permission, injects the built content
+script and sends the same messages. The scanner uses text nodes, roles and
+accessible names, not bank-specific selectors.
+
+The production translation memory is domain-scoped. When a page string has no
+validated entry, production leaves the source visible and flags it as missed.
+The **test fixture** adds a generic fallback (`⟦FF:novel⟧ <source>`) so a
+30-page canary sweep can prove that every non-sensitive node reaches the
+replacement path without inventing Fulfulde. The fixture build alone declares
+`<all_urls>`; the production manifest stays narrow and the package script
+refuses a broad-host or token-bearing build.
+
+The canary block contains an amount, account, phone, reference, date, name,
+user input and contenteditable text. A page passes only when the labels and
+page text changed, every canary value stayed byte-identical, the input and
+contenteditable text stayed unchanged, the pass reported no abort and Stop
+restored the page.
+
 ## Limits
 
 - Closed shadow roots and canvas-only interfaces are not readable.
@@ -185,3 +206,8 @@ but the classifier is not wired yet.
 - The stub TTS is silence and must not be presented as speech.
 - The production build has no Fulfulde targets until the native-speaker pack is validated. The
   page then stays in French or English; this is a pack gap, not a translation claim.
+- Cross-origin iframes, closed shadow roots, canvas/SVG-only interfaces, input
+  placeholders and `aria-label` attributes are not part of the text-node
+  replacement contract.
+- The broad-host fixture build is test-only and is rejected by the production
+  package guard.
