@@ -1,10 +1,16 @@
 import type { TranslationUnit } from "@zteam/shared";
 import { normalizeSource } from "./normalize";
 
+export interface TmCapture {
+  key: string;
+  value: string;
+}
+
 export interface TmHit {
   unit: TranslationUnit;
   target: string;
   source: string;
+  captures: TmCapture[];
 }
 
 interface PatternEntry {
@@ -42,8 +48,8 @@ export class TranslationMemory {
       if (!unit.target.ff) continue;
       const fr = normalizeSource(unit.source.fr);
       const en = normalizeSource(unit.source.en);
-      if (fr) this.fr.set(fr, unit);
-      if (en) this.en.set(en, unit);
+      if (fr && !this.fr.has(fr)) this.fr.set(fr, unit);
+      if (en && !this.en.has(en)) this.en.set(en, unit);
       const frPattern = toPattern(unit.source.fr, unit);
       const enPattern = toPattern(unit.source.en, unit);
       if (frPattern) this.patterns.push(frPattern);
@@ -55,21 +61,30 @@ export class TranslationMemory {
     const normalized = normalizeSource(text);
     const exact = this.fr.get(normalized) ?? this.en.get(normalized);
     if (exact?.target.ff) {
-      return { unit: exact, target: exact.target.ff, source: text };
+      return { unit: exact, target: exact.target.ff, source: text, captures: [] };
     }
 
     for (const pattern of this.patterns) {
       const match = pattern.regex.exec(normalized);
       if (!match) continue;
       let target = pattern.unit.target.ff;
+      const captures: TmCapture[] = [];
       pattern.keys.forEach((key, index) => {
         const value = match[index + 1] ?? "";
+        captures.push({ key, value });
         target = target.replaceAll(`{${key}}`, value);
       });
-      return { unit: pattern.unit, target, source: text };
+      return { unit: pattern.unit, target, source: text, captures };
     }
 
     return null;
+  }
+
+  languageOf(text: string): "fr" | "en" | "unknown" {
+    const normalized = normalizeSource(text);
+    if (this.fr.has(normalized)) return "fr";
+    if (this.en.has(normalized)) return "en";
+    return "unknown";
   }
 
   size(): number {
