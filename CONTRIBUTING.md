@@ -76,6 +76,7 @@ merging:
 
 ```bash
 pnpm hooks
+pnpm ai:check
 pnpm lint
 pnpm typecheck
 pnpm test
@@ -129,6 +130,31 @@ real smoke test, not only a green CI run.
 Dependabot checks npm, uv and GitHub Actions weekly. Dependency PRs use the
 `chore(deps)` prefix and the `dependencies` label. They merge through the same
 `ci-required` gate as any other change.
+
+## Licence
+
+The repository is source-available under the PolyForm Noncommercial License
+1.0.0. Noncommercial use, modification and sharing are permitted. Commercial
+use requires a separate written licence; see [`LICENSING.md`](LICENSING.md).
+
+Unless you explicitly state otherwise, contributions are accepted under the same
+licence. Do not contribute code you cannot license on those terms. Do not
+describe the project as MIT or OSI open source.
+
+## AI workspace
+
+Agent sessions share the same rules:
+
+- [`AGENTS.md`](AGENTS.md) — the short contract;
+- [`.ai/rules/index.md`](.ai/rules/index.md) — path-scoped rules;
+- [`.opencode/skills/`](.opencode/skills) — task workflows;
+- [`opencode.json`](opencode.json) — OpenCode MCP servers and commands;
+- [`docs/AI_WORKFLOW.md`](docs/AI_WORKFLOW.md) — the full workflow.
+
+Run `pnpm ai:check` after changing a rule, skill, MCP server or command. The
+check validates the config, skill frontmatter, rule index, licence metadata and
+obvious secret patterns. Do not put a token in a config file; use
+`{env:NAME}`.
 
 ## Privacy and the value rule
 

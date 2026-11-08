@@ -26,6 +26,9 @@ jobs:
       - name: Check repository hygiene
         run: bash scripts/check-repo-hygiene.sh
 
+      - name: Check AI configuration
+        run: node scripts/check-ai-config.mjs
+
       - name: Check unreachable object garbage
         run: |
           git count-objects -vH | tee "$RUNNER_TEMP/git-count-objects.txt"

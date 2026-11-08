@@ -1,0 +1,86 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "AGENTS.md",
+    ".ai/rules/index.md",
+    ".ai/rules/*.md",
+    "docs/PROJECT_BOARD.md",
+    "docs/AI_WORKFLOW.md"
+  ],
+  "mcp": {
+    "servers": {
+      "context7": {
+        "type": "remote",
+        "url": "https://mcp.context7.com/mcp"
+      },
+      "playwright": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "@playwright/mcp@latest",
+          "--browser",
+          "chromium",
+          "--headless",
+          "--no-sandbox",
+          "--output-dir",
+          ".playwright-mcp"
+        ],
+        "cwd": ".",
+        "timeout": {
+          "startup": 120000
+        }
+      },
+      "github": {
+        "type": "local",
+        "command": [
+          "docker",
+          "run",
+          "-i",
+          "--rm",
+          "-e",
+          "GITHUB_PERSONAL_ACCESS_TOKEN",
+          "ghcr.io/github/github-mcp-server"
+        ],
+        "environment": {
+          "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_PERSONAL_ACCESS_TOKEN}",
+          "GITHUB_TOOLSETS": "repos,issues,pull_requests,actions,code_security,projects"
+        },
+        "disabled": true
+      }
+    }
+  },
+  "commands": {
+    "verify": {
+      "description": "Run the full local CI wall",
+      "template": "Run `pnpm ai:check`, `pnpm ci:local`, `pnpm audit --audit-level high` and `pnpm e2e`. Report each result. Do not claim success without the command output."
+    },
+    "protected-audit": {
+      "description": "Audit protected-value invariance",
+      "template": "Read `.ai/rules/frontend.md` and `.opencode/skills/protected-value-audit/SKILL.md`. Audit the translator and extension changes for protected-value drift, add missing tests, and run `pnpm --filter @zteam/translator test`."
+    },
+    "project-sync": {
+      "description": "Sync the GitHub Project board",
+      "template": "Read `docs/PROJECT_BOARD.md`. Update `scripts/project-plan.json` if needed, then run `node scripts/bootstrap-github-project.mjs`. Report created or updated items. Do not delete anything without explicit approval."
+    },
+    "release-check": {
+      "description": "Check the preselection release",
+      "template": "Read `.opencode/skills/repo-release/SKILL.md`. Run `pnpm ci:local`, `pnpm audit --audit-level high`, `pnpm e2e`, `pnpm package`, `pnpm size:check` and verify the ZIP and checksums."
+    }
+  },
+  "watcher": {
+    "ignore": [
+      "node_modules/**",
+      "dist/**",
+      ".output/**",
+      ".wxt/**",
+      ".venv/**",
+      "test-results/**",
+      "playwright-report/**",
+      ".playwright-mcp/**"
+    ]
+  },
+  "experimental": {
+    "todo": true
+  }
+}

@@ -17,6 +17,7 @@ SHA256SUMS.txt
 test-results/
 playwright-report/
 blob-report/
+.playwright-mcp/
 *.tsbuildinfo
 
 # Local configuration and secrets

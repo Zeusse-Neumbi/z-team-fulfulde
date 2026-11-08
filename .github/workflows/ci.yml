@@ -234,6 +234,9 @@ jobs:
       - name: Check repository hygiene
         run: bash scripts/check-repo-hygiene.sh
 
+      - name: Check AI configuration
+        run: node scripts/check-ai-config.mjs
+
   ci-required:
     name: ci-required
     if: always()

@@ -12,6 +12,7 @@
 | Documentation | `dist/Z-Team_Fulfulde_Assistant_Technical_Note_v1.0.pdf` | ≤ 10 MB |
 | GitHub | https://github.com/Zeusse-Neumbi/z-team-fulfulde | public |
 | Extension | `dist/zteam-fulfulde-extension-v0.1.0.zip` | ≤ 10 MB |
+| Licence | PolyForm Noncommercial 1.0.0 (source-available; commercial use requires a separate licence) | — |
 
 ## Package
 
@@ -41,6 +42,7 @@ submission/
 - [ ] The technical note is French, 4–6 pages, ≤ 10 MB, no placeholders.
 - [ ] The video is ≤ 3:00 and plays in an incognito window.
 - [ ] The repository is public and the README renders without login.
+- [ ] The licence is stated as PolyForm Noncommercial 1.0.0, not MIT or OSI open source.
 - [ ] No secrets, no real data, no models, no large binaries in git.
 - [ ] Form screenshot and confirmation email are stored.
 

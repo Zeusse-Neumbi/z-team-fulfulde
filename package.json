@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Local-first Fulfulde accessibility layer for digital financial services.",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "packageManager": "pnpm@11.9.0",
   "engines": {
     "node": ">=20"
@@ -24,8 +24,9 @@
     "prewarm": "python3 scripts/prewarm.py",
     "hooks": "git config core.hooksPath .githooks",
     "audit": "pnpm audit --audit-level high",
+    "ai:check": "node scripts/check-ai-config.mjs",
     "verify": "bash scripts/verify-submission.sh",
-    "ci:local": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm package && pnpm size:check && uv run --project apps/server ruff check apps/server && uv run --project apps/server ruff format --check apps/server && uv run --project apps/server mypy apps/server/app --config-file apps/server/pyproject.toml && uv run --project apps/server pytest"
+    "ci:local": "pnpm ai:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm package && pnpm size:check && uv run --project apps/server ruff check apps/server && uv run --project apps/server ruff format --check apps/server && uv run --project apps/server mypy apps/server/app --config-file apps/server/pyproject.toml && uv run --project apps/server pytest"
   },
   "devDependencies": {
     "@playwright/test": "^1.65.0",
