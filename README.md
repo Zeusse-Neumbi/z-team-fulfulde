@@ -8,6 +8,8 @@ service's source code, and it never sends page data off the device.
 
 [![CI](https://github.com/Zeusse-Neumbi/z-team-fulfulde/actions/workflows/ci.yml/badge.svg)](https://github.com/Zeusse-Neumbi/z-team-fulfulde/actions/workflows/ci.yml)
 
+**Execution board:** [Z-Team Fulfulde Assistant — Preselection](https://github.com/users/Zeusse-Neumbi/projects/4)
+
 > **Status: scaffold.** The translation engine, translation-memory pipeline, extension
 > shell, local backend and tests are in place. The native-speaker data, the fine-tuned
 > voice and the closed-set voice classifier are the next milestones. The backend's `stub`
@@ -155,6 +157,7 @@ issue template rather than a permanently red pull request.
 - [`docs/TTS_REPORT.md`](docs/TTS_REPORT.md) — voice track (template, not yet run)
 - [`docs/DEMO.md`](docs/DEMO.md) — 3-minute video and live demo script
 - [`docs/REPO_AUDIT.md`](docs/REPO_AUDIT.md) — minimal repository checklist and CI wall
+- [`docs/PROJECT_BOARD.md`](docs/PROJECT_BOARD.md) — D1–D7 plan, board views and operating cadence
 - [`docs/decisions/`](docs/decisions/README.md) — squash, protection, CI and guard decisions
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — branches, commits, merge policy and verification
 - [`AGENTS.md`](AGENTS.md) — the short contract for agent sessions
