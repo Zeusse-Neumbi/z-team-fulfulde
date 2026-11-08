@@ -1,0 +1,496 @@
+{
+  "owner": "Zeusse-Neumbi",
+  "repo": "Zeusse-Neumbi/z-team-fulfulde",
+  "project": {
+    "title": "Z-Team Fulfulde Assistant — Preselection",
+    "description": "Preselection execution board for the local-first Fulfulde accessibility layer: D1–D7 plan, gates, risks and submission.",
+    "visibility": "PUBLIC",
+    "readme": "# Z-Team Fulfulde Assistant — Preselection\n\nExecution board for the SAFINUM Innovate Challenge 2026 preselection.\n\n**Product:** a local-first Chrome MV3 extension that translates a financial web interface into Adamawa Fulfulde in place, speaks it, and never alters a protected financial value.\n\n**Hard deadline:** 14 November 2026, 23:59 Africa/Douala.\n**Internal submission:** 13 November 2026, 18:00.\n**Freeze:** 12 November 2026, 18:00.\n\n## How to read this board\n\n- **Roadmap** — open work on the D1–D7 timeline.\n- **Board** — status flow: Todo → In Progress → In Review → Blocked → Done.\n- **Backlog** — every open item with area, phase, size and target date.\n- **Blocked** — items that cannot move without a decision or external input.\n- **Bugs** — defects only.\n- **Submission** — the final D6 package.\n\n## Non-negotiables\n\n1. Protected values are byte-identical before and after translation.\n2. Translation is in-page; audio is the accessibility layer on top.\n3. No network egress except `127.0.0.1`.\n4. No auto-submit and no bypassed confirmation.\n5. Native-speaker validation is evidence, not a claim.\n\nSee `docs/PROJECT_BOARD.md` and `docs/decisions/` in the repository."
+  },
+  "statusOptions": [
+    { "name": "Todo", "color": "GRAY", "description": "Ready to start." },
+    { "name": "In Progress", "color": "BLUE", "description": "Actively being worked." },
+    { "name": "In Review", "color": "PURPLE", "description": "Waiting for review or verification." },
+    { "name": "Blocked", "color": "RED", "description": "Waiting on a decision, dependency or external input." },
+    { "name": "Done", "color": "GREEN", "description": "Accepted and verified." }
+  ],
+  "fields": [
+    { "name": "Priority", "type": "SINGLE_SELECT", "options": ["P0", "P1", "P2"] },
+    { "name": "Area", "type": "SINGLE_SELECT", "options": ["Extension", "Translator", "Phrasebank", "API", "Speech", "Validation", "Docs", "Repo", "Demo"] },
+    { "name": "Track", "type": "SINGLE_SELECT", "options": ["Product", "Linguistic", "Speech", "Submission", "Repo"] },
+    { "name": "Phase", "type": "SINGLE_SELECT", "options": ["D0 Setup", "D1 Thin E2E", "D2 Translator", "D3 Audio", "D4 Actions", "D5 Freeze", "D6 Submission", "D7 Buffer", "Post-hackathon"] },
+    { "name": "Size", "type": "SINGLE_SELECT", "options": ["S", "M", "L"] },
+    { "name": "Role", "type": "SINGLE_SELECT", "options": ["A Extension", "B Backend", "C Speech", "D Product QA", "E Linguist"] },
+    { "name": "Risk", "type": "SINGLE_SELECT", "options": ["Low", "Medium", "High", "Critical"] },
+    { "name": "Target", "type": "DATE" },
+    { "name": "Blocker", "type": "TEXT" }
+  ],
+  "views": [
+    {
+      "name": "All items",
+      "layout": "TABLE_LAYOUT",
+      "filter": null,
+      "visibleFields": ["Title", "Status", "Priority", "Area", "Phase", "Target", "Size", "Assignees", "Labels", "Milestone"]
+    },
+    {
+      "name": "Roadmap",
+      "layout": "ROADMAP_LAYOUT",
+      "filter": "is:open",
+      "visibleFields": []
+    },
+    {
+      "name": "Board",
+      "layout": "BOARD_LAYOUT",
+      "filter": "is:open",
+      "visibleFields": ["Title", "Status", "Priority", "Area", "Assignees", "Target"]
+    },
+    {
+      "name": "Backlog",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:open",
+      "visibleFields": ["Title", "Status", "Priority", "Area", "Phase", "Size", "Target", "Assignees", "Labels", "Milestone"]
+    },
+    {
+      "name": "Blocked",
+      "layout": "TABLE_LAYOUT",
+      "filter": "status:\"Blocked\"",
+      "visibleFields": ["Title", "Status", "Blocker", "Priority", "Area", "Phase", "Assignees"]
+    },
+    {
+      "name": "Bugs",
+      "layout": "TABLE_LAYOUT",
+      "filter": "label:bug",
+      "visibleFields": ["Title", "Status", "Priority", "Area", "Assignees", "Labels"]
+    },
+    {
+      "name": "Submission",
+      "layout": "TABLE_LAYOUT",
+      "filter": "phase:\"D6 Submission\"",
+      "visibleFields": ["Title", "Status", "Phase", "Target", "Area", "Assignees"]
+    },
+    {
+      "name": "Done",
+      "layout": "TABLE_LAYOUT",
+      "filter": "is:closed",
+      "visibleFields": ["Title", "Status", "Area", "Phase", "Closed"]
+    },
+    {
+      "name": "My items",
+      "layout": "TABLE_LAYOUT",
+      "filter": "assignee:@me",
+      "visibleFields": ["Title", "Status", "Priority", "Phase", "Target", "Area"]
+    }
+  ],
+  "milestones": [
+    {
+      "title": "D0 — Setup and repository",
+      "description": "Repository, contracts, string inventory, speaker booking, live-page baseline. Completed before the execution board was opened.",
+      "due_on": "2026-11-07T23:59:59Z"
+    },
+    {
+      "title": "D1 — Thin end-to-end",
+      "description": "Balance page translated with 0 value changes and spoken in <1.5 s; ZIP <8 MB; 60 min recorded.",
+      "due_on": "2026-11-08T23:59:59Z"
+    },
+    {
+      "title": "D2 — Translator and language layer",
+      "description": "Five pages translated, coverage ≥90%, 0 protected-node changes, 0 critical TM misses.",
+      "due_on": "2026-11-09T23:59:59Z"
+    },
+    {
+      "title": "D3 — Audio, visual and fine-tune",
+      "description": "P95 first audio <1 s; translation <150 ms; visual pairs clean; fine-tune shipped or documented.",
+      "due_on": "2026-11-10T23:59:59Z"
+    },
+    {
+      "title": "D4 — Actions and voice",
+      "description": "Transfer with 2 voice commands + 1 tap; no auto-submit; stale action rejected; value signature catches tamper.",
+      "due_on": "2026-11-11T23:59:59Z"
+    },
+    {
+      "title": "D5 — Novel content and freeze",
+      "description": "Novel content handled <1.5 s; zero critical security failures; ZIP ≤8 MB; full journey on live + mock B; FREEZE 18:00.",
+      "due_on": "2026-11-12T23:59:59Z"
+    },
+    {
+      "title": "D6 — Validation and submission",
+      "description": "0 critical errors; PDF; video; submitted before 18:00; tag v0.1.0-preselection.",
+      "due_on": "2026-11-13T23:59:59Z"
+    },
+    {
+      "title": "D7 — Buffer",
+      "description": "Emergency fixes only; hard deadline 14 November 23:59 Africa/Douala.",
+      "due_on": "2026-11-14T23:59:59Z"
+    },
+    {
+      "title": "Post-hackathon",
+      "description": "Work intentionally deferred until after the preselection: real TTS, open ASR research, accessibility depth, cross-page memory."
+    }
+  ],
+  "labels": [
+    { "name": "area/extension", "color": "1f6feb", "description": "Chrome MV3, scanner, DOM translator, side panel" },
+    { "name": "area/translator", "color": "1f6feb", "description": "Normalization, protected nodes, TM lookup, DOM pipeline" },
+    { "name": "area/phrasebank", "color": "1f6feb", "description": "YAML translation memory, spoken phrases, number verbalizer" },
+    { "name": "area/api", "color": "1f6feb", "description": "FastAPI TTS, ASR, translate and analyzer services" },
+    { "name": "area/speech", "color": "1f6feb", "description": "Recordings, MMS baseline, fine-tune, intent classifier" },
+    { "name": "area/validation", "color": "1f6feb", "description": "Native-speaker validation, back-translation, coverage evidence" },
+    { "name": "area/docs", "color": "1f6feb", "description": "README, architecture, privacy, technical note, demo" },
+    { "name": "area/repo", "color": "1f6feb", "description": "CI, hooks, Dependabot, branch protection, release" },
+    { "name": "area/demo", "color": "1f6feb", "description": "Live page walkthrough, mock B, video, submission package" },
+    { "name": "type/feature", "color": "0e8a16", "description": "New capability" },
+    { "name": "type/bug", "color": "d73a4a", "description": "Defect or regression" },
+    { "name": "type/chore", "color": "fef2c0", "description": "Maintenance, packaging, repository work" },
+    { "name": "type/research", "color": "5319e7", "description": "Spike or evidence-gathering task" },
+    { "name": "type/test", "color": "fbca04", "description": "Test, harness or regression coverage" },
+    { "name": "type/security", "color": "b60205", "description": "Security, privacy or integrity work" },
+    { "name": "priority/p0", "color": "b60205", "description": "Critical path; blocks a gate" },
+    { "name": "priority/p1", "color": "d93f0b", "description": "Important; should ship in the preselection" },
+    { "name": "priority/p2", "color": "fbca04", "description": "Nice to have; first candidate for the cut list" },
+    { "name": "status/blocked", "color": "000000", "description": "Cannot move without a decision, dependency or external input" },
+    { "name": "dependencies", "color": "0366d6", "description": "Dependabot or blocked upgrade" },
+    { "name": "hackathon", "color": "c5def5", "description": "SAFINUM Innovate Challenge 2026" },
+    { "name": "preselection", "color": "0052cc", "description": "Preselection deliverable" },
+    { "name": "post-hackathon", "color": "ededed", "description": "Deferred until after the preselection" },
+    { "name": "risk/high", "color": "b60205", "description": "High impact if it fails" },
+    { "name": "risk/medium", "color": "d93f0b", "description": "Moderate impact if it fails" },
+    { "name": "risk/low", "color": "0e8a16", "description": "Low impact if it fails" }
+  ],
+  "issues": [
+    {
+      "title": "plan: preselection execution (D1–D7)",
+      "labels": ["type/chore", "area/repo", "priority/p0", "hackathon", "preselection"],
+      "milestone": "D1 — Thin end-to-end",
+      "state": "open",
+      "fields": { "Status": "In Progress", "Priority": "P0", "Area": "Repo", "Track": "Submission", "Phase": "D1 Thin E2E", "Size": "L", "Role": "D Product QA", "Risk": "High", "Target": "2026-11-14" },
+      "body": "## Goal\n\nUmbrella issue for the SAFINUM Innovate Challenge 2026 preselection. This is the anchor for the D1–D7 board, gates and submission.\n\n## Non-negotiables\n\n- [ ] Protected values are byte-identical before and after translation.\n- [ ] Translation is in-page; audio is the accessibility layer on top.\n- [ ] No network egress except `127.0.0.1`.\n- [ ] No auto-submit and no bypassed confirmation.\n- [ ] Native-speaker validation is recorded as evidence.\n\n## Gates\n\n| Day | Gate |\n| --- | --- |\n| D1 | Balance page translated + spoken in <1.5 s; 0 value changes |\n| D2 | Five pages, coverage ≥90%, 0 protected-node changes |\n| D3 | P95 first audio <1 s; visual clean; TTS decision |\n| D4 | Transfer end-to-end; no auto-submit; integrity tests |\n| D5 | Freeze 18:00; ZIP ≤8 MB; mock B; novel content |\n| D6 | 0 critical errors; PDF; video; submitted before 18:00 |\n| D7 | Buffer only; hard deadline 14 Nov 23:59 |\n\n## Definition of Done\n\n- [ ] Five-step journey works on the live page in FR and EN.\n- [ ] Coverage ≥90% of visible translatable nodes; 100% of high-risk labels and warnings.\n- [ ] Every protected value is byte-identical (normalized comparison).\n- [ ] P95 time-to-first-audio <1 s; first translation <150 ms after render.\n- [ ] No blocking truncation at 1280×800 and 390×844.\n- [ ] ZIP ≤8 MB; no secrets, models or large binaries in git.\n- [ ] Video, technical note, repository and ZIP submitted before Friday 13 Nov 18:00.\n\n## Links\n\n- Board: https://github.com/users/Zeusse-Neumbi/projects/4\n- Plan: `docs/PROJECT_BOARD.md` and `docs/decisions/`\n- CI gate: `ci-required` on every pull request."
+    },
+    {
+      "title": "chore(repo): harden governance and CI",
+      "labels": ["type/chore", "area/repo", "priority/p1", "preselection"],
+      "milestone": "D0 — Setup and repository",
+      "state": "closed",
+      "fields": { "Status": "Done", "Priority": "P1", "Area": "Repo", "Track": "Repo", "Phase": "D0 Setup", "Size": "M", "Role": "D Product QA", "Risk": "Medium", "Target": "2026-11-07" },
+      "body": "## Delivered\n\n- `CONTRIBUTING.md`, `AGENTS.md` and dated ADRs.\n- Full CI wall with the aggregate `ci-required` check.\n- Dependabot for npm, uv and GitHub Actions.\n- `main protection` and `release tag protection` rulesets.\n- Local git hooks, gitleaks, actionlint and repository hygiene checks.\n- Nightly e2e and tag-driven release workflows.\n\n## Evidence\n\n- PR #1 merged with all checks green.\n- `pnpm ci:local`\n- `sh scripts/tests/test-githooks.sh`\n- `bash scripts/check-repo-hygiene.sh`"
+    },
+    {
+      "title": "chore(deps): migrate to Zod 4, Vitest 4 and happy-dom 21",
+      "labels": ["type/chore", "area/repo", "dependencies", "priority/p1"],
+      "milestone": "D0 — Setup and repository",
+      "state": "closed",
+      "fields": { "Status": "Done", "Priority": "P1", "Area": "Repo", "Track": "Repo", "Phase": "D0 Setup", "Size": "S", "Role": "D Product QA", "Risk": "Medium", "Target": "2026-11-07" },
+      "body": "## Delivered\n\n- Zod 4 with explicit record key schemas.\n- Vitest 4.1.12 and happy-dom 21.\n- Replaced `archiver` with `fflate` to remove vulnerable transitive `glob`/`minimatch`.\n- `pnpm audit --audit-level high` is clean.\n\n## Evidence\n\n- `pnpm test`\n- `pnpm typecheck`\n- `pnpm audit --audit-level high`"
+    },
+    {
+      "title": "feat(extension): thin end-to-end balance page",
+      "labels": ["type/feature", "area/extension", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D1 — Thin end-to-end",
+      "state": "open",
+      "fields": { "Status": "In Progress", "Priority": "P0", "Area": "Extension", "Track": "Product", "Phase": "D1 Thin E2E", "Size": "L", "Role": "A Extension", "Risk": "High", "Target": "2026-11-08" },
+      "body": "## Goal\n\nProve the thinnest end-to-end slice on the live balance page: scan, translate in place, speak the page, and leave every protected value untouched.\n\n## Acceptance criteria\n\n- [ ] The scanner finds the balance-page text nodes and classifies protected values.\n- [ ] The DOM translator replaces translatable nodes and reverts on any protected-value mismatch.\n- [ ] `/tts` speaks the demo plan through a recorded clip or the stub, clearly marked.\n- [ ] P95 time-to-first-audio <1.5 s on the demo machine.\n- [ ] The amount, fee, total, reference, name and phone are byte-identical.\n\n## Evidence\n\n- `pnpm e2e`\n- `pnpm test`\n- A short screen recording or latency CSV in `eval/latency/`."
+    },
+    {
+      "title": "feat(phrasebank): TM v0 for the balance page and speaker packet",
+      "labels": ["type/feature", "area/phrasebank", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D1 — Thin end-to-end",
+      "state": "open",
+      "fields": { "Status": "In Progress", "Priority": "P0", "Area": "Phrasebank", "Track": "Linguistic", "Phase": "D1 Thin E2E", "Size": "M", "Role": "D Product QA", "Risk": "High", "Target": "2026-11-08" },
+      "body": "## Goal\n\nSeed a translation memory for the balance page and prepare the first native-speaker session.\n\n## Acceptance criteria\n\n- [ ] At least 30 FR/EN strings are in `packages/phrasebank/entries/tm.yaml`.\n- [ ] Each medium/high-risk entry has a Fulfulde target, a validator field and a French back-translation.\n- [ ] The release build still fails while medium/high-risk entries are unvalidated.\n- [ ] The speaker packet contains the string list, recording script and consent note.\n\n## Evidence\n\n- `pnpm --filter @zteam/phrasebank build`\n- `pnpm --filter @zteam/phrasebank test`"
+    },
+    {
+      "title": "feat(api): analyzer v0 and /tts recorded clip",
+      "labels": ["type/feature", "area/api", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D1 — Thin end-to-end",
+      "state": "open",
+      "fields": { "Status": "In Progress", "Priority": "P0", "Area": "API", "Track": "Product", "Phase": "D1 Thin E2E", "Size": "M", "Role": "B Backend", "Risk": "High", "Target": "2026-11-08" },
+      "body": "## Goal\n\nExpose the local analyzer v0 and a `/tts` path that can return a recorded clip for the balance-page demo.\n\n## Acceptance criteria\n\n- [ ] `/health` reports the analyzer and TTS backend versions.\n- [ ] The analyzer detects a balance or fees page and returns a plan with amount slots.\n- [ ] `/tts` returns a WAV clip or the clearly marked stub, with `X-ZTeam-Stub: 1` when stubbed.\n- [ ] The first cache version and purge path are implemented.\n\n## Evidence\n\n- `uv run --project apps/server pytest`\n- `python3 scripts/prewarm.py --base-url http://127.0.0.1:8000` (with the server running)."
+    },
+    {
+      "title": "docs: record team roles, speaker booking and dialect",
+      "labels": ["type/chore", "area/docs", "priority/p0", "preselection", "risk/high", "status/blocked"],
+      "milestone": "D1 — Thin end-to-end",
+      "state": "open",
+      "fields": { "Status": "Blocked", "Priority": "P0", "Area": "Docs", "Track": "Linguistic", "Phase": "D1 Thin E2E", "Size": "S", "Role": "D Product QA", "Risk": "High", "Target": "2026-11-08", "Blocker": "External speaker availability and confirmation of the Adamawa Fulfulde sub-variety." },
+      "body": "## Goal\n\nRecord the team, ownership and speaker plan so the language work is not blocked in chat.\n\n## Acceptance criteria\n\n- [ ] `docs/TEAM.md` lists roles A–E, owners and backups.\n- [ ] Speaker sessions D1 and D6 are booked with times and contact details.\n- [ ] The Adamawa Fulfulde sub-variety is confirmed and recorded.\n- [ ] A backup speaker is named, or the risk is recorded.\n\n## Blocker\n\nExternal speaker availability and confirmation of the sub-variety."
+    },
+    {
+      "title": "docs: record environment and CPU/GPU TTS baseline",
+      "labels": ["type/chore", "area/docs", "priority/p1", "preselection"],
+      "milestone": "D1 — Thin end-to-end",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P1", "Area": "Docs", "Track": "Speech", "Phase": "D1 Thin E2E", "Size": "S", "Role": "C Speech", "Risk": "Medium", "Target": "2026-11-08" },
+      "body": "## Goal\n\nRecord the machine, model cache and baseline TTS timing used for the preselection demo.\n\n## Acceptance criteria\n\n- [ ] `docs/ENV.md` records CPU, RAM, GPU, OS, Node, Python and model cache location.\n- [ ] CPU and GPU TTS baselines are measured with the same text and speed.\n- [ ] The chosen runtime is recorded with a reason.\n- [ ] No credentials, local paths or personal data are committed."
+    },
+    {
+      "title": "test: baseline live-page capture for the coverage harness",
+      "labels": ["type/test", "area/validation", "priority/p1", "preselection"],
+      "milestone": "D1 — Thin end-to-end",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P1", "Area": "Validation", "Track": "Product", "Phase": "D1 Thin E2E", "Size": "S", "Role": "D Product QA", "Risk": "Medium", "Target": "2026-11-08" },
+      "body": "## Goal\n\nCapture the five-step live page in FR and EN before translation so coverage and visual regression have a fixed baseline.\n\n## Acceptance criteria\n\n- [ ] DOM snapshots and screenshots exist for the five steps in FR and EN.\n- [ ] The capture uses fictional data only.\n- [ ] Large captures are stored outside git or under the existing gitignore rules.\n- [ ] The baseline is referenced by the coverage and visual harness issues."
+    },
+    {
+      "title": "feat(translator): v2 for mixed nodes, whitespace and idempotence",
+      "labels": ["type/feature", "area/translator", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D2 — Translator and language layer",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Translator", "Track": "Product", "Phase": "D2 Translator", "Size": "L", "Role": "A Extension", "Risk": "High", "Target": "2026-11-09" },
+      "body": "## Goal\n\nMake the translator safe for the real page: mixed label/value nodes, whitespace, requestAnimationFrame and repeated passes.\n\n## Acceptance criteria\n\n- [ ] Mixed nodes are rewritten only through a validated pattern that preserves the value substring.\n- [ ] NBSP, narrow NBSP, punctuation and line breaks are normalized without changing displayed values.\n- [ ] A second translation pass is idempotent.\n- [ ] A failed pass reverts the changed node and aborts the plan.\n\n## Evidence\n\n- `pnpm --filter @zteam/translator test`"
+    },
+    {
+      "title": "feat(translator): protected-node invariance suite",
+      "labels": ["type/feature", "area/translator", "area/validation", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D2 — Translator and language layer",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Translator", "Track": "Product", "Phase": "D2 Translator", "Size": "L", "Role": "A Extension", "Risk": "Critical", "Target": "2026-11-09" },
+      "body": "## Goal\n\nProve that the value rule survives the real page and adversarial inputs.\n\n## Acceptance criteria\n\n- [ ] Amounts, fees, totals, balances, names, phones, accounts, references, dates and user input are covered.\n- [ ] Comparison is normalized but byte-identical after normalization.\n- [ ] At least 40 unit cases and one DOM integration case exist.\n- [ ] A deliberate tamper causes a revert and an aborted plan.\n\n## Evidence\n\n- `pnpm --filter @zteam/translator test`\n- `pnpm test`"
+    },
+    {
+      "title": "feat(extension): MutationObserver and re-render handling",
+      "labels": ["type/feature", "area/extension", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D2 — Translator and language layer",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Extension", "Track": "Product", "Phase": "D2 Translator", "Size": "M", "Role": "A Extension", "Risk": "High", "Target": "2026-11-09" },
+      "body": "## Goal\n\nHandle client-rendered text that appears after load without reloading the page.\n\n## Acceptance criteria\n\n- [ ] New text nodes are observed and translated or safely handled.\n- [ ] Re-applying translation does not duplicate or corrupt content.\n- [ ] Protected values added later are still protected.\n- [ ] Stop restores the original text.\n\n## Evidence\n\n- `pnpm test`\n- `pnpm e2e`"
+    },
+    {
+      "title": "feat(extension): side panel v1 with amounts, replay and privacy badge",
+      "labels": ["type/feature", "area/extension", "priority/p1", "preselection"],
+      "milestone": "D2 — Translator and language layer",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P1", "Area": "Extension", "Track": "Product", "Phase": "D2 Translator", "Size": "M", "Role": "A Extension", "Risk": "Medium", "Target": "2026-11-09" },
+      "body": "## Goal\n\nGive the user a clear, accessible control surface: what was translated, what is protected, replay and stop.\n\n## Acceptance criteria\n\n- [ ] The side panel shows coverage, applied, protected and missed counts.\n- [ ] Amounts and references are shown verbatim, never reformatted.\n- [ ] Replay, slower and Stop work from the panel.\n- [ ] The privacy badge says \"Rien — traitement local\" and is visible without scrolling.\n\n## Evidence\n\n- `pnpm e2e`\n- Screenshots at 1280×800 and 390×844."
+    },
+    {
+      "title": "feat(phrasebank): TM v1 for five live pages and number verbalizer",
+      "labels": ["type/feature", "area/phrasebank", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D2 — Translator and language layer",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Phrasebank", "Track": "Linguistic", "Phase": "D2 Translator", "Size": "L", "Role": "D Product QA", "Risk": "High", "Target": "2026-11-09" },
+      "body": "## Goal\n\nCover the five-step journey with validated translation memory and a number verbalizer that never changes a value.\n\n## Acceptance criteria\n\n- [ ] FR and EN source strings exist for all five steps.\n- [ ] Medium/high-risk entries have a Fulfulde target, validator and back-translation.\n- [ ] The number verbalizer handles 0, 250 000, 25 000 and the fee/total examples.\n- [ ] The release build fails on unvalidated medium/high-risk entries.\n\n## Evidence\n\n- `pnpm --filter @zteam/phrasebank build`\n- `pnpm --filter @zteam/phrasebank test`"
+    },
+    {
+      "title": "feat(api): analyzer v1 and plan schema versioning",
+      "labels": ["type/feature", "area/api", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D2 — Translator and language layer",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "API", "Track": "Product", "Phase": "D2 Translator", "Size": "L", "Role": "B Backend", "Risk": "High", "Target": "2026-11-09" },
+      "body": "## Goal\n\nAnalyze the five live pages locally and return a versioned plan the extension can trust.\n\n## Acceptance criteria\n\n- [ ] The analyzer handles the five steps in FR and EN.\n- [ ] The response schema is versioned and validated against `packages/shared`.\n- [ ] Unknown pages fall back to a safe generic plan.\n- [ ] No page text leaves the loopback API.\n\n## Evidence\n\n- `uv run --project apps/server pytest`\n- Contract fixtures for each page."
+    },
+    {
+      "title": "test: 12-page FR/EN fixture runner and coverage matrix",
+      "labels": ["type/test", "area/validation", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D2 — Translator and language layer",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Validation", "Track": "Product", "Phase": "D2 Translator", "Size": "M", "Role": "D Product QA", "Risk": "High", "Target": "2026-11-09" },
+      "body": "## Goal\n\nMeasure translation coverage and protected-value invariance across the fixture set.\n\n## Acceptance criteria\n\n- [ ] The runner covers 12 pages, FR and EN.\n- [ ] Coverage is reported per page and overall.\n- [ ] Any protected-value change fails the run.\n- [ ] The matrix is attached to the D2 demo note.\n\n## Evidence\n\n- `pnpm test`\n- `pnpm coverage`"
+    },
+    {
+      "title": "feat(extension): audio streaming, speed, stop and restore",
+      "labels": ["type/feature", "area/extension", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D3 — Audio, visual and fine-tune",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Extension", "Track": "Product", "Phase": "D3 Audio", "Size": "M", "Role": "A Extension", "Risk": "High", "Target": "2026-11-10" },
+      "body": "## Goal\n\nMake speech usable in the demo: first audio fast, replay slower, Stop restores the page.\n\n## Acceptance criteria\n\n- [ ] Audio starts before the full plan is assembled.\n- [ ] Speed and replay work without re-scanning the page.\n- [ ] Stop cancels audio and restores the original text.\n- [ ] P95 first audio <1 s on the demo machine.\n\n## Evidence\n\n- `pnpm e2e`\n- `eval/latency/` CSV."
+    },
+    {
+      "title": "feat(api): TTS cache versioning, purge and prewarm",
+      "labels": ["type/feature", "area/api", "priority/p1", "preselection"],
+      "milestone": "D3 — Audio, visual and fine-tune",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P1", "Area": "API", "Track": "Speech", "Phase": "D3 Audio", "Size": "M", "Role": "B Backend", "Risk": "Medium", "Target": "2026-11-10" },
+      "body": "## Goal\n\nMake the demo repeatable with a versioned cache and a prewarm path.\n\n## Acceptance criteria\n\n- [ ] Cache keys include text, voice, speed and model version.\n- [ ] Purge removes stale entries without deleting the current demo cache.\n- [ ] `pnpm prewarm` writes the timing CSV.\n- [ ] Cache files never contain page values.\n\n## Evidence\n\n- `uv run --project apps/server pytest`\n- `pnpm prewarm`"
+    },
+    {
+      "title": "test: visual regression and truncation harness",
+      "labels": ["type/test", "area/validation", "priority/p1", "preselection"],
+      "milestone": "D3 — Audio, visual and fine-tune",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P1", "Area": "Validation", "Track": "Product", "Phase": "D3 Audio", "Size": "M", "Role": "D Product QA", "Risk": "Medium", "Target": "2026-11-10" },
+      "body": "## Goal\n\nCatch layout breakage and truncation before the demo.\n\n## Acceptance criteria\n\n- [ ] Screenshot pairs exist for FR and translated FF at 1280×800 and 390×844.\n- [ ] Overflow and clipped text are detected.\n- [ ] A failed pair fails the harness.\n- [ ] The harness runs on the five steps.\n\n## Evidence\n\n- `pnpm e2e`\n- Attached screenshot pairs."
+    },
+    {
+      "title": "research: TTS baseline, fine-tune and MOS decision",
+      "labels": ["type/research", "area/speech", "priority/p1", "preselection"],
+      "milestone": "D3 — Audio, visual and fine-tune",
+      "state": "open",
+      "fields": { "Status": "In Progress", "Priority": "P1", "Area": "Speech", "Track": "Speech", "Phase": "D3 Audio", "Size": "L", "Role": "C Speech", "Risk": "Medium", "Target": "2026-11-10" },
+      "body": "## Goal\n\nDecide the demo voice from evidence: recorded clips, MMS baseline or fine-tuned model.\n\n## Acceptance criteria\n\n- [ ] The baseline is measured on real Fulfulde phrases.\n- [ ] A four-hour fine-tune is attempted or the negative result is documented.\n- [ ] MOS or ABX scores are recorded in `docs/TTS_REPORT.md`.\n- [ ] The demo path is chosen and the risk is stated.\n\n## Evidence\n\n- `docs/TTS_REPORT.md`\n- `eval/linguistic/tts-mos.csv`"
+    },
+    {
+      "title": "chore: model card, audio assets and licence review",
+      "labels": ["type/chore", "area/docs", "area/speech", "priority/p1", "preselection"],
+      "milestone": "D3 — Audio, visual and fine-tune",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P1", "Area": "Docs", "Track": "Speech", "Phase": "D3 Audio", "Size": "S", "Role": "C Speech", "Risk": "Medium", "Target": "2026-11-10" },
+      "body": "## Goal\n\nKeep the demo assets and model obligations explicit.\n\n## Acceptance criteria\n\n- [ ] Every shipped audio asset is listed with its source and licence.\n- [ ] `THIRD_PARTY_NOTICES.md` covers the model, dataset and voice assets.\n- [ ] No CC-BY-NC model is used in a commercial path.\n- [ ] No model weight is tracked in git.\n\n## Evidence\n\n- `bash scripts/check-repo-hygiene.sh`\n- `THIRD_PARTY_NOTICES.md`"
+    },
+    {
+      "title": "feat(extension): native setter, checkbox rule and action fingerprint",
+      "labels": ["type/feature", "area/extension", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D4 — Actions and voice",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Extension", "Track": "Product", "Phase": "D4 Actions", "Size": "L", "Role": "A Extension", "Risk": "High", "Target": "2026-11-11" },
+      "body": "## Goal\n\nExecute page actions without bypassing framework state or confusing similar controls.\n\n## Acceptance criteria\n\n- [ ] Inputs use the native value setter and dispatch the expected events.\n- [ ] Checkboxes and radios use the correct toggle rule.\n- [ ] Every action has a stable fingerprint and snapshot ID.\n- [ ] A stale snapshot is rejected before execution.\n\n## Evidence\n\n- `pnpm test`\n- `pnpm e2e`"
+    },
+    {
+      "title": "feat(extension): confirmation gate, read-back and stale-action guard",
+      "labels": ["type/feature", "area/extension", "area/validation", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D4 — Actions and voice",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Extension", "Track": "Product", "Phase": "D4 Actions", "Size": "L", "Role": "A Extension", "Risk": "Critical", "Target": "2026-11-11" },
+      "body": "## Goal\n\nNever submit anything without an explicit confirmation and a read-back of the exact values.\n\n## Acceptance criteria\n\n- [ ] The transfer path requires two voice commands plus one tap.\n- [ ] The read-back includes amount, beneficiary and reference verbatim.\n- [ ] No auto-submit path exists.\n- [ ] A changed value signature blocks execution.\n- [ ] Double-submit is prevented.\n\n## Evidence\n\n- `pnpm test`\n- Security/integrity matrix."
+    },
+    {
+      "title": "feat(api): /asr closed-set intent endpoint",
+      "labels": ["type/feature", "area/api", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D4 — Actions and voice",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "API", "Track": "Speech", "Phase": "D4 Actions", "Size": "M", "Role": "B Backend", "Risk": "High", "Target": "2026-11-11" },
+      "body": "## Goal\n\nExpose a local, closed-set intent classifier that is safe to demo.\n\n## Acceptance criteria\n\n- [ ] `/asr` accepts a short audio clip and returns one of the 12 known intents or `UNKNOWN`.\n- [ ] Confidence below the threshold returns `UNKNOWN`.\n- [ ] The endpoint is loopback-only.\n- [ ] No raw audio is persisted.\n\n## Evidence\n\n- `uv run --project apps/server pytest`\n- Confusion matrix in `eval/`."
+    },
+    {
+      "title": "feat(speech): train and evaluate closed-set intent classifier",
+      "labels": ["type/feature", "area/speech", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D4 — Actions and voice",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Speech", "Track": "Speech", "Phase": "D4 Actions", "Size": "L", "Role": "C Speech", "Risk": "High", "Target": "2026-11-11" },
+      "body": "## Goal\n\nTrain a 12-command classifier on a speaker-disjoint split and prove it is safe for the demo.\n\n## Acceptance criteria\n\n- [ ] At least 60 clips per command or a documented smaller set.\n- [ ] Speaker-disjoint evaluation is reported.\n- [ ] Unknown and silence are rejected.\n- [ ] Buttons remain the fallback; voice is never the only path.\n\n## Evidence\n\n- Confusion matrix\n- Model card"
+    },
+    {
+      "title": "test: security and integrity matrix 14/14",
+      "labels": ["type/test", "type/security", "area/validation", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D4 — Actions and voice",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Validation", "Track": "Product", "Phase": "D4 Actions", "Size": "M", "Role": "D Product QA", "Risk": "Critical", "Target": "2026-11-11" },
+      "body": "## Goal\n\nProve the security and integrity matrix, not just the happy path.\n\n## Acceptance criteria\n\n- [ ] The 14 checks from the plan are implemented or explicitly waived with evidence.\n- [ ] Prompt injection, hidden content, stale actions, double-submit and tampered values are covered.\n- [ ] No check relies on a manual-only step.\n- [ ] The matrix is attached to the D4 note.\n\n## Evidence\n\n- `pnpm test`\n- `eval/` security canary log."
+    },
+    {
+      "title": "test: accessibility pass (WCAG 2.2 AA, axe, keyboard)",
+      "labels": ["type/test", "area/validation", "accessibility", "priority/p1", "preselection"],
+      "milestone": "D4 — Actions and voice",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P1", "Area": "Validation", "Track": "Product", "Phase": "D4 Actions", "Size": "M", "Role": "D Product QA", "Risk": "Medium", "Target": "2026-11-11" },
+      "body": "## Goal\n\nMake the accessible path real: keyboard, screen reader, focus and contrast.\n\n## Acceptance criteria\n\n- [ ] Axe reports no serious or critical violations in the side panel.\n- [ ] The five-step journey is keyboard-only.\n- [ ] Focus is visible and restored after Stop.\n- [ ] Tap targets are at least 44×44 px on the mobile viewport.\n\n## Evidence\n\n- Axe report\n- Keyboard walkthrough notes."
+    },
+    {
+      "title": "feat(extension): novel-content classifier, safe fallback and mock B",
+      "labels": ["type/feature", "area/extension", "area/translator", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D5 — Novel content and freeze",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Extension", "Track": "Product", "Phase": "D5 Freeze", "Size": "L", "Role": "A Extension", "Risk": "High", "Target": "2026-11-12" },
+      "body": "## Goal\n\nHandle text that appears after load and prove genericity on a second page.\n\n## Acceptance criteria\n\n- [ ] New content is translated or replaced with a validated safe generic message within 1.5 s.\n- [ ] High-risk novel content never goes through raw MT.\n- [ ] Mock B works without changing the extension source.\n- [ ] The novel-content path has an e2e test.\n\n## Evidence\n\n- `pnpm e2e`\n- Mock B fixture."
+    },
+    {
+      "title": "feat(extension): EN toggle and generic scanner hardening",
+      "labels": ["type/feature", "area/extension", "priority/p1", "preselection"],
+      "milestone": "D5 — Novel content and freeze",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P1", "Area": "Extension", "Track": "Product", "Phase": "D5 Freeze", "Size": "M", "Role": "A Extension", "Risk": "Medium", "Target": "2026-11-12" },
+      "body": "## Goal\n\nKeep the extension useful when the page is in English and when the DOM differs from the live page.\n\n## Acceptance criteria\n\n- [ ] The EN toggle works without reloading the page.\n- [ ] The scanner handles frames, delayed render and common ARIA patterns.\n- [ ] The FR path remains the default and is not regressed.\n- [ ] A page with no detectable language falls back safely.\n\n## Evidence\n\n- `pnpm e2e`\n- FR/EN fixture results."
+    },
+    {
+      "title": "test: full journey e2e on live page and mock B",
+      "labels": ["type/test", "area/validation", "area/demo", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D5 — Novel content and freeze",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Validation", "Track": "Submission", "Phase": "D5 Freeze", "Size": "L", "Role": "A Extension", "Risk": "High", "Target": "2026-11-12" },
+      "body": "## Goal\n\nProve the five-step journey and the second page before the freeze.\n\n## Acceptance criteria\n\n- [ ] Playwright covers balance, fees, transfer, warning and novel content.\n- [ ] The protected values are checked after every step.\n- [ ] Stop restores the original page.\n- [ ] The run is green on the live page and mock B.\n\n## Evidence\n\n- `pnpm e2e`\n- CI run link."
+    },
+    {
+      "title": "chore(repo): freeze checklist, clean-profile install and size budget",
+      "labels": ["type/chore", "area/repo", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D5 — Novel content and freeze",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Repo", "Track": "Repo", "Phase": "D5 Freeze", "Size": "S", "Role": "D Product QA", "Risk": "High", "Target": "2026-11-12" },
+      "body": "## Goal\n\nFreeze the build and prove it installs from a clean profile.\n\n## Acceptance criteria\n\n- [ ] `pnpm ci:local` is green on the freeze commit.\n- [ ] The ZIP is ≤8 MB and installs in a clean Chrome profile.\n- [ ] The tag `v0.1.0-preselection` is created after submission.\n- [ ] No new feature is merged after 18:00.\n\n## Evidence\n\n- CI run\n- Clean-profile screenshot\n- `pnpm size:check`"
+    },
+    {
+      "title": "docs: native-speaker validation report and back-translation evidence",
+      "labels": ["type/chore", "area/validation", "area/docs", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D6 — Validation and submission",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Validation", "Track": "Linguistic", "Phase": "D6 Submission", "Size": "L", "Role": "E Linguist", "Risk": "Critical", "Target": "2026-11-13" },
+      "body": "## Goal\n\nTurn native-speaker review into evidence a jury can audit.\n\n## Acceptance criteria\n\n- [ ] `docs/LINGUISTIC_VALIDATION.md` records the speakers, dialect and sessions.\n- [ ] Every medium/high-risk entry has a validator and a French back-translation.\n- [ ] Critical-error count is zero; ≥95% of entries are rated ≥4 on meaning.\n- [ ] The signed or recorded evidence is linked.\n\n## Evidence\n\n- `eval/linguistic/back-translation.csv`\n- `docs/LINGUISTIC_VALIDATION.md`"
+    },
+    {
+      "title": "docs: French technical note (4–6 pages, PDF)",
+      "labels": ["type/chore", "area/docs", "area/demo", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D6 — Validation and submission",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Docs", "Track": "Submission", "Phase": "D6 Submission", "Size": "L", "Role": "D Product QA", "Risk": "High", "Target": "2026-11-13" },
+      "body": "## Goal\n\nProduce the French technical note required by the submission form.\n\n## Acceptance criteria\n\n- [ ] The note is 4–6 pages, French, 11 pt, PDF ≤8 MB.\n- [ ] It covers the problem, architecture, translation layer, speech, security, limits and reproducibility.\n- [ ] Every claim is traceable to a test, a measurement or a source.\n- [ ] No placeholder text remains.\n\n## Evidence\n\n- `dist/Z-Team_Fulfulde_Assistant_Technical_Note_v1.0.pdf`"
+    },
+    {
+      "title": "docs: 3-minute demo video with French subtitles",
+      "labels": ["type/chore", "area/demo", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D6 — Validation and submission",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Demo", "Track": "Submission", "Phase": "D6 Submission", "Size": "M", "Role": "D Product QA", "Risk": "High", "Target": "2026-11-13" },
+      "body": "## Goal\n\nRecord a concise demo that proves the value rule, the speech and the novel-content path.\n\n## Acceptance criteria\n\n- [ ] The video is ≤3:00, 1080p H.264, with French subtitles.\n- [ ] It shows the live page, exact amounts, a warning, the transfer read-back and a new message.\n- [ ] It shows \"nothing leaves this page\" and the native-validation evidence.\n- [ ] The link works in an incognito window.\n\n## Evidence\n\n- Video link in `docs/SUBMISSION.md`."
+    },
+    {
+      "title": "chore: submission package, checksums and incognito verification",
+      "labels": ["type/chore", "area/demo", "area/repo", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D6 — Validation and submission",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Demo", "Track": "Submission", "Phase": "D6 Submission", "Size": "M", "Role": "D Product QA", "Risk": "Critical", "Target": "2026-11-13" },
+      "body": "## Goal\n\nAssemble the submission package and verify every link from a clean browser.\n\n## Acceptance criteria\n\n- [ ] The package contains the note, ZIP, video link, GitHub link, checksums, form screenshot and confirmation email.\n- [ ] `SHA256SUMS.txt` matches the uploaded ZIP.\n- [ ] Every link works in an incognito window.\n- [ ] A backup copy exists locally.\n\n## Evidence\n\n- `submission/` directory listing\n- `sha256sum -c SHA256SUMS.txt`"
+    },
+    {
+      "title": "chore: final regression, tag v0.1.0-preselection and release",
+      "labels": ["type/chore", "area/repo", "priority/p0", "preselection", "risk/high"],
+      "milestone": "D6 — Validation and submission",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Repo", "Track": "Submission", "Phase": "D6 Submission", "Size": "M", "Role": "A Extension", "Risk": "High", "Target": "2026-11-13" },
+      "body": "## Goal\n\nRun the full regression and publish the exact commit that was submitted.\n\n## Acceptance criteria\n\n- [ ] `pnpm ci:local`, `pnpm e2e` and `pnpm audit --audit-level high` are green.\n- [ ] The release workflow publishes the ZIP and checksums for the tag.\n- [ ] The tag points at the submitted commit.\n- [ ] The README and repository are public and render in incognito.\n\n## Evidence\n\n- GitHub release URL\n- `git rev-parse v0.1.0-preselection`"
+    },
+    {
+      "title": "chore: D7 buffer and emergency-fix checklist",
+      "labels": ["type/chore", "area/repo", "priority/p0", "preselection"],
+      "milestone": "D7 — Buffer",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P0", "Area": "Repo", "Track": "Submission", "Phase": "D7 Buffer", "Size": "S", "Role": "D Product QA", "Risk": "High", "Target": "2026-11-14" },
+      "body": "## Goal\n\nKeep the final day boring: no new features, only submission-critical fixes.\n\n## Acceptance criteria\n\n- [ ] The submission portal and email are re-checked.\n- [ ] Only broken links, corrupt files, form errors or security issues are fixed.\n- [ ] Every fix goes through a pull request and `ci-required`.\n- [ ] The hard deadline 23:59 Africa/Douala is respected.\n\n## Evidence\n\n- Final form screenshot\n- Confirmation email"
+    },
+    {
+      "title": "feat(speech): production fine-tuned TTS and voice digits",
+      "labels": ["type/feature", "area/speech", "priority/p2", "post-hackathon"],
+      "milestone": "Post-hackathon",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P2", "Area": "Speech", "Track": "Speech", "Phase": "Post-hackathon", "Size": "L", "Role": "C Speech", "Risk": "Medium" },
+      "body": "## Goal\n\nAfter the preselection, ship a validated fine-tuned voice and voice digits.\n\n## Acceptance criteria\n\n- [ ] The model is evaluated on speaker-disjoint data.\n- [ ] A model card and licence declaration are added.\n- [ ] Digits are read back exactly in the transfer flow.\n- [ ] The on-device path is benchmarked before shipping."
+    },
+    {
+      "title": "feat(extension): cross-page memory and local MT fallback",
+      "labels": ["type/feature", "area/extension", "area/translator", "priority/p2", "post-hackathon"],
+      "milestone": "Post-hackathon",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P2", "Area": "Extension", "Track": "Product", "Phase": "Post-hackathon", "Size": "L", "Role": "A Extension", "Risk": "Medium" },
+      "body": "## Goal\n\nImprove repeat visits and novel low-risk content without weakening the value rule.\n\n## Acceptance criteria\n\n- [ ] Cross-page translation reuse is keyed by page signature, not page values.\n- [ ] Local MT is only used for low-risk novel content.\n- [ ] High-risk content keeps the validated phrasebank path.\n- [ ] A no-egress test covers the new path."
+    },
+    {
+      "title": "research: open ASR and Whisper fine-tune",
+      "labels": ["type/research", "area/speech", "priority/p2", "post-hackathon"],
+      "milestone": "Post-hackathon",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P2", "Area": "Speech", "Track": "Speech", "Phase": "Post-hackathon", "Size": "L", "Role": "C Speech", "Risk": "Medium" },
+      "body": "## Goal\n\nInvestigate whether open Fulfulde ASR can replace the closed-set classifier after the hackathon.\n\n## Acceptance criteria\n\n- [ ] The available `fub`/`fuv` data and licences are reviewed.\n- [ ] A speaker-disjoint baseline is measured.\n- [ ] The failure modes are documented.\n- [ ] No model is shipped before a safety review."
+    },
+    {
+      "title": "feat(extension): EN parity and second mock bank",
+      "labels": ["type/feature", "area/extension", "priority/p2", "post-hackathon"],
+      "milestone": "Post-hackathon",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P2", "Area": "Extension", "Track": "Product", "Phase": "Post-hackathon", "Size": "M", "Role": "A Extension", "Risk": "Low" },
+      "body": "## Goal\n\nBring EN coverage to FR parity and add a second mock bank for genericity evidence.\n\n## Acceptance criteria\n\n- [ ] The EN TM covers the five steps.\n- [ ] Mock B is a separate fixture with its own signature.\n- [ ] The scanner does not depend on bank-specific selectors.\n- [ ] The full journey runs on both mocks."
+    },
+    {
+      "title": "feat(speech): on-device TTS spike",
+      "labels": ["type/research", "area/speech", "priority/p2", "post-hackathon"],
+      "milestone": "Post-hackathon",
+      "state": "open",
+      "fields": { "Status": "Todo", "Priority": "P2", "Area": "Speech", "Track": "Speech", "Phase": "Post-hackathon", "Size": "M", "Role": "C Speech", "Risk": "Low" },
+      "body": "## Goal\n\nMeasure whether on-device TTS is viable without a local server.\n\n## Acceptance criteria\n\n- [ ] A browser-native or WASM path is benchmarked.\n- [ ] The ZIP stays within the 8 MB target.\n- [ ] Quality is compared with the local MMS path.\n- [ ] The result is documented even if negative."
+    }
+  ]
+}
