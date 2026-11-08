@@ -106,6 +106,98 @@ once per machine:
 pnpm setup:e2e
 ```
 
+## Troubleshooting MCP servers
+
+`opencode mcp list` is the source of truth. A healthy project setup shows:
+
+```text
+✓ chrome-devtools  connected
+✓ context7         connected
+○ github           disabled
+✓ huggingface      connected
+✓ playwright       connected
+✓ GitKraken        connected
+```
+
+### `failed: Request timed out` after a config or network change
+
+The OpenCode service can keep stale MCP connections. Restart it, then check
+again:
+
+```bash
+opencode service restart
+opencode mcp list
+```
+
+Use `/reload` in the TUI if the agent session still has the old tool list.
+
+### Local servers: `playwright` and `chrome-devtools`
+
+Both start through `npx`. Pre-cache the packages once so startup does not depend
+on a slow registry:
+
+```bash
+npx -y @playwright/mcp@latest --version
+npx -y chrome-devtools-mcp@latest --version
+pnpm setup:e2e             # Chromium for Playwright
+google-chrome --version    # Chrome DevTools MCP officially targets Chrome
+```
+
+If a container blocks the sandbox, add `--no-sandbox` to the Playwright command
+and `--chrome-arg=--no-sandbox` to the Chrome DevTools command. Do not add these
+flags on a normal desktop without a reason.
+
+### `context7` reports `getaddrinfo EAI_AGAIN` or times out
+
+The endpoint may resolve to IPv6 first on a dual-stack network. Probe IPv4:
+
+```bash
+curl -4 -sS -o /dev/null -w '%{http_code}\n' https://mcp.context7.com/mcp
+# 405 is normal for a GET probe; it proves DNS and TLS work.
+```
+
+If IPv4 works, start OpenCode from a shell with:
+
+```bash
+export NODE_OPTIONS=--dns-result-order=ipv4first
+opencode service restart
+```
+
+Retry on a stable network if DNS still fails. `CONTEXT7_API_KEY` raises rate
+limits but does not fix DNS.
+
+### `huggingface` is connected but rate-limited
+
+The server is connected anonymously. Set `HF_TOKEN` in `.env`, export it, and
+sign in through `/mcps` or add the token to the MCP headers. Do not commit the
+token.
+
+### `github` is disabled
+
+That is intentional. Enable it only when you need issue, PR, Actions or project
+tools:
+
+```bash
+export GITHUB_PERSONAL_ACCESS_TOKEN="$(gh auth token)"
+docker pull ghcr.io/github/github-mcp-server
+# remove "disabled": true from opencode.json, or enable it in /mcps
+opencode service restart
+```
+
+The server needs Docker and a PAT with `repo`, `issues`, `pull_requests`,
+`actions` and `projects`.
+
+### Environment changes
+
+OpenCode does not read `.env` automatically. Export it before starting OpenCode:
+
+```bash
+set -a
+source .env
+set +a
+opencode service restart
+```
+
 ## Commands
 
 | Command | What it does |
