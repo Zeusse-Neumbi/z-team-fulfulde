@@ -10,3 +10,4 @@ accepted record.
 | [0002](0002-main-branch-protection.md) | Protect `main` with a repository ruleset |
 | [0003](0003-required-ci-gate.md) | Require the `ci-required` aggregate check |
 | [0004](0004-repository-guards.md) | Guard secrets, dependencies, file size and release tags |
+| [0005](0005-noncommercial-license.md) | Use a noncommercial source-available licence |

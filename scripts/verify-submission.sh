@@ -28,6 +28,7 @@ if find . -type f \( -name "*.onnx" -o -name "*.pt" -o -name "*.safetensors" -o 
 fi
 
 echo "[verify] repository"
+pnpm ai:check
 bash scripts/check-repo-hygiene.sh
 sh scripts/tests/test-githooks.sh
 

@@ -7,7 +7,8 @@ weakening the value or privacy rules.
 ## Contents
 
 - [x] 1. `README.md` — description, status, quickstart, repo map, privacy, docs, licence.
-- [x] 2. `LICENSE` — MIT for this repository.
+- [x] 2. `LICENSE` — PolyForm Noncommercial 1.0.0; `LICENSING.md` explains
+      noncommercial and commercial use.
 - [x] 3. `THIRD_PARTY_NOTICES.md` — dependencies, models, datasets and obligations.
 - [x] 4. `SECURITY.md` — reporting, scope and private advisory link.
 - [x] 5. `CONTRIBUTING.md` — branches, commits, merge policy, verification and hooks.
@@ -43,7 +44,8 @@ weakening the value or privacy rules.
 - [x] 24. E2E: Playwright loads the built extension and checks the side panel.
 - [x] 25. Workflows: `actionlint` over every workflow.
 - [x] 26. Security: gitleaks secret scan over full history, npm and Python audits.
-- [x] 27. Repository guard: git-hook self-test and tracked-file hygiene.
+- [x] 27. Repository guard: git-hook self-test, tracked-file hygiene and AI
+      config validation.
 - [x] 28. `ci-required` aggregates every blocking job.
 - [x] 29. A nightly e2e workflow repeats the extension smoke test and opens a
       deduplicated issue on failure.
@@ -52,6 +54,9 @@ weakening the value or privacy rules.
 - [x] 31. A public GitHub Project tracks the D1–D7 plan, milestones, risks and
       submission; `scripts/bootstrap-github-project.mjs` recreates it from
       `scripts/project-plan.json`.
+- [x] 32. An AI workspace: `AGENTS.md`, `.ai/rules/`, `.opencode/skills/`,
+      `opencode.json`, `.mcp.json`, `CLAUDE.md`, Cursor rules,
+      `docs/AI_WORKFLOW.md` and `pnpm ai:check` in the repository guard.
 
 ## Release checks
 

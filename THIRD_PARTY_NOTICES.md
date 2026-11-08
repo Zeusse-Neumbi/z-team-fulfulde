@@ -5,6 +5,14 @@ This project uses the following components. The list is kept in sync with
 model/dataset documentation. Dependabot pull requests must update this file when
 they change a listed component.
 
+## Repository licence
+
+The repository itself is source-available under the **PolyForm Noncommercial
+License 1.0.0** (`LICENSE`). Commercial use requires a separate written licence
+(`LICENSING.md`). The noncommercial repository licence does not change the
+licences of the third-party components below; each component keeps its own
+terms.
+
 ## Runtime and build
 
 | Component | Version | Licence | Use |
@@ -52,3 +60,5 @@ they change a listed component.
   corpus with a consenting speaker.
 - Scripture-derived text is not redistributed as if it were openly licensed.
 - Any new dependency or asset must be added to this file before release.
+- The repository's noncommercial licence must not be described as MIT or OSI open
+  source. Commercial use requires a separate agreement.

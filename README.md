@@ -149,6 +149,27 @@ issue template rather than a permanently red pull request.
 - `chrome.storage` holds settings and page signatures only — never page values.
 - See [`docs/PRIVACY.md`](docs/PRIVACY.md) and [`SECURITY.md`](SECURITY.md).
 
+## AI-assisted development
+
+The repository is set up for agent sessions without giving up the value and
+privacy rules:
+
+- [`AGENTS.md`](AGENTS.md) — the short agent contract;
+- [`.ai/rules/`](.ai/rules/index.md) — path-scoped rules for the extension,
+  translator, API, phrasebank, tests, docs, repo and security;
+- [`.opencode/skills/`](.opencode/skills) — task workflows for Fulfulde
+  translation, protected-value audits, extension debugging, linguistic
+  validation, security review, release and the project board;
+- [`opencode.json`](opencode.json) — OpenCode MCP servers and `/verify`,
+  `/protected-audit`, `/project-sync` and `/release-check` commands;
+- [`.mcp.json`](.mcp.json) — portable MCP catalog for other clients;
+- [`docs/AI_WORKFLOW.md`](docs/AI_WORKFLOW.md) — start sequence, MCP setup and
+  guardrails.
+
+Run `pnpm ai:check` after changing any AI config, rule or skill. It validates the
+files and rejects obvious secret patterns. The MCP servers are Context7 (docs),
+Playwright (live-page and extension checks) and an optional local GitHub server.
+
 ## Documentation
 
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — components, data flow, translation pipeline
@@ -158,10 +179,12 @@ issue template rather than a permanently red pull request.
 - [`docs/DEMO.md`](docs/DEMO.md) — 3-minute video and live demo script
 - [`docs/REPO_AUDIT.md`](docs/REPO_AUDIT.md) — minimal repository checklist and CI wall
 - [`docs/PROJECT_BOARD.md`](docs/PROJECT_BOARD.md) — D1–D7 plan, board views and operating cadence
-- [`docs/decisions/`](docs/decisions/README.md) — squash, protection, CI and guard decisions
+- [`docs/AI_WORKFLOW.md`](docs/AI_WORKFLOW.md) — skills, MCP servers and agent guardrails
+- [`docs/decisions/`](docs/decisions/README.md) — squash, protection, CI, guard and licence decisions
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — branches, commits, merge policy and verification
 - [`AGENTS.md`](AGENTS.md) — the short contract for agent sessions
 - [`docs/SUBMISSION.md`](docs/SUBMISSION.md) — form fields and package
+- [`LICENSING.md`](LICENSING.md) — noncommercial and commercial-use terms
 - [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) — components, models and licences
 
 ## Language
@@ -175,5 +198,10 @@ Z-Team — SAFINUM Innovate Challenge 2026.
 
 ## Licence
 
-MIT for this repository. Third-party assets and models keep their own licences; see
+This repository is **source-available** under the
+[PolyForm Noncommercial License 1.0.0](LICENSE). You may use, modify and share it
+for noncommercial purposes. Commercial use requires a separate written licence;
+see [`LICENSING.md`](LICENSING.md).
+
+Third-party assets and models keep their own licences; see
 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).

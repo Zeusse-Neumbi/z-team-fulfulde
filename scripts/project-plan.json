@@ -181,6 +181,14 @@
       "body": "## Delivered\n\n- Zod 4 with explicit record key schemas.\n- Vitest 4.1.12 and happy-dom 21.\n- Replaced `archiver` with `fflate` to remove vulnerable transitive `glob`/`minimatch`.\n- `pnpm audit --audit-level high` is clean.\n\n## Evidence\n\n- `pnpm test`\n- `pnpm typecheck`\n- `pnpm audit --audit-level high`"
     },
     {
+      "title": "chore(repo): adopt noncommercial licence and AI workspace",
+      "labels": ["type/chore", "area/repo", "priority/p1", "preselection"],
+      "milestone": "D0 — Setup and repository",
+      "state": "closed",
+      "fields": { "Status": "Done", "Priority": "P1", "Area": "Repo", "Track": "Repo", "Phase": "D0 Setup", "Size": "M", "Role": "D Product QA", "Risk": "Medium", "Target": "2026-11-08" },
+      "body": "## Delivered\n\n- Replaced MIT with PolyForm Noncommercial 1.0.0 and added `LICENSING.md`; commercial use now requires a separate written licence.\n- Added path-scoped rules in `.ai/rules/`, seven project skills in `.opencode/skills/`, `opencode.json`, `.mcp.json`, `CLAUDE.md`, Cursor and Copilot pointers.\n- Added `pnpm ai:check`, a no-dependency validator for AI config, rule index, skill frontmatter, licence metadata and secret patterns.\n- Wired the AI check into the `Repository guard` CI job and `pnpm ci:local`.\n\n## Evidence\n\n- `pnpm ai:check`\n- `pnpm ci:local`\n- `pnpm e2e`\n- `bash scripts/check-repo-hygiene.sh`\n- `opencode mcp list` shows context7 and playwright connected, github disabled."
+    },
+    {
       "title": "feat(extension): thin end-to-end balance page",
       "labels": ["type/feature", "area/extension", "priority/p0", "preselection", "risk/high"],
       "milestone": "D1 — Thin end-to-end",

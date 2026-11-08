@@ -10,6 +10,7 @@ fail=0
 required_files=(
   README.md
   LICENSE
+  LICENSING.md
   SECURITY.md
   CONTRIBUTING.md
   AGENTS.md
@@ -18,10 +19,17 @@ required_files=(
   uv.lock
   .github/dependabot.yml
   .github/rulesets/main-protection.json
+  .ai/rules/index.md
+  .opencode/skills
+  opencode.json
+  .mcp.json
+  CLAUDE.md
+  .cursor/rules/project.mdc
+  docs/AI_WORKFLOW.md
 )
 
 for file in "${required_files[@]}"; do
-  if [ ! -f "$file" ]; then
+  if [ ! -e "$file" ]; then
     printf 'Missing required file: %s\n' "$file" >&2
     fail=1
   fi

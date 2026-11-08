@@ -1,0 +1,15 @@
+---
+description: Z-Team Fulfulde project contract and rule index
+alwaysApply: true
+---
+
+Read `AGENTS.md` and `.ai/rules/index.md` before planning or editing. Then read
+the rule file matching the paths in scope and the matching skill in
+`.opencode/skills/`.
+
+The non-negotiables are: protected financial values stay byte-identical, no
+network egress except `127.0.0.1`, no auto-submit, validated Fulfulde only, and
+the repository is source-available under PolyForm Noncommercial 1.0.0 (not MIT).
+
+The full workflow is in `docs/AI_WORKFLOW.md`. Run `pnpm ai:check` after changing
+any AI configuration, rule or skill.

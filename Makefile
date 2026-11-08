@@ -1,4 +1,4 @@
-.PHONY: install hooks dev build test lint format audit ci package size e2e strings prewarm verify clean
+.PHONY: install hooks ai dev build test lint format audit ci package size e2e strings prewarm verify clean
 
 install:
 	pnpm install
@@ -6,6 +6,9 @@ install:
 
 hooks:
 	pnpm hooks
+
+ai:
+	pnpm ai:check
 
 dev:
 	pnpm dev
