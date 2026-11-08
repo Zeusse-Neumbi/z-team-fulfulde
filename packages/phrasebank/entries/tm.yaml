@@ -1,4 +1,4 @@
-version: "2026-11-09.1"
+version: "2026-11-09.2"
 units:
   - id: tm.nav.online_banking
     source: { fr: "Banque en ligne", en: "Online banking" }
@@ -110,7 +110,7 @@ units:
   - id: tm.account.line
     source:
       fr: "Numéro de compte : {account}"
-      en: "Account number: {account}"
+      en: "Account number : {account}"
     target: { ff: "" }
     placeholders: ["account"]
     risk: high
@@ -121,7 +121,7 @@ units:
   - id: tm.balance.subtitle
     source:
       fr: "Consultez votre solde et lancez un transfert en toute sécurité."
-      en: "Consult your balance and start a transfer securely."
+      en: "Check your balance and start a secure transfer."
     target: { ff: "" }
     risk: medium
     validatedBy: []
@@ -135,6 +135,14 @@ units:
     validatedBy: []
     backTranslationFr: ""
     version: "2026-11-09.1"
+
+  - id: tm.account.number_label
+    source: { fr: "Numéro de compte", en: "Account number" }
+    target: { ff: "" }
+    risk: medium
+    validatedBy: []
+    backTranslationFr: ""
+    version: "2026-11-09.2"
 
   - id: tm.balance.current_account
     source: { fr: "Compte courant", en: "Current account" }
@@ -153,7 +161,7 @@ units:
     version: "2026-11-09.1"
 
   - id: tm.balance.see_fees
-    source: { fr: "Consulter les frais", en: "Check fees" }
+    source: { fr: "Consulter les frais", en: "View fees" }
     target: { ff: "" }
     risk: medium
     validatedBy: []
@@ -293,7 +301,7 @@ units:
     version: "2026-11-09.1"
 
   - id: tm.fees.balance_after
-    source: { fr: "Solde après opération", en: "Balance after operation" }
+    source: { fr: "Solde après opération", en: "Balance after transfer" }
     target: { ff: "" }
     risk: high
     validatedBy: []
@@ -369,6 +377,26 @@ units:
     validatedBy: []
     backTranslationFr: ""
     version: "2026-11-09.1"
+
+  - id: tm.fees.percent_desc
+    source:
+      fr: "Frais de {rate} % (min. {min} FCFA, max. {max} FCFA)"
+      en: "{rate}% fee (min. {min} FCFA, max. {max} FCFA)"
+    target: { ff: "" }
+    risk: medium
+    validatedBy: []
+    backTranslationFr: ""
+    version: "2026-11-09.2"
+
+  - id: tm.footer.disclaimer
+    source:
+      fr: "Safinum Pay — environnement de démonstration. Ne saisissez aucune donnée personnelle réelle."
+      en: "Safinum Pay — demonstration environment. Do not enter real personal data."
+    target: { ff: "" }
+    risk: low
+    validatedBy: []
+    backTranslationFr: ""
+    version: "2026-11-09.2"
 
   - id: tm.summary.title
     source: { fr: "Récapitulatif", en: "Summary" }
@@ -551,6 +579,94 @@ units:
     validatedBy: []
     backTranslationFr: ""
     version: "2026-11-09.1"
+
+  - id: tm.novel.example
+    source:
+      fr: "Un message important pour les clients…"
+      en: "An important message for customers…"
+    target: { ff: "" }
+    risk: low
+    validatedBy: []
+    backTranslationFr: ""
+    version: "2026-11-09.2"
+
+  - id: tm.error.title
+    source: { fr: "Une erreur est survenue", en: "An error occurred" }
+    target: { ff: "" }
+    risk: high
+    validatedBy: []
+    backTranslationFr: ""
+    version: "2026-11-09.2"
+
+  - id: tm.error.amount_zero
+    source:
+      fr: "Le montant doit être supérieur à zéro."
+      en: "The amount must be greater than zero."
+    target: { ff: "" }
+    risk: high
+    validatedBy: []
+    backTranslationFr: ""
+    version: "2026-11-09.2"
+
+  - id: tm.error.insufficient
+    source:
+      fr: "Solde insuffisant pour effectuer ce transfert."
+      en: "Insufficient balance for this transfer."
+    target: { ff: "" }
+    risk: high
+    validatedBy: []
+    backTranslationFr: ""
+    version: "2026-11-09.2"
+
+  - id: tm.error.beneficiary_missing
+    source:
+      fr: "Veuillez renseigner le nom et le numéro du bénéficiaire."
+      en: "Please provide the beneficiary name and phone number."
+    target: { ff: "" }
+    risk: high
+    validatedBy: []
+    backTranslationFr: ""
+    version: "2026-11-09.2"
+
+  - id: tm.error.network
+    source:
+      fr: "Erreur réseau : le service est temporairement indisponible. Réessayez."
+      en: "Network error: the service is temporarily unavailable. Please try again."
+    target: { ff: "" }
+    risk: high
+    validatedBy: []
+    backTranslationFr: ""
+    version: "2026-11-09.2"
+
+  - id: tm.error.confirm_required
+    source:
+      fr: "Vous devez confirmer les informations avant de valider le transfert."
+      en: "You must confirm the details before validating the transfer."
+    target: { ff: "" }
+    risk: high
+    validatedBy: []
+    backTranslationFr: ""
+    version: "2026-11-09.2"
+
+  - id: tm.warning.security_verify
+    source:
+      fr: "Alerte de sécurité : vérifiez le numéro du bénéficiaire avant de continuer."
+      en: "Security warning: verify the beneficiary phone number before continuing."
+    target: { ff: "" }
+    risk: high
+    validatedBy: []
+    backTranslationFr: ""
+    version: "2026-11-09.2"
+
+  - id: tm.warning.security_new
+    source:
+      fr: "Alerte de sécurité : ce bénéficiaire n'a jamais été utilisé sur ce compte."
+      en: "Security warning: this beneficiary has never been used on this account."
+    target: { ff: "" }
+    risk: high
+    validatedBy: []
+    backTranslationFr: ""
+    version: "2026-11-09.2"
 
   - id: tm.action.back
     source: { fr: "Retour", en: "Back" }
