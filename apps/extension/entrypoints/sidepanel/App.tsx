@@ -1,227 +1,717 @@
-import type { TranslationStatus } from "@zteam/shared";
-import { useCallback, useEffect, useState } from "react";
-import { getActiveTab, originOf, sendToTab } from "../../lib/messages";
+import type {
+  ActionView,
+  PanelSettings,
+  Readback,
+  TranslationStatus,
+  UiLanguage,
+} from "@zteam/shared";
+import { panelSettingsSchema } from "@zteam/shared";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  getTargetTab,
+  isRestrictedTab,
+  isWebTab,
+  originOf,
+  sendToTab,
+} from "../../lib/messages";
 import {
   hasOriginPermission,
   injectContentScript,
   requestOriginPermission,
 } from "../../lib/permissions";
+import { safeSpeechTexts } from "../../lib/speech";
+import { copy, type PanelCopy } from "./copy";
 
 const API = "http://127.0.0.1:8000";
+const SETTINGS_KEY = "zteam.panel.settings.v1";
+const DEFAULT_SETTINGS: PanelSettings = { uiLang: "fr", speed: 1 };
+
+type AudioState = "idle" | "loading" | "playing" | "paused";
+type VoiceState = "unknown" | "stub" | "ready" | "offline";
+
+interface HealthResponse {
+  backends?: { tts?: string };
+}
 
 function percent(value: number): string {
   return `${Math.round(value * 100)} %`;
+}
+
+function abortMessage(reason: string | undefined, t: PanelCopy): string {
+  if (reason === "protected_changed") return t.abortProtected;
+  if (reason === "mixed_value_missing") return t.abortMixed;
+  if (reason === "target_value_mismatch") return t.abortTarget;
+  return t.abortUnknown;
+}
+
+function humanizeError(message: string, t: PanelCopy): string {
+  if (/could not establish connection|receiving end does not exist/i.test(message)) {
+    return t.noContent;
+  }
+  if (/cannot access|missing host permission|extensions gallery|chrome:\/\//i.test(message)) {
+    return t.unsupported;
+  }
+  return message;
 }
 
 export default function App() {
   const [tab, setTab] = useState<chrome.tabs.Tab | null>(null);
   const [status, setStatus] = useState<TranslationStatus | null>(null);
   const [permitted, setPermitted] = useState(false);
+  const [settings, setSettings] = useState<PanelSettings>(DEFAULT_SETTINGS);
+  const [settingsLoaded, setSettingsLoaded] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [message, setMessage] = useState<string>("");
-  const [audioError, setAudioError] = useState<string>("");
+  const [message, setMessage] = useState("");
+  const [audio, setAudio] = useState<AudioState>("idle");
+  const [audioError, setAudioError] = useState("");
+  const [voice, setVoice] = useState<VoiceState>("unknown");
+  const [readback, setReadback] = useState<Readback | null>(null);
+  const [openSentences, setOpenSentences] = useState(true);
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+  const urlsRef = useRef<string[]>([]);
+  const t = copy[settings.uiLang];
+
+  const cleanupAudio = useCallback(() => {
+    abortRef.current?.abort();
+    abortRef.current = null;
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.src = "";
+      audioRef.current = null;
+    }
+    for (const url of urlsRef.current) URL.revokeObjectURL(url);
+    urlsRef.current = [];
+  }, []);
+
+  const stopAudio = useCallback(() => {
+    cleanupAudio();
+    setAudio("idle");
+    setAudioError("");
+  }, [cleanupAudio]);
 
   const refresh = useCallback(async () => {
-    const activeTab = await getActiveTab();
-    setTab(activeTab);
-    const origin = originOf(activeTab?.url);
+    const target = await getTargetTab();
+    setTab(target);
+    const origin = originOf(target?.url);
     setPermitted(origin ? await hasOriginPermission(origin) : false);
 
-    if (activeTab?.id) {
-      try {
-        const current = await sendToTab<TranslationStatus>(activeTab.id, {
-          type: "GET_STATUS",
-        });
-        setStatus(current);
-      } catch {
-        setStatus(null);
-      }
+    if (!target?.id || isRestrictedTab(target.url)) {
+      setStatus(null);
+      return;
+    }
+    try {
+      const next = await sendToTab<TranslationStatus>(target.id, { type: "GET_STATUS" });
+      setStatus(next);
+    } catch {
+      setStatus(null);
+    }
+  }, []);
+
+  const refreshStatus = useCallback(async () => {
+    const target = await getTargetTab();
+    if (!target?.id) return;
+    try {
+      const next = await sendToTab<TranslationStatus>(target.id, { type: "GET_STATUS" });
+      setStatus(next);
+    } catch {
+      setStatus(null);
+    }
+  }, []);
+
+  const checkHealth = useCallback(async () => {
+    try {
+      const response = await fetch(`${API}/health`, { cache: "no-store" });
+      if (!response.ok) throw new Error(`health ${response.status}`);
+      const data = (await response.json()) as HealthResponse;
+      const backend = data.backends?.tts ?? "unknown";
+      setVoice(backend === "stub" ? "stub" : backend === "unknown" ? "unknown" : "ready");
+    } catch {
+      setVoice("offline");
     }
   }, []);
 
   useEffect(() => {
-    void refresh();
-  }, [refresh]);
+    let alive = true;
+    void chrome.storage.local.get(SETTINGS_KEY).then((stored) => {
+      if (!alive) return;
+      const parsed = panelSettingsSchema.safeParse(stored[SETTINGS_KEY]);
+      if (parsed.success) setSettings(parsed.data);
+      setSettingsLoaded(true);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
 
-  async function withTab<T>(fn: (tab: chrome.tabs.Tab) => Promise<T>): Promise<T | null> {
-    const activeTab = tab ?? (await getActiveTab());
-    if (!activeTab?.id) {
-      setMessage("Aucun onglet actif.");
+  useEffect(() => {
+    if (!settingsLoaded) return;
+    void chrome.storage.local.set({ [SETTINGS_KEY]: settings });
+  }, [settings, settingsLoaded]);
+
+  useEffect(() => {
+    void refresh();
+    void checkHealth();
+
+    const onActivated = () => {
+      stopAudio();
+      setReadback(null);
+      void refresh();
+    };
+    const onUpdated = (_tabId: number, info: { status?: string; url?: string }) => {
+      if (info.status === "complete" || info.url) {
+        setReadback(null);
+        void refresh();
+      }
+    };
+
+    chrome.tabs.onActivated.addListener(onActivated);
+    chrome.tabs.onUpdated.addListener(onUpdated);
+
+    let polling = false;
+    const poll = window.setInterval(() => {
+      if (polling || document.visibilityState !== "visible") return;
+      polling = true;
+      void refreshStatus().finally(() => {
+        polling = false;
+      });
+    }, 750);
+
+    const health = window.setInterval(() => {
+      void checkHealth();
+    }, 15_000);
+
+    return () => {
+      window.clearInterval(poll);
+      window.clearInterval(health);
+      chrome.tabs.onActivated.removeListener(onActivated);
+      chrome.tabs.onUpdated.removeListener(onUpdated);
+      cleanupAudio();
+    };
+  }, [cleanupAudio, checkHealth, refresh, refreshStatus, stopAudio]);
+
+  async function withTab<T>(fn: (activeTab: chrome.tabs.Tab) => Promise<T>): Promise<T | null> {
+    const target = tab && isWebTab(tab.url) ? tab : await getTargetTab();
+    if (!target?.id || isRestrictedTab(target.url)) {
+      setMessage(t.unsupported);
       return null;
     }
-    setTab(activeTab);
+
+    setTab(target);
     setBusy(true);
     setMessage("");
     try {
-      return await fn(activeTab);
+      return await fn(target);
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : String(error));
+      setMessage(humanizeError(error instanceof Error ? error.message : String(error), t));
       return null;
     } finally {
       setBusy(false);
     }
   }
 
-  async function enableOnSite() {
-    await withTab(async (activeTab) => {
-      const origin = originOf(activeTab.url);
-      if (!origin) throw new Error("Origine de la page introuvable.");
-      if (!(await hasOriginPermission(origin))) {
-        const granted = await requestOriginPermission(origin);
-        if (!granted) throw new Error("Permission refusée.");
+  async function ensureReady(target: chrome.tabs.Tab): Promise<boolean> {
+    if (!target.id) return false;
+    const origin = originOf(target.url);
+    if (!origin) {
+      setMessage(t.unsupported);
+      return false;
+    }
+
+    if (!(await hasOriginPermission(origin))) {
+      const granted = await requestOriginPermission(origin);
+      if (!granted) {
+        setMessage(t.permissionDenied);
+        return false;
       }
       setPermitted(true);
+    }
+
+    try {
+      await sendToTab(target.id, { type: "PING" });
+      return true;
+    } catch {
       try {
-        await injectContentScript(activeTab.id as number);
+        await injectContentScript(target.id);
+        await sendToTab(target.id, { type: "PING" });
+        return true;
       } catch {
-        // The manifest content script may already be present on demo origins.
+        setMessage(t.noContent);
+        return false;
       }
-      const next = await sendToTab<TranslationStatus>(activeTab.id as number, {
-        type: "START_TRANSLATION",
-      });
-      setStatus(next);
-    });
+    }
   }
 
-  async function translate() {
-    await withTab(async (activeTab) => {
-      const next = await sendToTab<TranslationStatus>(activeTab.id as number, {
+  async function start() {
+    setAudioError("");
+    await withTab(async (target) => {
+      if (!(await ensureReady(target))) return;
+      const next = await sendToTab<TranslationStatus>(target.id as number, {
         type: "START_TRANSLATION",
       });
       setStatus(next);
+      setReadback(null);
+      if (next.aborted) setMessage(abortMessage(next.abortReason, t));
+      else if (next.translations === 0) setMessage(t.packMissing);
     });
   }
 
   async function rescan() {
-    await withTab(async (activeTab) => {
-      const next = await sendToTab<TranslationStatus>(activeTab.id as number, {
-        type: "RESCAN",
-      });
+    await withTab(async (target) => {
+      if (!(await ensureReady(target))) return;
+      const next = await sendToTab<TranslationStatus>(target.id as number, { type: "RESCAN" });
       setStatus(next);
+      if (next.aborted) setMessage(abortMessage(next.abortReason, t));
+      else if (next.translations === 0) setMessage(t.packMissing);
     });
   }
 
   async function stop() {
-    await withTab(async (activeTab) => {
-      const next = await sendToTab<TranslationStatus>(activeTab.id as number, {
+    stopAudio();
+    await withTab(async (target) => {
+      const next = await sendToTab<TranslationStatus>(target.id as number, {
         type: "STOP_TRANSLATION",
       });
       setStatus(next);
+      setReadback(null);
     });
   }
 
-  async function testAudio() {
+  async function readSummary() {
+    await withTab(async (target) => {
+      if (!(await ensureReady(target))) return;
+      const next = await sendToTab<Readback>(target.id as number, { type: "GET_READBACK" });
+      setReadback(next);
+    });
+  }
+
+  async function highlight(action: ActionView) {
+    if (!status || !tab?.id) return;
     setBusy(true);
-    setAudioError("");
+    setMessage("");
     try {
-      const response = await fetch(`${API}/tts`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: "Bonjour", voice: "demo", speed: 1 }),
+      const result = await sendToTab<{ ok: boolean; error?: string }>(tab.id, {
+        type: "HIGHLIGHT_ACTION",
+        actionId: action.id,
+        snapshotId: status.actionSnapshotId,
       });
-      if (!response.ok) throw new Error(`Backend ${response.status}`);
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const audio = new Audio(url);
-      audio.addEventListener("ended", () => URL.revokeObjectURL(url), { once: true });
-      await audio.play();
-      setMessage("Audio de test joué (stub local).");
+      if (result.ok) setMessage(t.highlighted);
+      else if (result.error === "stale_action") setMessage(t.staleAction);
+      else setMessage(t.unsupported);
     } catch (error) {
-      setAudioError(error instanceof Error ? error.message : String(error));
+      setMessage(humanizeError(error instanceof Error ? error.message : String(error), t));
     } finally {
       setBusy(false);
     }
   }
 
-  async function testMicrophone() {
-    setBusy(true);
+  async function playAudio() {
+    if (!status || voice !== "ready") return;
+    const texts = safeSpeechTexts(status);
+
+    if (!texts.length) {
+      setMessage(t.noSpeech);
+      return;
+    }
+
+    cleanupAudio();
+    setAudio("loading");
+    setAudioError("");
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      for (const track of stream.getTracks()) track.stop();
-      setMessage("Microphone accessible. Le classificateur d'intentions n'est pas encore branché.");
+      for (const text of texts) {
+        const response = await fetch(`${API}/tts`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: text.slice(0, 500), voice: "demo", speed: settings.speed }),
+          signal: controller.signal,
+        });
+        if (!response.ok) throw new Error(`Backend ${response.status}`);
+
+        if (response.headers.get("X-ZTeam-Stub") === "1") {
+          setVoice("stub");
+          setAudio("idle");
+          setAudioError(t.audioStub);
+          return;
+        }
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        urlsRef.current.push(url);
+        const element = new Audio(url);
+        element.playbackRate = settings.speed;
+        audioRef.current = element;
+        setAudio("playing");
+        await element.play();
+        await new Promise<void>((resolve, reject) => {
+          element.addEventListener("ended", () => resolve(), { once: true });
+          element.addEventListener("error", () => reject(new Error("audio")), { once: true });
+        });
+        URL.revokeObjectURL(url);
+        urlsRef.current = urlsRef.current.filter((item) => item !== url);
+        audioRef.current = null;
+      }
+      setAudio("idle");
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : String(error));
+      if (error instanceof DOMException && error.name === "AbortError") return;
+      setAudio("idle");
+      setAudioError(t.audioError);
     } finally {
-      setBusy(false);
+      abortRef.current = null;
     }
   }
+
+  function pauseAudio() {
+    const element = audioRef.current;
+    if (!element) return;
+    if (element.paused) {
+      void element.play();
+      setAudio("playing");
+    } else {
+      element.pause();
+      setAudio("paused");
+    }
+  }
+
+  function toggleSpeed() {
+    const next = settings.speed === 1 ? 0.8 : 1;
+    setSettings((current) => ({ ...current, speed: next }));
+    if (audioRef.current) audioRef.current.playbackRate = next;
+  }
+
+  function toggleUiLang() {
+    const next: UiLanguage = settings.uiLang === "fr" ? "en" : "fr";
+    setSettings((current) => ({ ...current, uiLang: next }));
+  }
+
+  useEffect(() => {
+    setReadback(null);
+  }, [status?.step]);
+
+  const pageTitle = status?.title ?? tab?.title ?? t.noPage;
+  const pageUrl = status?.url ?? tab?.url ?? "";
+  const isActive = Boolean(status?.active);
+  const stepLabel =
+    status && status.step !== "unknown"
+      ? `${t.step} ${status.step}/5 · ${t.stepLabels[status.step]}`
+      : t.stepUnknown;
+  const badge = busy
+    ? { label: t.translating, className: "busy" }
+    : status?.aborted
+      ? { label: t.error, className: "error" }
+      : isActive
+        ? { label: t.active, className: "on" }
+        : { label: t.inactive, className: "off" };
+
+  const actionable = useMemo(
+    () => status?.actions.filter((action) => !action.locked) ?? [],
+    [status?.actions],
+  );
+  const locked = useMemo(
+    () => status?.actions.filter((action) => action.locked) ?? [],
+    [status?.actions],
+  );
 
   return (
-    <main className="shell">
+    <main className="shell" aria-busy={busy}>
       <header className="topbar">
         <div>
-          <p className="eyebrow">Z-Team</p>
-          <h1>Fulfulde assistant</h1>
+          <p className="eyebrow">{t.eyebrow}</p>
+          <h1>{t.title}</h1>
         </div>
-        <span className={`badge ${status?.active ? "on" : "off"}`}>
-          {status?.active ? "Actif" : "Inactif"}
-        </span>
+        <div className="topbar-actions">
+          <span className={`badge ${badge.className}`} role="status" aria-live="polite">
+            {badge.label}
+          </span>
+          <button type="button" className="lang-toggle" onClick={toggleUiLang}>
+            {settings.uiLang === "fr" ? "EN" : "FR"}
+          </button>
+        </div>
       </header>
 
-      <section className="card">
-        <p className="label">Page</p>
-        <p className="page-title">{status?.title ?? tab?.title ?? "Aucune page"}</p>
-        <p className="url">{status?.url ?? tab?.url ?? ""}</p>
+      {isActive ? (
+        <button type="button" className="stop-wide" onClick={stop} disabled={busy}>
+          ⏹ {t.stop}
+        </button>
+      ) : null}
+
+      <section className="card" aria-labelledby="page-heading">
+        <p className="label" id="page-heading">
+          {t.page}
+        </p>
+        <p className="page-title">{pageTitle}</p>
+        <p className="url">{pageUrl}</p>
+        <div className="page-meta">
+          <span className="chip">{stepLabel}</span>
+          {status?.language && status.language !== "unknown" ? (
+            <span className="chip">
+              {t.pageLanguage} : {status.language.toUpperCase()}
+            </span>
+          ) : null}
+        </div>
       </section>
 
-      <section className="card stats">
-        <div>
-          <span className="stat-value">{status ? percent(status.coverage) : "—"}</span>
-          <span className="stat-label">Couverture</span>
+      <section className="card stats" aria-label={t.coverage}>
+        <div className="meter-head">
+          <span>{t.coverage}</span>
+          <strong>{status ? percent(status.coverage) : "—"}</strong>
         </div>
-        <div>
-          <span className="stat-value">{status?.applied ?? "—"}</span>
-          <span className="stat-label">Traduits</span>
+        <div
+          className="meter"
+          role="progressbar"
+          aria-label={t.coverage}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={status ? Math.round(status.coverage * 100) : 0}
+        >
+          <span style={{ width: `${status ? Math.round(status.coverage * 100) : 0}%` }} />
         </div>
-        <div>
-          <span className="stat-value">{status?.protectedCount ?? "—"}</span>
-          <span className="stat-label">Protégés</span>
-        </div>
-        <div>
-          <span className="stat-value">{status?.missed ?? "—"}</span>
-          <span className="stat-label">Manquants</span>
-        </div>
+        <dl className="stat-grid">
+          <div>
+            <dt>{t.translated}</dt>
+            <dd>{status?.applied ?? "—"}</dd>
+          </div>
+          <div>
+            <dt>{t.protected}</dt>
+            <dd>{status?.protectedCount ?? "—"}</dd>
+          </div>
+          <div>
+            <dt>{t.missed}</dt>
+            <dd>{status?.missed ?? "—"}</dd>
+          </div>
+          <div>
+            <dt>{t.pageLanguage}</dt>
+            <dd>{status?.language ? status.language.toUpperCase() : "—"}</dd>
+          </div>
+        </dl>
       </section>
+
+      {status?.translations === 0 ? <p className="notice">{t.packMissing}</p> : null}
 
       <section className="actions">
-        <button type="button" className="primary" onClick={enableOnSite} disabled={busy}>
-          {permitted ? "Démarrer sur cette page" : "Activer sur ce site"}
+        <button
+          type="button"
+          className="primary"
+          onClick={start}
+          disabled={busy || !tab || isRestrictedTab(tab.url)}
+        >
+          {!permitted ? t.enable : isActive ? t.translate : t.start}
         </button>
-        <button type="button" onClick={translate} disabled={busy}>
-          Traduire la page
-        </button>
-        <button type="button" onClick={rescan} disabled={busy}>
-          Rescanner
-        </button>
-        <button type="button" className="danger" onClick={stop} disabled={busy}>
-          Arrêter / restaurer
+        <button
+          type="button"
+          onClick={rescan}
+          disabled={busy || !isActive}
+          aria-label={t.rescan}
+        >
+          ↻ {t.rescan}
         </button>
       </section>
 
-      <section className="actions audio">
-        <button type="button" onClick={testAudio} disabled={busy}>
-          🔊 Tester l'audio
-        </button>
-        <button type="button" onClick={testMicrophone} disabled={busy}>
-          🎤 Tester le micro
-        </button>
+      {status?.aborted ? (
+        <section className="error-card" role="alert">
+          <h2>{t.integrityTitle}</h2>
+          <p>{abortMessage(status.abortReason, t)}</p>
+          <button type="button" onClick={rescan} disabled={busy}>
+            ↻ {t.rescan}
+          </button>
+        </section>
+      ) : null}
+
+      <details
+        className="card details"
+        open={openSentences}
+        onToggle={(event) => setOpenSentences(event.currentTarget.open)}
+      >
+        <summary>
+          {t.sentences}
+          <span className="count">{status?.sentences.length ?? 0}</span>
+        </summary>
+        {status?.sentences.length ? (
+          <ul className="sentence-list">
+            {status.sentences.map((sentence) => (
+              <li key={sentence.id} className={`sentence ${sentence.status}`}>
+                <div className="sentence-source">
+                  <span className="sentence-label">{t.original}</span>
+                  <span>{sentence.source}</span>
+                </div>
+                <div className="sentence-target">
+                  <span className="sentence-label">{t.target}</span>
+                  {sentence.target ? (
+                    <span lang="fub">{sentence.target}</span>
+                  ) : (
+                    <span className="missed">{t.missedBadge}</span>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="hint">{t.noSentences}</p>
+        )}
+      </details>
+
+      <details className="card details">
+        <summary>
+          {t.protectedValues}
+          <span className="count">{status?.protectedValues.length ?? 0}</span>
+        </summary>
+        {status?.protectedValues.length ? (
+          <ul className="value-list">
+            {status.protectedValues.map((value) => (
+              <li key={`${value.kind}:${value.value}`}>
+                <code>{value.value}</code>
+                <span className="kind">{value.kind}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="hint">{t.noProtected}</p>
+        )}
+      </details>
+
+      {status?.actions.length ? (
+        <details className="card details">
+          <summary>
+            {t.actions}
+            <span className="count">{status.actions.length}</span>
+          </summary>
+          <ul className="action-list">
+            {actionable.map((action) => (
+              <li key={action.id}>
+                <div>
+                  <span className={`risk ${action.risk}`}>
+                    {action.risk === "high"
+                      ? t.highRisk
+                      : action.risk === "medium"
+                        ? t.mediumRisk
+                        : t.lowRisk}
+                  </span>
+                  <span className="action-name">{action.name}</span>
+                </div>
+                <button type="button" onClick={() => void highlight(action)} disabled={busy}>
+                  {t.showOnPage}
+                </button>
+              </li>
+            ))}
+            {locked.map((action) => (
+              <li key={action.id} className="locked">
+                <div>
+                  <span className="risk high">{t.highRisk}</span>
+                  <span className="action-name">{action.name}</span>
+                </div>
+                <span className="locked-note">{t.lockedCheckbox}</span>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
+
+      {status && (status.step === 4 || status.step === 5) ? (
+        <section className="card readback">
+          <div className="readback-head">
+            <h2>{t.readback}</h2>
+            <button type="button" onClick={readSummary} disabled={busy}>
+              {t.readbackButton}
+            </button>
+          </div>
+          {readback ? (
+            <dl className="readback-grid">
+              <div>
+                <dt>{t.amount}</dt>
+                <dd>{readback.amount ?? t.notFound}</dd>
+              </div>
+              <div>
+                <dt>{t.fee}</dt>
+                <dd>{readback.fee ?? t.notFound}</dd>
+              </div>
+              <div>
+                <dt>{t.total}</dt>
+                <dd>{readback.total ?? t.notFound}</dd>
+              </div>
+              <div>
+                <dt>{t.beneficiary}</dt>
+                <dd>{readback.beneficiary ?? t.notFound}</dd>
+              </div>
+              <div>
+                <dt>{t.phone}</dt>
+                <dd>{readback.phone ?? t.notFound}</dd>
+              </div>
+              <div>
+                <dt>{t.reference}</dt>
+                <dd>{readback.reference ?? t.notFound}</dd>
+              </div>
+              <div>
+                <dt>{t.operation}</dt>
+                <dd>{readback.operation ?? t.notFound}</dd>
+              </div>
+            </dl>
+          ) : null}
+          <p className="hint">{t.readbackHint}</p>
+        </section>
+      ) : null}
+
+      <section className="card audio">
+        <div className="audio-head">
+          <h2>{t.audio}</h2>
+          <span className={`voice ${voice}`}>
+            {voice === "stub"
+              ? t.audioStub
+              : voice === "offline" || voice === "unknown"
+                ? t.audioUnavailable
+                : `${t.audio} : ${voice}`}
+          </span>
+        </div>
+        <div className="actions audio-actions">
+          <button
+            type="button"
+            onClick={playAudio}
+            disabled={busy || voice !== "ready" || audio === "loading" || !status?.applied}
+          >
+            ▶ {t.play}
+          </button>
+          <button type="button" onClick={pauseAudio} disabled={audio !== "playing" && audio !== "paused"}>
+            {audio === "paused" ? "▶" : "⏸"} {t.pause}
+          </button>
+          <button type="button" onClick={toggleSpeed} aria-pressed={settings.speed < 1}>
+            🐢 {t.slower} ({settings.speed < 1 ? "0.8×" : "1×"})
+          </button>
+          <button type="button" onClick={stopAudio} disabled={audio === "idle"}>
+            ⏹ {t.stopAudio}
+          </button>
+        </div>
+        {audioError ? <p className="error">{audioError}</p> : null}
       </section>
+
+      {message ? (
+        <p className="notice" role="status" aria-live="polite">
+          {message}
+        </p>
+      ) : null}
 
       <section className="card privacy">
-        <p className="label">Ce qui quitte cette page</p>
-        <p className="privacy-value">Rien — traitement local</p>
-        <p className="hint">
-          La traduction, la mémoire de traduction et les valeurs financières restent dans le
-          navigateur. Aucun appel cloud n'est effectué.
-        </p>
+        <p className="label">{t.privacyTitle}</p>
+        <p className="privacy-value">{t.privacyValue}</p>
+        <p className="hint">{t.privacyHint}</p>
       </section>
-
-      {message ? <p className="notice">{message}</p> : null}
-      {audioError ? <p className="error">Audio : {audioError}</p> : null}
 
       <footer className="footer">
         <span>v0.1.0</span>
-        <span>Local-first · Adamawa Fulfulde (fub)</span>
+        <label className="footer-setting">
+          {t.language}
+          <select
+            value={settings.uiLang}
+            onChange={(event) =>
+              setSettings((current) => ({ ...current, uiLang: event.target.value as UiLanguage }))
+            }
+          >
+            <option value="fr">Français</option>
+            <option value="en">English</option>
+          </select>
+        </label>
+        <span>{t.footer}</span>
       </footer>
     </main>
   );

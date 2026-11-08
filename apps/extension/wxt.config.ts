@@ -1,7 +1,22 @@
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "wxt";
+
+const fixtureTm = process.env.ZTEAM_TEST_TM === "1";
+const fixtureEntry = fileURLToPath(
+  new URL("../../packages/phrasebank/src/fixture.ts", import.meta.url),
+);
+const fixtureAlias: Record<string, string> = fixtureTm
+  ? { "@zteam/phrasebank": fixtureEntry }
+  : {};
 
 export default defineConfig({
   modules: ["@wxt-dev/module-react"],
+  outDir: fixtureTm ? ".output-test" : ".output",
+  vite: () => ({
+    resolve: {
+      alias: fixtureAlias,
+    },
+  }),
   manifest: {
     name: "Z-Team Fulfulde Assistant",
     description:

@@ -156,16 +156,68 @@ export type ExtensionMessage =
   | { type: "STOP_TRANSLATION" }
   | { type: "RESCAN" }
   | { type: "GET_STATUS" }
-  | { type: "EXECUTE_ACTION"; actionId: string; snapshotId: string; confirmed: boolean };
+  | { type: "GET_READBACK" }
+  | { type: "HIGHLIGHT_ACTION"; actionId: string; snapshotId: string };
+
+export type PanelStep = 1 | 2 | 3 | 4 | 5 | "unknown";
+export type PageLanguage = "fr" | "en" | "unknown";
+export type UiLanguage = "fr" | "en";
+
+export interface SentenceView {
+  id: string;
+  source: string;
+  target: string | null;
+  status: "applied" | "missed";
+  risk: "low" | "medium" | "high" | "unknown";
+  protectedReason?: ProtectedReason;
+}
+
+export interface ProtectedValueView {
+  value: string;
+  kind: PlaceholderKind;
+  reason?: ProtectedReason;
+}
+
+export interface ActionView {
+  id: string;
+  name: string;
+  role: "button" | "link" | "input" | "select" | "checkbox";
+  risk: "low" | "medium" | "high";
+  enabled: boolean;
+  locked: boolean;
+}
+
+export interface Readback {
+  amount?: string;
+  fee?: string;
+  total?: string;
+  beneficiary?: string;
+  phone?: string;
+  reference?: string;
+  operation?: string;
+}
 
 export interface TranslationStatus {
   active: boolean;
   url: string;
   title: string;
+  step: PanelStep;
+  language: PageLanguage;
   coverage: number;
   applied: number;
   protectedCount: number;
   missed: number;
   translations: number;
+  sentences: SentenceView[];
+  protectedValues: ProtectedValueView[];
+  actions: ActionView[];
+  actionSnapshotId: string;
+  aborted: boolean;
+  abortReason?: string;
   lastError?: string;
+}
+
+export interface PanelSettings {
+  uiLang: UiLanguage;
+  speed: number;
 }
