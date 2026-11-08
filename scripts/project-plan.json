@@ -59,7 +59,7 @@
     {
       "name": "Bugs",
       "layout": "TABLE_LAYOUT",
-      "filter": "label:bug",
+      "filter": "label:\"type/bug\"",
       "visibleFields": ["Title", "Status", "Priority", "Area", "Assignees", "Labels"]
     },
     {
