@@ -30,6 +30,23 @@ terms.
 | Vitest | current | MIT | Unit tests |
 | oxlint | current | MIT | Lint |
 
+## AI development tools
+
+| Component | Version / source | Licence | Use |
+|---|---|---|---|
+| Anthropic skills: `webapp-testing`, `frontend-design`, `pdf`, `docx` | `anthropics/skills` at `2c5958e` | Apache-2.0 | Testing, UI, PDF and DOCX workflows |
+| Vercel agent skills: `react-best-practices`, `web-design-guidelines` | `vercel-labs/agent-skills` at `1a2c79d` | MIT | React and UI review |
+| Chrome DevTools skills: `chrome-devtools`, `a11y-debugging` | `ChromeDevTools/chrome-devtools-mcp` at `0b37364` | Apache-2.0 | Extension inspection and accessibility audit |
+| Awesome Copilot skills: `github-actions-hardening`, `git-commit` | `github/awesome-copilot` at `797337f` | MIT | CI security review and Conventional Commits |
+| Playwright MCP | `@playwright/mcp` | Apache-2.0 | Browser automation for agents |
+| Chrome DevTools MCP | `chrome-devtools-mcp` | Apache-2.0 | Chrome DevTools tools for agents |
+| Hugging Face MCP | `https://huggingface.co/mcp` | MIT (server) | Model and dataset research |
+
+Skills are copied into `.opencode/skills/` with their licence files and a
+`SOURCE.md`. The pinned table is in
+[`.opencode/skills/SOURCES.md`](.opencode/skills/SOURCES.md). Update that file
+when a skill is refreshed.
+
 ## Speech and translation (optional, local only)
 
 | Asset | Licence | Use | Obligation |

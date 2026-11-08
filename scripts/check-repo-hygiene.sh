@@ -21,11 +21,13 @@ required_files=(
   .github/rulesets/main-protection.json
   .ai/rules/index.md
   .opencode/skills
+  .opencode/skills/SOURCES.md
   opencode.json
   .mcp.json
   CLAUDE.md
   .cursor/rules/project.mdc
   docs/AI_WORKFLOW.md
+  docs/decisions/0006-upstream-skills-and-mcp.md
 )
 
 for file in "${required_files[@]}"; do

@@ -64,7 +64,9 @@ node scripts/bootstrap-github-project.mjs
 ## AI workspace
 
 - Path-scoped rules live in `.ai/rules/`; the index maps files to rules.
-- Task skills live in `.opencode/skills/<id>/SKILL.md`.
+- Upstream skills live in `.opencode/skills/<id>/SKILL.md`; their pinned sources
+  and licences are in `.opencode/skills/SOURCES.md`. Do not write a new skill
+  silently; propose it and prefer an established upstream skill.
 - MCP servers and slash commands live in `opencode.json`; `.mcp.json` is the
   portable catalog for other clients.
 - The optional GitHub MCP server is disabled by default and needs Docker plus

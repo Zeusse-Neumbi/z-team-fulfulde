@@ -36,17 +36,22 @@ product, privacy and language rules.
 
 ## Skills
 
-Skills are discovered automatically from `.opencode/skills/`.
+Skills are discovered automatically from `.opencode/skills/`. They come from
+upstream projects; the pinned source and licence for each are in
+[`.opencode/skills/SOURCES.md`](../.opencode/skills/SOURCES.md).
 
-| Skill | Use it when |
-| --- | --- |
-| `fulfulde-translation` | Adding or changing a TM unit, phrase or Fulfulde string |
-| `protected-value-audit` | Proving amounts, fees, names, references or input stay exact |
-| `extension-debugging` | Working on WXT, the content script, side panel or Playwright |
-| `linguistic-validation` | Running native-speaker review, back-translation or TTS evaluation |
-| `security-review` | Checking privacy, permissions, secrets, egress or action safety |
-| `repo-release` | Running the CI wall, merging, tagging or packaging a release |
-| `project-board` | Updating the GitHub Project, milestones, labels or fields |
+| Skill | Upstream | Use it when |
+| --- | --- | --- |
+| `webapp-testing` | Anthropic | Testing and debugging the extension against a local page |
+| `frontend-design` | Anthropic | Shaping the side panel and demo screens |
+| `pdf` | Anthropic | Reading, creating or validating the technical note and submission PDFs |
+| `docx` | Anthropic | Authoring or editing the French technical note |
+| `react-best-practices` | Vercel | Writing or reviewing React in the side panel |
+| `web-design-guidelines` | Vercel | Reviewing UI, accessibility and UX |
+| `chrome-devtools` | Chrome DevTools | Inspecting the service worker, network, console and performance |
+| `a11y-debugging` | Chrome DevTools | Auditing focus, keyboard, ARIA, tap targets and contrast |
+| `github-actions-hardening` | GitHub Awesome Copilot | Reviewing CI permissions, pinning, triggers and injection |
+| `git-commit` | GitHub Awesome Copilot | Splitting changes into Conventional Commits |
 
 ## MCP servers
 
@@ -54,6 +59,8 @@ Skills are discovered automatically from `.opencode/skills/`.
 | --- | --- | --- |
 | `context7` | Remote | Current library, framework and API documentation |
 | `playwright` | Local | Drive the live page and the built extension; writes to `.playwright-mcp/` |
+| `chrome-devtools` | Local | Chrome DevTools inspection and performance; usage statistics and CrUX disabled |
+| `huggingface` | Remote | Search models and datasets for the Fulfulde speech and language work |
 | `github` | Local, disabled | Issues, pull requests, Actions and Projects; needs Docker and `GITHUB_PERSONAL_ACCESS_TOKEN` |
 
 Enable the GitHub server only when needed:
@@ -101,8 +108,8 @@ OpenCode also exposes `/verify`, `/protected-audit`, `/project-sync` and
 
 ## Supported clients
 
-- **OpenCode** reads `opencode.json`, `AGENTS.md`, `.ai/rules/` and
-  `.opencode/skills/`.
+- **OpenCode** reads `opencode.json`, `AGENTS.md`, `.ai/rules/` and the pinned
+  upstream skills in `.opencode/skills/`.
 - **Claude Code** reads `CLAUDE.md`, `AGENTS.md` and `.mcp.json`; the skill
   directory `.opencode/skills` is not discovered, so point it at the same skill
   files if needed.
@@ -115,8 +122,21 @@ OpenCode also exposes `/verify`, `/protected-audit`, `/project-sync` and
 
 ## Adding a skill or rule
 
-1. Add `.opencode/skills/<id>/SKILL.md` with `name` and `description`
-   frontmatter, or add `.ai/rules/<name>.md`.
-2. Update `.ai/rules/index.md` and this page.
-3. If the skill needs a command, add it under `commands` in `opencode.json`.
-4. Run `pnpm ai:check` and `pnpm ci:local`.
+**Prefer an existing upstream skill.** Search the [skills.sh leaderboard](https://skills.sh/)
+and reputable sources such as `anthropics/skills`, `vercel-labs/agent-skills`,
+`ChromeDevTools/chrome-devtools-mcp` and `github/awesome-copilot`. Check the
+source, licence, install count and repository reputation before adding one.
+
+To add an upstream skill:
+
+1. Copy the skill directory into `.opencode/skills/<id>/`.
+2. Keep its `LICENSE.txt` and add a `SOURCE.md` with the upstream URL, pinned
+   commit, licence and reason.
+3. Add it to `.opencode/skills/SOURCES.md` and `THIRD_PARTY_NOTICES.md`.
+4. Update the skills table above and `.ai/rules/index.md` if the workflow
+   changes.
+5. Run `pnpm ai:check` and `pnpm ci:local`.
+
+Do not write a new skill silently. If no existing skill covers the need, propose
+the skill and its source/reason first. Project-specific constraints belong in
+`.ai/rules/`, not in a copy of an upstream skill.

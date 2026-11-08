@@ -11,3 +11,4 @@ accepted record.
 | [0003](0003-required-ci-gate.md) | Require the `ci-required` aggregate check |
 | [0004](0004-repository-guards.md) | Guard secrets, dependencies, file size and release tags |
 | [0005](0005-noncommercial-license.md) | Use a noncommercial source-available licence |
+| [0006](0006-upstream-skills-and-mcp.md) | Use upstream agent skills and MCP servers |

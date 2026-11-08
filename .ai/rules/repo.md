@@ -55,6 +55,9 @@ weights, files over 5 MiB and non-Conventional commit messages. Do not use
 
 - `opencode.json` is the OpenCode config; `.mcp.json` is the portable MCP
   catalog.
-- Skills live in `.opencode/skills/<id>/SKILL.md`.
+- Skills are pinned upstream copies in `.opencode/skills/<id>/SKILL.md`; their
+  sources and licences are in `.opencode/skills/SOURCES.md`.
+- Do not write or edit a skill in place. Prefer an upstream skill; put project
+  constraints in `.ai/rules/`.
 - Path-scoped rules live in `.ai/rules/`; update `index.md` when adding one.
 - Run `pnpm ai:check` after any AI config change.

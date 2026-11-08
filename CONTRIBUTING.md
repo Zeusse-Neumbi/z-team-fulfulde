@@ -147,9 +147,14 @@ Agent sessions share the same rules:
 
 - [`AGENTS.md`](AGENTS.md) — the short contract;
 - [`.ai/rules/index.md`](.ai/rules/index.md) — path-scoped rules;
-- [`.opencode/skills/`](.opencode/skills) — task workflows;
+- [`.opencode/skills/SOURCES.md`](.opencode/skills/SOURCES.md) — upstream
+  skills, pinned commits and licences;
 - [`opencode.json`](opencode.json) — OpenCode MCP servers and commands;
 - [`docs/AI_WORKFLOW.md`](docs/AI_WORKFLOW.md) — the full workflow.
+
+Prefer an established upstream skill over a local rewrite. Do not add a new
+skill without recording its source, licence and reason in
+`.opencode/skills/SOURCES.md` and `THIRD_PARTY_NOTICES.md`.
 
 Run `pnpm ai:check` after changing a rule, skill, MCP server or command. The
 check validates the config, skill frontmatter, rule index, licence metadata and
