@@ -491,6 +491,14 @@
       "state": "open",
       "fields": { "Status": "Todo", "Priority": "P2", "Area": "Speech", "Track": "Speech", "Phase": "Post-hackathon", "Size": "M", "Role": "C Speech", "Risk": "Low" },
       "body": "## Goal\n\nMeasure whether on-device TTS is viable without a local server.\n\n## Acceptance criteria\n\n- [ ] A browser-native or WASM path is benchmarked.\n- [ ] The ZIP stays within the 8 MB target.\n- [ ] Quality is compared with the local MMS path.\n- [ ] The result is documented even if negative."
+    },
+    {
+      "title": "chore(deps): migrate TypeScript 7, Vitest 5 and @types/node 26",
+      "labels": ["type/chore", "area/repo", "priority/p1", "dependencies", "post-hackathon", "status/blocked"],
+      "milestone": "Post-hackathon",
+      "state": "open",
+      "fields": { "Status": "Blocked", "Priority": "P1", "Area": "Repo", "Track": "Repo", "Phase": "Post-hackathon", "Size": "M", "Role": "D Product QA", "Risk": "Medium", "Blocker": "TypeScript 7 cannot resolve Node built-in types in packages/phrasebank; Vitest 5 requires Node >=22.12; WXT compatibility is unverified. The grouped PR #2 was closed." },
+      "body": "## Blocker\n\nDependabot PR #2 grouped four major updates and failed CI:\n\n- [Web job](https://github.com/Zeusse-Neumbi/z-team-fulfulde/actions/runs/42418439407/job/128541485965): `TS2591: Cannot find name 'node:fs'`, `node:url`, `process` in `packages/phrasebank`.\n- [E2E job](https://github.com/Zeusse-Neumbi/z-team-fulfulde/actions/runs/42418439407/job/128541486012): the same build failure.\n- Vitest 5 requires Node >=22.12 while `package.json` still advertises Node >=20.\n\n## Why it cannot merge as-is\n\nThis is not a routine bump. TypeScript 7 changes type resolution, Vitest 5 raises the Node floor, and WXT 0.21.5 compatibility with both is unverified. The group must be split and each upgrade needs its own smoke test.\n\n## Verification required before merging\n\n- [ ] Add explicit `@types/node` to every package that uses Node built-ins, or document the root hoisting assumption.\n- [ ] Raise `engines.node` and `.nvmrc` only if Vitest 5 is adopted.\n- [ ] Run `pnpm install`, `pnpm ci:local`, `pnpm e2e` and `pnpm package`.\n- [ ] Confirm WXT builds the extension with TypeScript 7.\n- [ ] Re-run `pnpm audit --audit-level high`.\n\n## Related\n\n- Closed PR #2.\n- Dependabot ignores the major versions until this issue is resolved."
     }
   ]
 }
