@@ -12,3 +12,6 @@ accepted record.
 | [0004](0004-repository-guards.md) | Guard secrets, dependencies, file size and release tags |
 | [0005](0005-noncommercial-license.md) | Use a noncommercial source-available licence |
 | [0006](0006-upstream-skills-and-mcp.md) | Use upstream agent skills and MCP servers |
+| [0007](0007-browser-translation-runtime.md) | Protect mixed values, make passes idempotent and abort on integrity failure |
+| [0008](0008-panel-guided-actions.md) | Guided panel actions; no auto-click and no auto-check |
+| [0009](0009-fr-en-first-test-fixture.md) | Support FR/EN sources now; keep Fulfulde behind the validated pack |

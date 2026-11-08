@@ -41,7 +41,8 @@ weakening the value or privacy rules.
 
 - [x] 22. Web: oxlint, typecheck, Vitest, build, package, size limit, npm audit.
 - [x] 23. API: Ruff lint and format, MyPy, Pytest, Python audit.
-- [x] 24. E2E: Playwright loads the built extension and checks the side panel.
+- [x] 24. E2E: Playwright loads the fixture extension and runs the local five-step journey,
+      English page, novel content, errors, keyboard and axe checks.
 - [x] 25. Workflows: `actionlint` over every workflow.
 - [x] 26. Security: gitleaks secret scan over full history, npm and Python audits.
 - [x] 27. Repository guard: git-hook self-test, tracked-file hygiene and AI
@@ -65,7 +66,9 @@ weakening the value or privacy rules.
 pnpm hooks
 pnpm ci:local
 pnpm audit --audit-level high
+pnpm build:test
 pnpm e2e
+pnpm check:live   # manual/nightly; needs network
 sh scripts/tests/test-githooks.sh
 bash scripts/check-repo-hygiene.sh
 bash scripts/verify-submission.sh

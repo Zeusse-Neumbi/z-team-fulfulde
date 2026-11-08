@@ -1,14 +1,36 @@
 # Demo
 
+## Two builds
+
+| Build | Command | Use |
+|---|---|---|
+| Production | `pnpm build` | Honest FR/EN source view; panel says the Fulfulde pack is missing |
+| Fixture | `pnpm build:test` | Test tokens prove translation, protection and restore; never shown as Fulfulde |
+
+The video below is the **target** once the validated Fulfulde pack is installed. Do not record
+the fixture tokens as if they were Fulfulde, and do not claim the page is translated when the
+production build is showing the source.
+
 ## Setup
 
-1. Build the extension: `pnpm build`.
+1. Build the extension: `pnpm build:test` for mechanics, `pnpm build` for the production view.
 2. Load `apps/extension/.output/chrome-mv3` in `chrome://extensions` (Developer mode).
 3. Start the local API: `uv run --project apps/server uvicorn app.main:app --host 127.0.0.1 --port 8000`.
 4. Open `https://safinum.cm/hackathon-test` in a clean Chrome profile.
 5. Click the extension icon, then **Activer sur ce site**.
 
 Use a clean profile with only this extension. Do not use real personal or banking data.
+
+## Evidence commands
+
+```bash
+pnpm build:test
+pnpm e2e          # local journey, EN, errors, novel content, axe, keyboard
+pnpm check:live   # real SAFINUM page, fixture tokens, protected values, restore
+```
+
+`pnpm check:live` writes screenshots to `eval/visual/` (gitignored) and prints a JSON summary
+with applied/missed/protected counts for each step.
 
 ## Three-minute video
 
@@ -45,6 +67,8 @@ French subtitles; Fulfulde voice; English subtitles optional. 1080p H.264, ≤ 3
 ## What not to do
 
 - Do not claim the stub TTS is Fulfulde speech.
+- Do not present the fixture `⟦FF:...⟧` tokens as Fulfulde.
+- Do not claim the production page is translated while the pack is missing.
 - Do not enter real data.
 - Do not auto-submit a transfer.
 - Do not hide the original text from the jury.
