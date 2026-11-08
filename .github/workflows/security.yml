@@ -28,9 +28,17 @@ jobs:
       - name: Install gitleaks
         run: |
           GITLEAKS_VERSION=8.30.1
+          archive="$RUNNER_TEMP/gitleaks.tar.gz"
           mkdir -p "$HOME/.local/bin"
-          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
-            | tar -xz -C "$HOME/.local/bin" gitleaks
+          for attempt in 1 2 3 4 5; do
+            if curl -sSfL -o "$archive" "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"; then
+              break
+            fi
+            echo "gitleaks download failed (attempt ${attempt}); retrying in 5s..."
+            sleep 5
+          done
+          test -s "$archive"
+          tar -xzf "$archive" -C "$HOME/.local/bin" gitleaks
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - name: Scan for secrets
