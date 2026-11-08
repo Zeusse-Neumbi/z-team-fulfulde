@@ -15,6 +15,25 @@ export interface TranslatedSentence {
   protectedReason?: ProtectedReason;
 }
 
+export interface TranslateOptions {
+  /**
+   * Test-only generator for a translatable node that has no TM entry. The
+   * production content script never supplies it. The fixture build uses it to
+   * prove the generic pipeline on arbitrary pages without inventing Fulfulde.
+   */
+  fallback?: (source: string) => string | null;
+}
+
+const FALLBACK_UNIT: TranslationUnit = {
+  id: "fixture.fallback",
+  source: { fr: "", en: "" },
+  target: { ff: "" },
+  risk: "low",
+  validatedBy: ["fixture"],
+  backTranslationFr: "",
+  version: "fixture",
+};
+
 export interface TranslationStats {
   applied: number;
   protectedCount: number;
@@ -110,7 +129,12 @@ export class DomTranslator {
   private applied = new WeakMap<Text, AppliedRecord>();
   private changed = new Set<Text>();
 
-  translate(root: Node, tm: TranslationMemory, vault: Vault): TranslationStats {
+  translate(
+    root: Node,
+    tm: TranslationMemory,
+    vault: Vault,
+    options: TranslateOptions = {},
+  ): TranslationStats {
     const nodes = collectTextNodes(root);
     const protectedBefore = new Map<Text, string>();
     const plans: PlannedWrite[] = [];
@@ -164,7 +188,18 @@ export class DomTranslator {
       };
       this.originals.set(node, original);
 
-      const hit = tm.lookup(original.source);
+      let hit = tm.lookup(original.source);
+      if (!hit && options.fallback) {
+        const fallback = options.fallback(original.source);
+        if (fallback) {
+          hit = {
+            unit: FALLBACK_UNIT,
+            target: fallback,
+            source: original.source,
+            captures: [],
+          };
+        }
+      }
       if (!hit) {
         missed += 1;
         if (sentences.length < MAX_SENTENCES) {
@@ -181,8 +216,9 @@ export class DomTranslator {
       }
 
       if (classification.kind === "mixed") {
+        const targetNormalized = normalizeValue(hit.target);
         const missingValue = requiredValues(original.source, vault).find(
-          (value) => !hit.target.includes(value.value),
+          (value) => !targetNormalized.includes(value.normalized),
         );
         if (missingValue) {
           abortReason = "mixed_value_missing";

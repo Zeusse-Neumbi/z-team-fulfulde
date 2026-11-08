@@ -346,6 +346,79 @@ describe("DomTranslator values", () => {
   });
 });
 
+describe("DomTranslator test-only fallback", () => {
+  const fallback = (source: string) => `⟦FF:novel⟧ ${source.trim()}`;
+
+  it("applies the fallback to unknown translatable text", () => {
+    body(`<p id="welcome">Bienvenue sur ce site</p>`);
+    const translator = new DomTranslator();
+    const stats = translator.translate(
+      document.body,
+      new TranslationMemory([]),
+      vault(),
+      { fallback },
+    );
+    expect(stats.aborted).toBe(false);
+    expect(stats.applied).toBe(1);
+    expect(stats.missed).toBe(0);
+    expect(document.getElementById("welcome")?.textContent).toBe(
+      "⟦FF:novel⟧ Bienvenue sur ce site",
+    );
+  });
+
+  it("preserves a value in an unknown mixed node", () => {
+    body(`<p id="total">Total : 25 000 FCFA</p>`);
+    const translator = new DomTranslator();
+    const stats = translator.translate(
+      document.body,
+      new TranslationMemory([]),
+      vault(value("25 000 FCFA", "amount")),
+      { fallback },
+    );
+    expect(stats.aborted).toBe(false);
+    expect(stats.applied).toBe(1);
+    expect(document.getElementById("total")?.textContent).toContain("25 000 FCFA");
+    expect(document.getElementById("total")?.textContent).toContain("⟦FF:novel⟧");
+  });
+
+  it("does not abort on a cross-node whitespace variant of a name", () => {
+    body(`<p id="place">Western\u00A0Area and the Eastern Area</p>`);
+    const translator = new DomTranslator();
+    const stats = translator.translate(
+      document.body,
+      new TranslationMemory([]),
+      vault(value("Western Area", "person")),
+      { fallback },
+    );
+    expect(stats.aborted).toBe(false);
+    expect(stats.applied).toBe(1);
+    expect(document.getElementById("place")?.textContent).toContain("Western\u00A0Area");
+  });
+
+  it("never applies the fallback to a protected node", () => {
+    body(`<p id="amount">25 000 FCFA</p>`);
+    const translator = new DomTranslator();
+    const stats = translator.translate(
+      document.body,
+      new TranslationMemory([]),
+      vault(value("25 000 FCFA", "amount")),
+      { fallback },
+    );
+    expect(stats.applied).toBe(0);
+    expect(stats.protectedCount).toBe(1);
+    expect(document.getElementById("amount")?.textContent).toBe("25 000 FCFA");
+  });
+
+  it("counts a miss when no fallback is supplied", () => {
+    body(`<p id="welcome">Bienvenue sur ce site</p>`);
+    const translator = new DomTranslator();
+    const stats = translator.translate(document.body, new TranslationMemory([]), vault());
+    expect(stats.applied).toBe(0);
+    expect(stats.missed).toBe(1);
+    expect(document.getElementById("welcome")?.textContent).toBe("Bienvenue sur ce site");
+  });
+});
+
 describe("DomTranslator passes", () => {
   function setup() {
     body(`<p id="label">  Solde disponible  </p><p id="amount">250 000 FCFA</p>`);
