@@ -76,10 +76,12 @@ requireFile("LICENSING.md");
 requireFile("docs/AI_WORKFLOW.md");
 requireFile("docs/PROJECT_BOARD.md");
 requireFile("docs/decisions/0005-noncommercial-license.md");
+requireFile("docs/decisions/0006-upstream-skills-and-mcp.md");
 requireFile(".ai/rules/index.md");
 requireFile(".github/copilot-instructions.md");
 requireFile("CLAUDE.md");
 requireFile(".cursor/rules/project.mdc");
+requireFile(".opencode/skills/SOURCES.md");
 
 const opencode = readJson("opencode.json");
 if (opencode) {
@@ -108,6 +110,11 @@ if (opencode) {
   if (!servers || typeof servers !== "object") {
     fail("opencode.json: mcp.servers must be an object");
   } else {
+    for (const required of ["context7", "playwright", "chrome-devtools", "huggingface"]) {
+      if (!servers[required]) {
+        fail(`opencode.json: mcp.servers must include ${required}`);
+      }
+    }
     for (const [name, server] of Object.entries(servers)) {
       if (!server || typeof server !== "object") {
         fail(`opencode.json: mcp.servers.${name} must be an object`);
@@ -185,6 +192,12 @@ for (const entry of readdirSync(skillsDirectory)) {
     fail(`.opencode/skills/${entry}: missing SKILL.md`);
     continue;
   }
+  if (!existsSync(path.join(fullPath, "SOURCE.md"))) {
+    fail(`.opencode/skills/${entry}: missing SOURCE.md attribution`);
+  }
+  if (!existsSync(path.join(fullPath, "LICENSE.txt")) && !existsSync(path.join(fullPath, "LICENSE"))) {
+    fail(`.opencode/skills/${entry}: missing LICENSE.txt`);
+  }
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(entry)) {
     fail(`.opencode/skills/${entry}: id must be lowercase kebab-case`);
   }
@@ -192,6 +205,13 @@ for (const entry of readdirSync(skillsDirectory)) {
   if (!meta.name) fail(`.opencode/skills/${entry}/SKILL.md: missing name`);
   if (!meta.description) fail(`.opencode/skills/${entry}/SKILL.md: missing description`);
   skillIds.push(entry);
+}
+
+const skillSources = read(".opencode/skills/SOURCES.md");
+for (const skillId of skillIds) {
+  if (!skillSources.includes(skillId)) {
+    fail(`.opencode/skills/SOURCES.md does not list ${skillId}`);
+  }
 }
 
 const aiWorkflow = read("docs/AI_WORKFLOW.md");

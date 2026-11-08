@@ -157,9 +157,9 @@ privacy rules:
 - [`AGENTS.md`](AGENTS.md) — the short agent contract;
 - [`.ai/rules/`](.ai/rules/index.md) — path-scoped rules for the extension,
   translator, API, phrasebank, tests, docs, repo and security;
-- [`.opencode/skills/`](.opencode/skills) — task workflows for Fulfulde
-  translation, protected-value audits, extension debugging, linguistic
-  validation, security review, release and the project board;
+- [`.opencode/skills/`](.opencode/skills) — upstream skills from Anthropic,
+  Vercel, Chrome DevTools and GitHub Awesome Copilot; sources, commits and
+  licences are in [`.opencode/skills/SOURCES.md`](.opencode/skills/SOURCES.md);
 - [`opencode.json`](opencode.json) — OpenCode MCP servers and `/verify`,
   `/protected-audit`, `/project-sync` and `/release-check` commands;
 - [`.mcp.json`](.mcp.json) — portable MCP catalog for other clients;
@@ -168,7 +168,12 @@ privacy rules:
 
 Run `pnpm ai:check` after changing any AI config, rule or skill. It validates the
 files and rejects obvious secret patterns. The MCP servers are Context7 (docs),
-Playwright (live-page and extension checks) and an optional local GitHub server.
+Playwright (test automation), Chrome DevTools (extension inspection),
+Hugging Face (models and datasets) and an optional local GitHub server.
+
+The project does not maintain its own skill collection. Project-specific
+constraints live in `.ai/rules/`; skills are pinned copies of established
+upstream tools.
 
 ## Documentation
 

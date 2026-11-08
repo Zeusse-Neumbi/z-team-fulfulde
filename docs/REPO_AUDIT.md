@@ -54,9 +54,10 @@ weakening the value or privacy rules.
 - [x] 31. A public GitHub Project tracks the D1–D7 plan, milestones, risks and
       submission; `scripts/bootstrap-github-project.mjs` recreates it from
       `scripts/project-plan.json`.
-- [x] 32. An AI workspace: `AGENTS.md`, `.ai/rules/`, `.opencode/skills/`,
-      `opencode.json`, `.mcp.json`, `CLAUDE.md`, Cursor rules,
-      `docs/AI_WORKFLOW.md` and `pnpm ai:check` in the repository guard.
+- [x] 32. An AI workspace: `AGENTS.md`, `.ai/rules/`, pinned upstream skills
+      with `SOURCE.md` and `.opencode/skills/SOURCES.md`, `opencode.json`,
+      `.mcp.json`, `CLAUDE.md`, Cursor rules, `docs/AI_WORKFLOW.md` and
+      `pnpm ai:check` in the repository guard.
 
 ## Release checks
 
