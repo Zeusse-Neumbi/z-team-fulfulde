@@ -31,6 +31,23 @@ mkdirSync(outDir, { recursive: true });
 rmSync(out, { force: true });
 
 const files = collectFiles(source);
+const decoder = new TextDecoder();
+const manifest = JSON.parse(decoder.decode(files["manifest.json"]));
+const broadHosts = (manifest.host_permissions ?? []).filter(
+  (pattern) => pattern === "<all_urls>" || pattern === "*://*/*",
+);
+if (broadHosts.length > 0) {
+  console.error("[package] refusing to package a test build with broad host permissions");
+  process.exit(1);
+}
+for (const [relativePath, bytes] of Object.entries(files)) {
+  const text = decoder.decode(bytes);
+  if (text.includes("⟦FF:") || text.includes("FF:tm")) {
+    console.error(`[package] refusing to package fixture token in ${relativePath}`);
+    process.exit(1);
+  }
+}
+
 const archive = zipSync(files, { level: 9 });
 writeFileSync(out, archive);
 

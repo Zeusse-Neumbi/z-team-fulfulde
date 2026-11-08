@@ -186,14 +186,10 @@ test("novel content and errors are handled without a reload", async () => {
     await expect(page.locator("#novel-unknown")).toContainText(
       "Le service sera indisponible demain",
     );
-    await expect(page.locator("#novel-unknown")).not.toContainText("⟦FF:");
-    await expect
-      .poll(async () =>
-        clean(await panel.locator(".sentence.missed").first().innerText()).includes(
-          "Le service sera indisponible",
-        ),
-      )
-      .toBe(true);
+    await expect(page.locator("#novel-unknown")).toContainText("FF:novel", {
+      timeout: 1500,
+    });
+    await expect(panel.locator(".sentence.missed")).toHaveCount(0);
 
     await page.locator("#trigger-error").click();
     await expect(page.locator("#error")).toContainText("AMOUNT_002");

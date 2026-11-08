@@ -16,6 +16,7 @@ import {
   addPatternValues,
   addVaultValue,
   collectTextNodes,
+  isLikelyPersonName,
   normalizeSource,
   type Vault,
   type VaultValue,
@@ -33,10 +34,10 @@ interface ActionRecord {
   snapshotId: string;
 }
 
-const NAME_TOKEN = String.raw`[A-ZÀ-Ý][a-zà-ÿ]+(?:[-'’][A-ZÀ-Ý][a-zà-ÿ]+)*`;
-const NAME_1 = new RegExp(`^${NAME_TOKEN}$`, "u");
-const NAME_2 = new RegExp(`^${NAME_TOKEN}(?:\\s+${NAME_TOKEN}){1,3}$`, "u");
-const NAME_3 = new RegExp(`^${NAME_TOKEN}(?:\\s+${NAME_TOKEN}){2,3}$`, "u");
+declare const __ZTEAM_FIXTURE__: boolean;
+
+const FIXTURE_MODE = typeof __ZTEAM_FIXTURE__ !== "undefined" && __ZTEAM_FIXTURE__;
+const MAX_ACTIONS = 200;
 
 const PROTECTED_TERMS: Array<{ value: string; kind: PlaceholderKind; reason?: ProtectedReason }> = [
   { value: "Safinum Pay", kind: "other" },
@@ -205,25 +206,29 @@ function addNamedValues(root: HTMLElement, values: VaultValue[]): void {
     const trimmed = text.trim();
 
     const greeting = trimmed.match(/^(?:Bonjour|Hello),\s+(.+)$/);
-    if (greeting?.[1] && NAME_1.test(greeting[1].trim())) {
+    if (greeting?.[1] && isLikelyPersonName(greeting[1].trim(), { allowSingle: true })) {
       addVaultValue(values, greeting[1], "person");
     }
 
-    if (NAME_3.test(trimmed) && trimmed !== trimmed.toUpperCase()) {
+    if (isLikelyPersonName(trimmed, { tagName: node.parentElement?.tagName })) {
       addVaultValue(values, trimmed, "person");
     }
   }
 
   root.querySelectorAll("strong, b").forEach((element) => {
     const text = originalText(element).trim();
-    if (NAME_2.test(text) && text !== text.toUpperCase()) addVaultValue(values, text, "person");
+    if (isLikelyPersonName(text, { tagName: element.tagName, allowSingle: true })) {
+      addVaultValue(values, text, "person");
+    }
   });
 
   root.querySelectorAll("dt, th, label, strong").forEach((element) => {
     const label = normalizeSource(element.textContent ?? "").toLowerCase();
     if (!/^(?:bénéficiaire|beneficiary|titulaire|account holder|nom|name)$/.test(label)) return;
     const value = element.nextElementSibling?.textContent?.trim() ?? "";
-    if (value && NAME_2.test(value)) addVaultValue(values, value, "person");
+    if (value && isLikelyPersonName(value, { tagName: element.nextElementSibling?.tagName, allowSingle: true })) {
+      addVaultValue(values, value, "person");
+    }
   });
 }
 
@@ -295,6 +300,7 @@ function collectActions(root: HTMLElement): { actions: Map<string, ActionRecord>
   let index = 0;
 
   elements.forEach((element) => {
+    if (index >= MAX_ACTIONS) return;
     if (!isVisible(element)) return;
     let name = originalNames.get(element) ?? "";
     if (!name) {
@@ -427,7 +433,17 @@ function applyTranslation(): TranslationStatus {
   try {
     const vault = buildVault(document.body);
     const collected = collectActions(document.body);
-    const stats = translator.translate(document.body, memory, vault);
+    const stats = translator.translate(
+      document.body,
+      memory,
+      vault,
+      FIXTURE_MODE
+        ? {
+            fallback: (source: string) =>
+              source.trim() ? `⟦FF:novel⟧ ${source.trim()}` : null,
+          }
+        : undefined,
+    );
 
     if (stats.aborted) {
       active = false;

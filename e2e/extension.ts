@@ -8,6 +8,7 @@ export const extensionPath = path.resolve(
 );
 
 export const MOCK_URL = "http://127.0.0.1:4173/journey/";
+export const ON_DEMAND_URL = "http://127.0.0.2:4174/journey/";
 
 export interface ExtensionContext {
   context: BrowserContext;
@@ -37,9 +38,9 @@ export async function launchExtension(): Promise<ExtensionContext> {
   return { context, extensionId };
 }
 
-export async function openMock(context: BrowserContext): Promise<Page> {
+export async function openMock(context: BrowserContext, url = MOCK_URL): Promise<Page> {
   const page = await context.newPage();
-  await page.goto(MOCK_URL, { waitUntil: "networkidle" });
+  await page.goto(url, { waitUntil: "networkidle" });
   await page.waitForTimeout(300);
   return page;
 }
