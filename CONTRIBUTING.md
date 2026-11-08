@@ -88,13 +88,17 @@ uv run --project apps/server ruff check apps/server
 uv run --project apps/server ruff format --check apps/server
 uv run --project apps/server mypy apps/server/app --config-file apps/server/pyproject.toml
 uv run --project apps/server pytest
+pnpm build:test
 pnpm e2e
 sh scripts/tests/test-githooks.sh
 bash scripts/check-repo-hygiene.sh
 ```
 
-`pnpm ci:local` runs the web and API checks in one command. `pnpm e2e` needs
-Chromium: run `pnpm setup:e2e` once per machine.
+`pnpm ci:local` runs the web and API checks in one command. `pnpm e2e` uses the
+test-only fixture build and needs Chromium: run `pnpm setup:e2e` once per
+machine. `pnpm check:live` is the manual live-site check; `pnpm check:sites` is the
+30-page canary sweep. Neither is part of `ci:local`; both need network. The
+fixture build is the only broad-host build and is never packaged.
 
 ## Git hooks
 

@@ -26,9 +26,14 @@
     "audit": "pnpm audit --audit-level high",
     "ai:check": "node scripts/check-ai-config.mjs",
     "verify": "bash scripts/verify-submission.sh",
-    "ci:local": "pnpm ai:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm package && pnpm size:check && uv run --project apps/server ruff check apps/server && uv run --project apps/server ruff format --check apps/server && uv run --project apps/server mypy apps/server/app --config-file apps/server/pyproject.toml && uv run --project apps/server pytest"
+    "ci:local": "pnpm ai:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm package && pnpm size:check && uv run --project apps/server ruff check apps/server && uv run --project apps/server ruff format --check apps/server && uv run --project apps/server mypy apps/server/app --config-file apps/server/pyproject.toml && uv run --project apps/server pytest",
+    "build:test": "node scripts/build-test-extension.mjs",
+    "serve:eval": "node scripts/serve-eval.mjs",
+    "check:live": "node scripts/check-live.mjs",
+    "check:sites": "node scripts/check-sites.mjs"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@playwright/test": "^1.65.0",
     "@types/node": "^22.0.0",
     "@zteam/translator": "workspace:*",

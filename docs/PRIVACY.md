@@ -13,10 +13,20 @@ processing happens on the user's machine.
 | Financial values (amounts, fees, totals, balances) | In-memory vault only | No |
 | Names, phones, accounts, references | In-memory vault only | No |
 | User input | Read for protection; never translated | No |
-| Page signature | `chrome.storage.session` | Hash only |
-| Settings | `chrome.storage.local` | Yes, no page data |
-| Audio cache | Local disk, keyed by hash | Demo phrases only |
-| Metrics | Local API memory | Route names and durations only |
+| Settings (`uiLang`, `speed`) | `chrome.storage.local` | Yes, no page data |
+| Audio blobs | In-memory object URLs, only when a real voice is configured | No |
+| Local API requests | `/health` and, with a real voice, `/tts` | No request bodies logged |
+
+The current browser build does **not** store a page signature, a plan id, an
+audio cache on disk, or page text in any extension storage.
+
+The test-only fixture build declares `<all_urls>` so the generalization harness
+can inject the runtime into public test pages. It is written to
+`apps/extension/.output-test/`, is gitignored, and the package script refuses a
+manifest with `<all_urls>` or a fixture token. The production manifest keeps the
+narrow host list. The scaffold
+privacy table previously listed those features before they were implemented;
+this table describes what ships.
 
 ## Network
 
@@ -26,15 +36,18 @@ processing happens on the user's machine.
   `CONTEXT7_API_KEY`) are never read by the shipped extension or API; they exist
   only for local agent, CLI and model-download workflows.
 - The local API binds to `127.0.0.1`.
-- A network test runs the full journey and asserts that no request goes to a non-loopback
-  host.
+- The panel calls `/health` to discover whether a real voice is configured. If the TTS backend
+  is the stub, the read button is disabled and the panel labels the stub as test silence.
+- With a real voice, `/tts` receives the translated sentence text and never a raw financial
+  value from the page. The API does not log request bodies.
+- The e2e journey records every request and asserts that no request goes to a non-loopback host.
 
 ## Permissions
 
 | Permission | Why |
 |---|---|
 | `sidePanel` | Persistent assistant UI |
-| `storage` | Settings and page signatures |
+| `storage` | Interface language and playback speed |
 | `activeTab` | Interact with the page the user is on |
 | `scripting` | Inject the content script on an explicitly enabled site |
 | Host permissions | `127.0.0.1` for the local API; demo origins for the content script |
@@ -45,11 +58,12 @@ deterministic. The extension does not run on other pages until the user enables 
 
 ## Storage and retention
 
-- The vault is cleared on navigation, Stop, 10 minutes idle, and browser close.
-- `chrome.storage.session` holds the current page signature and plan ID only.
-- `chrome.storage.local` holds settings only.
+- The vault is cleared on Stop and when the page unloads; the content script keeps it in memory
+  only.
+- `chrome.storage.local` holds the interface language and the playback speed. It never holds a
+  page value, a name, an amount, a phone, an account or a reference.
 - The local API keeps route-level metrics in memory; it does not log request bodies.
-- The audio cache stores demo phrases keyed by a hash; no names or references.
+- Audio blobs live in memory only; there is no disk audio cache in the browser build.
 
 ## What the user sees
 
@@ -67,6 +81,9 @@ in any outbound request, storage entry or log:
 - `CANARY-ACCOUNT`
 - `CANARY-REFERENCE`
 - `CANARY-USER-INPUT`
+
+The Playwright journey audits `chrome.storage.local` after a full run and rejects
+any canary or page value. The live check does the same against the real page.
 
 ## Known limits
 

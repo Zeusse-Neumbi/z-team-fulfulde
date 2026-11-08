@@ -1,19 +1,41 @@
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "wxt";
+
+const fixtureTm = process.env.ZTEAM_TEST_TM === "1";
+const fixtureEntry = fileURLToPath(
+  new URL("../../packages/phrasebank/src/fixture.ts", import.meta.url),
+);
+const fixtureAlias: Record<string, string> = fixtureTm
+  ? { "@zteam/phrasebank": fixtureEntry }
+  : {};
+
+const hostPermissions = fixtureTm
+  ? ["<all_urls>"]
+  : [
+      "http://127.0.0.1:8000/*",
+      "https://safinum.cm/*",
+      "http://localhost/*",
+      "http://127.0.0.1/*",
+    ];
 
 export default defineConfig({
   modules: ["@wxt-dev/module-react"],
+  outDir: fixtureTm ? ".output-test" : ".output",
+  vite: () => ({
+    define: {
+      __ZTEAM_FIXTURE__: JSON.stringify(fixtureTm),
+    },
+    resolve: {
+      alias: fixtureAlias,
+    },
+  }),
   manifest: {
     name: "Z-Team Fulfulde Assistant",
     description:
       "A local-first Fulfulde accessibility layer for digital financial services. Translates the page in place and speaks it, without modifying the service.",
     version: "0.1.0",
     permissions: ["sidePanel", "storage", "activeTab", "scripting"],
-    host_permissions: [
-      "http://127.0.0.1:8000/*",
-      "https://safinum.cm/*",
-      "http://localhost/*",
-      "http://127.0.0.1/*",
-    ],
+    host_permissions: hostPermissions,
     optional_host_permissions: ["https://*/*", "http://*/*"],
     side_panel: {
       default_path: "sidepanel.html",

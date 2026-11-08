@@ -10,10 +10,13 @@ service's source code, and it never sends page data off the device.
 
 **Execution board:** [Z-Team Fulfulde Assistant — Preselection](https://github.com/users/Zeusse-Neumbi/projects/4)
 
-> **Status: scaffold.** The translation engine, translation-memory pipeline, extension
-> shell, local backend and tests are in place. The native-speaker data, the fine-tuned
-> voice and the closed-set voice classifier are the next milestones. The backend's `stub`
-> TTS returns silence and is clearly marked; it must never be presented as Fulfulde speech.
+> **Status: browser mechanics complete; Fulfulde pack pending.** The extension scans FR/EN
+> pages, translates in place from a validated TM, protects values byte-for-byte, survives
+> re-renders, restores on Stop and exposes a guided panel with read-back. The checked-in TM
+> still has empty Fulfulde targets, so the production build leaves the page in its source
+> language and says so in the panel. The fixture build (`pnpm build:test`) proves the full
+> pipeline with test tokens; it is never shipped. The native-speaker pack, the fine-tuned
+> voice and the closed-set voice classifier are the next milestones.
 
 ## What it does
 
@@ -67,7 +70,22 @@ pnpm dev
 ```
 
 Then load `.output/chrome-mv3` in `chrome://extensions` (Developer mode → Load unpacked),
-open `https://safinum.cm/hackathon-test`, and click the extension.
+open `https://safinum.cm/hackathon-test`, and click the extension. With the checked-in
+empty TM the page stays in French or English and the panel shows the missing-pack notice;
+that is expected until the validated Fulfulde pack lands.
+
+To exercise the translation pipeline before the pack, build the test fixture instead:
+
+```bash
+pnpm build:test
+pnpm e2e          # local five-step mock
+pnpm check:live   # real SAFINUM page, test tokens only
+pnpm check:sites  # 30 public pages, canary values, dynamic content, restore
+```
+
+The fixture target is `⟦FF:<id>⟧` plus the source string, so every protected value stays
+byte-identical. It is written to `apps/extension/.output-test/`, is gitignored and is never
+included in the production ZIP.
 
 ### Optional heavy dependencies
 
@@ -106,14 +124,19 @@ e2e/                     Playwright smoke test
 | `pnpm install` | Install JS dependencies |
 | `uv sync --project apps/server --extra dev` | Install Python dependencies |
 | `pnpm dev` | WXT dev server with HMR |
-| `pnpm build` | Build all packages and the extension |
+| `pnpm build` | Build the production extension (empty Fulfulde targets) |
+| `pnpm build:test` | Build the test-only fixture extension to `.output-test` |
 | `pnpm test` | Vitest across packages |
+| `pnpm e2e` | Local five-step journey, English page, novel content, a11y |
+| `pnpm check:live` | Run the fixture mechanics against the live SAFINUM page |
+| `pnpm check:sites` | Run the canary sweep over 30 public pages (network needed) |
+| `pnpm serve:eval` | Serve the local mock pages on `127.0.0.1:4173` |
 | `pnpm lint` | oxlint |
 | `pnpm typecheck` | TypeScript across packages |
 | `pnpm package` | Zip the built extension into `dist/` |
 | `pnpm size:check` | Fail if the ZIP exceeds 8 MB |
 | `pnpm setup:e2e` | Install Chromium for the Playwright smoke test |
-| `pnpm e2e` | Load the built extension and check the side panel |
+| `pnpm e2e` | Load the fixture extension and run the journey, error, novel-content and a11y tests |
 | `pnpm audit --audit-level high` | Fail on high or critical JS vulnerabilities |
 | `pnpm ci:local` | Run the web and API checks in one command |
 | `pnpm hooks` | Enable the repository hooks once per clone |

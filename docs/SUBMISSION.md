@@ -35,8 +35,11 @@ submission/
 - [ ] `sh scripts/tests/test-githooks.sh` and `bash scripts/check-repo-hygiene.sh` pass.
 - [ ] `pnpm verify` passes (or the individual checks pass).
 - [ ] The extension installs from the ZIP in a clean Chrome profile.
+- [ ] The validated Fulfulde pack is installed and `pnpm --filter @zteam/phrasebank build:release` passes.
 - [ ] The full journey works on the live test page in French and English.
-- [ ] Protected values are unchanged; coverage is at least 90%.
+- [ ] The fixture journey and live check pass (`pnpm build:test`, `pnpm e2e`, `pnpm check:live`).
+- [ ] Protected values are unchanged; coverage is at least 90% of translatable text.
+- [ ] The production ZIP contains no `⟦FF:` or `FF:tm` fixture token.
 - [ ] Stop restores the page.
 - [ ] The novel-content path works without a reload.
 - [ ] The technical note is French, 4–6 pages, ≤ 10 MB, no placeholders.

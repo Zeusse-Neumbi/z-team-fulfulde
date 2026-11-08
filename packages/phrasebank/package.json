@@ -16,7 +16,8 @@
     "build": "tsx src/build.ts && tsc -p tsconfig.build.json",
     "build:release": "tsx src/build.ts --release && tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "build:fixture": "tsx src/build.ts --fixture"
   },
   "dependencies": {
     "@zteam/shared": "workspace:*",

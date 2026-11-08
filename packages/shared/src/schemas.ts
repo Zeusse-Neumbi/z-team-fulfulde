@@ -133,6 +133,72 @@ export const phraseEntrySchema = z.object({
   backTranslationFr: z.string(),
 });
 
+export const sentenceViewSchema = z.object({
+  id: z.string(),
+  source: z.string(),
+  target: z.string().nullable(),
+  status: z.enum(["applied", "missed"]),
+  risk: z.enum(["low", "medium", "high", "unknown"]),
+  protectedReason: protectedReasonSchema.optional(),
+});
+
+export const protectedValueViewSchema = z.object({
+  value: z.string(),
+  kind: placeholderKindSchema,
+  reason: protectedReasonSchema.optional(),
+});
+
+export const actionViewSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  role: z.enum(["button", "link", "input", "select", "checkbox"]),
+  risk: z.enum(["low", "medium", "high"]),
+  enabled: z.boolean(),
+  locked: z.boolean(),
+});
+
+export const translationStatusSchema = z.object({
+  active: z.boolean(),
+  url: z.string(),
+  title: z.string(),
+  step: z.union([
+    z.literal(1),
+    z.literal(2),
+    z.literal(3),
+    z.literal(4),
+    z.literal(5),
+    z.literal("unknown"),
+  ]),
+  language: z.enum(["fr", "en", "unknown"]),
+  coverage: z.number().min(0).max(1),
+  applied: z.number().int().min(0),
+  protectedCount: z.number().int().min(0),
+  missed: z.number().int().min(0),
+  translations: z.number().int().min(0),
+  sentences: z.array(sentenceViewSchema),
+  protectedValues: z.array(protectedValueViewSchema),
+  actions: z.array(actionViewSchema),
+  actionSnapshotId: z.string(),
+  aborted: z.boolean(),
+  abortReason: z.string().optional(),
+  lastError: z.string().optional(),
+});
+
+export const readbackSchema = z.object({
+  amount: z.string().optional(),
+  fee: z.string().optional(),
+  total: z.string().optional(),
+  beneficiary: z.string().optional(),
+  phone: z.string().optional(),
+  reference: z.string().optional(),
+  operation: z.string().optional(),
+});
+
+export const panelSettingsSchema = z.object({
+  uiLang: z.enum(["fr", "en"]),
+  speed: z.number().min(0.5).max(2),
+});
+
 export const analysisSchema = z.object({
   requestId: z.string(),
   schemaVersion: z.string(),
