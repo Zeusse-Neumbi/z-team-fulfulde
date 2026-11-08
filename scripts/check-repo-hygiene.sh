@@ -15,6 +15,7 @@ required_files=(
   CONTRIBUTING.md
   AGENTS.md
   THIRD_PARTY_NOTICES.md
+  .env.example
   pnpm-lock.yaml
   uv.lock
   .github/dependabot.yml

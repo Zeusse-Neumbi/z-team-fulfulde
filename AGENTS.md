@@ -46,6 +46,9 @@ reverts the node and aborts the plan.
   separate written licence.
 - Do not put a secret in `opencode.json`, `.mcp.json`, a skill or a rule. Use
   `{env:NAME}` substitution.
+- Never commit `.env`; use `.env.example` placeholders. `GH_TOKEN`,
+  `GITHUB_PERSONAL_ACCESS_TOKEN`, `HF_TOKEN` and `CONTEXT7_API_KEY` are
+  development tooling only. The extension and API must not read them at runtime.
 
 ## Commands
 

@@ -156,6 +156,10 @@ Prefer an established upstream skill over a local rewrite. Do not add a new
 skill without recording its source, licence and reason in
 `.opencode/skills/SOURCES.md` and `THIRD_PARTY_NOTICES.md`.
 
+Development credentials are in [`.env.example`](.env.example): GitHub MCP/CLI,
+Hugging Face and Context7. Copy it to `.env`, which is gitignored. These keys are
+for local tooling only; the shipped extension and API never read them.
+
 Run `pnpm ai:check` after changing a rule, skill, MCP server or command. The
 check validates the config, skill frontmatter, rule index, licence metadata and
 obvious secret patterns. Do not put a token in a config file; use
