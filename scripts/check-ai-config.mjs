@@ -77,6 +77,7 @@ requireFile("docs/AI_WORKFLOW.md");
 requireFile("docs/PROJECT_BOARD.md");
 requireFile("docs/decisions/0005-noncommercial-license.md");
 requireFile("docs/decisions/0006-upstream-skills-and-mcp.md");
+requireFile(".env.example");
 requireFile(".ai/rules/index.md");
 requireFile(".github/copilot-instructions.md");
 requireFile("CLAUDE.md");
@@ -231,6 +232,23 @@ if (packageJson && packageJson.license !== "SEE LICENSE IN LICENSE") {
   fail("package.json: license must be SEE LICENSE IN LICENSE");
 }
 
+const envExample = read(".env.example");
+for (const key of [
+  "GITHUB_PERSONAL_ACCESS_TOKEN",
+  "GH_TOKEN",
+  "HF_TOKEN",
+  "CONTEXT7_API_KEY",
+  "GITHUB_REPOSITORY",
+  "PROJECT_NUMBER",
+]) {
+  if (!new RegExp(`^${key}=`, "m").test(envExample)) {
+    fail(`.env.example: missing ${key}`);
+  }
+}
+if (!/^\.env$/m.test(read(".gitignore")) && !/^\.env\.\*$/m.test(read(".gitignore"))) {
+  fail(".gitignore: must exclude .env");
+}
+
 const secretPatterns = [
   /ghp_[A-Za-z0-9]{20,}/,
   /github_pat_[A-Za-z0-9_]{20,}/,
@@ -250,6 +268,7 @@ function scanForSecrets(file) {
 
 scanForSecrets("opencode.json");
 scanForSecrets(".mcp.json");
+scanForSecrets(".env.example");
 scanForSecrets(".github/copilot-instructions.md");
 scanForSecrets("CLAUDE.md");
 scanForSecrets(".cursor/rules/project.mdc");

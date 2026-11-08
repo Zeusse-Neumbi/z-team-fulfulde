@@ -50,6 +50,10 @@ pnpm install
 uv sync --project apps/server --extra dev
 ```
 
+Optional development credentials (GitHub MCP, Hugging Face models and Context7
+docs) are documented in [`.env.example`](.env.example). Copy it to `.env` and fill
+only what you need. The shipped extension and API never read those keys.
+
 Terminal 1 — local API:
 
 ```bash

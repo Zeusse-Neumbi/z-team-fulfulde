@@ -73,6 +73,32 @@ export GITHUB_PERSONAL_ACCESS_TOKEN="$(gh auth token)"
 Never paste a token into `opencode.json`, `.mcp.json`, a skill or a rule. Use
 `{env:NAME}` substitution.
 
+### Credentials
+
+`.env.example` lists the development keys. Copy it to `.env` (gitignored) and
+fill only what you need:
+
+| Variable | Used by | Where to get it |
+| --- | --- | --- |
+| `GITHUB_PERSONAL_ACCESS_TOKEN` | GitHub MCP | <https://github.com/settings/tokens> |
+| `GH_TOKEN` | `gh` CLI, project bootstrap | Same PAT as above, or `gh auth token` |
+| `HF_TOKEN` | Hugging Face CLI, `transformers`, model/dataset downloads | <https://huggingface.co/settings/tokens> |
+| `CONTEXT7_API_KEY` | Context7 MCP, optional | <https://context7.com/dashboard> |
+| `GITHUB_REPOSITORY` | project scripts | `owner/name` |
+| `PROJECT_NUMBER` | project bootstrap | The GitHub Project number (currently `4`) |
+
+The local API reads `.env` directly through `pydantic-settings`. OpenCode and
+`gh` read the process environment, so export the file before starting them:
+
+```bash
+set -a
+source .env
+set +a
+```
+
+The extension and API never read `GITHUB_PERSONAL_ACCESS_TOKEN`, `GH_TOKEN`,
+`HF_TOKEN` or `CONTEXT7_API_KEY`; they are development tooling only.
+
 The Playwright server uses the Chromium installed by `pnpm setup:e2e`. Install it
 once per machine:
 

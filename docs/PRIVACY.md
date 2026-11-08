@@ -22,6 +22,9 @@ processing happens on the user's machine.
 
 - The extension's only host permission besides the target site is `http://127.0.0.1:8000/*`.
 - There is no cloud provider, no API key, no telemetry and no remote configuration.
+  Development tooling keys (`GH_TOKEN`, `GITHUB_PERSONAL_ACCESS_TOKEN`, `HF_TOKEN`,
+  `CONTEXT7_API_KEY`) are never read by the shipped extension or API; they exist
+  only for local agent, CLI and model-download workflows.
 - The local API binds to `127.0.0.1`.
 - A network test runs the full journey and asserts that no request goes to a non-loopback
   host.
