@@ -24,3 +24,21 @@ describe("phrasebank data", () => {
     expect(releaseErrors(data).length).toBeGreaterThan(0);
   });
 });
+
+describe("machine-translated candidate pack", () => {
+  it("loads the mt pack without turning it into a validated release", () => {
+    const previous = process.env.ZTEAM_PHRASEBANK;
+    process.env.ZTEAM_PHRASEBANK = "mt";
+    try {
+      const data = loadAll();
+      expect(data.tmVersion).toContain("+mt");
+      expect(data.translationUnits.length).toBeGreaterThan(10);
+      expect(data.translationUnits.every((unit) => unit.target.ff.length > 0)).toBe(true);
+      expect(data.translationUnits.every((unit) => unit.validatedBy.length === 0)).toBe(true);
+      expect(releaseErrors(data).length).toBeGreaterThan(0);
+    } finally {
+      if (previous === undefined) delete process.env.ZTEAM_PHRASEBANK;
+      else process.env.ZTEAM_PHRASEBANK = previous;
+    }
+  });
+});
