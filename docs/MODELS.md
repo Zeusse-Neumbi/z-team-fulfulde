@@ -213,6 +213,16 @@ matches the Hugging Face `x-linked-etag`
 `Ɓe njahii haa wuro.` produced 1.26–1.34 s of non-silent 16 kHz mono audio with
 **0 unknown tokens**, so `ɓ` and `ɗ` are in the vocab.
 
+Reproduce the MMS numbers:
+
+```bash
+./scripts/download-models.sh mms
+uv sync --project apps/server --extra dev --extra speech
+ZTEAM_TTS_BACKEND=mms uv run --project apps/server uvicorn app.main:app --port 8001
+uv run --project apps/server python scripts/probe-models.py \
+  --base-url http://127.0.0.1:8001 --tts mms --out eval/latency/mms.csv
+```
+
 **The base MMS model is slower than real time on this CPU** (RTF > 1). The
 `< 1 s first audio` target is not met without an optimisation pass: ONNX/int8
 export, `torch.set_num_threads(4)`, or pre-synthesised clips for the demo
