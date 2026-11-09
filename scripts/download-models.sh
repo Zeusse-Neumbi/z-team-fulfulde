@@ -44,25 +44,70 @@ fi
 
 mkdir -p "$OUT_DIR"
 
-# `curl -L` re-resolves the Hugging Face redirect on every attempt, so a retry
-# always gets a fresh signed CDN URL. `-C -` resumes from the partial file.
+# Hugging Face redirects to a signed CDN URL that expires. Each attempt asks
+# Hugging Face again (`-L`), then resumes with an explicit Range header. A 206
+# response is appended; a 200 mid-resume means the CDN ignored the range, so the
+# partial body is discarded and retried instead of silently restarting from 0.
+
+file_size() {
+  stat -c %s "$1" 2>/dev/null || echo 0
+}
+
+remote_size() {
+  local url="$1"
+  curl -4 -sSIL --retry 4 --retry-all-errors --connect-timeout 30 --max-time 120 "$url" \
+    | tr -d '\r' \
+    | awk 'tolower($1) == "content-length:" { value = $2 } END { print value + 0 }'
+}
+
 download_file() {
-  local url="$1" dest="$2" attempt=0 max=40
-  local part="${dest}.part"
+  local url="$1" dest="$2"
+  local part="${dest}.part" tmp="${dest}.part.tmp"
+  local expected attempt=0 max=200
   mkdir -p "$(dirname "$dest")"
-  while [ "$attempt" -lt "$max" ]; do
+  expected="$(remote_size "$url" || true)"
+  echo "  size ${expected:-unknown} bytes ($(basename "$dest"))"
+
+  while :; do
     attempt=$((attempt + 1))
-    if curl -4 -fL -C - --retry 3 --retry-delay 3 --connect-timeout 30 \
-        --max-time 3600 -o "$part" "$url"; then
+    if [ "$attempt" -gt "$max" ]; then
+      echo "  x gave up on $(basename "$dest") after $max attempts" >&2
+      return 1
+    fi
+    local pos code got
+    pos="$(file_size "$part")"
+    if [ "$expected" -gt 0 ] && [ "$pos" -ge "$expected" ]; then
       mv "$part" "$dest"
       echo "  ok $(basename "$dest") ($(du -h "$dest" | cut -f1))"
       return 0
     fi
-    echo "  ! interrupted at $(du -h "$part" 2>/dev/null | cut -f1 || echo 0); resuming" >&2
-    sleep 4
+    if [ "$pos" -gt 0 ]; then
+      code="$(curl -4 -sSL --connect-timeout 30 --max-time 3600 \
+        -H "Range: bytes=${pos}-" -o "$tmp" -w '%{http_code}' "$url" || echo 000)"
+    else
+      code="$(curl -4 -sSL --connect-timeout 30 --max-time 3600 \
+        -o "$tmp" -w '%{http_code}' "$url" || echo 000)"
+    fi
+    got="$(file_size "$tmp")"
+    case "$code" in
+      206) [ "$got" -gt 0 ] && cat "$tmp" >> "$part" ;;
+      200)
+        if [ "$pos" -eq 0 ] && [ "$got" -gt 0 ]; then
+          mv "$tmp" "$part"
+        fi
+        ;;
+    esac
+    rm -f "$tmp"
+    if { [ "$code" = "416" ] || [ "$code" = "206" ] && [ "$got" -eq 0 ]; } && [ "$expected" -eq 0 ]; then
+      mv "$part" "$dest"
+      echo "  ok $(basename "$dest") ($(du -h "$dest" | cut -f1))"
+      return 0
+    fi
+    echo "  attempt $attempt: code $code, +${got} bytes, at $(file_size "$part")/${expected}"
+    if [ "$code" = "000" ] || [ "$code" -ge 400 ] 2>/dev/null; then
+      sleep 5
+    fi
   done
-  echo "  x gave up on $(basename "$dest") after $max attempts" >&2
-  return 1
 }
 
 fetch_repo() {

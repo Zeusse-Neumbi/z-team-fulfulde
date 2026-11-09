@@ -179,12 +179,19 @@ export default function App() {
       });
     }, 750);
 
+    // Keep the voice state in sync when the local API is restarted with a
+    // different provider (stub -> mms -> camb) during a model comparison.
+    const healthPoll = window.setInterval(() => {
+      if (document.visibilityState === "visible") void checkHealth();
+    }, 5000);
+
     const health = window.setInterval(() => {
       void checkHealth();
     }, 15_000);
 
     return () => {
       window.clearInterval(poll);
+      window.clearInterval(healthPoll);
       window.clearInterval(health);
       chrome.tabs.onActivated.removeListener(onActivated);
       chrome.tabs.onUpdated.removeListener(onUpdated);

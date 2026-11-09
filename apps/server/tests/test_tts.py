@@ -106,3 +106,16 @@ def test_tts_speed_and_voice_change_the_cache_key(client):
 def test_tts_rejects_speed_outside_range(client, speed):
     response = client.post("/tts", json={"text": "Solde", "speed": speed})
     assert response.status_code == 422
+
+
+def test_cors_exposes_provenance_headers(client):
+    response = client.post(
+        "/tts",
+        json={"text": "Solde"},
+        headers={"Origin": "chrome-extension://abcdefghijklmnop"},
+    )
+    assert response.status_code == 200
+    exposed = response.headers.get("access-control-expose-headers", "").lower()
+    assert "x-zteam-stub" in exposed
+    assert "x-zteam-speech-source" in exposed
+    assert response.headers["access-control-allow-origin"].startswith("chrome-extension://")

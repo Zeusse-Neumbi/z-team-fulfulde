@@ -23,6 +23,17 @@ app.add_middleware(
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
+    # The panel reads these from a cross-origin fetch to 127.0.0.1.
+    expose_headers=[
+        "X-ZTeam-Backend",
+        "X-ZTeam-Model",
+        "X-ZTeam-Stub",
+        "X-ZTeam-Local",
+        "X-ZTeam-Speech-Source",
+        "X-ZTeam-Sample-Rate",
+        "X-ZTeam-Cache",
+        "X-Request-Duration-Ms",
+    ],
 )
 
 
