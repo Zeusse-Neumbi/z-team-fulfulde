@@ -110,6 +110,49 @@ download_file() {
   done
 }
 
+verify_repo() {
+  local repo="$1" dest="$2"
+  shift 2
+  REPO="$repo" DEST="$dest" FILES="$*" python3 - <<'PY'
+import hashlib
+import json
+import os
+import sys
+import urllib.request
+
+repo = os.environ["REPO"]
+dest = os.environ["DEST"]
+files = set(os.environ["FILES"].split())
+try:
+    with urllib.request.urlopen(
+        f"https://huggingface.co/api/models/{repo}?blobs=true", timeout=120
+    ) as response:
+        data = json.load(response)
+except Exception as exc:  # noqa: BLE001 - offline check must not fail the run
+    print(f"  ! could not fetch checksums ({exc}); skipping")
+    sys.exit(0)
+
+bad = []
+for sibling in data.get("siblings", []):
+    name = sibling.get("rfilename")
+    if name not in files:
+        continue
+    oid = (sibling.get("lfs") or {}).get("oid")
+    if not oid:
+        continue
+    digest = hashlib.sha256()
+    with open(os.path.join(dest, name), "rb") as handle:
+        for chunk in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(chunk)
+    if digest.hexdigest() != oid:
+        bad.append(name)
+if bad:
+    print("  x checksum mismatch: " + ", ".join(bad))
+    sys.exit(1)
+print("  checksums ok")
+PY
+}
+
 fetch_repo() {
   local repo="$1" dest="$2"
   shift 2
@@ -117,6 +160,7 @@ fetch_repo() {
   for file in "$@"; do
     download_file "https://huggingface.co/$repo/resolve/main/$file" "$dest/$file"
   done
+  verify_repo "$repo" "$dest" "$@"
 }
 
 case " ${TARGETS[*]} " in
