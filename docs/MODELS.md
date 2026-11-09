@@ -200,12 +200,28 @@ make the egress explicit.
 | `ollama` `gemma4:12b-it-qat` | FR sentence | 11–24 s | kept `250 000 FCFA` and `0 FCFA` byte-identical |
 | `ollama` | EN sentence | 17–24 s | slower than FR on the same text |
 | `stub` TTS | any | 2–4 ms | silent WAV, marked `X-ZTeam-Stub: 1` |
+| `mms` cold | `Jam waali.` | 10.8 s | first request includes the model load |
+| `mms` warm | `Jam waali.` | 1.4–1.8 s for 1.3–1.5 s audio | RTF 1.1–1.9 on 4 CPU threads |
+| `mms` warm | `Ko ɗum woni solde maa.` | 2.2 s for 1.5 s audio | RTF ≈ 1.4 |
+| `mms` cache | repeat of the same text | 6.6 ms | in-memory audio cache |
+| `mms` `speed=0.8` | `Jam waali.` | 1.0 s for 0.97 s audio | scipy resample, no pitch shift |
 | `google`, `camb` | any | 2 ms | `cloud_disabled` without `ZTEAM_ALLOW_CLOUD=1` |
-| `mms` | any | 2 ms | `dependency_missing` on a bare install |
 
-MMS and NLLB latency is not measured yet: the 138 MB download was still running
-on this connection. Re-run the probe after `./scripts/download-models.sh` and
-record the numbers here.
+MMS verification: `model.safetensors` is 145,229,816 bytes and its SHA-256
+matches the Hugging Face `x-linked-etag`
+(`ab724e06…86021c`). `Jam waali.`, `Ko ɗum woni solde maa.` and
+`Ɓe njahii haa wuro.` produced 1.26–1.34 s of non-silent 16 kHz mono audio with
+**0 unknown tokens**, so `ɓ` and `ɗ` are in the vocab.
+
+**The base MMS model is slower than real time on this CPU** (RTF > 1). The
+`< 1 s first audio` target is not met without an optimisation pass: ONNX/int8
+export, `torch.set_num_threads(4)`, or pre-synthesised clips for the demo
+phrases. Do not describe a warm 2 s synthesis as smooth speech.
+
+NLLB latency is still unmeasured: the 2.6 GB checkpoint does not fit the
+observed link speed in one sitting. The provider is wired and covered by a
+fake-model test; `./scripts/download-models.sh nllb` and
+`ZTEAM_MT_RUNTIME=transformers` are ready for the measurement.
 
 ## Failure codes
 
