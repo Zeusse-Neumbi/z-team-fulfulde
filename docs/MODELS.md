@@ -235,10 +235,22 @@ uv run --project apps/server python scripts/probe-models.py \
 export, `torch.set_num_threads(4)`, or pre-synthesised clips for the demo
 phrases. Do not describe a warm 2 s synthesis as smooth speech.
 
-NLLB latency is still unmeasured: the 2.6 GB checkpoint does not fit the
-observed link speed in one sitting. The provider is wired and covered by a
-fake-model test; `./scripts/download-models.sh nllb` and
-`ZTEAM_MT_RUNTIME=transformers` are ready for the measurement.
+NLLB latency is still unmeasured. The ready-made int8 CTranslate2 conversion
+(647 MB total, `model.bin` 622 MB) reached 136 MB at ~30 KB/s during this
+session. The download resumes with `./scripts/download-models.sh nllb-ct2`.
+Once it is complete:
+
+```bash
+uv sync --project apps/server --extra dev --extra speech   # provides ctranslate2
+ZTEAM_MT_BACKEND=nllb ZTEAM_MT_RUNTIME=ct2 \
+ZTEAM_MT_MODEL=models/nllb-200-600m-int8 \
+  uv run --project apps/server uvicorn app.main:app --port 8002
+uv run --project apps/server python scripts/probe-models.py \
+  --base-url http://127.0.0.1:8002 --mt nllb
+```
+
+The provider is wired and covered by a fake-model test; the missing piece is
+the weights, not the code.
 
 ## Failure codes
 
