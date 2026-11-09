@@ -60,7 +60,18 @@ time).
 `pnpm check:sites` runs 30 public pages with a canary block (amount, account,
 phone, reference, date, name, input, contenteditable) on the fixture build.
 
-_Fill from the final run below._
+```
+tested=30  passed=26  skipped=4  product_failures=0
+```
+
+The four skips are network failures during `page.goto` (`mozilla.org`,
+`gutenberg.org` twice, `rfc-editor.org`), not extension failures. Every page
+that loaded passed the canary: values, input and contenteditable unchanged,
+Stop restored the original text, coverage 1.000, missed 0.
+
+Highlights: Wikipedia EN applied 1,902 nodes, Wikipedia FR 2,250, Hacker News
+260, Mozilla Firefox 544, Project Gutenberg 612 in the earlier run, all with
+zero value changes. Node.js `/en` passed in the final sweep.
 
 The one flake found: `nodejs.org/en` reported `restore=false` once. A focused
 rerun passed (`before=141 after=260 restored=141, bodyToken=false`): the React
@@ -68,6 +79,17 @@ page repainted just after Stop. The harness now re-checks the restore state for
 up to 1.2 s before calling it a product failure. This is a test-timing fix, not
 a relaxation of the canary check: the token, input and contenteditable
 assertions are unchanged.
+
+### MT candidate pack build
+
+```
+ZTEAM_PHRASEBANK=mt pnpm --filter @zteam/phrasebank build
+  → generated 80 TM units and 35 phrases, version 2026-11-09.2+mt
+ZTEAM_PHRASEBANK=mt pnpm --filter @zteam/phrasebank build:release
+  → Exit status 1 (Missing validator / back-translation)
+pnpm --filter @zteam/phrasebank build
+  → back to 2026-11-09.2, no candidate in generated.ts
+```
 
 ## 4. Phrasebank machine translation
 
