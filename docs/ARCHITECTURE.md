@@ -45,8 +45,12 @@ There is no cloud component. The only network calls are to `127.0.0.1`.
 - Makes a second pass idempotent: an already translated node is counted, a node that renders
   the source again is re-translated, and a node with new text is treated as a new source.
 - Observes mutations and re-applies after client-side re-renders.
-- Exposes **guided** actions to the side panel. `Montrer` scrolls and focuses the page action;
-  the extension never clicks it, never checks a confirmation box and never submits.
+- Builds a **spoken summary**, not a full read: the step, the important facts, the
+  warnings and up to three actions. A sentence that contains a protected value is
+  excluded from the TTS payload; the panel tells the user to verify it on screen.
+- Exposes **guided** actions to the side panel. `Vérifier` announces the action name aloud and
+  asks for confirmation; only `Confirmer` scrolls and focuses the page action. The extension
+  never clicks it, never checks a confirmation box and never submits.
 - Captures action names before translation, so a translated button keeps its original risk.
 - Restores the original page on Stop.
 
