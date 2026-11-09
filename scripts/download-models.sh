@@ -61,12 +61,41 @@ remote_size() {
     | awk 'tolower($1) == "content-length:" { value = $2 } END { print value + 0 }'
 }
 
+absorb_chunks() {
+  # The parallel fetcher used for the first NLLB attempt writes 2 MiB ranges
+  # to <file>.chunks/00000,00001,... Absorb the complete prefix so a later
+  # sequential run does not restart from zero.
+  local dest="$1" total="$2"
+  local part="${dest}.part" chunks="${dest}.chunks"
+  [ -d "$chunks" ] || return 0
+  local offset=0 index=0 absorbed=0 want file
+  while [ "$offset" -lt "$total" ]; do
+    want=$(( total - offset < 2097152 ? total - offset : 2097152 ))
+    file="$(printf '%s/%05d' "$chunks" "$index")"
+    [ -f "$file" ] || break
+    [ "$(file_size "$file")" -eq "$want" ] || break
+    cat "$file" >>"$part"
+    offset=$((offset + want))
+    index=$((index + 1))
+    absorbed=$((absorbed + want))
+  done
+  if [ "$absorbed" -gt 0 ]; then
+    echo "  absorbed ${absorbed} bytes from $(basename "$chunks")"
+  fi
+  if [ "$offset" -ge "$total" ]; then
+    rm -rf "$chunks"
+  fi
+}
+
 download_file() {
   local url="$1" dest="$2"
   local part="${dest}.part" tmp="${dest}.part.tmp"
   local expected attempt=0 max=200
   mkdir -p "$(dirname "$dest")"
   expected="$(remote_size "$url" || true)"
+  if [ "$expected" -gt 0 ]; then
+    absorb_chunks "$dest" "$expected"
+  fi
   echo "  size ${expected:-unknown} bytes ($(basename "$dest"))"
 
   while :; do
