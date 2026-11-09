@@ -204,6 +204,8 @@ make the egress explicit.
 | Provider | Request | Latency | Note |
 | --- | --- | --- | --- |
 | `stub` MT | FR/EN sentence | < 1 ms | returns the source |
+| `nllb` int8 | FR sentence | 0.99–1.29 s | `250 000 FCFA` and `0 FCFA` byte-identical |
+| `nllb` int8 | EN sentence | 0.78–0.91 s | `0 FCFA` byte-identical |
 | `ollama` `gemma4:12b-it-qat` | FR sentence | 11–24 s | kept `250 000 FCFA` and `0 FCFA` byte-identical |
 | `ollama` | EN sentence | 17–24 s | slower than FR on the same text |
 | `stub` TTS | any | 2–4 ms | silent WAV, marked `X-ZTeam-Stub: 1` |
@@ -235,22 +237,23 @@ uv run --project apps/server python scripts/probe-models.py \
 export, `torch.set_num_threads(4)`, or pre-synthesised clips for the demo
 phrases. Do not describe a warm 2 s synthesis as smooth speech.
 
-NLLB latency is still unmeasured. The ready-made int8 CTranslate2 conversion
-(647 MB total, `model.bin` 622 MB) reached 136 MB at ~30 KB/s during this
-session. The download resumes with `./scripts/download-models.sh nllb-ct2`.
-Once it is complete:
+NLLB verification: `model.bin` is 622,595,991 bytes and its SHA-256 matches the
+Hugging Face `x-linked-etag` (`ed1beaf7…36fe707b`). The API returned
+`Fedde mooɗon woni 250 000 FCFA.` for the balance sentence and
+`Fedde nden ko 0 FCFA.` for the English fee sentence, preserving both values
+byte-for-byte, in 0.78–1.29 s per sentence on CPU.
+
+The int8 conversion is a community build
+(`JustFrederik/nllb-200-distilled-600M-ct2-int8`), not a Meta release. It uses
+the `fuv_Latn` token, so the output is Nigerian Fulfulde: treat every sentence
+as a candidate until a native speaker signs it off. The audited alternative is
+the fp32 checkpoint plus a local conversion:
 
 ```bash
-uv sync --project apps/server --extra dev --extra speech   # provides ctranslate2
-ZTEAM_MT_BACKEND=nllb ZTEAM_MT_RUNTIME=ct2 \
-ZTEAM_MT_MODEL=models/nllb-200-600m-int8 \
-  uv run --project apps/server uvicorn app.main:app --port 8002
-uv run --project apps/server python scripts/probe-models.py \
-  --base-url http://127.0.0.1:8002 --mt nllb
+./scripts/download-models.sh nllb
+ct2-transformers-converter --model models/nllb-200-600m \
+  --output_dir models/nllb-200-600m-int8 --quantization int8 --force
 ```
-
-The provider is wired and covered by a fake-model test; the missing piece is
-the weights, not the code.
 
 ## Failure codes
 

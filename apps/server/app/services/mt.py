@@ -222,7 +222,10 @@ class NLLBCT2MT:
         source_lang = NLLB_LANGS.get(source, "fra_Latn")
         target_lang = NLLB_LANGS.get(target, self.target_lang)
         tokens = self._tokenizer.convert_ids_to_tokens(
-            self._tokenizer.encode(text, src_lang=source_lang)
+            [
+                self._tokenizer.convert_tokens_to_ids(source_lang),
+                *self._tokenizer.encode(text),
+            ]
         )
         results = self._translator.translate_batch(
             [tokens],
@@ -306,10 +309,16 @@ class NLLBTransformersMT:
     def translate(self, text: str, source: str, target: str) -> MTResult:
         source_lang = NLLB_LANGS.get(source, "fra_Latn")
         target_lang = NLLB_LANGS.get(target, self.target_lang)
-        inputs = self._tokenizer(text, return_tensors="pt", src_lang=source_lang).to(self.device)
+        ids = [
+            self._tokenizer.convert_tokens_to_ids(source_lang),
+            *self._tokenizer.encode(text),
+        ]
+        input_ids = self._torch.tensor([ids], device=self.device)
+        attention_mask = self._torch.ones_like(input_ids)
         with self._torch.inference_mode():
             generated = self._model.generate(
-                **inputs,
+                input_ids=input_ids,
+                attention_mask=attention_mask,
                 forced_bos_token_id=self._tokenizer.convert_tokens_to_ids(target_lang),
                 max_new_tokens=256,
                 num_beams=self.beam_size,
