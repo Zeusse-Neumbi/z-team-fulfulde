@@ -32,7 +32,17 @@ test("the panel uses the real local voice and never sends a protected value", as
     }
     expect(payload).toContain("Étape");
 
+    // The same real voice announces an action before the user confirms it.
     await panel.getByRole("button", { name: /Couper/ }).click();
+    await panel.locator("details").nth(2).locator("summary").click();
+    const firstAction = panel.locator(".action-list li").first();
+    const name = (await firstAction.locator(".action-name").innerText()).trim();
+    const before = ttsBodies.length;
+    await firstAction.getByRole("button", { name: "Vérifier" }).click();
+    await expect
+      .poll(() => ttsBodies.slice(before).join(" "), { timeout: 30_000 })
+      .toContain(name.slice(0, Math.min(8, name.length)));
+    await expect(firstAction.getByRole("button", { name: "Confirmer" })).toBeVisible();
   } finally {
     await context.close();
   }
