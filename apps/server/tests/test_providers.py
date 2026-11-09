@@ -62,3 +62,50 @@ def test_reload_clears_provider_caches(client):
     body = response.json()
     assert body["ok"] is True
     assert body["active"]["mt"] == "stub"
+
+
+def test_mms_config_without_weights_is_incomplete(monkeypatch, tmp_path):
+    from app import provider_catalog
+
+    model_dir = tmp_path / "mms"
+    model_dir.mkdir()
+    (model_dir / "config.json").write_text("{}", encoding="utf-8")
+    monkeypatch.setattr(provider_catalog, "_has_module", lambda name: True)
+    monkeypatch.setattr(settings, "tts_model", str(model_dir))
+
+    readiness = provider_catalog.describe(settings, "tts", "mms")
+
+    assert readiness.ready is False
+    assert readiness.reason == "model_incomplete"
+
+
+def test_mms_zero_byte_weights_are_incomplete(monkeypatch, tmp_path):
+    from app import provider_catalog
+
+    model_dir = tmp_path / "mms"
+    model_dir.mkdir()
+    (model_dir / "config.json").write_text("{}", encoding="utf-8")
+    (model_dir / "model.safetensors").write_bytes(b"")
+    monkeypatch.setattr(provider_catalog, "_has_module", lambda name: True)
+    monkeypatch.setattr(settings, "tts_model", str(model_dir))
+
+    readiness = provider_catalog.describe(settings, "tts", "mms")
+
+    assert readiness.ready is False
+    assert readiness.reason == "model_incomplete"
+
+
+def test_mms_config_with_weights_is_ready(monkeypatch, tmp_path):
+    from app import provider_catalog
+
+    model_dir = tmp_path / "mms"
+    model_dir.mkdir()
+    (model_dir / "config.json").write_text("{}", encoding="utf-8")
+    (model_dir / "model.safetensors").write_bytes(b"weights")
+    monkeypatch.setattr(provider_catalog, "_has_module", lambda name: True)
+    monkeypatch.setattr(settings, "tts_model", str(model_dir))
+
+    readiness = provider_catalog.describe(settings, "tts", "mms")
+
+    assert readiness.ready is True
+    assert readiness.reason is None

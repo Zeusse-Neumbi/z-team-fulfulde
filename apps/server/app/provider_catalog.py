@@ -204,10 +204,26 @@ def _has_module(name: str) -> bool:
 def _model_ready(settings: Settings, path: str) -> tuple[bool, str | None]:
     candidate = settings.resolve_path(path)
     if candidate.is_file():
-        return True, None
-    if (candidate / "config.json").is_file():
-        return True, None
-    return False, "model_missing"
+        return (True, None) if candidate.stat().st_size > 0 else (False, "model_incomplete")
+    if not (candidate / "config.json").is_file():
+        return False, "model_missing"
+    # A config without weights is a half-finished download. Never advertise it
+    # as ready: the first request would fail after a long model load.
+    weights = ("model.safetensors", "pytorch_model.bin", "model.bin", "model.pt")
+    for name in weights:
+        weight = candidate / name
+        if weight.is_file() and weight.stat().st_size > 0:
+            return True, None
+    return False, "model_incomplete"
+
+
+def _model_detail(path: str, reason: str | None) -> str:
+    if reason == "model_incomplete":
+        return (
+            f"{path} has config.json but no weight file. "
+            "Re-run ./scripts/download-models.sh to finish the download."
+        )
+    return f"Download the model into {path}."
 
 
 def _cloud_ready(settings: Settings, spec: ProviderSpec) -> tuple[bool, str | None, str | None]:
@@ -291,7 +307,7 @@ def describe(settings: Settings, kind: Kind, name: str) -> Readiness:
         if not ready:
             readiness.ready = False
             readiness.reason = reason
-            readiness.detail = f"Download the model into {settings.mt_model}."
+            readiness.detail = _model_detail(settings.mt_model, reason)
         return readiness
 
     if spec.name == "mms":
@@ -304,7 +320,7 @@ def describe(settings: Settings, kind: Kind, name: str) -> Readiness:
         if not ready:
             readiness.ready = False
             readiness.reason = reason
-            readiness.detail = f"Download the model into {settings.tts_model}."
+            readiness.detail = _model_detail(settings.tts_model, reason)
         return readiness
 
     if spec.requires_credentials:

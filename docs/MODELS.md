@@ -217,6 +217,7 @@ Every provider error returns `{"detail": {"code", "message", "provider"}}`.
 | `cloud_disabled` | 403 | cloud provider without `ZTEAM_ALLOW_CLOUD=1` |
 | `credentials_missing` | 503 | key or voice id not set |
 | `model_missing` | 503 | model directory absent |
+| `model_incomplete` | 503 | `config.json` present but no non-empty weight file |
 | `dependency_missing` | 503 | speech extra not installed |
 | `model_load_failed` | 503 | corrupt or incomplete model files |
 | `provider_unavailable` | 503 | loopback runtime not running |

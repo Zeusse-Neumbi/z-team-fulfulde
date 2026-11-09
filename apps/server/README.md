@@ -63,7 +63,7 @@ Providers raise a typed error that the API returns as:
 ```
 
 Codes: `provider_unknown`, `cloud_disabled`, `credentials_missing`,
-`model_missing`, `dependency_missing`, `model_load_failed`,
+`model_missing`, `model_incomplete`, `dependency_missing`, `model_load_failed`,
 `provider_unavailable`, `upstream_timeout`, `upstream_rate_limited`,
 `credentials_rejected`, `unsupported_language`, `upstream_error`,
 `text_too_long`, `phrasebank_missing`, `phrasebank_invalid`.
