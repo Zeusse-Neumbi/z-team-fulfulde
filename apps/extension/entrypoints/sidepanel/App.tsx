@@ -26,7 +26,7 @@ import {
   type HealthResponse,
   type VoiceState,
 } from "../../lib/backend";
-import { safeSpeechTexts } from "../../lib/speech";
+import { buildSpeechPlan } from "../../lib/speech";
 import { copy, type PanelCopy } from "./copy";
 
 const API = "http://127.0.0.1:8000";
@@ -68,12 +68,26 @@ export default function App() {
   const [audioError, setAudioError] = useState("");
   const [voice, setVoice] = useState<VoiceState>("unknown");
   const [readback, setReadback] = useState<Readback | null>(null);
+  const [pendingAction, setPendingAction] = useState<ActionView | null>(null);
   const [openSentences, setOpenSentences] = useState(true);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const urlsRef = useRef<string[]>([]);
   const t = copy[settings.uiLang];
+  const plan = useMemo(
+    () =>
+      status
+        ? buildSpeechPlan(status, {
+            step: t.step,
+            stepLabels: t.stepLabels,
+            valuesNote: t.valuesNotSpoken,
+            actionsNote: t.actionsPlanNote,
+            noContent: t.noContentPlan,
+          })
+        : null,
+    [status, t],
+  );
 
   const cleanupAudio = useCallback(() => {
     abortRef.current?.abort();
@@ -294,6 +308,18 @@ export default function App() {
     });
   }
 
+  async function verifyAction(action: ActionView) {
+    setPendingAction(action);
+    setMessage(t.actionSpoken);
+    if (voice === "ready") await playTexts([action.name]);
+  }
+
+  function confirmAction() {
+    const action = pendingAction;
+    setPendingAction(null);
+    if (action) void highlight(action);
+  }
+
   async function highlight(action: ActionView) {
     if (!status || !tab?.id) return;
     setBusy(true);
@@ -315,9 +341,15 @@ export default function App() {
   }
 
   async function playAudio() {
-    if (!status || voice !== "ready") return;
-    const texts = safeSpeechTexts(status);
+    if (!plan) return;
+    await playTexts(plan.spoken);
+  }
 
+  async function playTexts(texts: string[]) {
+    if (voice !== "ready") {
+      setMessage(t.audioUnavailable);
+      return;
+    }
     if (!texts.length) {
       setMessage(t.noSpeech);
       return;
@@ -539,6 +571,31 @@ export default function App() {
         </section>
       ) : null}
 
+      {status && plan ? (
+        <section className="card summary">
+          <div className="readback-head">
+            <h2>{t.summary}</h2>
+            <button
+              type="button"
+              onClick={playAudio}
+              disabled={voice !== "ready" || audio === "loading"}
+            >
+              ▶ {t.speakSummary}
+            </button>
+          </div>
+          <ol className="plan-list">
+            {plan.items.map((item) => (
+              <li key={item.id} className={`plan-item ${item.kind}`}>
+                <span className="kind">{item.kind}</span>
+                <span>{item.text}</span>
+                {!item.speakable ? <span className="count">🔇</span> : null}
+              </li>
+            ))}
+          </ol>
+          <p className="hint">{t.summaryHint}</p>
+        </section>
+      ) : null}
+
       <details
         className="card details"
         open={openSentences}
@@ -610,9 +667,27 @@ export default function App() {
                   </span>
                   <span className="action-name">{action.name}</span>
                 </div>
-                <button type="button" onClick={() => void highlight(action)} disabled={busy}>
-                  {t.showOnPage}
-                </button>
+                {pendingAction?.id === action.id ? (
+                  <div className="confirm-row">
+                    <button type="button" onClick={confirmAction} disabled={busy}>
+                      {t.confirmAction}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPendingAction(null);
+                        setMessage("");
+                      }}
+                      disabled={busy}
+                    >
+                      {t.cancelAction}
+                    </button>
+                  </div>
+                ) : (
+                  <button type="button" onClick={() => void verifyAction(action)} disabled={busy}>
+                    {t.verify}
+                  </button>
+                )}
               </li>
             ))}
             {locked.map((action) => (

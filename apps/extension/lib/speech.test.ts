@@ -1,6 +1,6 @@
 import type { TranslationStatus } from "@zteam/shared";
 import { describe, expect, it } from "vitest";
-import { safeSpeechTexts } from "./speech";
+import { buildSpeechPlan, safeSpeechTexts } from "./speech";
 
 const base: TranslationStatus = {
   active: true,
@@ -70,5 +70,149 @@ describe("safeSpeechTexts", () => {
       })),
     };
     expect(safeSpeechTexts(status, 3)).toHaveLength(3);
+  });
+});
+
+const strings = {
+  step: "Étape",
+  stepLabels: {
+    1: "Solde",
+    2: "Frais",
+    3: "Bénéficiaire",
+    4: "Récapitulatif",
+    5: "Confirmation",
+  } as const,
+  valuesNote: "Les montants restent affichés à l'écran.",
+  actionsNote: "Actions possibles ci-dessous.",
+  noContent: "Aucun texte disponible.",
+};
+
+const summaryStatus: TranslationStatus = {
+  ...base,
+  sentences: [
+    {
+      id: "s1",
+      source: "Votre solde est de 250 000 FCFA.",
+      target: "Solde maa ko 250 000 FCFA.",
+      status: "applied",
+      risk: "high",
+    },
+    {
+      id: "s2",
+      source: "Votre solde",
+      target: "Solde maa",
+      status: "applied",
+      risk: "low",
+    },
+    {
+      id: "s3",
+      source: "Ne partagez jamais votre code secret.",
+      target: "Taa haba code maa.",
+      status: "applied",
+      risk: "high",
+    },
+    {
+      id: "s4",
+      source: "Votre solde",
+      target: "Solde maa",
+      status: "applied",
+      risk: "low",
+    },
+    {
+      id: "s5",
+      source: "Frais",
+      target: null,
+      status: "missed",
+      risk: "unknown",
+    },
+  ],
+  protectedValues: [{ value: "250 000 FCFA", kind: "amount" }],
+  actions: [
+    { id: "a1", name: "Voir les frais", role: "button", risk: "medium", enabled: true, locked: false },
+    { id: "a2", name: "Confirmer", role: "button", risk: "high", enabled: true, locked: false },
+    { id: "a3", name: "Cocher", role: "checkbox", risk: "high", enabled: true, locked: true },
+    { id: "a4", name: "Annuler", role: "button", risk: "low", enabled: false, locked: false },
+  ],
+};
+
+describe("buildSpeechPlan", () => {
+  it("summarises step, facts, warnings and actions instead of every sentence", () => {
+    const plan = buildSpeechPlan(summaryStatus, strings);
+    const kinds = plan.items.map((item) => item.kind);
+    expect(kinds[0]).toBe("step");
+    expect(kinds).toContain("fact");
+    expect(kinds).toContain("warning");
+    expect(kinds.filter((kind) => kind === "action")).toHaveLength(2);
+    expect(plan.items.length).toBeLessThan(summaryStatus.sentences.length + 4);
+  });
+
+  it("never sends a sentence containing a protected value to TTS", () => {
+    const plan = buildSpeechPlan(summaryStatus, strings);
+    expect(plan.spoken.join(" ")).not.toContain("250 000 FCFA");
+    expect(plan.skippedValues).toBe(1);
+    expect(plan.items.some((item) => item.kind === "note" && /montants/.test(item.text))).toBe(
+      true,
+    );
+  });
+
+  it("orders high risk actions first and ignores locked or disabled ones", () => {
+    const plan = buildSpeechPlan(summaryStatus, strings);
+    const actions = plan.items.filter((item) => item.kind === "action").map((item) => item.text);
+    expect(actions[0]).toBe("Confirmer");
+    expect(actions).not.toContain("Cocher");
+    expect(actions).not.toContain("Annuler");
+  });
+
+  it("deduplicates repeated sentences", () => {
+    const plan = buildSpeechPlan(summaryStatus, strings);
+    const facts = plan.items.filter((item) => item.kind === "fact").map((item) => item.text);
+    expect(new Set(facts).size).toBe(facts.length);
+    expect(facts.filter((text) => text === "Solde maa")).toHaveLength(1);
+  });
+
+  it("falls back to the first safe sentence when there is no fact label", () => {
+    const status: TranslationStatus = {
+      ...base,
+      step: "unknown",
+      sentences: [
+        {
+          id: "x1",
+          source: "Bienvenue",
+          target: "Barka",
+          status: "applied",
+          risk: "low",
+        },
+      ],
+      protectedValues: [],
+      actions: [],
+    };
+    const plan = buildSpeechPlan(status, strings);
+    expect(plan.items[0]).toMatchObject({ kind: "fact", text: "Barka" });
+  });
+
+  it("respects the item cap", () => {
+    const plan = buildSpeechPlan(summaryStatus, strings, { maxItems: 2 });
+    expect(plan.items).toHaveLength(2);
+  });
+
+  it("does not speak an action name that contains a protected value", () => {
+    const status: TranslationStatus = {
+      ...base,
+      sentences: [],
+      protectedValues: [{ value: "CM 999", kind: "account" }],
+      actions: [
+        {
+          id: "a9",
+          name: "Envoyer vers CM 999",
+          role: "button",
+          risk: "high",
+          enabled: true,
+          locked: false,
+        },
+      ],
+    };
+    const plan = buildSpeechPlan(status, strings);
+    expect(plan.items.some((item) => item.text === "Envoyer vers CM 999")).toBe(true);
+    expect(plan.spoken).not.toContain("Envoyer vers CM 999");
   });
 });

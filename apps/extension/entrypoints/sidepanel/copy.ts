@@ -78,6 +78,16 @@ export interface PanelCopy {
   language: string;
   footer: string;
   refresh: string;
+  summary: string;
+  speakSummary: string;
+  summaryHint: string;
+  verify: string;
+  confirmAction: string;
+  cancelAction: string;
+  actionSpoken: string;
+  valuesNotSpoken: string;
+  actionsPlanNote: string;
+  noContentPlan: string;
 }
 
 export const copy: Record<UiLanguage, PanelCopy> = {
@@ -172,6 +182,18 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     language: "Langue de l’interface",
     footer: "Local-first · Adamawa Fulfulde (fub)",
     refresh: "Rafraîchir",
+    summary: "Résumé de la page",
+    speakSummary: "Lire le résumé",
+    summaryHint:
+      "L’assistant lit l’essentiel et les actions à faire, jamais toute la page. Les montants restent à l’écran.",
+    verify: "Vérifier",
+    confirmAction: "Confirmer",
+    cancelAction: "Annuler",
+    actionSpoken: "Action annoncée. Confirmez pour la montrer sur la page.",
+    valuesNotSpoken:
+      "Les montants, comptes et références ne sont pas lus à voix haute : vérifiez-les à l’écran.",
+    actionsPlanNote: "Actions possibles ci-dessous.",
+    noContentPlan: "Aucun texte à résumer."
   },
   en: {
     eyebrow: "Z-Team",
@@ -262,5 +284,16 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     language: "Interface language",
     footer: "Local-first · Adamawa Fulfulde (fub)",
     refresh: "Refresh",
-  },
+    summary: "Page summary",
+    speakSummary: "Read the summary",
+    summaryHint:
+      "The assistant reads the essentials and the next actions, never the whole page. Amounts stay on screen.",
+    verify: "Review",
+    confirmAction: "Confirm",
+    cancelAction: "Cancel",
+    actionSpoken: "Action announced. Confirm to show it on the page.",
+    valuesNotSpoken:
+      "Amounts, accounts and references are not read aloud: verify them on screen.",
+    actionsPlanNote: "Available actions are listed below.",
+    noContentPlan: "Nothing to summarise.",  },
 };

@@ -93,9 +93,15 @@ test("full French journey keeps every protected value", async () => {
     const editAction = panel
       .locator(".action-list li")
       .filter({ hasText: "Modifier" })
-      .getByRole("button", { name: "Montrer" });
+      .getByRole("button", { name: "Vérifier" });
     await expect(editAction).toBeVisible();
     await editAction.click();
+    const confirmAction = panel
+      .locator(".action-list li")
+      .filter({ hasText: "Modifier" })
+      .getByRole("button", { name: "Confirmer" });
+    await expect(confirmAction).toBeVisible();
+    await confirmAction.click();
     await expect.poll(async () => page.evaluate(() => document.activeElement?.id)).toBe("edit");
     await expect(panel.locator(".locked-note")).toHaveCount(1);
 
