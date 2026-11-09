@@ -80,13 +80,22 @@ value substrings remain byte-identical in the target.
 
 | Endpoint | Purpose | Scaffold behaviour |
 |---|---|---|
-| `GET /health` | Liveness and backend mode | Real |
-| `GET /version` | Versions | Real |
-| `POST /tts` | Text → WAV | Silent 0.2 s WAV, `X-ZTeam-Stub: 1` |
-| `POST /asr` | Audio → intent | `UNKNOWN`, confidence 0 |
-| `POST /translate` | Novel text → FF | Returns source unchanged, `translated: false` |
+| `GET /health` | Liveness, active providers and readiness reasons | Real |
+| `GET /version` | Versions and the cloud switch | Real |
+| `GET /providers` | Provider catalogue with `ready`, `reason`, licence and credential variable | Real |
+| `POST /providers/reload` | Drop cached model instances | Real |
+| `POST /tts` | Text → WAV/MP3, provider selected by config or request | Stub silence until a voice is installed |
+| `POST /asr` | Audio → closed-set intent | `UNKNOWN`, confidence 0 |
+| `POST /translate` | FR/EN → FF, provider selected by config or request | Source unchanged, `translated: false` |
+| `GET /phrasebank` | TM/phrase counts, warnings and release gate | Real; `?full=true` returns entries |
+| `POST /phrasebank/reload` | Re-read the YAML after an edit | Real |
 | `GET /metrics` | Request counts and latency | Real |
 | `POST /demo/reset` | Clear metrics | Real |
+
+Providers are `stub`, `ollama`, `nllb`, `marian` and `google` for translation,
+and `stub`, `mms`, `camb` and `elevenlabs` for speech. Cloud providers are
+refused unless `ZTEAM_ALLOW_CLOUD=1`. See [`MODELS.md`](MODELS.md) and
+[ADR 0011](decisions/0011-configurable-model-providers.md).
 
 ## Translation pipeline
 

@@ -19,6 +19,13 @@ import {
   injectContentScript,
   requestOriginPermission,
 } from "../../lib/permissions";
+import {
+  failureCopyKey,
+  parseBackendFailure,
+  voiceStateFromHealth,
+  type HealthResponse,
+  type VoiceState,
+} from "../../lib/backend";
 import { safeSpeechTexts } from "../../lib/speech";
 import { copy, type PanelCopy } from "./copy";
 
@@ -27,11 +34,6 @@ const SETTINGS_KEY = "zteam.panel.settings.v1";
 const DEFAULT_SETTINGS: PanelSettings = { uiLang: "fr", speed: 1 };
 
 type AudioState = "idle" | "loading" | "playing" | "paused";
-type VoiceState = "unknown" | "stub" | "ready" | "offline";
-
-interface HealthResponse {
-  backends?: { tts?: string };
-}
 
 function percent(value: number): string {
   return `${Math.round(value * 100)} %`;
@@ -125,8 +127,7 @@ export default function App() {
       const response = await fetch(`${API}/health`, { cache: "no-store" });
       if (!response.ok) throw new Error(`health ${response.status}`);
       const data = (await response.json()) as HealthResponse;
-      const backend = data.backends?.tts ?? "unknown";
-      setVoice(backend === "stub" ? "stub" : backend === "unknown" ? "unknown" : "ready");
+      setVoice(voiceStateFromHealth(data));
     } catch {
       setVoice("offline");
     }
@@ -329,7 +330,18 @@ export default function App() {
           body: JSON.stringify({ text: text.slice(0, 500), voice: "demo", speed: settings.speed }),
           signal: controller.signal,
         });
-        if (!response.ok) throw new Error(`Backend ${response.status}`);
+        if (!response.ok) {
+          let body: unknown = null;
+          try {
+            body = await response.json();
+          } catch {
+            body = null;
+          }
+          const failure = parseBackendFailure(response.status, body);
+          setAudio("idle");
+          setAudioError(t[failureCopyKey(failure)]);
+          return;
+        }
 
         if (response.headers.get("X-ZTeam-Stub") === "1") {
           setVoice("stub");
@@ -659,9 +671,11 @@ export default function App() {
           <span className={`voice ${voice}`}>
             {voice === "stub"
               ? t.audioStub
-              : voice === "offline" || voice === "unknown"
-                ? t.audioUnavailable
-                : `${t.audio} : ${voice}`}
+              : voice === "unavailable"
+                ? t.voiceUnavailable
+                : voice === "offline" || voice === "unknown"
+                  ? t.audioUnavailable
+                  : `${t.audio} : ${voice}`}
           </span>
         </div>
         <div className="actions audio-actions">

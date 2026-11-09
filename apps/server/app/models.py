@@ -2,9 +2,12 @@ from pydantic import BaseModel, Field
 
 
 class TTSRequest(BaseModel):
-    text: str = Field(min_length=1, max_length=500)
+    text: str = Field(min_length=1, max_length=2000)
     voice: str = "demo"
     speed: float = Field(default=1.0, ge=0.5, le=2.0)
+    provider: str | None = None
+    voice_id: str | None = None
+    language: str | None = None
 
 
 class TTSResponse(BaseModel):
@@ -21,15 +24,22 @@ class ASRResponse(BaseModel):
 
 
 class TranslateRequest(BaseModel):
-    text: str = Field(min_length=1, max_length=1000)
+    text: str = Field(min_length=1, max_length=4000)
     source: str = "fr"
     target: str = "ff"
+    provider: str | None = None
+    model: str | None = None
 
 
 class TranslateResponse(BaseModel):
     text: str
     translated: bool
     provider: str
+    model: str
+    local: bool
+    latency_ms: float
+    target_lang: str
+    stub: bool = False
 
 
 class VersionResponse(BaseModel):
@@ -39,3 +49,4 @@ class VersionResponse(BaseModel):
     tts_backend: str
     asr_backend: str
     mt_backend: str
+    allow_cloud: bool = False
