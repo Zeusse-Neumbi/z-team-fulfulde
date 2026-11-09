@@ -106,6 +106,11 @@ test("full French journey keeps every protected value", async () => {
     await expect(panel.locator(".locked-note")).toHaveCount(1);
 
     await page.locator("#confirm").click();
+    await expect(panel.locator(".page-guard")).toBeVisible();
+    await expect(panel.locator(".page-guard")).toContainText("Confirmer");
+    await panel.getByRole("button", { name: "Autoriser ce clic" }).click();
+    await expect(panel.locator(".notice")).toContainText("Clic autorisé");
+    await page.locator("#confirm").click();
     await expect(page.locator("#error")).toContainText("CONFIRM_001");
     await expect(page.locator("#error")).toContainText("FF:tm.error.confirm_required");
 

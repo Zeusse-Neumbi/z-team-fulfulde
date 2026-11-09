@@ -18,6 +18,7 @@ test("the panel uses the real local voice and never sends a protected value", as
       }
     });
 
+    await panel.getByRole("checkbox", { name: /Lire aussi les montants|Read amounts/ }).check();
     await startOnPanel(panel);
     await expect(panel.locator(".voice.ready")).toContainText(/Audio/);
 
@@ -25,11 +26,18 @@ test("the panel uses the real local voice and never sends a protected value", as
     await expect(speak).toBeEnabled();
     await speak.click();
 
-    await expect.poll(() => ttsBodies.length, { timeout: 60_000 }).toBeGreaterThan(0);
+    await expect
+      .poll(() => ttsBodies.join(" "), { timeout: 60_000 })
+      .toContain("Montant");
     const payload = ttsBodies.join(" ");
-    for (const value of ["175 000 FCFA", "CM 999 8887 7776 55", "12 500 FCFA"]) {
-      expect(payload).not.toContain(value);
-    }
+
+    // Compare against the exact value the page displays, including its NBSP.
+    await panel.locator("details").nth(1).locator("summary").click();
+    const values = await panel.locator(".value-list code").allInnerTexts();
+    const amount = values.find((value) => value.includes("FCFA"));
+    expect(amount).toBeTruthy();
+    expect(payload).toContain((amount ?? "").trim());
+    expect(payload).not.toContain("CM 999");
     expect(payload).toContain("Étape");
 
     // The same real voice announces an action before the user confirms it.

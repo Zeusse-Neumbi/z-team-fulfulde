@@ -83,6 +83,8 @@ const strings = {
     5: "Confirmation",
   } as const,
   valuesNote: "Les montants restent affichés à l'écran.",
+  amountLabel: "Montant",
+  feeLabel: "Frais",
   actionsNote: "Actions possibles ci-dessous.",
   noContent: "Aucun texte disponible.",
 };
@@ -214,5 +216,49 @@ describe("buildSpeechPlan", () => {
     const plan = buildSpeechPlan(status, strings);
     expect(plan.items.some((item) => item.text === "Envoyer vers CM 999")).toBe(true);
     expect(plan.spoken).not.toContain("Envoyer vers CM 999");
+  });
+});
+
+describe("buildSpeechPlan with spoken values", () => {
+  it("speaks the exact amount when the local voice opts in", () => {
+    const plan = buildSpeechPlan(summaryStatus, strings, { allowValues: true });
+    const spoken = plan.spoken.join(" | ");
+    expect(spoken).toContain("Montant 250 000 FCFA");
+    expect(plan.skippedValues).toBe(0);
+    expect(plan.items.some((item) => item.kind === "note" && /montants/.test(item.text))).toBe(
+      false,
+    );
+  });
+
+  it("keeps the value byte-identical in the plan text", () => {
+    const plan = buildSpeechPlan(summaryStatus, strings, { allowValues: true });
+    const fact = plan.items.find((item) => item.text.includes("250 000 FCFA"));
+    expect(fact?.text).toContain("250 000 FCFA");
+    expect(fact?.speakable).toBe(true);
+  });
+});
+
+describe("buildSpeechPlan identifier safety", () => {
+  it("still refuses an account number when amounts are allowed", () => {
+    const status: TranslationStatus = {
+      ...base,
+      sentences: [
+        {
+          id: "acc",
+          source: "Numéro de compte : CM 999 8887 7776 55",
+          target: "Limngal ceede : CM 999 8887 7776 55",
+          status: "applied",
+          risk: "high",
+        },
+      ],
+      protectedValues: [
+        { value: "CM 999 8887 7776 55", kind: "account" },
+        { value: "250 000 FCFA", kind: "amount" },
+      ],
+      actions: [],
+    };
+    const plan = buildSpeechPlan(status, strings, { allowValues: true });
+    expect(plan.spoken.join(" ")).toContain("Montant 250 000 FCFA");
+    expect(plan.spoken.join(" ")).not.toContain("CM 999 8887 7776 55");
   });
 });

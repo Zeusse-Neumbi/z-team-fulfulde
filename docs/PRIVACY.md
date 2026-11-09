@@ -42,10 +42,15 @@ this table describes what ships.
 - The panel calls `/health` to discover whether a real voice is configured. It reads
   `ready.tts`; a configured but unusable backend (missing model, missing key, disabled
   cloud) is reported as unavailable and the play button stays disabled.
-- With a real voice, `/tts` receives only the spoken summary: the step, the important
-  labels, the warnings and the action names. A sentence that contains a protected value is
-  excluded before the request, so `/tts` never receives an amount, account, phone, reference
-  or name. The API does not log request bodies.
+- With a real voice, `/tts` receives the spoken summary: the step, the important labels,
+  the warnings and the action names. By default a sentence that contains a protected value
+  is excluded before the request.
+- The user may opt in to **spoken amounts** (`speakValues`). Only `amount` and `fee` values
+  are then sent, only to a backend that reports `local: true`, and only to `127.0.0.1`.
+  Accounts, phones, references, names and user input are still excluded. The API does not
+  log request bodies and keeps no value on disk. A cloud voice cannot receive values: the
+  panel forces the option off when `tts.local` is false.
+- The API does not log request bodies.
 - The summary and the action-confirmation phrases stay in the browser; no page value is sent
   to the local API to build them.
 - The e2e journey records every request and asserts that no request goes to a non-loopback host.

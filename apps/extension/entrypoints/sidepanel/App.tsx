@@ -31,7 +31,7 @@ import { copy, type PanelCopy } from "./copy";
 
 const API = "http://127.0.0.1:8000";
 const SETTINGS_KEY = "zteam.panel.settings.v1";
-const DEFAULT_SETTINGS: PanelSettings = { uiLang: "fr", speed: 1 };
+const DEFAULT_SETTINGS: PanelSettings = { uiLang: "fr", speed: 1, speakValues: false };
 
 type AudioState = "idle" | "loading" | "playing" | "paused";
 
@@ -67,6 +67,7 @@ export default function App() {
   const [audio, setAudio] = useState<AudioState>("idle");
   const [audioError, setAudioError] = useState("");
   const [voice, setVoice] = useState<VoiceState>("unknown");
+  const [voiceLocal, setVoiceLocal] = useState(true);
   const [readback, setReadback] = useState<Readback | null>(null);
   const [pendingAction, setPendingAction] = useState<ActionView | null>(null);
   const [openSentences, setOpenSentences] = useState(true);
@@ -82,11 +83,13 @@ export default function App() {
             step: t.step,
             stepLabels: t.stepLabels,
             valuesNote: t.valuesNotSpoken,
+            amountLabel: t.amount,
+            feeLabel: t.fee,
             actionsNote: t.actionsPlanNote,
             noContent: t.noContentPlan,
-          })
+          }, { allowValues: settings.speakValues && voiceLocal })
         : null,
-    [status, t],
+    [status, t, settings.speakValues, voiceLocal],
   );
 
   const cleanupAudio = useCallback(() => {
@@ -142,6 +145,7 @@ export default function App() {
       if (!response.ok) throw new Error(`health ${response.status}`);
       const data = (await response.json()) as HealthResponse;
       setVoice(voiceStateFromHealth(data));
+      setVoiceLocal(data.tts?.local ?? true);
     } catch {
       setVoice("offline");
     }
@@ -306,6 +310,31 @@ export default function App() {
       const next = await sendToTab<Readback>(target.id as number, { type: "GET_READBACK" });
       setReadback(next);
     });
+  }
+
+  async function confirmPageClick() {
+    if (!status?.pendingPageAction || !tab?.id) return;
+    setBusy(true);
+    try {
+      const result = await sendToTab<{ ok: boolean; error?: string }>(tab.id, {
+        type: "CONFIRM_PAGE_ACTION",
+        actionId: status.pendingPageAction.id,
+        snapshotId: status.actionSnapshotId,
+      });
+      setMessage(result.ok ? t.pageClickArmed : t.staleAction);
+      await refreshStatus();
+    } catch (error) {
+      setMessage(humanizeError(error instanceof Error ? error.message : String(error), t));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function cancelPageClick() {
+    if (!tab?.id) return;
+    await sendToTab(tab.id, { type: "CANCEL_PAGE_ACTION" }).catch(() => undefined);
+    setMessage("");
+    await refreshStatus();
   }
 
   async function verifyAction(action: ActionView) {
@@ -571,6 +600,23 @@ export default function App() {
         </section>
       ) : null}
 
+      {status?.pendingPageAction ? (
+        <section className="card page-guard" role="alertdialog" aria-live="assertive">
+          <p className="label">{t.pageClickTitle}</p>
+          <p className="guard-name">{status.pendingPageAction.name}</p>
+          <span className={`risk ${status.pendingPageAction.risk}`}>{t.highRisk}</span>
+          <p className="hint">{t.pageClickHint}</p>
+          <div className="confirm-row">
+            <button type="button" onClick={confirmPageClick} disabled={busy}>
+              {t.pageClickConfirm}
+            </button>
+            <button type="button" onClick={cancelPageClick} disabled={busy}>
+              {t.pageClickCancel}
+            </button>
+          </div>
+        </section>
+      ) : null}
+
       {status && plan ? (
         <section className="card summary">
           <div className="readback-head">
@@ -806,6 +852,16 @@ export default function App() {
             <option value="fr">Français</option>
             <option value="en">English</option>
           </select>
+        </label>
+        <label className="footer-setting" title={t.speakValuesHint}>
+          <input
+            type="checkbox"
+            checked={settings.speakValues}
+            onChange={(event) =>
+              setSettings((current) => ({ ...current, speakValues: event.target.checked }))
+            }
+          />
+          {t.speakValues}
         </label>
         <span>{t.footer}</span>
       </footer>

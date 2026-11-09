@@ -88,6 +88,13 @@ export interface PanelCopy {
   valuesNotSpoken: string;
   actionsPlanNote: string;
   noContentPlan: string;
+  pageClickTitle: string;
+  pageClickHint: string;
+  pageClickConfirm: string;
+  pageClickCancel: string;
+  pageClickArmed: string;
+  speakValues: string;
+  speakValuesHint: string;
 }
 
 export const copy: Record<UiLanguage, PanelCopy> = {
@@ -193,7 +200,16 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     valuesNotSpoken:
       "Les montants, comptes et références ne sont pas lus à voix haute : vérifiez-les à l’écran.",
     actionsPlanNote: "Actions possibles ci-dessous.",
-    noContentPlan: "Aucun texte à résumer."
+    noContentPlan: "Aucun texte à résumer.",
+    pageClickTitle: "Vous avez cliqué :",
+    pageClickHint:
+      "Le clic a été mis en pause. Confirmez pour l’autoriser, puis cliquez à nouveau sur le bouton dans la page.",
+    pageClickConfirm: "Autoriser ce clic",
+    pageClickCancel: "Annuler",
+    pageClickArmed: "Clic autorisé. Cliquez à nouveau sur le bouton dans la page.",
+    speakValues: "Lire aussi les montants",
+    speakValuesHint:
+      "Les montants sont alors envoyés à la voix locale 127.0.0.1, jamais à un service cloud."
   },
   en: {
     eyebrow: "Z-Team",
@@ -295,5 +311,14 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     valuesNotSpoken:
       "Amounts, accounts and references are not read aloud: verify them on screen.",
     actionsPlanNote: "Available actions are listed below.",
-    noContentPlan: "Nothing to summarise.",  },
+    noContentPlan: "Nothing to summarise.",
+    pageClickTitle: "You clicked:",
+    pageClickHint:
+      "The click is paused. Confirm to allow it, then click the page button again.",
+    pageClickConfirm: "Allow this click",
+    pageClickCancel: "Cancel",
+    pageClickArmed: "Click allowed. Click the page button again.",
+    speakValues: "Read amounts aloud too",
+    speakValuesHint:
+      "Amounts are then sent to the local 127.0.0.1 voice, never to a cloud service.",  },
 };

@@ -1,6 +1,6 @@
 import type { ActionView, TranslationStatus } from "@zteam/shared";
 
-export type SpeechKind = "step" | "fact" | "warning" | "action" | "note";
+export type SpeechKind = "step" | "value" | "fact" | "warning" | "action" | "note";
 
 export interface SpeechItem {
   id: string;
@@ -14,6 +14,8 @@ export interface SpeechPlanStrings {
   step: string;
   stepLabels: Record<1 | 2 | 3 | 4 | 5, string>;
   valuesNote: string;
+  amountLabel: string;
+  feeLabel: string;
   actionsNote: string;
   noContent: string;
 }
@@ -54,10 +56,20 @@ function containsValue(text: string, values: string[]): boolean {
 export function buildSpeechPlan(
   status: TranslationStatus,
   strings: SpeechPlanStrings,
-  options: { maxItems?: number } = {},
+  options: { maxItems?: number; allowValues?: boolean } = {},
 ): SpeechPlan {
   const maxItems = options.maxItems ?? MAX_ITEMS;
+  const allowValues = options.allowValues ?? false;
   const values = status.protectedValues.map((value) => value.value.trim()).filter(Boolean);
+  const kinds = new Map(
+    status.protectedValues.map((value) => [value.value.trim(), value.kind] as const),
+  );
+  // Even when amounts are allowed, identifiers are never read aloud.
+  const hasSensitiveValue = (text: string): boolean =>
+    values.some(
+      (value) =>
+        text.includes(value) && !["amount", "fee"].includes(kinds.get(value) ?? "other"),
+    );
   const items: SpeechItem[] = [];
   const seen = new Set<string>();
 
@@ -74,6 +86,17 @@ export function buildSpeechPlan(
     push("step", "step", `${strings.step} ${status.step}/5 — ${label}`, true);
   }
 
+  if (allowValues) {
+    let added = 0;
+    for (const value of status.protectedValues) {
+      if (added >= 3) break;
+      if (value.kind !== "amount" && value.kind !== "fee") continue;
+      const label = value.kind === "fee" ? strings.feeLabel : strings.amountLabel;
+      push("value", `v-${value.kind}-${added}`, `${label} ${value.value}`, true);
+      added += 1;
+    }
+  }
+
   const applied = status.sentences.filter(
     (sentence) => sentence.status === "applied" && sentence.target?.trim(),
   );
@@ -86,7 +109,8 @@ export function buildSpeechPlan(
   for (const sentence of applied) {
     const target = sentence.target?.trim() ?? "";
     const unsafe = containsValue(target, values) || containsValue(sentence.source, values);
-    if (unsafe) {
+    const sensitive = hasSensitiveValue(target) || hasSensitiveValue(sentence.source);
+    if (sensitive || (unsafe && !allowValues)) {
       skippedValues += 1;
       continue;
     }
@@ -114,13 +138,13 @@ export function buildSpeechPlan(
 
   for (const action of actions) {
     const unsafe = containsValue(action.name, values);
-    push("action", `a-${action.id}`, action.name, !unsafe);
+    push("action", `a-${action.id}`, action.name, !unsafe || (allowValues && !hasSensitiveValue(action.name)));
   }
 
   if (actions.length > 0) {
     push("note", "actions-note", strings.actionsNote, true);
   }
-  if (values.length > 0) {
+  if (values.length > 0 && !allowValues) {
     push("note", "values-note", strings.valuesNote, true);
   }
   if (items.length === 0) {
@@ -147,6 +171,15 @@ function riskRank(action: ActionView): number {
  */
 export function safeSpeechTexts(status: TranslationStatus, limit = 12): string[] {
   const values = status.protectedValues.map((value) => value.value.trim()).filter(Boolean);
+  const kinds = new Map(
+    status.protectedValues.map((value) => [value.value.trim(), value.kind] as const),
+  );
+  // Even when amounts are allowed, identifiers are never read aloud.
+  const hasSensitiveValue = (text: string): boolean =>
+    values.some(
+      (value) =>
+        text.includes(value) && !["amount", "fee"].includes(kinds.get(value) ?? "other"),
+    );
   return status.sentences
     .filter((sentence) => sentence.status === "applied" && sentence.target)
     .map((sentence) => sentence.target?.trim() ?? "")

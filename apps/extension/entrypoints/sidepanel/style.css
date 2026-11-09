@@ -632,3 +632,17 @@ details.card[open] summary::before {
   background: #2563eb;
   color: #fff;
 }
+
+.page-guard {
+  border: 2px solid #b45309;
+}
+
+.guard-name {
+  font-size: 1.05rem;
+  font-weight: 650;
+  margin: 0.2rem 0 0.4rem;
+}
+
+.footer-setting input {
+  margin-right: 0.35rem;
+}

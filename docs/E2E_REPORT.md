@@ -20,13 +20,14 @@ Playwright suite (`pnpm e2e`), 10 tests:
 |---|---|
 | `journey.spec.ts` (3) | FR and EN journeys, protected values, novel content, errors |
 | `summary.spec.ts` (2) | summary is shorter than the sentence list, values excluded, action needs confirmation |
-| `backend.spec.ts` (1) | real local voice is `ready`, the plan is sent to `/tts`, no protected value in the payload |
+| `backend.spec.ts` (1) | real local voice is `ready`, spoken amounts are byte-identical in the `/tts` body, account numbers are not |
+| `click-guard.spec.ts` (1) | a high-risk page click is paused, cancelled, confirmed and re-clicked without auto-clicking |
 | `a11y.spec.ts` (2) | no serious axe violations, keyboard-only controls |
 | `on-demand.spec.ts` (1) | runtime injection outside the manifest matches |
 | `smoke.spec.ts` (1) | extension and panel load |
 | `visual.spec.ts` (1) | no overflow at mobile and desktop widths |
 
-Result: **10 passed**.
+Result: **12 passed**.
 
 Example evidence from `summary.spec.ts`:
 
@@ -39,6 +40,17 @@ Vérifier → Confirmer/Annuler visible → Confirmer → "Action montrée sur l
 
 `backend.spec.ts` asserts that the panel's `.voice.ready` is visible and that
 the `/tts` request bodies contain `Étape` and none of the canary values.
+
+## 1b. Page click guard and spoken amounts
+
+- Clicking `#confirm` on step 4 does not reach the page: the panel shows
+  `Vous avez cliqué : Confirmer` with `Autoriser ce clic` / `Annuler`.
+- Cancel leaves the page untouched; confirm arms the action for 20 s and the
+  user re-clicks. The extension never dispatches the click.
+- With **Lire aussi les montants** enabled, the plan speaks
+  `Montant 175 000 FCFA` (and the fee/movement values) through the local MMS
+  voice. The Playwright assertion compares the `/tts` body with the exact value
+  shown in the panel, including its NBSP. `CM 999 8887 7776 55` is absent.
 
 ## 2. Local API stress
 
