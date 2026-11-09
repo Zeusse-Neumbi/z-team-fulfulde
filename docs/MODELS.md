@@ -36,8 +36,9 @@ Notes that matter for the comparison:
 ## Download the local models
 
 ```bash
-./scripts/download-models.sh            # MMS-TTS Fulah, ~138 MB
-./scripts/download-models.sh mms nllb   # + NLLB-200 600M, ~2.6 GB
+./scripts/download-models.sh                 # MMS-TTS Fulah, ~138 MB
+./scripts/download-models.sh mms nllb-ct2    # + NLLB-200 600M int8, ~647 MB
+./scripts/download-models.sh mms nllb        # + the fp32 checkpoint, ~2.6 GB
 ```
 
 The script re-resolves the Hugging Face signed URL on every retry and resumes,
@@ -64,6 +65,12 @@ checkpoint (slower and more RAM).
 ```bash
 uv sync --project apps/server --extra dev --extra speech
 ```
+
+The `nllb-ct2` target is a community int8 CTranslate2 conversion of the
+official 600M checkpoint (`JustFrederik/nllb-200-distilled-600M-ct2-int8`,
+26.9K downloads, same CC-BY-NC-4.0 licence). It loads directly with
+`ZTEAM_MT_RUNTIME=ct2` and `ZTEAM_MT_MODEL=models/nllb-200-600m-int8`; verify the
+`model.bin` SHA-256 against the repository before relying on it.
 
 `torch` is large. On CPU-only machines, install the CPU wheel first:
 

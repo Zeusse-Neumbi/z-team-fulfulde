@@ -2,7 +2,7 @@
 # Download the models that run on this machine.
 #
 #   ./scripts/download-models.sh              # MMS-TTS Fulah (about 150 MB)
-#   ./scripts/download-models.sh mms nllb     # MMS + NLLB-200 600M (about 2.6 GB)
+#   ./scripts/download-models.sh mms nllb-ct2 # MMS + NLLB-200 600M int8 (about 790 MB)
 #   ./scripts/download-models.sh --list
 #   ./scripts/download-models.sh --out models
 #
@@ -19,10 +19,11 @@ TARGETS=()
 
 usage() {
   cat <<'EOF'
-Usage: scripts/download-models.sh [--out DIR] [--list] [mms] [nllb] [marian]
+Usage: scripts/download-models.sh [--out DIR] [--list] [mms] [nllb] [nllb-ct2] [marian]
 
   mms     facebook/mms-tts-ful, VITS 36M, CC-BY-NC-4.0 (default)
-  nllb    facebook/nllb-200-distilled-600M, CC-BY-NC-4.0 (2.6 GB, needs conversion)
+  nllb      facebook/nllb-200-distilled-600M, CC-BY-NC-4.0 (2.6 GB, needs conversion)
+  nllb-ct2  JustFrederik/nllb-200-distilled-600M-ct2-int8, CC-BY-NC-4.0 (647 MB, ready to load)
   marian  A local CTranslate2 Marian model; pass ZTEAM_MARIAN_MODEL to override
   --list  print the table and exit
 EOF
@@ -33,7 +34,7 @@ while [ $# -gt 0 ]; do
     --out) OUT_DIR="$2"; shift 2 ;;
     --list) usage; exit 0 ;;
     -h|--help) usage; exit 0 ;;
-    mms|nllb|marian) TARGETS+=("$1"); shift ;;
+    mms|nllb|nllb-ct2|marian) TARGETS+=("$1"); shift ;;
     *) echo "unknown argument: $1" >&2; usage >&2; exit 2 ;;
   esac
 done
@@ -194,6 +195,14 @@ directory when `ZTEAM_MT_TOKENIZER` is not set):
 Use `ZTEAM_MT_RUNTIME=transformers` to skip the conversion and read
 `models/nllb-200-600m` directly (slower, more RAM).
 EOF
+    ;;
+esac
+
+case " ${TARGETS[*]} " in
+  *" nllb-ct2 "*)
+    fetch_repo JustFrederik/nllb-200-distilled-600M-ct2-int8 "$OUT_DIR/nllb-200-600m-int8" \
+      config.json shared_vocabulary.txt sentencepiece.bpe.model tokenizer.json \
+      tokenizer_config.json special_tokens_map.json model.bin
     ;;
 esac
 
