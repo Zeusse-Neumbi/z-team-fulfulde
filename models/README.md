@@ -12,7 +12,8 @@ They are downloaded into `models/` (gitignored) with
 | Model | Licence | Use |
 |---|---|---|
 | `facebook/mms-tts-ful` | CC-BY-NC-4.0 | TTS baseline; fine-tune optional |
-| `facebook/nllb-200-distilled-600M` | CC-BY-NC-4.0 | FR/EN → Fulfulde baseline |
+| `facebook/nllb-200-distilled-600M` | CC-BY-NC-4.0 | FR/EN → Fulfulde baseline (fp32) |
+| `JustFrederik/nllb-200-distilled-600M-ct2-int8` | CC-BY-NC-4.0 | Community int8 conversion; loads with CTranslate2 |
 | Fine-tuned MMS/VITS | CC-BY-NC-4.0 (inherits) | Optional demo voice |
 | `flagship-ai/francais-fufulde` | CC-BY-4.0 | Optional local FR→FF fallback |
 | `DS4H-ICTU/linguo_mt_en_fub` | Apache-2.0 | Optional local EN→FUB fallback |
