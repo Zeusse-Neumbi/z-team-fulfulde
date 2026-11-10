@@ -189,3 +189,21 @@ export function safeSpeechTexts(status: TranslationStatus, limit = 12): string[]
     )
     .slice(0, limit);
 }
+
+/**
+ * A page-click announcement is spoken only when the button name does not
+ * contain a protected value. The voice must be local; the caller checks that.
+ */
+export function shouldSpeakPageAction(
+  action: { name: string } | undefined,
+  values: Array<{ value: string; kind?: string }>,
+): boolean {
+  if (!action || !action.name.trim()) return false;
+  const sensitive = new Set(["account", "phone", "reference", "person", "user_input"]);
+  return !values.some(
+    (value) =>
+      value.value.length >= 4 &&
+      (!value.kind || sensitive.has(value.kind)) &&
+      action.name.includes(value.value),
+  );
+}

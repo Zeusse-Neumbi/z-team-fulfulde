@@ -47,6 +47,10 @@ the `/tts` request bodies contain `Étape` and none of the canary values.
   `Vous avez cliqué : Confirmer` with `Autoriser ce clic` / `Annuler`.
 - Cancel leaves the page untouched; confirm arms the action for 20 s and the
   user re-clicks. The extension never dispatches the click.
+- Clicking the page's high-risk `#confirm` directly triggers a real `/tts`
+  request whose body contains `Confirmer le transfert` — the button's exact
+  accessible name — before the panel asks for confirmation. The assertion reads
+  the bodies captured from the panel's own fetch.
 - With **Lire aussi les montants** enabled, the plan speaks
   `Montant 175 000 FCFA` (and the fee/movement values) through the local MMS
   voice. The Playwright assertion compares the `/tts` body with the exact value

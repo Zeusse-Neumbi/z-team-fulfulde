@@ -10,7 +10,7 @@ test("the panel uses the real local voice and never sends a protected value", as
   const ttsBodies: string[] = [];
 
   try {
-    await openMock(context);
+    const page = await openMock(context);
     const panel = await openPanel(context, extensionId);
     panel.on("request", (request) => {
       if (request.url().endsWith("/tts") && request.method() === "POST") {
@@ -51,6 +51,21 @@ test("the panel uses the real local voice and never sends a protected value", as
       .poll(() => ttsBodies.slice(before).join(" "), { timeout: 30_000 })
       .toContain(name.slice(0, Math.min(8, name.length)));
     await expect(firstAction.getByRole("button", { name: "Confirmer" })).toBeVisible();
+    await firstAction.getByRole("button", { name: "Annuler" }).click();
+
+    // A direct high-risk page click must be read aloud by the local voice.
+    await page.locator("#to-fees").click();
+    await page.locator("#continue").click();
+    await page.locator("#beneficiary-verified").check();
+    await page.locator("#continue").click();
+    await expect(panel.locator(".chip").first()).toContainText("Étape 4/5");
+
+    const beforePageClick = ttsBodies.length;
+    await page.locator("#confirm").click();
+    await expect(panel.locator(".page-guard")).toBeVisible();
+    await expect
+      .poll(() => ttsBodies.slice(beforePageClick).join(" "), { timeout: 30_000 })
+      .toContain("Confirmer");
   } finally {
     await context.close();
   }

@@ -1,6 +1,6 @@
 import type { TranslationStatus } from "@zteam/shared";
 import { describe, expect, it } from "vitest";
-import { buildSpeechPlan, safeSpeechTexts } from "./speech";
+import { buildSpeechPlan, safeSpeechTexts, shouldSpeakPageAction } from "./speech";
 
 const base: TranslationStatus = {
   active: true,
@@ -260,5 +260,32 @@ describe("buildSpeechPlan identifier safety", () => {
     const plan = buildSpeechPlan(status, strings, { allowValues: true });
     expect(plan.spoken.join(" ")).toContain("Montant 250 000 FCFA");
     expect(plan.spoken.join(" ")).not.toContain("CM 999 8887 7776 55");
+  });
+});
+
+describe("shouldSpeakPageAction", () => {
+  it("speaks a plain button name", () => {
+    expect(shouldSpeakPageAction({ name: "Confirmer" }, [])).toBe(true);
+  });
+
+  it("refuses a button name that contains a protected value", () => {
+    expect(
+      shouldSpeakPageAction({ name: "Envoyer vers CM 999 8887" }, [
+        { value: "CM 999 8887", kind: "account" },
+      ]),
+    ).toBe(false);
+  });
+
+  it("ignores short generic vault tokens such as a checkbox value", () => {
+    expect(
+      shouldSpeakPageAction({ name: "Confirmer le transfert" }, [
+        { value: "on", kind: "user_input" },
+      ]),
+    ).toBe(true);
+  });
+
+  it("refuses an empty name", () => {
+    expect(shouldSpeakPageAction({ name: "  " }, [])).toBe(false);
+    expect(shouldSpeakPageAction(undefined, [])).toBe(false);
   });
 });

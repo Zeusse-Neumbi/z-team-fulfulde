@@ -42,7 +42,10 @@ but it makes the assistant useless for the main task.
    (confirm/send/pay/validate/delete/checkbox semantics). Navigation and form
    fields keep their native behaviour.
 2. The paused click is reported in `TranslationStatus.pendingPageAction`; the
-   panel announces the button's accessible name and asks for confirmation.
+   panel speaks the button's accessible name once through the local voice and
+   asks for confirmation. Names that contain a sensitive identifier (account,
+   phone, reference, person, user input of at least four characters) are shown
+   but not spoken.
 3. `Confirmer` arms that action for a 20-second window; the user clicks the page
    button again. The extension never dispatches a click, never checks a box and
    never submits. After a validation error the same action can be retried inside

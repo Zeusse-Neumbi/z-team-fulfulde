@@ -26,7 +26,7 @@ import {
   type HealthResponse,
   type VoiceState,
 } from "../../lib/backend";
-import { buildSpeechPlan } from "../../lib/speech";
+import { buildSpeechPlan, shouldSpeakPageAction } from "../../lib/speech";
 import { copy, type PanelCopy } from "./copy";
 
 const API = "http://127.0.0.1:8000";
@@ -73,6 +73,7 @@ export default function App() {
   const [openSentences, setOpenSentences] = useState(true);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const spokenPendingRef = useRef<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const urlsRef = useRef<string[]>([]);
   const t = copy[settings.uiLang];
@@ -336,6 +337,22 @@ export default function App() {
     setMessage("");
     await refreshStatus();
   }
+
+  useEffect(() => {
+    const pending = status?.pendingPageAction;
+    if (!pending) {
+      spokenPendingRef.current = null;
+      return;
+    }
+    if (spokenPendingRef.current === pending.id) return;
+    spokenPendingRef.current = pending.id;
+    if (voice !== "ready") return;
+    if (!shouldSpeakPageAction(pending, status?.protectedValues ?? [])) return;
+    void playTexts([pending.name]);
+    // playTexts is intentionally read through the render closure; the id guard
+    // prevents a second announcement while the status keeps polling.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, voice]);
 
   async function verifyAction(action: ActionView) {
     setPendingAction(action);
