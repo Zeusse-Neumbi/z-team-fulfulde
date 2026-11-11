@@ -1,6 +1,15 @@
 import type { ActionView, TranslationStatus } from "@zteam/shared";
 
-export type SpeechKind = "step" | "value" | "fact" | "warning" | "action" | "note";
+export type SpeechKind =
+  | "page"
+  | "purpose"
+  | "section"
+  | "step"
+  | "value"
+  | "fact"
+  | "warning"
+  | "action"
+  | "note";
 
 export interface SpeechItem {
   id: string;
@@ -32,8 +41,10 @@ const FACT_LABEL =
   /solde|balance|frais|fee|total|montant|amount|bénéficiaire|beneficiary|compte|account|référence|reference/i;
 const WARNING_LABEL =
   /attention|avertissement|warning|important|jamais|never|ne partagez|do not share|danger|risque/i;
-const MAX_ITEMS = 8;
-const MAX_FACTS = 3;
+const PRIMARY_ACTION =
+  /transfert|transfer|frais|fee|continuer|continue|suivant|next|confirmer|confirm|valider|validate|envoyer|send|modifier|edit|réessayer|retry/i;
+const MAX_ITEMS = 11;
+const MAX_FACTS = 4;
 const MAX_WARNINGS = 2;
 const MAX_ACTIONS = 3;
 
@@ -72,6 +83,7 @@ export function buildSpeechPlan(
     );
   const items: SpeechItem[] = [];
   const seen = new Set<string>();
+  let skippedValues = 0;
 
   const push = (kind: SpeechKind, id: string, text: string, speakable: boolean) => {
     if (items.length >= maxItems) return;
@@ -80,6 +92,75 @@ export function buildSpeechPlan(
     seen.add(key);
     items.push({ id, kind, text: text.trim(), speakable });
   };
+
+  if (status.pageBrief) {
+    const brief = status.pageBrief;
+    const pageLabel =
+      status.step !== "unknown"
+        ? `${strings.step} ${status.step}/5 — ${strings.stepLabels[status.step]}`
+        : "";
+    if (brief.title) {
+      push("page", "page-title", pageLabel ? `${brief.title} — ${pageLabel}` : brief.title, true);
+    } else if (pageLabel) {
+      push("step", "step", pageLabel, true);
+    }
+    if (allowValues) {
+      let added = 0;
+      for (const value of status.protectedValues) {
+        if (added >= 3) break;
+        if (value.kind !== "amount" && value.kind !== "fee") continue;
+        const label = value.kind === "fee" ? strings.feeLabel : strings.amountLabel;
+        push("value", `v-${value.kind}-${added}`, `${label} ${value.value}`, true);
+        added += 1;
+      }
+    }
+    if (brief.purpose) {
+      const unsafe = containsValue(brief.purpose, values) || hasSensitiveValue(brief.purpose);
+      if (unsafe) skippedValues += 1;
+      else push("purpose", "purpose", brief.purpose, true);
+    }
+    for (const [index, section] of brief.sections.entries()) {
+      const headingUnsafe = containsValue(section.heading, values) || hasSensitiveValue(section.heading);
+      if (headingUnsafe) {
+        skippedValues += 1;
+        continue;
+      }
+      const textUnsafe = containsValue(section.text, values) || hasSensitiveValue(section.text);
+      if (section.text && !textUnsafe) {
+        push("section", `s-${index}`, `${section.heading}. ${section.text}`, true);
+      } else {
+        push("section", `s-${index}`, section.heading, true);
+        if (section.text) skippedValues += 1;
+      }
+    }
+    for (const [index, warning] of brief.warnings.entries()) {
+      const unsafe = containsValue(warning, values) || hasSensitiveValue(warning);
+      if (unsafe) {
+        skippedValues += 1;
+        continue;
+      }
+      push("warning", `w-${index}`, warning, true);
+    }
+    for (const [index, action] of brief.actions.entries()) {
+      const unsafe = containsValue(action, values) || hasSensitiveValue(action);
+      if (unsafe) {
+        skippedValues += 1;
+        continue;
+      }
+      push("action", `a-${index}`, action, true);
+    }
+    if (brief.actions.length > 0) push("note", "actions-note", strings.actionsNote, true);
+    if (values.length > 0 && !allowValues) {
+      push("note", "values-note", strings.valuesNote, true);
+    }
+    if (items.length === 0) push("note", "empty", strings.noContent, true);
+    return {
+      items,
+      spoken: items.filter((item) => item.speakable).map((item) => item.text),
+      skippedValues,
+      actionCount: brief.actions.length,
+    };
+  }
 
   if (status.step !== "unknown") {
     const label = strings.stepLabels[status.step];
@@ -103,42 +184,54 @@ export function buildSpeechPlan(
 
   let facts = 0;
   let warnings = 0;
-  let skippedValues = 0;
   let fallback: string | null = null;
+  let shortFact: { id: string; target: string } | null = null;
 
   for (const sentence of applied) {
     const target = sentence.target?.trim() ?? "";
+    const words = sentence.source.trim().split(/\s+/).filter(Boolean).length;
     const unsafe = containsValue(target, values) || containsValue(sentence.source, values);
     const sensitive = hasSensitiveValue(target) || hasSensitiveValue(sentence.source);
     if (sensitive || (unsafe && !allowValues)) {
       skippedValues += 1;
       continue;
     }
-    if (WARNING_LABEL.test(sentence.source) && warnings < MAX_WARNINGS) {
+    if (WARNING_LABEL.test(sentence.source) && words >= 4 && warnings < MAX_WARNINGS) {
       push("warning", `w-${sentence.id}`, target, true);
       warnings += 1;
       continue;
     }
-    if (FACT_LABEL.test(sentence.source) && facts < MAX_FACTS) {
-      push("fact", `f-${sentence.id}`, target, true);
-      facts += 1;
+    if (FACT_LABEL.test(sentence.source)) {
+      if (words >= 5 && facts < MAX_FACTS) {
+        push("fact", `f-${sentence.id}`, target, true);
+        facts += 1;
+      } else if (!shortFact) {
+        shortFact = { id: sentence.id, target };
+      }
       continue;
     }
     if (!fallback) fallback = target;
+  }
+
+  if (facts === 0 && shortFact) {
+    push("fact", `f-${shortFact.id}`, shortFact.target, true);
+    facts = 1;
   }
 
   if (!facts && !warnings && fallback) {
     push("fact", "f-fallback", fallback, true);
   }
 
-  const actions = status.actions
-    .filter((action) => !action.locked && action.enabled)
+  const availableActions = status.actions.filter((action) => !action.locked && action.enabled);
+  const primaryActions = availableActions.filter((action) => PRIMARY_ACTION.test(action.name));
+  const actions = (primaryActions.length > 0 ? primaryActions : availableActions)
     .sort((left, right) => riskRank(right) - riskRank(left))
     .slice(0, MAX_ACTIONS);
 
   for (const action of actions) {
-    const unsafe = containsValue(action.name, values);
-    push("action", `a-${action.id}`, action.name, !unsafe || (allowValues && !hasSensitiveValue(action.name)));
+    const name = action.spokenName ?? action.name;
+    const unsafe = containsValue(name, values);
+    push("action", `a-${action.id}`, name, !unsafe || (allowValues && !hasSensitiveValue(name)));
   }
 
   if (actions.length > 0) {
@@ -171,15 +264,6 @@ function riskRank(action: ActionView): number {
  */
 export function safeSpeechTexts(status: TranslationStatus, limit = 12): string[] {
   const values = status.protectedValues.map((value) => value.value.trim()).filter(Boolean);
-  const kinds = new Map(
-    status.protectedValues.map((value) => [value.value.trim(), value.kind] as const),
-  );
-  // Even when amounts are allowed, identifiers are never read aloud.
-  const hasSensitiveValue = (text: string): boolean =>
-    values.some(
-      (value) =>
-        text.includes(value) && !["amount", "fee"].includes(kinds.get(value) ?? "other"),
-    );
   return status.sentences
     .filter((sentence) => sentence.status === "applied" && sentence.target)
     .map((sentence) => sentence.target?.trim() ?? "")

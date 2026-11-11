@@ -12,12 +12,56 @@ export interface BackendStatus {
 
 export interface HealthResponse {
   status?: string;
+  service?: string;
   local_only?: boolean;
   backends?: { tts?: string; mt?: string; asr?: string };
   ready?: { tts?: boolean; mt?: boolean; asr?: boolean };
   mt?: BackendStatus;
   tts?: BackendStatus;
   asr?: BackendStatus;
+}
+
+export const DEFAULT_API_BASE_URL = "http://127.0.0.1:8000";
+export const API_PORTS = Array.from({ length: 11 }, (_, index) => 8000 + index);
+
+export interface DiscoverApiOptions {
+  ports?: number[];
+  timeoutMs?: number;
+  fetcher?: typeof fetch;
+}
+
+/**
+ * Finds the local API on the loopback range 8000-8010.
+ *
+ * The demo can start on a second port when 8000 is already used. The panel
+ * probes `/health` for the `zteam-server` service and uses the first match;
+ * the caller falls back to DEFAULT_API_BASE_URL when nothing answers.
+ */
+export async function discoverApiBaseUrl(
+  options: DiscoverApiOptions = {},
+): Promise<string | null> {
+  const ports = options.ports ?? API_PORTS;
+  const timeoutMs = options.timeoutMs ?? 300;
+  const fetcher = options.fetcher ?? fetch;
+
+  for (const port of ports) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const response = await fetcher(`http://127.0.0.1:${port}/health`, {
+        cache: "no-store",
+        signal: controller.signal,
+      });
+      if (!response.ok) continue;
+      const data = (await response.json()) as HealthResponse;
+      if (data?.service === "zteam-server") return `http://127.0.0.1:${port}`;
+    } catch {
+      // try the next loopback port
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+  return null;
 }
 
 /**

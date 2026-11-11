@@ -10,22 +10,29 @@ service's source code, and it never sends page data off the device.
 
 **Execution board:** [Z-Team Fulfulde Assistant — Preselection](https://github.com/users/Zeusse-Neumbi/projects/4)
 
-> **Status: browser mechanics complete; Fulfulde pack pending.** The extension scans FR/EN
-> pages, translates in place from a validated TM, protects values byte-for-byte, survives
-> re-renders, restores on Stop and exposes a guided panel with read-back. The checked-in TM
-> still has empty Fulfulde targets, so the production build leaves the page in its source
-> language and says so in the panel. The fixture build (`pnpm build:test`) proves the full
-> pipeline with test tokens; it is never shipped. The native-speaker pack, the fine-tuned
-> voice and the closed-set voice classifier are the next milestones.
+> **Status: browser mechanics and local MT fallback complete; validated Fulfulde pack pending.**
+> The extension scans FR/EN pages, translates in place from a validated TM, protects values
+> byte-for-byte, survives re-renders, restores on Stop and exposes a guided panel with
+> read-back. The checked-in TM still has empty Fulfulde targets. The production build can now
+> use the local NLLB API as a clearly labelled fallback (`MT local — non validée`), or stay in
+> the source language when that mode is off. Machine output is not native-speaker validation.
+> The fixture build (`pnpm build:test`) proves the full pipeline with test tokens; it is never
+> shipped. The panel switches FR/EN/FF without touching the page; the FF UI is a machine-
+> translated draft. It reports both translatable coverage and a page coverage with its safe
+> protected-value ceiling, and reads a structured page brief instead of a flat sentence list.
+> The native-speaker pack, the fine-tuned voice and the closed-set voice classifier are the next
+> milestones.
 
 ## What it does
 
 1. **Reads the page semantically** — roles, accessible names, form labels and text nodes.
 2. **Translates the interface in place** — headings, labels, buttons, sentences, warnings —
-   from a native-speaker-validated translation memory.
+   from a native-speaker-validated translation memory, with an optional local-API fallback
+   that is always labelled as machine translation.
 3. **Never touches financial values** — amounts, fees, totals, balances, account numbers,
    phone numbers, references, names and user input stay byte-identical.
-4. **Speaks the page** — recorded phrases and, later, a fine-tuned MMS/VITS voice.
+4. **Speaks the page** — a structured brief (page purpose, sections, warnings, primary actions)
+   plus click announcements, with recorded phrases and the local voice.
 5. **Handles new content** — a `MutationObserver` detects text added after load and
    translates it or falls back to a validated safe message.
 6. **Runs entirely locally** — no cloud LLM, no API key, no page data leaving the machine.
@@ -46,18 +53,38 @@ mismatch reverts the node and aborts the plan.
 
 ## Quickstart
 
-Requirements: Node 20+, pnpm 11+, Python 3.11+, uv.
+Requirements: Node **22+** (24 LTS recommended — pnpm 11 does not support
+Node 20), pnpm 11.9+, Python 3.11+ (3.12 tested), uv.
 
 ```bash
+pnpm bootstrap          # checks the tools, installs JS + Python, builds
+# or, manually:
 pnpm install
 uv sync --project apps/server --extra dev
 ```
+
+The Windows-first setup, the model downloads and the GPU notes are in
+[`docs/SETUP.md`](docs/SETUP.md). To move the demo to another computer, follow
+[`docs/TRANSFER.md`](docs/TRANSFER.md). The dated execution checklist is
+[`docs/EXECUTION_PLAN.md`](docs/EXECUTION_PLAN.md).
 
 Optional development credentials (GitHub MCP, Hugging Face models and Context7
 docs) are documented in [`.env.example`](.env.example). Copy it to `.env` and fill
 only what you need. The shipped extension and API never read those keys.
 
-Terminal 1 — local API:
+Terminal 1 — local API and models:
+
+```bash
+pnpm demo
+```
+
+`pnpm demo` starts the local API with the MMS voice and NLLB when the models are
+present, waits for `/health`, and prewarms the demo phrases. It reuses a Z-Team
+API on `127.0.0.1:8000–8010` or starts on the first free port; the side panel
+discovers the same range. Run `pnpm demo -- --check` first to see the models,
+device, port and pack state; `--deep` runs a real NLLB `/translate` check. Use
+`pnpm demo -- --stub` for a UI-only run without models. The manual command is
+still available:
 
 ```bash
 uv run --project apps/server uvicorn app.main:app --host 127.0.0.1 --port 8000
@@ -70,9 +97,12 @@ pnpm dev
 ```
 
 Then load `.output/chrome-mv3` in `chrome://extensions` (Developer mode → Load unpacked),
-open `https://safinum.cm/hackathon-test`, and click the extension. With the checked-in
-empty TM the page stays in French or English and the panel shows the missing-pack notice;
-that is expected until the validated Fulfulde pack lands.
+open `https://safinum.cm/hackathon-test`, and click the extension. With the API running and
+the default **Repli après la TM** mode, plain labels are translated by NLLB and marked
+**MT — non validée**; amounts, names, accounts, phones, references and input stay exact.
+Choose **Désactivée** in the panel to return to TM-only, or **API locale d’abord** to try the
+other priority. Without the API, the page stays in French or English and the panel says so.
+The full walkthrough is in [`docs/MANUAL_DEMO.md`](docs/MANUAL_DEMO.md).
 
 To exercise the translation pipeline before the pack, build the test fixture instead:
 
@@ -124,7 +154,13 @@ e2e/                     Playwright smoke test
 | `pnpm install` | Install JS dependencies |
 | `uv sync --project apps/server --extra dev` | Install Python dependencies |
 | `pnpm dev` | WXT dev server with HMR |
-| `pnpm build` | Build the production extension (empty Fulfulde targets) |
+| `pnpm demo` | Start the local API + models, wait for health, prewarm |
+| `pnpm demo:check` | Preflight: models, device, port, pack, ZIP |
+| `pnpm demo:stub` | UI-only run without models; voice disabled |
+| `pnpm models:download` | Download MMS and NLLB int8 with checksums |
+| `pnpm models:verify` | Check the local model sizes and SHA-256 |
+| `pnpm doctor` | Print OS, tools, GPU, models, API and ZIP state |
+| `pnpm build` | Build the production extension (validated pack, or honest source view) |
 | `pnpm build:test` | Build the test-only fixture extension to `.output-test` |
 | `pnpm test` | Vitest across packages |
 | `pnpm e2e` | Local five-step journey, English page, novel content, a11y |
@@ -170,10 +206,14 @@ issue template rather than a permanently red pull request.
 
 ## Privacy
 
-- The extension talks only to `127.0.0.1:8000`.
+- The extension talks only to `127.0.0.1:8000–8010`.
 - There is no cloud provider, no API key, no telemetry and no remote config.
-- The value vault lives in memory and is cleared on navigation, Stop, or 10 minutes idle.
-- `chrome.storage` holds settings and page signatures only — never page values.
+- When the local API fallback is enabled, translatable labels go to the loopback service.
+  Amounts, names, accounts, phones, references, dates, codes and user input never do.
+- The value vault lives in memory and is cleared on Stop and when the page unloads.
+- `chrome.storage` holds the interface language (FR/EN/FF), playback speed and the local-API
+  mode only — never page values or page signatures. The page-coverage baseline lives in memory
+  and is cleared on Stop.
 - See [`docs/PRIVACY.md`](docs/PRIVACY.md) and [`SECURITY.md`](SECURITY.md).
 
 ## AI-assisted development
@@ -205,11 +245,16 @@ upstream tools.
 ## Documentation
 
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — components, data flow, translation pipeline
+- [`docs/MANUAL_DEMO.md`](docs/MANUAL_DEMO.md) — build, load in Chrome, run the five-step demo and switch the local API mode
 - [`docs/PRIVACY.md`](docs/PRIVACY.md) — data handling and permissions
-- [`docs/LINGUISTIC_VALIDATION.md`](docs/LINGUISTIC_VALIDATION.md) — native-speaker protocol
-- [`docs/TTS_REPORT.md`](docs/TTS_REPORT.md) — voice track (template, not yet run)
+- [`docs/SETUP.md`](docs/SETUP.md) — Windows/macOS/Linux setup, models, GPU, troubleshooting
+- [`docs/TRANSFER.md`](docs/TRANSFER.md) — moving the demo to another computer
+- [`docs/ENV.md`](docs/ENV.md) — the two machines and their measurements
+- [`docs/LINGUISTIC_VALIDATION.md`](docs/LINGUISTIC_VALIDATION.md) — native-speaker protocol (validation by listening)
+- [`docs/TTS_REPORT.md`](docs/TTS_REPORT.md) — voice baseline, speaker evaluation and decision
 - [`docs/DEMO.md`](docs/DEMO.md) — 3-minute video and live demo script
 - [`docs/REPO_AUDIT.md`](docs/REPO_AUDIT.md) — minimal repository checklist and CI wall
+- [`docs/EXECUTION_PLAN.md`](docs/EXECUTION_PLAN.md) — dated checkable plan to submission
 - [`docs/PROJECT_BOARD.md`](docs/PROJECT_BOARD.md) — D1–D7 plan, board views and operating cadence
 - [`docs/AI_WORKFLOW.md`](docs/AI_WORKFLOW.md) — skills, MCP servers and agent guardrails
 - [`docs/decisions/`](docs/decisions/README.md) — squash, protection, CI, guard and licence decisions

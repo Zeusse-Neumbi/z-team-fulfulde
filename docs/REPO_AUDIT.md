@@ -16,7 +16,7 @@ weakening the value or privacy rules.
 - [x] 7. `docs/ARCHITECTURE.md`.
 - [x] 8. `docs/PRIVACY.md`.
 - [x] 9. `docs/LINGUISTIC_VALIDATION.md`.
-- [x] 10. `docs/TTS_REPORT.md` (template; not yet run).
+- [x] 10. `docs/TTS_REPORT.md` (baseline measured; speaker evaluation pending).
 - [x] 11. `docs/DEMO.md`.
 - [x] 12. `docs/decisions/` — dated decision records with an index.
 - [x] 13. `.gitignore` excludes dependencies, builds, data, models, recordings and archives.

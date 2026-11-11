@@ -3,8 +3,11 @@
 ## Language
 
 - **Adamawa Fulfulde**, ISO 639-3 `fub`, Cameroon.
-- Sub-variety: Ngaoundéré / Garoua / Maroua — confirmed with the speaker and recorded here.
+- Sub-variety: to confirm with the speaker at the session; record
+  Ngaoundéré / Garoua / Maroua here once known.
 - Script: Latin AGLC/GACL; `ɓ ɗ ƴ ŋ ɲ`; doubled vowels; no tone marks; NFC.
+- The target users may not read Fulfulde. The voice is therefore part of the
+  access layer and part of the validation method.
 
 ## Two artefacts
 
@@ -15,19 +18,45 @@
 
 Both follow the same workflow.
 
+## Method — validation by listening
+
+A written back-translation would exclude speakers who do not read Fulfulde. The
+preselection uses an oral protocol, recorded in
+[ADR 0013](decisions/0013-oral-validation-by-listening.md):
+
+1. **Correction pass.** The team plays the local MMS audio for an entry with the
+   French source visible. The speaker says whether the meaning is right, what is
+   wrong, and the correct spoken form. The team transcribes.
+2. **Blind pass.** The team plays the corrected Fulfulde audio only. The speaker
+   says the French meaning. The team records it as `backTranslationFr`, with a
+   meaning score (1–5), a naturalness score (1–5) and a critical-error flag.
+3. **Confirmation.** The corrected entry is synthesized again; the speaker
+   listens and confirms it.
+4. **Record the limitation.** One speaker, oral review, no written
+   back-translation, same-day passes. The note states it.
+
+The audio is generated locally by `POST /tts` with `ZTEAM_TTS_BACKEND=mms`. It
+never leaves the machine.
+
 ## Workflow
 
 1. Extract the exact FR/EN strings from the live page (`pnpm strings`).
 2. The team writes the source sentence and slot types; do not paraphrase.
-3. A native speaker translates into Adamawa Fulfulde.
-4. A second native speaker, blind to the source, back-translates into French.
-5. The team and both speakers adjudicate any drift.
-6. The speaker records the spoken phrases.
+3. A native speaker supplies or corrects the Adamawa Fulfulde target **orally**;
+   the team transcribes it. A machine translation is a draft, never a validator.
+4. A native speaker, blind to the source, gives the French meaning by listening;
+   the team records it. A second speaker is preferred; a single-speaker
+   limitation must be recorded.
+5. The team and the speaker adjudicate any drift; the speaker confirms the
+   corrected audio.
+6. The speaker records the spoken phrases, or the MMS baseline is used and
+   evaluated.
 7. Fill `validatedBy` and `backTranslationFr`; the release build enforces them.
 8. Any change creates a new version and requires re-validation.
 
-If only one speaker is available, do steps 3 and 4 on different days and record the
-limitation in the technical note.
+If only one speaker is available, run the correction and blind passes on
+different days where possible and record the limitation in the technical note.
+If the session is compressed into one day, say so.
 
 ## Acceptance
 
@@ -42,18 +71,28 @@ limitation in the technical note.
 ## Evidence
 
 - `eval/linguistic/strings.csv` — extracted visible strings.
-- `eval/linguistic/back-translation.csv` — source, Fulfulde, blind back-translation,
+- `eval/linguistic/back-translation.csv` — source, Fulfulde, French meaning,
   scores, critical-error flag, fix.
-- `eval/linguistic/tts-mos.csv` — naturalness and intelligibility.
+- `eval/linguistic/tts-mos.csv` — naturalness and intelligibility ratings.
+- `eval/linguistic/session/index.html` — the two-pass listening page (local, not
+  committed; the audio is gitignored).
 - `eval/linguistic/coverage.csv` — coverage output.
 - `docs/TTS_REPORT.md` — data, normalisation, training, evaluation, decision.
-- Sign-off: initials, dates, TM and phrase bank versions.
+- Sign-off: speaker pseudonym, dates, TM and phrase bank versions, method
+  (`oral-listening`).
 
 ## Current status
 
-**Not yet validated.** The checked-in TM and phrase bank are seeds with empty Fulfulde
-columns. The development build warns; `pnpm --filter @zteam/phrasebank build:release`
-fails until medium/high-risk entries have a target, a validator and a back-translation.
+**Seed pack, oral validation pending.** The checked-in `tm.yaml` and
+`phrases.yaml` are seeds with empty Fulfulde columns. The NLLB candidates live
+in `tm.mt.yaml` and `phrases.mt.yaml` and are drafts, not validated. The
+development build warns; `pnpm --filter @zteam/phrasebank build:release` fails
+until medium/high-risk entries have a target, a validator and a French
+back-translation.
+
+The session is scheduled with a native speaker. This section becomes the
+signed record when it is done: speaker pseudonym, dialect, date, method, number
+of entries, critical errors, scores and limitation.
 
 ## TTS normalisation
 
@@ -75,4 +114,5 @@ used.
 ## What we do not claim
 
 We do not claim general Fulfulde translation. We claim validated coverage of the demo
-domain, with a documented translation memory, a documented phrase bank and native sign-off.
+domain, with a documented translation memory, a documented phrase bank and a
+recorded native-speaker review through listening.

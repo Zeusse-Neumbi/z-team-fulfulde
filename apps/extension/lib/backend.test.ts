@@ -1,6 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
+  DEFAULT_API_BASE_URL,
   backendUnavailableReason,
+  discoverApiBaseUrl,
   failureCopyKey,
   parseBackendFailure,
   voiceStateFromHealth,
@@ -124,5 +126,65 @@ describe("failureCopyKey", () => {
     expect(failureCopyKey({ code: "upstream_error", message: "", status: 502 })).toBe(
       "audioError",
     );
+  });
+});
+
+describe("discoverApiBaseUrl", () => {
+  function response(payload: unknown, ok = true): Response {
+    return { ok, json: async () => payload } as unknown as Response;
+  }
+
+  it("returns the default base URL when 8000 is the Z-Team API", async () => {
+    const fetcher = vi.fn(async (input: RequestInfo | URL) => {
+      if (String(input).endsWith(":8000/health")) {
+        return response({ service: "zteam-server", status: "ok" });
+      }
+      throw new Error("unreachable");
+    });
+
+    await expect(
+      discoverApiBaseUrl({ ports: [8000, 8001], fetcher: fetcher as unknown as typeof fetch }),
+    ).resolves.toBe(DEFAULT_API_BASE_URL);
+  });
+
+  it("skips a foreign service and finds 8001", async () => {
+    const fetcher = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.endsWith(":8000/health")) return response({ service: "other" });
+      if (url.endsWith(":8001/health")) {
+        return response({ service: "zteam-server", status: "ok" });
+      }
+      throw new Error("unreachable");
+    });
+
+    await expect(
+      discoverApiBaseUrl({ ports: [8000, 8001], fetcher: fetcher as unknown as typeof fetch }),
+    ).resolves.toBe("http://127.0.0.1:8001");
+  });
+
+  it("returns null when no Z-Team API answers", async () => {
+    const fetcher = vi.fn(async () => {
+      throw new Error("offline");
+    });
+
+    await expect(
+      discoverApiBaseUrl({
+        ports: [8000, 8001],
+        timeoutMs: 10,
+        fetcher: fetcher as unknown as typeof fetch,
+      }),
+    ).resolves.toBeNull();
+  });
+
+  it("ignores a non-ok response", async () => {
+    const fetcher = vi.fn(async () => response({}, false));
+
+    await expect(
+      discoverApiBaseUrl({
+        ports: [8000],
+        timeoutMs: 10,
+        fetcher: fetcher as unknown as typeof fetch,
+      }),
+    ).resolves.toBeNull();
   });
 });

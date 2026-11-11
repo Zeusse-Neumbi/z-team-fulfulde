@@ -2,6 +2,9 @@
 
 - Date: 2026-11-08
 - Status: Accepted
+- **Amended by:** [0015](0015-runtime-local-mt-fallback.md) — the production
+  TM-only rule now has an opt-in local-API fallback for plain nodes. The
+  fixture-only fallback and the broad-host guard are unchanged.
 
 ## Context
 

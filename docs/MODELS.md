@@ -7,6 +7,11 @@ selected by config or by a request field, and every failure is a typed error.
 Everything stays on `127.0.0.1`. Cloud providers exist for a **measurement
 run only** and are refused unless `ZTEAM_ALLOW_CLOUD=1` is set.
 
+For the Windows/macOS/Linux install, the model download, the CUDA 12.x + cuDNN 8
+notes and the CPU fallback, see [`SETUP.md`](SETUP.md). `pnpm doctor` prints the
+GPU vendor and the recommended backend; `pnpm models:download` uses
+[`models/manifest.json`](../models/manifest.json) for sizes and checksums.
+
 ## What runs where
 
 | Kind | Provider | Runs | Licence | Needs |

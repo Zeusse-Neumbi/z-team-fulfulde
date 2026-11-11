@@ -1,5 +1,5 @@
 import type { ProtectedReason, TranslationUnit } from "@zteam/shared";
-import { normalizeValue, splitWhitespace } from "./normalize";
+import { normalizeSource, normalizeValue, splitWhitespace } from "./normalize";
 import { findValueMatches } from "./patterns";
 import { classifyNode, type Vault, type VaultValue } from "./protected";
 import type { TmCapture, TranslationMemory } from "./tm";
@@ -13,6 +13,8 @@ export interface TranslatedSentence {
   status: "applied" | "missed";
   risk: TranslationRisk;
   protectedReason?: ProtectedReason;
+  origin?: "tm" | "mt" | "fixture";
+  provider?: string;
 }
 
 export interface TranslateOptions {
@@ -36,6 +38,8 @@ const FALLBACK_UNIT: TranslationUnit = {
 
 export interface TranslationStats {
   applied: number;
+  tmApplied: number;
+  mtApplied: number;
   protectedCount: number;
   missed: number;
   coverage: number;
@@ -56,6 +60,8 @@ interface AppliedRecord {
   written: string;
   unit: TranslationUnit;
   captures: TmCapture[];
+  origin: "tm" | "mt" | "fixture";
+  provider?: string;
 }
 
 interface PlannedWrite {
@@ -65,10 +71,58 @@ interface PlannedWrite {
   written: string;
   unit: TranslationUnit;
   captures: TmCapture[];
+  origin: "tm" | "mt" | "fixture";
+  provider?: string;
   sentence: TranslatedSentence;
 }
 
 const MAX_SENTENCES = 500;
+
+export interface MaskedSource {
+  source: string;
+  masked: string;
+  values: Array<{ token: string; value: string }>;
+}
+
+/**
+ * Replaces displayed values with stable placeholders before a local API call.
+ * The value itself never leaves the page; a mixed node can still be translated
+ * around it.
+ */
+export function maskVaultValues(
+  text: string,
+  vault: Vault,
+): { masked: string; values: Array<{ token: string; value: string }> } | null {
+  const candidates = vault
+    .values()
+    .filter((value) => value.value && value.normalized.length >= 3 && text.includes(value.value))
+    .sort((left, right) => right.value.length - left.value.length);
+  if (candidates.length === 0) return null;
+
+  let masked = text;
+  const values: Array<{ token: string; value: string }> = [];
+  for (const candidate of candidates) {
+    if (!masked.includes(candidate.value)) continue;
+    const token = `[[Z${values.length + 1}]]`;
+    masked = masked.split(candidate.value).join(token);
+    values.push({ token, value: candidate.value });
+  }
+  return values.length > 0 ? { masked, values } : null;
+}
+
+/** Restores masked values only when every placeholder survived exactly. */
+export function unmaskVaultValues(
+  target: string,
+  values: Array<{ token: string; value: string }>,
+): string | null {
+  let restored = target;
+  for (const { token, value } of values) {
+    if (!restored.includes(token)) return null;
+    restored = restored.split(token).join(value);
+  }
+  if (/\[\[Z\d+\]\]/.test(restored)) return null;
+  return restored;
+}
 
 export function collectTextNodes(root: Node): Text[] {
   const nodes: Text[] = [];
@@ -140,6 +194,8 @@ export class DomTranslator {
     const plans: PlannedWrite[] = [];
     const sentences: TranslatedSentence[] = [];
     let applied = 0;
+    let tmApplied = 0;
+    let mtApplied = 0;
     let protectedCount = 0;
     let missed = 0;
     let abortReason: TranslationStats["abortReason"];
@@ -161,6 +217,8 @@ export class DomTranslator {
 
       if (previous && current === previous.written) {
         applied += 1;
+        if (previous.origin === "mt") mtApplied += 1;
+        else tmApplied += 1;
         if (sentences.length < MAX_SENTENCES) {
           sentences.push({
             id: `n${sentences.length}`,
@@ -169,6 +227,8 @@ export class DomTranslator {
             status: "applied",
             risk: previous.unit.risk,
             protectedReason: protectionReason,
+            origin: previous.origin,
+            provider: previous.provider,
           });
         }
         continue;
@@ -197,6 +257,7 @@ export class DomTranslator {
             target: fallback,
             source: original.source,
             captures: [],
+            origin: "fixture",
           };
         }
       }
@@ -248,6 +309,8 @@ export class DomTranslator {
         status: "applied",
         risk: hit.unit.risk,
         protectedReason: protectionReason,
+        origin: hit.origin,
+        provider: hit.provider,
       };
 
       plans.push({
@@ -257,9 +320,13 @@ export class DomTranslator {
         written,
         unit: hit.unit,
         captures: hit.captures,
+        origin: hit.origin,
+        provider: hit.provider,
         sentence,
       });
       applied += 1;
+      if (hit.origin === "mt") mtApplied += 1;
+      else tmApplied += 1;
       if (sentences.length < MAX_SENTENCES) sentences.push(sentence);
     }
 
@@ -267,6 +334,8 @@ export class DomTranslator {
       this.restore(root);
       return {
         applied: 0,
+        tmApplied: 0,
+        mtApplied: 0,
         protectedCount,
         missed,
         coverage: 0,
@@ -285,6 +354,8 @@ export class DomTranslator {
         written: plan.written,
         unit: plan.unit,
         captures: plan.captures,
+        origin: plan.origin,
+        provider: plan.provider,
       });
     }
 
@@ -293,6 +364,8 @@ export class DomTranslator {
         this.restore(root);
         return {
           applied: 0,
+          tmApplied: 0,
+          mtApplied: 0,
           protectedCount,
           missed,
           coverage: 0,
@@ -309,6 +382,8 @@ export class DomTranslator {
           this.restore(root);
           return {
             applied: 0,
+            tmApplied: 0,
+            mtApplied: 0,
             protectedCount,
             missed,
             coverage: 0,
@@ -322,12 +397,103 @@ export class DomTranslator {
 
     return {
       applied,
+      tmApplied,
+      mtApplied,
       protectedCount,
       missed,
       coverage: applied / Math.max(1, applied + missed),
       aborted: false,
       sentences,
     };
+  }
+
+  /**
+   * Collects plain, unique translatable sources for the local API. Mixed
+   * nodes are deliberately excluded: the API must never receive a value,
+   * name, account, phone, reference or user input.
+   */
+  translatableSources(
+    root: Node,
+    tm: TranslationMemory,
+    vault: Vault,
+    options: { includeTm?: boolean; max?: number } = {},
+  ): string[] {
+    const output: string[] = [];
+    const seen = new Set<string>();
+    const max = options.max ?? 80;
+
+    for (const node of collectTextNodes(root)) {
+      if (output.length >= max) break;
+      const classification = classifyNode(node, vault);
+      if (classification.kind !== "translatable") continue;
+
+      const currentValue = node.nodeValue ?? "";
+      const previous = this.applied.get(node);
+      if (previous && currentValue === previous.written) continue;
+
+      // A node that changed after a pass is a new source; do not reuse the
+      // original from the previous pass.
+      const current =
+        previous && currentValue !== previous.source
+          ? currentValue
+          : (this.originalOf(node) ?? currentValue);
+      const source = current.trim();
+      if (!source || source.length > 3_500) continue;
+
+      const hit = tm.lookup(current);
+      if (hit?.origin === "mt") continue;
+      if (hit && !options.includeTm) continue;
+
+      const key = normalizeSource(current);
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      output.push(source);
+    }
+
+    return output;
+  }
+
+  /**
+   * Collects mixed label/value nodes and masks their values. The API receives
+   * only the masked text; the caller restores the values before writing.
+   */
+  mixedSources(
+    root: Node,
+    tm: TranslationMemory,
+    vault: Vault,
+    options: { max?: number } = {},
+  ): MaskedSource[] {
+    const output: MaskedSource[] = [];
+    const seen = new Set<string>();
+    const max = options.max ?? 40;
+
+    for (const node of collectTextNodes(root)) {
+      if (output.length >= max) break;
+      const classification = classifyNode(node, vault);
+      if (classification.kind !== "mixed") continue;
+
+      const currentValue = node.nodeValue ?? "";
+      const previous = this.applied.get(node);
+      if (previous && currentValue === previous.written) continue;
+      const current =
+        previous && currentValue !== previous.source
+          ? currentValue
+          : (this.originalOf(node) ?? currentValue);
+      const source = current.trim();
+      if (!source || source.length > 3_500) continue;
+
+      const hit = tm.lookup(current);
+      if (hit) continue;
+
+      const masked = maskVaultValues(current, vault);
+      if (!masked) continue;
+      const key = normalizeSource(current);
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      output.push({ source, masked: masked.masked, values: masked.values });
+    }
+
+    return output;
   }
 
   originalOf(node: Text): string | undefined {

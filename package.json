@@ -6,7 +6,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "packageManager": "pnpm@11.9.0",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "scripts": {
     "dev": "pnpm --filter @zteam/extension dev",
@@ -21,17 +21,28 @@
     "setup:e2e": "pnpm exec playwright install chromium",
     "strings": "tsx scripts/extract-strings.ts",
     "coverage": "tsx scripts/coverage.ts",
-    "prewarm": "python3 scripts/prewarm.py",
+    "prewarm": "uv run --project apps/server python scripts/prewarm.py",
+    "demo": "node scripts/demo.mjs",
+    "demo:check": "node scripts/demo.mjs --check",
+    "demo:stub": "node scripts/demo.mjs --stub",
     "hooks": "git config core.hooksPath .githooks",
     "audit": "pnpm audit --audit-level high",
     "ai:check": "node scripts/check-ai-config.mjs",
     "verify": "bash scripts/verify-submission.sh",
+    "verify:node": "pnpm ci:local && pnpm e2e && pnpm audit --audit-level high",
     "ci:local": "pnpm ai:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm package && pnpm size:check && uv run --project apps/server ruff check apps/server && uv run --project apps/server ruff format --check apps/server && uv run --project apps/server mypy apps/server/app --config-file apps/server/pyproject.toml && uv run --project apps/server pytest",
     "build:test": "node scripts/build-test-extension.mjs",
     "serve:eval": "node scripts/serve-eval.mjs",
+    "serve:listening": "node scripts/serve-eval.mjs --root eval/linguistic/session --port 4175",
     "check:live": "node scripts/check-live.mjs",
     "check:sites": "node scripts/check-sites.mjs",
-    "models:download": "./scripts/download-models.sh",
+    "models:download": "node scripts/download-models.mjs",
+    "models:verify": "node scripts/download-models.mjs --check",
+    "doctor": "node scripts/doctor.mjs",
+    "bootstrap": "node scripts/setup.mjs",
+    "generate:listening": "node scripts/generate-listening-pack.mjs",
+    "note:build": "node scripts/build-note.mjs",
+    "submission": "node scripts/assemble-submission.mjs",
     "probe:models": "uv run --project apps/server python scripts/probe-models.py"
   },
   "devDependencies": {

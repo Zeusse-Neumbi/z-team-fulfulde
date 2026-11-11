@@ -15,12 +15,14 @@ export default defineConfig({
       url: "http://127.0.0.1:4173/journey/",
       reuseExistingServer: !process.env.CI,
       timeout: 30_000,
+      env: { HOST: "127.0.0.1", PORT: "4173" },
     },
     {
-      command: "HOST=127.0.0.2 PORT=4174 node scripts/serve-eval.mjs",
+      command: "node scripts/serve-eval.mjs",
       url: "http://127.0.0.2:4174/journey/",
       reuseExistingServer: !process.env.CI,
       timeout: 30_000,
+      env: { HOST: "127.0.0.2", PORT: "4174" },
     },
   ],
 });

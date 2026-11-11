@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Z-Team Fulfulde Assistant — Note technique</title>
+  <link rel="stylesheet" href="note.css">
+</head>
+<body>
+  <section class="page">
+    <h1>Z-Team Fulfulde Assistant</h1>
+    <p class="subtitle">Accès en fulfulde adamawa aux services financiers numériques, sans modifier le code source du service.</p>
+    <div class="meta">
+      <span>SAFINUM Innovate Challenge 2026 — Présélection</span>
+      <span>Équipe Z-Team, Douala</span>
+      <span>Version 1.0 — 13 novembre 2026</span>
+    </div>
+
+    <h2>1. Le problème</h2>
+    <p>Au Cameroun, une partie importante des usagers des services financiers numériques parle d'abord le fulfulde, et souvent uniquement à l'oral. Les interfaces bancaires, les applications de mobile money et les parcours d'ouverture de compte restent majoritairement en français ou en anglais. La barrière n'est pas seulement lexicale : elle est cognitive et sociale. Un utilisateur qui ne lit pas couramment le français ne peut pas vérifier un montant, comprendre un frais, lire un avertissement ou confirmer un bénéficiaire avec la même assurance qu'un lecteur natif.</p>
+    <p>Le fulfulde adamawa est une langue à forte tradition orale. Une partie de ses locuteurs ne lit pas l'orthographe latine, même lorsqu'ils parlent la langue avec une parfaite fluidité. C'est pourquoi la voix n'est pas un supplément : elle est une condition d'accès. En 2024, 60,9 % des adultes camerounais disposaient d'un compte bancaire ou mobile money (Banque mondiale, Global Findex 2025) : l'accès progresse, mais l'interface reste en français ou en anglais. Le fulfulde est parlé par environ 3 millions de personnes au Cameroun, dont une large part en seconde langue, avec 350 000 à 670 000 locuteurs natifs selon les sources (Tasah 2025, d'après Ethnologue/SIL).</p>
+
+    <p><strong>Persona illustrative.</strong> Nana, 34 ans, commerçante à Garoua, utilise Mobile Money tous les jours. Elle lit les chiffres, mais pas les libellés français qui les entourent. C'est ce décalage que l'extension comble.</p>
+
+    <h2>2. La réponse</h2>
+    <p>Z-Team est une extension Chrome MV3 qui traduit en place l'interface visible d'un service financier existant ou simulé, en français ou en anglais, vers le fulfulde adamawa (<code>fub</code>), et qui la lit à voix haute. Le service n'est pas modifié : l'extension agit sur la page, comme une couche d'accessibilité. Les montants, frais, totaux, soldes, noms, téléphones, comptes, références et saisies de l'utilisateur restent identiques à l'octet près.</p>
+
+    <h2>3. Conformité au cahier des charges</h2>
+    <table>
+      <thead><tr><th style="width:34%">Exigence du formulaire</th><th style="width:32%">Réponse Z-Team</th><th>Preuve</th></tr></thead>
+      <tbody>
+        <tr><td>Accéder aux informations et fonctionnalités d'un service financier numérique au moyen d'une langue nationale camerounaise</td><td>Fulfulde adamawa (<code>fub</code>) : interface traduite et voix locale</td><td>Mémoire de traduction, banque de phrases, voix MMS, démonstration</td></tr>
+        <tr><td>À partir d'une interface existante ou simulée en français ou en anglais</td><td>Page SAFINUM et pages de test FR/EN</td><td><code>pnpm check:live</code>, <code>pnpm e2e</code>, captures</td></tr>
+        <tr><td>Sans modifier le code source du service</td><td>Extension MV3 + API locale, aucune injection dans le service</td><td>Architecture, en-têtes, absence d'appel sortant</td></tr>
+        <tr><td>Opérations simulées, aucune donnée bancaire confidentielle ni identifiant réel</td><td>Données fictives, valeurs protégées, aucun transfert réel</td><td>Matrice sécurité 14/14, captures, politique de confidentialité</td></tr>
+      </tbody>
+    </table>
+
+    <h2>4. Ce que la démonstration prouve</h2>
+    <ul>
+      <li>La page est traduite en place, étape par étape, sans rechargement.</li>
+      <li>Les valeurs financières et les saisies restent identiques ; un écart annule la passe et restaure la page.</li>
+      <li>La voix lit un résumé court, les avertissements et les actions ; le lecteur d'écran et la confirmation sont guidés.</li>
+      <li>Le contenu ajouté après le chargement est traité sans rechargement, ou laissé en langue source lorsqu'il n'est pas validé.</li>
+    </ul>
+
+    <div class="callout"><strong>Rien ne quitte la page.</strong> L'extension ne parle qu'à <code>127.0.0.1</code>. Les valeurs sont conservées en mémoire, jamais dans <code>chrome.storage</code>, jamais dans un journal, jamais dans une capture. Le stockage local ne contient que la langue de l'interface et la vitesse de lecture.</div>
+
+    <p class="small muted">Sources : J. N. Tasah, « Prospects of Fulfulde as a Regional Language in a Socioculturally Heterogeneous Region in Cameroon », IntechOpen, 2025 ; Banque mondiale, Global Findex Database 2025, Cameroun (2024), taux de détention d'un compte 60,9 %.</p>
+  </section>
+
+  <section class="page">
+    <h2>5. Architecture</h2>
+    <div class="figure">
+      <svg viewBox="0 0 820 290" role="img" aria-label="Architecture : page, content script, mémoire de traduction, panneau latéral et API locale">
+        <style>
+          .box { fill: #f4f0e7; stroke: #7a4b16; stroke-width: 1.2; rx: 8; }
+          .box2 { fill: #ffffff; stroke: #8c8577; stroke-width: 1; rx: 8; }
+          .label { font: 12px system-ui, sans-serif; fill: #1b1a17; }
+          .small { font: 10px system-ui, sans-serif; fill: #6b6558; }
+          .arrow { stroke: #7a4b16; stroke-width: 1.2; fill: none; marker-end: url(#a); }
+        </style>
+        <defs>
+          <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#7a4b16"/>
+          </marker>
+        </defs>
+        <rect class="box" x="10" y="18" width="215" height="250"/>
+        <text class="label" x="24" y="42">Navigateur (machine de l'utilisateur)</text>
+        <rect class="box2" x="26" y="58" width="182" height="42"/>
+        <text class="label" x="38" y="84">Page financière (inchangée)</text>
+        <rect class="box2" x="26" y="112" width="182" height="64"/>
+        <text class="label" x="38" y="134">Content script</text>
+        <text class="small" x="38" y="150">scanner + classifieur</text>
+        <text class="small" x="38" y="164">traduction + vérification</text>
+        <rect class="box2" x="26" y="188" width="182" height="58"/>
+        <text class="label" x="38" y="210">Mémoire de traduction</text>
+        <text class="small" x="38" y="226">FR/EN → fub, phrases</text>
+        <rect class="box" x="270" y="18" width="215" height="250"/>
+        <text class="label" x="284" y="42">Panneau latéral</text>
+        <rect class="box2" x="286" y="58" width="182" height="52"/>
+        <text class="label" x="298" y="80">Couverture, appliqué,</text>
+        <text class="label" x="298" y="96">protégé, manqué</text>
+        <rect class="box2" x="286" y="122" width="182" height="52"/>
+        <text class="label" x="298" y="144">Valeurs protégées</text>
+        <text class="label" x="298" y="160">verbatim</text>
+        <rect class="box2" x="286" y="186" width="182" height="68"/>
+        <text class="label" x="298" y="208">Lecture, vitesse,</text>
+        <text class="label" x="298" y="224">arrêt, confirmation</text>
+        <rect class="box" x="530" y="18" width="280" height="250"/>
+        <text class="label" x="544" y="42">API locale (127.0.0.1)</text>
+        <rect class="box2" x="546" y="58" width="248" height="42"/>
+        <text class="label" x="558" y="84">FastAPI — /tts, /translate, /asr</text>
+        <rect class="box2" x="546" y="112" width="248" height="42"/>
+        <text class="label" x="558" y="138">MMS-TTS Fulah (voix locale)</text>
+        <rect class="box2" x="546" y="166" width="248" height="42"/>
+        <text class="label" x="558" y="192">NLLB-200 int8 (brouillon local)</text>
+        <rect class="box2" x="546" y="220" width="248" height="34"/>
+        <text class="label" x="558" y="242">Aucun appel sortant</text>
+        <path class="arrow" d="M 208 80 L 286 80"/>
+        <path class="arrow" d="M 468 144 L 530 144"/>
+        <path class="arrow" d="M 208 220 L 286 220"/>
+        <path class="arrow" d="M 208 144 L 286 144"/>
+        <text class="small" x="222" y="72">lit</text>
+        <text class="small" x="482" y="136">/tts</text>
+        <text class="small" x="222" y="212">TM</text>
+        <text class="small" x="222" y="136">état</text>
+      </svg>
+      <p class="caption">La page n'est jamais modifiée côté service. L'extension lit le DOM, applique la mémoire de traduction, vérifie les valeurs et pilote la voix via une API qui n'écoute que sur la boucle locale.</p>
+    </div>
+
+    <h2>6. Flux de données</h2>
+    <table>
+      <thead><tr><th>Donnée</th><th>Destination</th><th>Stockage</th></tr></thead>
+      <tbody>
+        <tr><td>Texte visible de la page</td><td>Mémoire du content script</td><td>Non</td></tr>
+        <tr><td>Montants, frais, totaux, soldes</td><td>Coffre en mémoire uniquement</td><td>Non</td></tr>
+        <tr><td>Noms, téléphones, comptes, références</td><td>Coffre en mémoire uniquement</td><td>Non</td></tr>
+        <tr><td>Saisies de l'utilisateur</td><td>Lues pour protection, jamais traduites</td><td>Non</td></tr>
+        <tr><td>Langue de l'interface, vitesse</td><td><code>chrome.storage.local</code></td><td>Oui, sans donnée de page</td></tr>
+        <tr><td>Audio</td><td>Blob en mémoire, jamais sur disque</td><td>Non</td></tr>
+        <tr><td>Requêtes API</td><td><code>127.0.0.1</code> uniquement</td><td>Non</td></tr>
+      </tbody>
+    </table>
+
+    <h2>7. Souveraineté et sécurité</h2>
+    <ul>
+      <li><strong>Aucun nuage, aucune clé d'API au runtime.</strong> Les fournisseurs cloud existent seulement pour une campagne de mesure, refusée par défaut.</li>
+      <li><strong>Aucune modification du service.</strong> Pas de proxy, pas d'injection dans le code source, pas de changement de handler.</li>
+      <li><strong>Aucune soumission automatique.</strong> L'utilisateur confirme ; l'extension ne clique pas, ne coche pas, ne valide pas.</li>
+      <li><strong>Permissions étroites.</strong> L'accès à un site hors démonstration est demandé à l'utilisateur ; le build de production refuse <code>&lt;all_urls&gt;</code> et tout jeton de test.</li>
+    </ul>
+
+    <h2>8. Pourquoi une extension</h2>
+    <p>Une banque n'a pas à réécrire son application, à exposer une API ou à confier ses données à un tiers. L'extension s'ajoute à l'interface existante, côté utilisateur, avec son consentement. C'est ce qui rend le déploiement réaliste pour une institution qui ne peut pas modifier son cœur bancaire en quelques semaines. Le même code fonctionne sur une page simulée, ce qui permet la démonstration sans exposer un système réel.</p>
+  </section>
+
+  <section class="page">
+    <h2>9. Couche de traduction</h2>
+    <p>Le moteur lit la page par rôles, noms accessibles, libellés et nœuds de texte. Il ne dépend pas des sélecteurs CSS d'une banque. Chaque unité est classée <strong>traduisible</strong>, <strong>protégée</strong>, <strong>mixte</strong> ou <strong>ignorée</strong> avant toute réécriture.</p>
+    <ul>
+      <li><strong>Mémoire de traduction</strong> : chaînes exactes FR/EN et motifs à emplacements (<code>Numéro de compte : {account}</code>).</li>
+      <li><strong>Nœuds mixtes</strong> : réécrits uniquement par un motif validé qui conserve la valeur capturée à l'octet près.</li>
+      <li><strong>Normalisation</strong> : espaces insécables, espaces fines, ponctuation et retours à la ligne, sans changer la valeur affichée.</li>
+      <li><strong>Idempotence</strong> : une seconde passe ne duplique rien ; un nœud qui réaffiche la source est retraduit ; un texte nouveau est traité comme une nouvelle source.</li>
+      <li><strong>MutationObserver</strong> : le contenu ajouté après le chargement est repris avec la même protection et le même chemin de restauration.</li>
+    </ul>
+
+    <h2>10. L'invariant des valeurs</h2>
+    <p>Chaque valeur protégée est comparée à sa valeur d'origine après la passe. La comparaison est normalisée pour les espaces, mais <strong>identique à l'octet</strong> pour le contenu. Un écart restaure les nœuds modifiés et annule le plan. Cette règle couvre les montants, frais, totaux, soldes, noms, téléphones, comptes, références, dates et saisies.</p>
+    <div class="callout"><strong>Test de l'invariant :</strong> 50 cas unitaires, dont une altération volontaire qui doit provoquer le retour arrière et l'abandon du plan. Le test est dans <code>packages/translator/src/integrity.test.ts</code>.</div>
+
+    <h2>11. Validation par l'écoute</h2>
+    <p>Le fulfulde est d'abord une langue orale. Une validation qui demanderait au locuteur de lire et d'écrire une rétro-traduction exclurait les usagers que le produit vise. La validation se fait donc à l'écoute, avec la voix locale comme interface :</p>
+    <ol>
+      <li><strong>Passe de correction</strong> : le français est visible, l'audio fulfulde est joué. Le locuteur dit si le sens est correct, ce qui ne va pas, et la forme parlée correcte. L'équipe transcrit.</li>
+      <li><strong>Passe aveugle</strong> : seul l'audio corrigé est joué. Le locuteur dit le sens en français. L'équipe enregistre la rétro-traduction, la note de sens, la naturalité et l'erreur critique.</li>
+      <li><strong>Confirmation</strong> : l'entrée corrigée est synthétisée à nouveau ; le locuteur écoute et confirme.</li>
+    </ol>
+    <p>La méthode et sa limite — un seul locuteur, revue orale, pas de rétro-traduction écrite — sont enregistrées dans l'ADR 0013. La note ne prétend pas que le locuteur a traduit chaque chaîne : elle dit qu'il a <strong>révisé et évalué à l'écoute</strong>, et que les corrections ont été appliquées.</p>
+
+    <h2>12. Résultats</h2>
+    <table>
+      <thead><tr><th>Mesure</th><th class="num">Résultat</th><th>Preuve</th></tr></thead>
+      <tbody>
+        <tr><td>Balayage de 30 pages publiques</td><td class="num">26 réussies, 4 ignorées (réseau), 0 échec produit</td><td><code>pnpm check:sites</code></td></tr>
+        <tr><td>Cas unitaires de protection</td><td class="num">50</td><td><code>integrity.test.ts</code></td></tr>
+        <tr><td>Tests Playwright</td><td class="num">12</td><td><code>pnpm e2e</code></td></tr>
+        <tr><td>Couverture de la page de démonstration</td><td class="num">[[couverture %]]</td><td><code>pnpm check:live</code></td></tr>
+        <tr><td>Erreurs critiques de sens</td><td class="num">[[0 attendu]]</td><td><code>back-translation.csv</code></td></tr>
+        <tr><td>Sens ≥ 4/5</td><td class="num">[[% attendu ≥ 95]]</td><td><code>back-translation.csv</code></td></tr>
+        <tr><td>Naturalité ≥ 4/5</td><td class="num">[[% attendu ≥ 90]]</td><td><code>back-translation.csv</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="page">
+    <h2>13. Voix locale</h2>
+    <p>La voix est le modèle <code>facebook/mms-tts-ful</code> (VITS 36 M, CC-BY-NC-4.0), exécuté localement par l'API. Elle ne dépend d'aucun service cloud. Le texte est normalisé pour le tokenizer : <code>ɲ → ny</code>, <code>ꞌ → '</code>, tandis que <code>ɓ ɗ ƴ ŋ</code> sont conservés. Le panneau ne lit pas toute la page : il lit l'étape, les faits importants, les avertissements et les actions. Une phrase qui contient une valeur protégée est exclue de l'envoi par défaut ; l'utilisateur peut choisir de lire les montants et les frais, jamais les comptes, téléphones, références ou noms.</p>
+
+    <h2>14. Mesures</h2>
+    <table>
+      <thead><tr><th>Test</th><th class="num">CPU (4 cœurs)</th><th class="num">GPU</th></tr></thead>
+      <tbody>
+        <tr><td>Synthèse à froid (<code>Jam waali.</code>)</td><td class="num">10,8 s</td><td class="num">[[à mesurer]]</td></tr>
+        <tr><td>Synthèse à chaud</td><td class="num">1,4–1,8 s pour 1,3–1,5 s d'audio</td><td class="num">[[à mesurer]]</td></tr>
+        <tr><td>RTF</td><td class="num">1,1–1,9</td><td class="num">[[à mesurer]]</td></tr>
+        <tr><td>Répétition en cache</td><td class="num">6,6 ms</td><td class="num">—</td></tr>
+        <tr><td>Traduction NLLB int8, phrase FR</td><td class="num">0,99–1,29 s</td><td class="num">[[à mesurer]]</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">Le CPU est plus lent que le temps réel. Le cache et le préchauffage rendent la démonstration répétable ; le GPU est un bonus de vitesse, pas une condition de soumission.</p>
+
+    <h2>15. Évaluation par le locuteur</h2>
+    <table>
+      <thead><tr><th>Test</th><th class="num">Résultat</th><th>Cible</th></tr></thead>
+      <tbody>
+        <tr><td>Naturalité (1–5, un locuteur)</td><td class="num">[[note]]</td><td>≥ 3,8</td></tr>
+        <tr><td>Intelligibilité (1–5)</td><td class="num">[[note]]</td><td>≥ 4</td></tr>
+        <tr><td>Mots critiques (implosives, <code>ɲ</code>, longueur vocalique)</td><td class="num">[[erreurs]]</td><td>0 erreur de sens</td></tr>
+        <tr><td>Nombres (20 montants)</td><td class="num">[[%]]</td><td>100 % intelligibles</td></tr>
+        <tr><td>Noms (10)</td><td class="num">[[%]]</td><td>100 % intelligibles</td></tr>
+      </tbody>
+    </table>
+
+    <h2>16. Décision sur la voix</h2>
+    <p>La voix MMS est la voix optionnelle de la démonstration. Elle est locale, licenciée pour un usage non commercial, et déjà intégrée. Aucun fine-tune n'a été tenté pendant cette présélection : le corpus d'entraînement sous licence manque et le temps de GPU était incertain. Le résultat est documenté comme un résultat négatif, pas comme une promesse. Si le locuteur juge la voix inintelligible, elle est désactivée par défaut et des clips enregistrés ou un fine-tune deviennent la feuille de route. La traduction de la page, elle, ne dépend pas de l'API : l'examinateur peut charger l'extension et voir la page traduite sans installer de modèle.</p>
+
+    <h2>17. Limites de la voix</h2>
+    <ul>
+      <li>Le MMS est un modèle de macrolangue : il n'est pas spécifiquement entraîné sur l'adamawa.</li>
+      <li>Le RTF dépasse 1 sur ce CPU ; la voix n'est pas fluide en temps réel sans GPU ou cache.</li>
+      <li>Les nombres sont lus par le verbaliseur ; les mots hors lexique sont écartés plutôt que devinés.</li>
+      <li>La voix ne remplace pas la traduction de la page : elle est la couche d'accessibilité au-dessus.</li>
+    </ul>
+  </section>
+
+  <section class="page">
+    <h2>18. Matrice sécurité 14/14</h2>
+    <table>
+      <thead><tr><th style="width:4%">#</th><th>Vérification</th><th style="width:16%">Preuve</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Aucun appel réseau hors <code>127.0.0.1</code></td><td>e2e réseau</td></tr>
+        <tr><td>2</td><td>Aucune valeur de page dans <code>chrome.storage</code></td><td>test stockage</td></tr>
+        <tr><td>3</td><td>Aucune valeur de page dans les journaux</td><td>revue + e2e</td></tr>
+        <tr><td>4</td><td>Montant identique à l'octet</td><td><code>integrity.test.ts</code></td></tr>
+        <tr><td>5</td><td>Frais, total et solde identiques</td><td><code>integrity.test.ts</code></td></tr>
+        <tr><td>6</td><td>Nom, téléphone, compte, référence et date identiques</td><td><code>integrity.test.ts</code></td></tr>
+        <tr><td>7</td><td>Saisie utilisateur inchangée et jamais traduite</td><td>e2e</td></tr>
+        <tr><td>8</td><td>Nœud mixte : valeur conservée</td><td>test motif</td></tr>
+        <tr><td>9</td><td>Cible altérée : retour arrière et abandon</td><td>test de frappe</td></tr>
+        <tr><td>10</td><td>Action périmée rejetée</td><td>test snapshot</td></tr>
+        <tr><td>11</td><td>Double soumission empêchée</td><td>test confirmation</td></tr>
+        <tr><td>12</td><td>Aucune soumission ni case cochée automatiquement</td><td>e2e click-guard</td></tr>
+        <tr><td>13</td><td>Injection de prompt traitée comme du texte</td><td>test contenu</td></tr>
+        <tr><td>14</td><td>ZIP sans jeton de test ni <code>&lt;all_urls&gt;</code></td><td><code>pnpm package</code></td></tr>
+      </tbody>
+    </table>
+
+    <h2>19. Accessibilité</h2>
+    <ul>
+      <li>Axe : aucune violation sérieuse ou critique dans le panneau et sur la page de test.</li>
+      <li>Parcours clavier : démarrage, arrêt, confirmation et relecture sans souris.</li>
+      <li>Cibles tactiles de 44 × 44 px minimum ; focus visible ; badge de confidentialité lisible sans défilement.</li>
+      <li>Le texte de relecture et de confirmation utilise les valeurs exactes, jamais un arrondi.</li>
+    </ul>
+
+    <h2>20. Limites</h2>
+    <ul>
+      <li><strong>Langue :</strong> un seul locuteur natif, revue orale, pas de seconde validation écrite. Limitation enregistrée dans l'ADR 0013 et dans cette note.</li>
+      <li><strong>Traduction :</strong> NLLB utilise <code>fuv_Latn</code> (fulfulde nigérian), pas <code>fub</code> ; le pack validé reste la seule source affichée.</li>
+      <li><strong>Couverture :</strong> le domaine de démonstration est couvert ; la traduction générale du fulfulde n'est pas revendiquée.</li>
+      <li><strong>Voix :</strong> MMS de macrolangue, RTF > 1 sur CPU, pas de fine-tune.</li>
+      <li><strong>Entrée vocale :</strong> le classifieur d'intentions est un stub ; les commandes vocales sont une feuille de route.</li>
+    </ul>
+
+    <h2>21. Reproductibilité</h2>
+    <pre>Windows 11 / macOS / Linux
+Node 24 LTS · pnpm 11.9.0 · uv 0.11+ · Python 3.12
+git clone https://github.com/Zeusse-Neumbi/z-team-fulfulde
+pnpm install --frozen-lockfile
+uv sync --project apps/server --frozen --extra dev
+pnpm models:download mms nllb-ct2
+pnpm build
+pnpm e2e
+pnpm check:live</pre>
+    <p>Le dépôt public contient les tests, la CI (<code>ci-required</code>), les décisions et les mesures. Le ZIP de l'extension est autonome pour la traduction ; la voix demande l'API locale et les modèles. Le commit soumis est étiqueté et publié dans la release.</p>
+
+    <h2>22. Feuille de route</h2>
+    <ul>
+      <li>Deuxième locuteur natif et validation écrite lorsque c'est possible.</li>
+      <li>Fine-tune MMS sur un corpus sous licence, ou clips enregistrés pour les phrases de démonstration.</li>
+      <li>Classifieur d'intentions vocales fermé, avec rejet de l'inconnu et du silence.</li>
+      <li>Intégration partenaire : SDK ou couche d'accessibilité proposée aux banques, sans modifier leur cœur, puis extension à d'autres langues nationales.</li>
+    </ul>
+
+    <p class="small muted">Licence : PolyForm Noncommercial 1.0.0. Usage commercial sur licence écrite séparée. Modèles : MMS-TTS Fulah et NLLB-200, CC-BY-NC-4.0. Dépôt : https://github.com/Zeusse-Neumbi/z-team-fulfulde</p>
+  </section>
+</body>
+</html>

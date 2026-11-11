@@ -1,13 +1,18 @@
 # Models
 
 Model weights are **not** committed and never bundled in the extension ZIP.
-They are downloaded into `models/` (gitignored) with
-[`scripts/download-models.sh`](../scripts/download-models.sh).
+They are downloaded into `models/` (gitignored) with the cross-platform
+[`scripts/download-models.mjs`](../scripts/download-models.mjs).
 
 ```bash
-./scripts/download-models.sh            # MMS-TTS Fulah, ~138 MB
-./scripts/download-models.sh mms nllb   # + NLLB-200 600M, ~2.6 GB
+pnpm models:download              # MMS-TTS Fulah, ~145 MB
+pnpm models:download mms nllb-ct2 # + NLLB-200 600M int8, ~647 MB
+pnpm models:verify                # size + SHA-256 from models/manifest.json
 ```
+
+The sizes, SHA-256 and licences are in
+[`models/manifest.json`](manifest.json). The Windows/macOS/Linux setup and the
+GPU notes are in [`docs/SETUP.md`](../docs/SETUP.md).
 
 | Model | Licence | Use |
 |---|---|---|

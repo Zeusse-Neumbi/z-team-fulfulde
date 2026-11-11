@@ -14,9 +14,13 @@ Applies to `packages/phrasebank/**` and `eval/linguistic/**`.
 
 1. Add the FR and EN source strings, stable ID and version.
 2. Do not invent a Fulfulde target. Leave it empty until a native speaker
-   supplies it, unless the entry is low risk and already has a validated source.
+   supplies or corrects it, unless the entry is low risk and already has a
+   validated source.
 3. For medium/high risk, add a validator, a French back-translation and the
-   session/date in the evidence file.
+   session/date in the evidence file. The review may be oral: the speaker hears
+   the local MMS audio, gives the French meaning and rates intelligibility; the
+   team records it. See
+   [`docs/decisions/0013-oral-validation-by-listening.md`](../../docs/decisions/0013-oral-validation-by-listening.md).
 4. Preserve placeholders exactly (`{amount}`, `{name}`, `{reference}`).
 5. Add or update a loader test.
 6. Run:

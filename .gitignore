@@ -42,6 +42,13 @@ assets/audio/*.mp3
 eval/latency/*.csv
 eval/visual/*.png
 eval/visual/*.jpg
+eval/linguistic/session/
+
+# Local demo screenshots (not shared)
+docs/images/manual/
+
+# Local submission package
+submission/
 
 # Packages
 *.zip

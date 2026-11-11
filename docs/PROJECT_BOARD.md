@@ -6,7 +6,8 @@ The preselection work is tracked in a public GitHub Project:
 
 The board is the execution view; the product and contract decisions stay in
 [`docs/decisions/`](decisions/README.md) and the repository rules stay in
-[`CONTRIBUTING.md`](../CONTRIBUTING.md).
+[`CONTRIBUTING.md`](../CONTRIBUTING.md). The dated working checklist is
+[`docs/EXECUTION_PLAN.md`](EXECUTION_PLAN.md).
 
 ## Timeline
 

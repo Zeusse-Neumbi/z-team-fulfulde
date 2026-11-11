@@ -10,9 +10,12 @@ const base: TranslationStatus = {
   language: "fr",
   coverage: 1,
   applied: 3,
+  tmApplied: 3,
+  mtApplied: 0,
   protectedCount: 2,
   missed: 0,
   translations: 10,
+  mt: { mode: "off", state: "off", done: 0, total: 0 },
   sentences: [
     {
       id: "n0",
@@ -138,6 +141,39 @@ const summaryStatus: TranslationStatus = {
 };
 
 describe("buildSpeechPlan", () => {
+  it("uses the structured page brief before the flat sentence fallback", () => {
+    const briefStatus: TranslationStatus = {
+      ...summaryStatus,
+      pageBrief: {
+        kind: "balance",
+        title: "Safinum Pay",
+        purpose: "Consultez votre solde et lancez un transfert en toute sécurité.",
+        sections: [
+          {
+            heading: "Transactions récentes",
+            text: "Paiement marchand, salaire reçu, transfert reçu.",
+          },
+        ],
+        warnings: ["Vérifiez le nom et le numéro du bénéficiaire avant de confirmer."],
+        actions: ["Effectuer un transfert", "Consulter les frais"],
+      },
+    };
+    const plan = buildSpeechPlan(briefStatus, strings);
+    expect(plan.items.map((item) => item.kind)).toEqual([
+      "page",
+      "purpose",
+      "section",
+      "warning",
+      "action",
+      "action",
+      "note",
+      "note",
+    ]);
+    expect(plan.items[0]?.text).toContain("Safinum Pay");
+    expect(plan.items[1]?.text).toContain("Consultez votre solde");
+    expect(plan.items[2]?.text).toContain("Transactions récentes");
+  });
+
   it("summarises step, facts, warnings and actions instead of every sentence", () => {
     const plan = buildSpeechPlan(summaryStatus, strings);
     const kinds = plan.items.map((item) => item.kind);
