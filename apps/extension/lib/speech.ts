@@ -1,4 +1,4 @@
-import type { ActionView, TranslationStatus } from "@zteam/shared";
+import type { ActionView, PageKind, TranslationStatus } from "@zteam/shared";
 
 export type SpeechKind =
   | "page"
@@ -27,6 +27,7 @@ export interface SpeechPlanStrings {
   feeLabel: string;
   actionsNote: string;
   noContent: string;
+  pagePurpose: Record<PageKind, string>;
 }
 
 export interface SpeechPlan {
@@ -43,8 +44,15 @@ const WARNING_LABEL =
   /attention|avertissement|warning|important|jamais|never|ne partagez|do not share|danger|risque/i;
 const PRIMARY_ACTION =
   /transfert|transfer|frais|fee|continuer|continue|suivant|next|confirmer|confirm|valider|validate|envoyer|send|modifier|edit|réessayer|retry/i;
+const NON_FULFULDE =
+  /\b(?:bonjour|hello|merci|le|la|les|un|une|des|du|de|et|est|sont|pour|avec|dans|sur|votre|vous|nous|je|tu|il|elle|page|compte|solde|frais|montant|bénéficiaire|reference|référence|sécurité|continuer|confirmer|vérifier|modifier|retour|suivant|the|and|your|you|with|from|this|that|account|balance|fee|total|transfer|payment|trade|confirm|continue|security|recent|transactions|amount|beneficiary|please|click|to|be|au|aux|ce|cette|ces)\b/i;
 const MAX_ITEMS = 11;
 const MAX_FACTS = 4;
+
+/** A conservative guard so the local voice never reads a French/English line. */
+export function isLikelyFulfulde(text: string): boolean {
+  return !NON_FULFULDE.test(text);
+}
 const MAX_WARNINGS = 2;
 const MAX_ACTIONS = 3;
 
@@ -67,10 +75,11 @@ function containsValue(text: string, values: string[]): boolean {
 export function buildSpeechPlan(
   status: TranslationStatus,
   strings: SpeechPlanStrings,
-  options: { maxItems?: number; allowValues?: boolean } = {},
+  options: { maxItems?: number; allowValues?: boolean; requireFulfulde?: boolean } = {},
 ): SpeechPlan {
   const maxItems = options.maxItems ?? MAX_ITEMS;
   const allowValues = options.allowValues ?? false;
+  const requireFulfulde = options.requireFulfulde ?? false;
   const values = status.protectedValues.map((value) => value.value.trim()).filter(Boolean);
   const kinds = new Map(
     status.protectedValues.map((value) => [value.value.trim(), value.kind] as const),
@@ -85,12 +94,14 @@ export function buildSpeechPlan(
   const seen = new Set<string>();
   let skippedValues = 0;
 
-  const push = (kind: SpeechKind, id: string, text: string, speakable: boolean) => {
-    if (items.length >= maxItems) return;
+  const push = (kind: SpeechKind, id: string, text: string, speakable: boolean): boolean => {
+    if (items.length >= maxItems) return false;
+    if (requireFulfulde && !isLikelyFulfulde(text)) return false;
     const key = normalized(text);
-    if (!key || seen.has(key)) return;
+    if (!key || seen.has(key)) return false;
     seen.add(key);
     items.push({ id, kind, text: text.trim(), speakable });
+    return true;
   };
 
   if (status.pageBrief) {
@@ -114,10 +125,15 @@ export function buildSpeechPlan(
         added += 1;
       }
     }
+    let purposeAdded = false;
     if (brief.purpose) {
       const unsafe = containsValue(brief.purpose, values) || hasSensitiveValue(brief.purpose);
       if (unsafe) skippedValues += 1;
-      else push("purpose", "purpose", brief.purpose, true);
+      else purposeAdded = push("purpose", "purpose", brief.purpose, true);
+    }
+    if (!purposeAdded) {
+      const pagePurpose = strings.pagePurpose[brief.kind];
+      if (pagePurpose) push("purpose", "page-purpose", pagePurpose, true);
     }
     for (const [index, section] of brief.sections.entries()) {
       const headingUnsafe = containsValue(section.heading, values) || hasSensitiveValue(section.heading);
@@ -126,7 +142,8 @@ export function buildSpeechPlan(
         continue;
       }
       const textUnsafe = containsValue(section.text, values) || hasSensitiveValue(section.text);
-      if (section.text && !textUnsafe) {
+      const textIsFulfulde = !requireFulfulde || isLikelyFulfulde(section.text);
+      if (section.text && !textUnsafe && textIsFulfulde) {
         push("section", `s-${index}`, `${section.heading}. ${section.text}`, true);
       } else {
         push("section", `s-${index}`, section.heading, true);

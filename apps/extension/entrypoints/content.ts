@@ -76,7 +76,9 @@ let mtOptions: MtRequestOptions = { mode: "off", provider: null };
 let mtStatus: MtStatus = { mode: "off", state: "off", done: 0, total: 0 };
 let applyChain: Promise<unknown> = Promise.resolve();
 let applyGeneration = 0;
-let pageBaseline: Array<{ key: string; protectedOnly: boolean }> = [];
+type PageBaseline = Array<{ key: string; protectedOnly: boolean }>;
+let pageBaselines = new Map<string, PageBaseline>();
+let pageBaselineKey = "";
 const GUARD_TTL_MS = 20_000;
 
 function emptyStatus(): TranslationStatus {
@@ -294,26 +296,46 @@ function isVisibleTextNode(node: Text): boolean {
   return style.display !== "none" && style.visibility !== "hidden" && style.opacity !== "0";
 }
 
+function pageCoverageRoot(): HTMLElement {
+  return (
+    document.querySelector<HTMLElement>("#app .mx-auto.max-w-6xl, main, [role=main]") ??
+    document.body
+  );
+}
+
 function pageTextNodes(): Text[] {
-  return collectTextNodes(document.body).filter((node) => {
+  return collectTextNodes(pageCoverageRoot()).filter((node) => {
+    const parent = node.parentElement;
+    if (!parent) return false;
+    // Page coverage measures the page content, not fixed tool overlays.
+    if (parent.closest("aside.fixed")) return false;
     const text = (node.nodeValue ?? "").trim();
     return text.length > 0 && /[A-Za-zÀ-ÿ]/.test(text) && isVisibleTextNode(node);
   });
 }
 
-function capturePageBaseline(vault: Vault): void {
+function pageBaselineId(): string {
+  return `${detectPageLanguage()}:${detectStep()}`;
+}
+
+function capturePageBaseline(vault: Vault, id = pageBaselineId()): void {
   const protectedKeys = new Set(vault.values().map((value) => value.normalized));
-  pageBaseline = pageTextNodes()
+  const baseline = pageTextNodes()
     .map((node) => {
-      const text = (node.nodeValue ?? "").trim();
+      // Shared header/sidebar nodes may already be translated from a previous
+      // step. Baseline their source, not their current target.
+      const text = (translator?.originalOf(node) ?? node.nodeValue ?? "").trim();
       const key = pageKey(text);
       return key ? { key, protectedOnly: protectedKeys.has(key) } : null;
     })
     .filter((entry): entry is { key: string; protectedOnly: boolean } => entry !== null);
+  pageBaselines.set(id, baseline);
+  pageBaselineKey = id;
 }
 
 function computePageCoverage(): PageCoverage | undefined {
-  if (pageBaseline.length === 0) return undefined;
+  const baseline = pageBaselines.get(pageBaselineKey) ?? [];
+  if (baseline.length === 0) return undefined;
 
   const current = new Map<string, number>();
   for (const node of pageTextNodes()) {
@@ -324,14 +346,14 @@ function computePageCoverage(): PageCoverage | undefined {
 
   let changed = 0;
   let protectedOnly = 0;
-  for (const entry of pageBaseline) {
+  for (const entry of baseline) {
     if (entry.protectedOnly) protectedOnly += 1;
     const count = current.get(entry.key) ?? 0;
     if (count > 0) current.set(entry.key, count - 1);
     else changed += 1;
   }
 
-  const tracked = pageBaseline.length;
+  const tracked = baseline.length;
   return {
     tracked,
     changed,
@@ -358,7 +380,12 @@ function translatedElementText(
   const current = cleanElementText(element);
   if (!current) return undefined;
   const source = originalText(element).replace(/\s+/g, " ").trim();
-  if (requireTranslated && source && current === source) return undefined;
+  if (requireTranslated && source && current === source) {
+    // A client-side re-render can replace the text node after translation and
+    // lose the source mapping. Keep a heading that is visibly Fulfulde.
+    if (/[ɓɗŋƴɲƙʼ]/i.test(current)) return current;
+    return undefined;
+  }
   return current;
 }
 
@@ -377,6 +404,10 @@ function buildPageBrief(): PageBrief | undefined {
   const language = detectPageLanguage();
   const requireTranslated = language === "fr" || language === "en";
   const main = document.querySelector<HTMLElement>("main, [role=main]") ?? document.body;
+  const mainContent =
+    Array.from(main.querySelectorAll<HTMLElement>("section")).find(
+      (section) => !section.closest("aside"),
+    ) ?? main;
 
   const titleElement = Array.from(main.querySelectorAll("h1")).find(
     (element) => !isInChrome(element),
@@ -384,8 +415,8 @@ function buildPageBrief(): PageBrief | undefined {
   const title = titleElement ? translatedElementText(titleElement, false) : undefined;
 
   let purpose: string | undefined;
-  for (const element of main.querySelectorAll("p")) {
-    if (isInChrome(element)) continue;
+  for (const element of mainContent.querySelectorAll("p")) {
+    if (isInChrome(element) || element.closest("aside")) continue;
     const text = translatedElementText(element, requireTranslated);
     if (!text) continue;
     if (text.split(/\s+/).filter(Boolean).length >= 6) {
@@ -393,9 +424,21 @@ function buildPageBrief(): PageBrief | undefined {
       break;
     }
   }
+  if (!purpose) {
+    for (const element of mainContent.querySelectorAll("h1, h2")) {
+      if (isInChrome(element) || element.closest("aside")) continue;
+      const text = translatedElementText(element, requireTranslated);
+      if (!text) continue;
+      if (text.split(/\s+/).filter(Boolean).length >= 5) {
+        purpose = text;
+        break;
+      }
+    }
+  }
 
   const sections: PageBrief["sections"] = [];
   const seenHeadings = new Set<string>();
+  if (purpose) seenHeadings.add(purpose);
   for (const section of main.querySelectorAll("section")) {
     if (isInChrome(section)) continue;
     const headingElement = section.querySelector("h2, h3");
@@ -406,7 +449,11 @@ function buildPageBrief(): PageBrief | undefined {
     for (const element of section.querySelectorAll("p, li")) {
       if (isInChrome(element)) continue;
       const candidate = translatedElementText(element, requireTranslated);
-      if (candidate && candidate.split(/\s+/).filter(Boolean).length >= 4) {
+      if (
+        candidate &&
+        candidate !== purpose &&
+        candidate.split(/\s+/).filter(Boolean).length >= 4
+      ) {
         text = candidate;
         break;
       }
@@ -436,7 +483,11 @@ function buildPageBrief(): PageBrief | undefined {
             continue;
           }
           const candidate = translatedElementText(element, requireTranslated);
-          if (candidate && candidate.split(/\s+/).filter(Boolean).length >= 4) {
+          if (
+            candidate &&
+            candidate !== purpose &&
+            candidate.split(/\s+/).filter(Boolean).length >= 4
+          ) {
             text = candidate;
             break;
           }
@@ -816,6 +867,12 @@ function applyTranslation(): TranslationStatus {
 
   try {
     const vault = buildVault(document.body);
+    const baselineId = pageBaselineId();
+    if (!pageBaselines.has(baselineId)) {
+      capturePageBaseline(vault, baselineId);
+    } else {
+      pageBaselineKey = baselineId;
+    }
     const collected = collectActions(document.body);
     const stats = translator.translate(
       document.body,
@@ -885,6 +942,8 @@ function startTranslation(options?: MtRequestOptions): Promise<TranslationStatus
   if (!translator) translator = new DomTranslator();
   if (!memory) memory = new TranslationMemory(translationUnits);
   memory.clearRuntime();
+  pageBaselines.clear();
+  pageBaselineKey = "";
   capturePageBaseline(buildVault(document.body));
   mtStatus = {
     mode: mtOptions.mode,
@@ -940,7 +999,8 @@ function stopTranslation(): TranslationStatus {
     memory?.clearRuntime();
     memory = null;
     translator = null;
-    pageBaseline = [];
+    pageBaselines.clear();
+    pageBaselineKey = "";
     mtStatus = { mode: mtOptions.mode, state: "off", done: 0, total: 0 };
     actions = new Map();
     actionSnapshot = "";

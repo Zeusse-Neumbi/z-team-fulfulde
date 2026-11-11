@@ -53,11 +53,12 @@ same integrity checks before a node is written.
   plain nodes and for mixed nodes whose values were replaced by `[[Z1]]` placeholders.
 - Verifies every protected value and every mixed-node capture after the pass. A mismatch
   restores the page and aborts the plan.
-- Captures a page-coverage baseline at Start: every visible letter-bearing text node. The
-  panel reports both translatable coverage and page coverage, plus the protected-value floor
-  and the safe ceiling.
+- Captures a page-coverage baseline per step and language: every visible letter-bearing text
+  node in the app content. The panel reports both translatable coverage and page coverage,
+  plus the protected-value floor and the safe ceiling.
 - Builds a structured page brief (page kind, purpose sentence, section headings, warnings and
-  primary actions) for the audio summary instead of reading the flat sentence list.
+  primary actions) for the audio summary instead of reading the flat sentence list. The audio
+  plan always uses Fulfulde strings and filters any remaining French/English item.
 - Announces a clicked action with its translated name. High-risk clicks are still paused and
   require confirmation.
 - Makes a second pass idempotent: an already translated node is counted, a node that renders
@@ -111,8 +112,9 @@ aborts.
   labelled and never presented as Fulfulde.
 - French/English/Fulfulde UI, stored locally in `chrome.storage.local`. The Fulfulde option is
   a machine-translated draft, labelled **Fulfulde (MT)**, and never re-translates the page.
-- Page brief with page identity, purpose, sections, warnings and primary actions; click
-  announcements use the translated action name.
+- Page brief with page identity, a Fulfulde page-purpose line, sections, warnings and primary
+  actions; click announcements use the translated action name. The spoken plan is always
+  Fulfulde, even when the panel UI is French or English.
 - "Rien — traitement local" privacy badge, visible without scrolling.
 
 ### Local API

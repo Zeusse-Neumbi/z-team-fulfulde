@@ -68,11 +68,18 @@ machine translation, not validated Adamawa Fulfulde.
 12. **The summary is a structured page brief.** The content script extracts the
     page kind, the main purpose sentence, section headings, warnings and primary
     actions. The panel reads that brief instead of the flat sentence list, so a
-    listener hears what the page is, what it contains and what can be done.
-13. **Clicks are announced.** A page action click sends its translated name to
+    listener hears what the page is, what it contains and what can be done. A
+    deterministic Fulfulde page-purpose line covers the case where the page
+    heading is not translated yet.
+13. **The spoken plan is always Fulfulde.** The audio strings come from the
+    Fulfulde copy, not from the selected panel language. A conservative language
+    guard drops any remaining French/English item, and the summary button waits
+    for the local batch to finish before speaking. A listener does not hear a
+    mixed-language sentence.
+14. **Clicks are announced.** A page action click sends its translated name to
     the panel, which speaks it with the local voice. High-risk actions keep the
     pause-and-confirm guard. The extension never clicks or submits.
-14. **The panel has a Fulfulde draft.** FR/EN/FF switch only the panel, never
+15. **The panel has a Fulfulde draft.** FR/EN/FF switch only the panel, never
     the page. The FF copy is machine-generated, labelled **Fulfulde (MT)** and
     explicitly not native-validated.
 

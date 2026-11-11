@@ -44,6 +44,15 @@ export const ffCopy: PanelCopy = {
   pageCoverageHint: "Binndi fof ɗi nji'aama, e limɗe hakkiilo.",
   pageCoverageCeiling: "Keɓal jaɓaangal",
   pageCoverageProtected: "limɗe hakkiilo",
+  pagePurpose: {
+    balance: "Ceede: ndaara ceede maa e kuuɗe ɓennuɗe.",
+    fees: "Njoɓdi: suɓo kuugal, ndaara njoɓdi e ko fof.",
+    beneficiary: "Jaɓɓorgo: ndaara innde e limgal yeeso.",
+    summary: "Ɗuɓɓere: ndaara anndal yeeso tabitinal.",
+    receipt: "Tabitinal: jaɓɓorgo gasii; ndaara referee.",
+    error: "Fii: ndaara haala e limɗe e ekran.",
+    unknown: "Taƴre: ndaara anndal e kuɗe."
+  },
   fixtureBadge: "TEST",
   footer: "Lokal-ɗannde · Adamawa Fulfulde (fub)",
   highRisk: "Risko mawɗo",

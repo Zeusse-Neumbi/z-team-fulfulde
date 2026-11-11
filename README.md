@@ -18,8 +18,9 @@ service's source code, and it never sends page data off the device.
 > the source language when that mode is off. Machine output is not native-speaker validation.
 > The fixture build (`pnpm build:test`) proves the full pipeline with test tokens; it is never
 > shipped. The panel switches FR/EN/FF without touching the page; the FF UI is a machine-
-> translated draft. It reports both translatable coverage and a page coverage with its safe
-> protected-value ceiling, and reads a structured page brief instead of a flat sentence list.
+> translated draft. It reports both translatable coverage and a per-step page coverage with its
+> safe protected-value ceiling, and reads a structured page brief in Fulfulde — never a
+> French/English line — instead of a flat sentence list.
 > The native-speaker pack, the fine-tuned voice and the closed-set voice classifier are the next
 > milestones.
 

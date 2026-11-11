@@ -97,7 +97,8 @@ is missing.
    protected, missed; badge **Rien — traitement local**. In the **Traduction** card, confirm
    the mode. With **Repli après la TM** and the API running, the API count is non-zero and the
    warning says **MT local — non validée**. Choose **Désactivée** to prove the TM-only path.
-   Switch the panel to **FF** and back: the page text must not change.
+   Switch the panel to **FF** and back: the page text must not change. Play the summary and
+   confirm the voice reads Fulfulde only, even when the panel is in French or English.
 8. Balance: the amount is exact; play, pause, replay slower.
 9. Fees: fee, total and balance after; change the operation if the page offers it. Click a
    button and confirm the panel announces its translated name.

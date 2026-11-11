@@ -94,6 +94,9 @@ deterministic. The extension does not run on other pages until the user enables 
   the visible page changed; protected values remain unchanged by design.
 - Click announcements send the translated action name to the local `/tts` endpoint. They never
   include amounts, accounts, phones, references or user input.
+- The spoken summary is built from Fulfulde copy and filters out any remaining French/English
+  item before calling `/tts`. The page-coverage baseline is kept per step and language in
+  memory only.
 - The local API keeps route-level metrics in memory; it does not log request bodies.
 - Audio blobs live in memory only; there is no disk audio cache in the browser build.
 

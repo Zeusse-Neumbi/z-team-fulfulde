@@ -30,7 +30,12 @@ import {
   type HealthResponse,
   type VoiceState,
 } from "../../lib/backend";
-import { buildSpeechPlan, shouldSpeakPageAction } from "../../lib/speech";
+import {
+  buildSpeechPlan,
+  isLikelyFulfulde,
+  shouldSpeakPageAction,
+  type SpeechPlanStrings,
+} from "../../lib/speech";
 import { copy, type PanelCopy } from "./copy";
 
 const SETTINGS_KEY = "zteam.panel.settings.v1";
@@ -100,9 +105,33 @@ export default function App() {
             feeLabel: t.fee,
             actionsNote: t.actionsPlanNote,
             noContent: t.noContentPlan,
+            pagePurpose: t.pagePurpose,
           }, { allowValues: settings.speakValues && voiceLocal })
         : null,
     [status, t, settings.speakValues, voiceLocal],
+  );
+  const audioStrings = useMemo<SpeechPlanStrings>(
+    () => ({
+      step: copy.ff.step,
+      stepLabels: copy.ff.stepLabels,
+      valuesNote: copy.ff.valuesNotSpoken,
+      amountLabel: copy.ff.amount,
+      feeLabel: copy.ff.fee,
+      actionsNote: copy.ff.actionsPlanNote,
+      noContent: copy.ff.noContentPlan,
+      pagePurpose: copy.ff.pagePurpose,
+    }),
+    [],
+  );
+  const audioPlan = useMemo(
+    () =>
+      status
+        ? buildSpeechPlan(status, audioStrings, {
+            allowValues: settings.speakValues && voiceLocal,
+            requireFulfulde: true,
+          })
+        : null,
+    [status, audioStrings, settings.speakValues, voiceLocal],
   );
 
   const cleanupAudio = useCallback(() => {
@@ -392,7 +421,9 @@ export default function App() {
     spokenPendingRef.current = pending.id;
     if (voice !== "ready") return;
     if (!shouldSpeakPageAction(pending, status?.protectedValues ?? [])) return;
-    void playTexts([pending.spokenName ?? pending.name]);
+    const name = pending.spokenName ?? pending.name;
+    if (!isLikelyFulfulde(name)) return;
+    void playTexts([name]);
     // playTexts is intentionally read through the render closure; the id guard
     // prevents a second announcement while the status keeps polling.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -401,7 +432,8 @@ export default function App() {
   async function verifyAction(action: ActionView) {
     setPendingAction(action);
     setMessage(t.actionSpoken);
-    if (voice === "ready") await playTexts([action.spokenName ?? action.name]);
+    const name = action.spokenName ?? action.name;
+    if (voice === "ready" && isLikelyFulfulde(name)) await playTexts([name]);
   }
 
   function confirmAction() {
@@ -431,8 +463,28 @@ export default function App() {
   }
 
   async function playAudio() {
-    if (!plan) return;
-    await playTexts(plan.spoken);
+    let current = status;
+    try {
+      const target = await getTargetTab();
+      if (target?.id) {
+        current = await sendToTab<TranslationStatus>(target.id, { type: "GET_STATUS" });
+        for (let i = 0; i < 30 && current?.mt.state === "running"; i += 1) {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          current = await sendToTab<TranslationStatus>(target.id, { type: "GET_STATUS" });
+        }
+        setStatus(current);
+      }
+    } catch {
+      // Fall back to the last rendered status.
+    }
+    const spokenPlan = current
+      ? buildSpeechPlan(current, audioStrings, {
+          allowValues: settings.speakValues && voiceLocal,
+          requireFulfulde: true,
+        })
+      : audioPlan;
+    if (!spokenPlan) return;
+    await playTexts(spokenPlan.spoken);
   }
 
   async function playTexts(texts: string[]) {
@@ -509,7 +561,7 @@ export default function App() {
     const display = t.actionClicked.replace("{name}", name);
     const audioText = copy.ff.actionClicked.replace("{name}", name);
     setMessage(display);
-    if (voice === "ready") void playTexts([audioText]);
+    if (voice === "ready" && isLikelyFulfulde(name)) void playTexts([audioText]);
   };
 
   useEffect(() => {
@@ -820,7 +872,11 @@ export default function App() {
             <button
               type="button"
               onClick={playAudio}
-              disabled={voice !== "ready" || audio === "loading"}
+              disabled={
+                voice !== "ready" ||
+                audio === "loading" ||
+                status?.mt.state === "running"
+              }
             >
               ▶ {t.speakSummary}
             </button>
@@ -1017,7 +1073,13 @@ export default function App() {
           <button
             type="button"
             onClick={playAudio}
-            disabled={busy || voice !== "ready" || audio === "loading" || !status?.applied}
+            disabled={
+              busy ||
+              voice !== "ready" ||
+              audio === "loading" ||
+              !status?.applied ||
+              status?.mt.state === "running"
+            }
           >
             ▶ {t.play}
           </button>

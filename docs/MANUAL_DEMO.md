@@ -58,16 +58,21 @@ In Chrome:
   Chromium.
 - Production build with the local NLLB API: **24 API translations** on the
   balance step, amounts, names and account numbers unchanged, page coverage
-  **67%** with a **69% safe ceiling** (11 protected values cannot change).
-- Mixed label/value nodes now translate through masked placeholders: the model
-  never receives the name or account number, and the displayed value is restored
+  **58%** with a **60% safe ceiling** (17 protected values cannot change).
+- Page coverage reaches the safe ceiling on the other steps: **65% fees,
+  74% beneficiary, 64% summary, 64% confirmation**.
+- Mixed label/value nodes translate through masked placeholders: the model never
+  receives the name or account number, and the displayed value is restored
   byte-for-byte.
 - The panel switches to Fulfulde without re-translating the page; the FF UI is
   marked as a machine-translated draft.
-- The summary reads the page purpose, a section heading and the primary actions;
-  a clicked action is announced with its translated name.
+- The summary reads the page purpose, section headings and primary actions; a
+  clicked action is announced with its translated name.
+- The audio plan is built from Fulfulde strings regardless of the panel
+  language, with a guard that drops any remaining French/English item. TTS
+  payloads for all five steps were checked with **no French/English line**.
 - Full five-step journey with MT enabled: **no integrity abort**, every amount,
-  phone, reference and name still exact.
+  phone, reference and name still exact; 0 compromised submission entries.
 - Mode **Désactivée**: page stays French, zero API calls.
 - **Stop during the API batch**: page restored, no partial API text left behind.
 - Explicit **NLLB** provider: works.
@@ -382,30 +387,46 @@ The panel shows two different percentages:
 
 - **Couverture des textes traduisibles** — translated / (translated + missed) on
   translatable nodes. Protected values are excluded from the denominator.
-- **Couverture de la page** — every visible text node that contains a letter,
-  compared with a baseline captured when you press Start. Protected values are
-  included, and they cannot change.
+- **Couverture de la page** — every visible text node in the app content that
+  contains a letter, compared with a baseline captured for the current step and
+  language. Protected values are included, and they cannot change.
 
 The second number is lower by design. Each protected amount, name, account,
 phone, date or reference stays unchanged, so **100% is not a valid target**.
 The panel shows a **safe ceiling**: the share of visible texts that is not a
-protected-only value. On the mock page the run is **67% page coverage** with a
-**69% safe ceiling** and 11 protected values. That is effectively the safe
-maximum for that page.
+protected-only value. On the live five-step page the run is **58% / 60%** on
+the balance step and reaches the ceiling on fees, beneficiary, summary and
+confirmation. The mock page run is **67% / 69%** with 11 protected values. That
+is effectively the safe maximum for those pages.
 
 ## Summary and click announcements
 
 The audio summary is a structured page brief, not the whole page:
 
 1. the page/step identity;
-2. the main purpose sentence;
-3. one or more section headings (for example “Transactions récentes”);
-4. warnings;
-5. the primary actions (transfer, fees, continue, confirm);
-6. a note that exact amounts are on screen.
+2. a Fulfulde page-purpose line (balance, fees, beneficiary, summary or
+   confirmation);
+3. the main purpose sentence when it is available;
+4. one or more section headings (for example “Transactions récentes”);
+5. warnings;
+6. the primary actions (transfer, fees, continue, confirm);
+7. a note that exact amounts are on screen.
 
-It skips header, navigation and other distractions. It never reads the whole
-page and never reads identifiers aloud.
+The spoken plan is built from Fulfulde copy **even when the panel is in French
+or English**. A guard drops any remaining French/English item, so the voice does
+not read a mixed-language sentence. It never reads the whole page and never
+reads identifiers aloud.
+
+For example, the summary page audio is:
+
+```text
+Taƴre 4/5 — Ɗuɓɓere
+Ɗuɓɓere: ndaara anndal yeeso tabitinal.
+Jaɓɓorgo Fedde
+Hakkiilo
+Ɗuɓɓuki
+Limɗe, konti e referees ɗee haaletaake: ndaare ɗum e ekran.
+```
 
 When you click a page action, the panel announces the translated action name
 with the local voice. High-risk actions are paused first and require your

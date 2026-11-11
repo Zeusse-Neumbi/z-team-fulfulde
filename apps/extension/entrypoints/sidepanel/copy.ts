@@ -1,4 +1,4 @@
-import type { UiLanguage } from "@zteam/shared";
+import type { PageKind, UiLanguage } from "@zteam/shared";
 import { ffCopy } from "./copy.ff";
 
 export interface PanelCopy {
@@ -124,6 +124,7 @@ export interface PanelCopy {
   pageCoverageHint: string;
   pageCoverageCeiling: string;
   pageCoverageProtected: string;
+  pagePurpose: Record<PageKind, string>;
 }
 
 export const copy: Record<UiLanguage, PanelCopy> = {
@@ -269,7 +270,16 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     pageCoverage: "Couverture de la page",
     pageCoverageHint: "Tous les textes visibles, valeurs protégées comprises.",
     pageCoverageCeiling: "Plafond sûr",
-    pageCoverageProtected: "valeurs protégées"
+    pageCoverageProtected: "valeurs protégées",
+    pagePurpose: {
+      balance: "Page de solde : consultez votre solde et vos transactions récentes.",
+      fees: "Page des frais : choisissez l’opération et vérifiez les frais et le total.",
+      beneficiary: "Page du bénéficiaire : vérifiez le nom et le numéro avant de continuer.",
+      summary: "Page de récapitulatif : vérifiez les informations avant de confirmer.",
+      receipt: "Page de confirmation : le transfert est terminé ; vérifiez la référence.",
+      error: "Page d’erreur : lisez le message et vérifiez les valeurs à l’écran.",
+      unknown: "Page de l’application : consultez les informations et les actions."
+    }
   },
   en: {
     eyebrow: "Z-Team",
@@ -411,7 +421,16 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     pageCoverage: "Page coverage",
     pageCoverageHint: "All visible text, including protected values.",
     pageCoverageCeiling: "Safe ceiling",
-    pageCoverageProtected: "protected values"
+    pageCoverageProtected: "protected values",
+    pagePurpose: {
+      balance: "Balance page: check your balance and recent transactions.",
+      fees: "Fees page: choose the operation and check the fee and total.",
+      beneficiary: "Beneficiary page: verify the name and number before continuing.",
+      summary: "Summary page: verify the information before confirming.",
+      receipt: "Confirmation page: the transfer is complete; check the reference.",
+      error: "Error page: read the message and check the values on screen.",
+      unknown: "Application page: review the information and actions."
+    }
   },
   ff: ffCopy,
 };
