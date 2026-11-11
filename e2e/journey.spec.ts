@@ -93,12 +93,23 @@ test("full French journey keeps every protected value", async () => {
     const editAction = panel
       .locator(".action-list li")
       .filter({ hasText: "Modifier" })
-      .getByRole("button", { name: "Montrer" });
+      .getByRole("button", { name: "Vérifier" });
     await expect(editAction).toBeVisible();
     await editAction.click();
+    const confirmAction = panel
+      .locator(".action-list li")
+      .filter({ hasText: "Modifier" })
+      .getByRole("button", { name: "Confirmer" });
+    await expect(confirmAction).toBeVisible();
+    await confirmAction.click();
     await expect.poll(async () => page.evaluate(() => document.activeElement?.id)).toBe("edit");
     await expect(panel.locator(".locked-note")).toHaveCount(1);
 
+    await page.locator("#confirm").click();
+    await expect(panel.locator(".page-guard")).toBeVisible();
+    await expect(panel.locator(".page-guard")).toContainText("Confirmer");
+    await panel.getByRole("button", { name: "Autoriser ce clic" }).click();
+    await expect(panel.locator(".notice")).toContainText("Clic autorisé");
     await page.locator("#confirm").click();
     await expect(page.locator("#error")).toContainText("CONFIRM_001");
     await expect(page.locator("#error")).toContainText("FF:tm.error.confirm_required");

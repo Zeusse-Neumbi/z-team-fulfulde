@@ -179,6 +179,7 @@ export const translationStatusSchema = z.object({
   protectedValues: z.array(protectedValueViewSchema),
   actions: z.array(actionViewSchema),
   actionSnapshotId: z.string(),
+  pendingPageAction: actionViewSchema.optional(),
   aborted: z.boolean(),
   abortReason: z.string().optional(),
   lastError: z.string().optional(),
@@ -197,6 +198,8 @@ export const readbackSchema = z.object({
 export const panelSettingsSchema = z.object({
   uiLang: z.enum(["fr", "en"]),
   speed: z.number().min(0.5).max(2),
+  /** Speak exact page values through the local TTS (never a cloud voice). */
+  speakValues: z.boolean().default(false),
 });
 
 export const analysisSchema = z.object({

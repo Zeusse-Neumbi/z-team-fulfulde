@@ -211,8 +211,12 @@ async function canaryState(page) {
 
 const rows = [];
 let dynamicChecked = false;
+const filter = process.env.ZTEAM_SITES_FILTER;
+const sitesToRun = filter
+  ? SITES.filter(([site, url]) => new RegExp(filter, "i").test(`${site} ${url}`))
+  : SITES;
 
-for (const [site, url] of SITES) {
+for (const [site, url] of sitesToRun) {
   const startedAt = Date.now();
   let page = null;
   let loaded = false;
@@ -263,7 +267,24 @@ for (const [site, url] of SITES) {
 
     const stopStatus = await timeout(send(tabId, "STOP_TRANSLATION"), 10_000, "stop");
     await page.waitForTimeout(150);
-    const restored = await canaryState(page);
+    let restored = await canaryState(page);
+    // Client-rendered pages (React, Vue) may repaint just after Stop. Give the
+    // page a second chance before treating a text mismatch as a product bug.
+    for (let attempt = 0; attempt < 2 && restored.text !== before.text; attempt += 1) {
+      await page.waitForTimeout(600);
+      restored = await canaryState(page);
+    }
+    if (process.env.ZTEAM_DEBUG_SITES) {
+      console.log(`[sites] ${site} before=${before.text.length} after=${after.text.length} restored=${restored.text.length}`);
+      if (restored.text !== before.text) {
+        const a = before.text;
+        const b = restored.text;
+        let i = 0;
+        while (i < a.length && i < b.length && a[i] === b[i]) i += 1;
+        console.log(`[sites] first diff at ${i}: ${JSON.stringify(a.slice(i, i + 80))} != ${JSON.stringify(b.slice(i, i + 80))}`);
+      }
+      console.log(`[sites] bodyToken=${restored.bodyHasToken} input=${restored.input === before.input} edit=${restored.edit === before.edit}`);
+    }
 
     if (dynamicPage && dynamic) {
       const dynamicText = await page.evaluate(

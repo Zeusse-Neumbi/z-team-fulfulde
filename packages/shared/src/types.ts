@@ -157,7 +157,9 @@ export type ExtensionMessage =
   | { type: "RESCAN" }
   | { type: "GET_STATUS" }
   | { type: "GET_READBACK" }
-  | { type: "HIGHLIGHT_ACTION"; actionId: string; snapshotId: string };
+  | { type: "HIGHLIGHT_ACTION"; actionId: string; snapshotId: string }
+  | { type: "CONFIRM_PAGE_ACTION"; actionId: string; snapshotId: string }
+  | { type: "CANCEL_PAGE_ACTION" };
 
 export type PanelStep = 1 | 2 | 3 | 4 | 5 | "unknown";
 export type PageLanguage = "fr" | "en" | "unknown";
@@ -212,6 +214,8 @@ export interface TranslationStatus {
   protectedValues: ProtectedValueView[];
   actions: ActionView[];
   actionSnapshotId: string;
+  /** A high-risk page click that was paused for confirmation. */
+  pendingPageAction?: ActionView;
   aborted: boolean;
   abortReason?: string;
   lastError?: string;
@@ -220,4 +224,6 @@ export interface TranslationStatus {
 export interface PanelSettings {
   uiLang: UiLanguage;
   speed: number;
+  /** Speak exact page values through a local TTS only. */
+  speakValues: boolean;
 }

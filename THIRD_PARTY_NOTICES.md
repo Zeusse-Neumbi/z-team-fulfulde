@@ -24,12 +24,26 @@ terms.
 | FastAPI | current | MIT | Local API |
 | Uvicorn | current | BSD-3-Clause | Local API server |
 | Pydantic / pydantic-settings | 2 | MIT | API models and settings |
-| httpx | current | BSD-3-Clause | Test client and local HTTP |
+| httpx | current | BSD-3-Clause | Test client, local HTTP and cloud test providers |
+| PyYAML | 6 | MIT | Phrasebank YAML loading in the local API |
 | Playwright | current | Apache-2.0 | String extraction and e2e |
 | `@axe-core/playwright` | 4.14 | MPL-2.0 | Accessibility audit in e2e |
 | fflate | 0.8.3 | MIT | Extension ZIP packaging |
 | Vitest | current | MIT | Unit tests |
 | oxlint | current | MIT | Lint |
+
+## Models (downloaded, never bundled)
+
+| Model | Size | Licence | Use |
+|---|---|---|---|
+| MMS-TTS Fulah (`facebook/mms-tts-ful`) | 36M VITS | CC-BY-NC-4.0 | Local speech baseline |
+| NLLB-200 distilled 600M (`facebook/nllb-200-distilled-600M`) | 600M | CC-BY-NC-4.0 | Local translation baseline |
+| Fine-tuned MMS/VITS | 36M | CC-BY-NC-4.0 (inherits) | Optional validated voice |
+| Ollama model (`ZTEAM_OLLAMA_MODEL`) | installed locally | Model-dependent | Local LLM translation test |
+
+Cloud test providers (Google Cloud Translation, Camb.ai MARS, ElevenLabs) are
+proprietary services reached only when `ZTEAM_ALLOW_CLOUD=1`; they are not
+distributed with this repository.
 
 ## AI development tools
 

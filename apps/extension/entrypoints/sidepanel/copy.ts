@@ -60,6 +60,8 @@ export interface PanelCopy {
   stopAudio: string;
   audioStub: string;
   audioUnavailable: string;
+  voiceUnavailable: string;
+  cloudDisabled: string;
   noSpeech: string;
   audioError: string;
   privacyTitle: string;
@@ -76,6 +78,23 @@ export interface PanelCopy {
   language: string;
   footer: string;
   refresh: string;
+  summary: string;
+  speakSummary: string;
+  summaryHint: string;
+  verify: string;
+  confirmAction: string;
+  cancelAction: string;
+  actionSpoken: string;
+  valuesNotSpoken: string;
+  actionsPlanNote: string;
+  noContentPlan: string;
+  pageClickTitle: string;
+  pageClickHint: string;
+  pageClickConfirm: string;
+  pageClickCancel: string;
+  pageClickArmed: string;
+  speakValues: string;
+  speakValuesHint: string;
 }
 
 export const copy: Record<UiLanguage, PanelCopy> = {
@@ -148,6 +167,10 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     audioStub:
       "Voix non disponible : le serveur local renvoie un silence de test, pas du fulfulde.",
     audioUnavailable: "Voix non disponible sur ce serveur local.",
+    voiceUnavailable:
+      "Le modèle de voix configuré n’est pas prêt (modèle ou clé manquants). Voir docs/MODELS.md.",
+    cloudDisabled:
+      "La voix cloud est désactivée. Activez ZTEAM_ALLOW_CLOUD=1 uniquement pour un test.",
     noSpeech: "Aucune phrase traduite à lire.",
     audioError: "Lecture audio impossible.",
     privacyTitle: "Ce qui quitte cette page",
@@ -166,6 +189,27 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     language: "Langue de l’interface",
     footer: "Local-first · Adamawa Fulfulde (fub)",
     refresh: "Rafraîchir",
+    summary: "Résumé de la page",
+    speakSummary: "Lire le résumé",
+    summaryHint:
+      "L’assistant lit l’essentiel et les actions à faire, jamais toute la page. Les montants restent à l’écran.",
+    verify: "Vérifier",
+    confirmAction: "Confirmer",
+    cancelAction: "Annuler",
+    actionSpoken: "Action annoncée. Confirmez pour la montrer sur la page.",
+    valuesNotSpoken:
+      "Les montants, comptes et références ne sont pas lus à voix haute : vérifiez-les à l’écran.",
+    actionsPlanNote: "Actions possibles ci-dessous.",
+    noContentPlan: "Aucun texte à résumer.",
+    pageClickTitle: "Vous avez cliqué :",
+    pageClickHint:
+      "Le clic a été mis en pause. Confirmez pour l’autoriser, puis cliquez à nouveau sur le bouton dans la page.",
+    pageClickConfirm: "Autoriser ce clic",
+    pageClickCancel: "Annuler",
+    pageClickArmed: "Clic autorisé. Cliquez à nouveau sur le bouton dans la page.",
+    speakValues: "Lire aussi les montants",
+    speakValuesHint:
+      "Les montants sont alors envoyés à la voix locale 127.0.0.1, jamais à un service cloud."
   },
   en: {
     eyebrow: "Z-Team",
@@ -235,6 +279,10 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     stopAudio: "Stop audio",
     audioStub: "No voice available: the local server returns test silence, not Fulfulde.",
     audioUnavailable: "No voice available on this local server.",
+    voiceUnavailable:
+      "The configured voice model is not ready (missing model or key). See docs/MODELS.md.",
+    cloudDisabled:
+      "Cloud speech is disabled. Set ZTEAM_ALLOW_CLOUD=1 for a test run only.",
     noSpeech: "No translated sentence to read.",
     audioError: "Audio playback failed.",
     privacyTitle: "What leaves this page",
@@ -252,5 +300,25 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     language: "Interface language",
     footer: "Local-first · Adamawa Fulfulde (fub)",
     refresh: "Refresh",
-  },
+    summary: "Page summary",
+    speakSummary: "Read the summary",
+    summaryHint:
+      "The assistant reads the essentials and the next actions, never the whole page. Amounts stay on screen.",
+    verify: "Review",
+    confirmAction: "Confirm",
+    cancelAction: "Cancel",
+    actionSpoken: "Action announced. Confirm to show it on the page.",
+    valuesNotSpoken:
+      "Amounts, accounts and references are not read aloud: verify them on screen.",
+    actionsPlanNote: "Available actions are listed below.",
+    noContentPlan: "Nothing to summarise.",
+    pageClickTitle: "You clicked:",
+    pageClickHint:
+      "The click is paused. Confirm to allow it, then click the page button again.",
+    pageClickConfirm: "Allow this click",
+    pageClickCancel: "Cancel",
+    pageClickArmed: "Click allowed. Click the page button again.",
+    speakValues: "Read amounts aloud too",
+    speakValuesHint:
+      "Amounts are then sent to the local 127.0.0.1 voice, never to a cloud service.",  },
 };

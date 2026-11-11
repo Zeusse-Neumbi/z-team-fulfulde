@@ -1,0 +1,116 @@
+kind,id,risk,source,candidate,placeholders,placeholders_ok
+tm,tm.nav.online_banking,low,Banque en ligne,Banki e nder internet,,true
+tm,tm.nav.test_banner,low,"Environnement de test — données fictives, aucune transaction réelle.","Hawrugol test data fiction, walaa transaction goonga.",,true
+tm,tm.nav.protocol,low,Protocole de test,Ɗuɓɓuki,,true
+tm,tm.nav.back_hackathon,low,Retour au hackathon,Dawrugo to Hackathon,,true
+tm,tm.step.balance,low,Solde,Fedde,,true
+tm,tm.step.fees,low,Frais,Feeje,,true
+tm,tm.step.beneficiary,low,Bénéficiaire,Jaɓɓorgo Fedde,,true
+tm,tm.step.summary,low,Récapitulatif,Fuuɗuki,,true
+tm,tm.step.confirmation,low,Confirmation,Jaɓɓorgo Fedde,,true
+tm,tm.account.title,low,Votre compte,Jaɓɓorgo Fedde,,true
+tm,tm.security.title,low,Sécurité,Hakkiilo,,true
+tm,tm.security.secure_connection,low,Connexion sécurisée,Wondirde tabbitunde,,true
+tm,tm.balance.greeting,low,"Bonjour, {name}","Bonjour, {name}",{name},true
+tm,tm.account.line,high,Numéro de compte : {account},Numero account: {account},{account},true
+tm,tm.balance.subtitle,medium,Consultez votre solde et lancez un transfert en toute sécurité.,Ndaa ceede mon nden fuɗɗita jaɓɓorgo.,,true
+tm,tm.balance.available,high,Solde disponible,Soldi jaɓɓorgo,,true
+tm,tm.account.number_label,medium,Numéro de compte,Ɗuumɗinal,,true
+tm,tm.balance.current_account,low,Compte courant,Jaɓɓorgo Ganndal,,true
+tm,tm.balance.start_transfer,medium,Effectuer un transfert,Jaɓɓorgo Jaɓɓorgo,,true
+tm,tm.balance.see_fees,medium,Consulter les frais,Jaɓɓorgo Ganndal,,true
+tm,tm.balance.recent,low,Transactions récentes,Kuugal ɓennuɗum,,true
+tm,tm.tx.merchant,medium,Paiement marchand,Payment trade,,true
+tm,tm.tx.salary,medium,Salaire reçu,Maajirɗe jaɓaade,,true
+tm,tm.tx.received,medium,Transfert reçu,Jaɓɓorgo Jaɓɓorgo,,true
+tm,tm.tx.electricity,medium,Facture électricité,Fedde jaaynde,,true
+tm,tm.warn.verify_beneficiary,high,Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un transfert.,"Ko'e mooɗon, on ndaara innde e limngal mo'o heɓan ko'e mooɗon.",,true
+tm,tm.fees.title,medium,Frais de transfert,Ɗuɓɓingol,,true
+tm,tm.fees.subtitle,low,Choisissez le type de transfert et le montant. Les frais sont calculés automatiquement.,Taƴee ko'e ko'e maɓɓol e ko'e maɓɓol. Ɗuɓɓol ko'e maɓɓol ko'e maa.,,true
+tm,tm.fees.operation_type,medium,Type d'opération,Ɗuɗal kuugal,,true
+tm,tm.fees.safinum,medium,Compte Safinum,Safinum,,true
+tm,tm.fees.safinum_desc,medium,Transfert instantané et gratuit,Jaɓɓorgo Kewuuji pinal,,true
+tm,tm.fees.other_bank,medium,Autre banque,Banki feere,,true
+tm,tm.fees.amount,high,Montant à envoyer,Ɗuum woni,,true
+tm,tm.fees.fee,high,Frais,Feeje,,true
+tm,tm.fees.free,high,Gratuit,Ɗuɓɓugo,,true
+tm,tm.fees.total,high,Total à débiter,Total to be debited,,true
+tm,tm.fees.balance_after,high,Solde après opération,Solde caggal jaaynde,,true
+tm,tm.ben.title,medium,Bénéficiaire,Jaɓɓorgo Fedde,,true
+tm,tm.ben.subtitle,medium,Renseignez les informations du destinataire. Vérifiez toujours le numéro avant de valider.,Hokka anndal jaɓɓorgo. Hakkiilo limgal ngam jaɓɓorgo.,,true
+tm,tm.ben.warning_new,high,Ce bénéficiaire n'a jamais été utilisé sur ce compte. Vérifiez le numéro avant de continuer.,Ɗuum jaɓoowo naftirtaake nder ceede nden. Ndaa limol ngol yeeso.,,true
+tm,tm.ben.name,high,Nom du bénéficiaire,Innde jaɓɓorgo,,true
+tm,tm.ben.phone,high,Numéro de téléphone,Ɗerewol tele,,true
+tm,tm.ben.reason,medium,Motif du transfert,Dalil jaɓɓol ngol,,true
+tm,tm.ben.note,low,Note (optionnel),Noot (kootol),,true
+tm,tm.ben.verified,high,J'ai vérifié le nom et le numéro du bénéficiaire.,Mi ɗon ɗaɓɓita innde e limgal gooduɗo.,,true
+tm,tm.fees.percent_desc,medium,"Frais de {rate} % (min. {min} FCFA, max. {max} FCFA)","Feeje {rate} % (min. {min} FCFA, max. {max} FCFA)",{rate};{min};{max},true
+tm,tm.footer.disclaimer,low,Safinum Pay — environnement de démonstration. Ne saisissez aucune donnée personnelle réelle.,Safinum Pay babal hollaago.,,true
+tm,tm.summary.title,medium,Récapitulatif,Fuuɗuki,,true
+tm,tm.summary.subtitle,medium,Vérifiez les informations avant de confirmer le transfert.,Fuuɗani anndal ngol yeeso on anndina darnde.,,true
+tm,tm.summary.amount,high,Montant,Ɗuum,,true
+tm,tm.summary.fee,high,Frais,Feeje,,true
+tm,tm.summary.total,high,Total débité,Fedde jaaynde,,true
+tm,tm.summary.beneficiary,high,Bénéficiaire,Jaɓɓorgo Fedde,,true
+tm,tm.summary.phone,medium,Téléphone,Telefoni,,true
+tm,tm.summary.reference,high,Référence,Firo,,true
+tm,tm.summary.operation,medium,Opération,Kuugal,,true
+tm,tm.summary.confirm_check,high,Je confirme que les informations ci-dessus sont correctes.,Mi ɗon hokki hokkugo anndal ngal dow ɗon goonga.,,true
+tm,tm.summary.edit,low,Modifier,Ceertol,,true
+tm,tm.summary.confirm,high,Confirmer le transfert,Jaɓɓorgo Daartol,,true
+tm,tm.receipt.title,medium,Transfert effectué,Jaɓɓorgo,,true
+tm,tm.receipt.subtitle,medium,Votre transfert a été envoyé avec succès.,Jaɓɓorgo on naati.,,true
+tm,tm.receipt.reference,high,Référence,Firo,,true
+tm,tm.receipt.amount,high,Montant,Ɗuum,,true
+tm,tm.receipt.fee,high,Frais,Feeje,,true
+tm,tm.receipt.total,high,Total débité,Fedde jaaynde,,true
+tm,tm.receipt.beneficiary,high,Bénéficiaire,Jaɓɓorgo Fedde,,true
+tm,tm.receipt.status,medium,Statut,Koolol,,true
+tm,tm.receipt.success,medium,Succès,Ɓeydaade,,true
+tm,tm.receipt.new_transfer,low,Nouveau transfert,Jaɓɓorgo Kewuuji,,true
+tm,tm.novel.example,low,Un message important pour les clients…,Ɗuum woni habaruuji mawɗi ngam jaayndiyankooɓe...,,true
+tm,tm.error.title,high,Une erreur est survenue,Footi waɗii,,true
+tm,tm.error.amount_zero,high,Le montant doit être supérieur à zéro.,Limgal ngal footi ɓeyda fu.,,true
+tm,tm.error.insufficient,high,Solde insuffisant pour effectuer ce transfert.,Ɗuum je'aaki ngam waɗugo jaɓɓorgo.,,true
+tm,tm.error.beneficiary_missing,high,Veuillez renseigner le nom et le numéro du bénéficiaire.,Wondira anndina innde e limngal jaɓowo.,,true
+tm,tm.error.network,high,Erreur réseau : le service est temporairement indisponible. Réessayez.,Fooyre network: kuugal ngal ina waawataa wakkati.,,true
+tm,tm.error.confirm_required,high,Vous devez confirmer les informations avant de valider le transfert.,On foondiraaki anndal ngol yeeso on foondiraago jaɓɓorgal ngal.,,true
+tm,tm.warning.security_verify,high,Alerte de sécurité : vérifiez le numéro du bénéficiaire avant de continuer.,Alerta jamiroore: tawtoree limgal jaɓoowo yeeso.,,true
+tm,tm.warning.security_new,high,Alerte de sécurité : ce bénéficiaire n'a jamais été utilisé sur ce compte.,Alerta jamma: ko'e yimɓe ɓe'e ɓe'e ɓe'e ɓe'e ɓe'e ɓe'e ɓe'e ɓe'e ɓe'e ɓe'e ɓe'e.,,true
+tm,tm.action.back,low,Retour,Daartol,,true
+tm,tm.action.continue,medium,Continuer,Ɗaɓɓitde,,true
+phrases,PAGE_INTRO_BALANCE,low,Voici la page de votre solde.,Ɗuum woni karallaagal ceede mon.,,true
+phrases,BALANCE_IS,high,Votre solde est de {amount}.,Fedde mon woni {amount} .,{amount},true
+phrases,ACCOUNT_IS,high,Votre numéro de compte est {account}.,Ɗuum ko {account} .,{account},true
+phrases,PAGE_INTRO_FEES,low,Voici la page des frais.,Ɗuum woni jaaynde ceede.,,true
+phrases,FEE_IS,high,Les frais sont de {amount}.,Fedde nden ko {amount} .,{amount},true
+phrases,FEE_FREE,high,Il n'y a pas de frais pour cette opération.,Wala ceede ngam kuugal ngal.,,true
+phrases,FEE_TOTAL,high,Le total sera de {amount}.,Fedde nden nden ko {amount} .,{amount},true
+phrases,BALANCE_AFTER,high,Le solde après l'opération sera de {amount}.,Fedde ɓaawo jaaynde nden ko {amount} .,{amount},true
+phrases,PAGE_INTRO_TRANSFER,low,Voici le formulaire de transfert.,Ɗuum woni foomu jaɓɓorgo.,,true
+phrases,TRANSFER_AMOUNT_TO,high,Vous allez envoyer {amount} à {name}.,On ɗon nelda {amount} to {name} .,{amount};{name},true
+phrases,TRANSFER_RECIPIENT,high,Le bénéficiaire est {name}.,Jaɓɓorgo Jaɓɓorgo Fuuta: {name} .,{name},true
+phrases,TRANSFER_REFERENCE,high,La référence est {reference}.,Firoore nden ko {reference} .,{reference},true
+phrases,SUMMARY_INTRO,low,Voici le récapitulatif avant confirmation.,Ɗo'o woni jaaynde yeeso jaaynde.,,true
+phrases,SUMMARY_CONFIRM,high,Voulez-vous confirmer cette opération ?,On yiɗi tabbitinugo kuugal ngal ?,,true
+phrases,WARN_PIN,high,Ne partagez jamais votre code secret.,Taa ɓe ɓeydana ko'e maɓɓe ɓernde.,,true
+phrases,WARN_UNKNOWN_REQUEST,high,"Si vous n'avez pas demandé cette opération, annulez.","To on meeɗaayi huuwugo kuugal ngal, on ngaɗataa.",,true
+phrases,WARN_CHECK_BEFORE_CONFIRM,high,Vérifiez le montant et le bénéficiaire avant de confirmer.,Ndaa ceede nden e jaɓuɗo jaɓuɗo yeeso jaɓugo.,,true
+phrases,WARN_NEW_BENEFICIARY,high,Ce bénéficiaire n'a jamais été utilisé sur ce compte. Vérifiez le numéro avant de continuer.,Ɗuum jaɓoowo naftirtaake nder ceede nden. Ndaa limol ngol yeeso.,,true
+phrases,WARN_VERIFY_NAME_NUMBER,high,Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un transfert.,"Ko'e mooɗon, on ndaara innde e limngal mo'o heɓan ko'e mooɗon.",,true
+phrases,ERROR_INSUFFICIENT,high,Solde insuffisant pour effectuer ce transfert.,Ɗuum je'aaki ngam waɗugo jaɓɓorgo.,,true
+phrases,ERROR_AMOUNT_ZERO,high,Le montant doit être supérieur à zéro.,Limgal ngal footi ɓeyda fu.,,true
+phrases,ERROR_MISSING_BENEFICIARY,high,Veuillez renseigner le nom et le numéro du bénéficiaire.,Wondira anndina innde e limngal jaɓowo.,,true
+phrases,ERROR_CONFIRM_REQUIRED,high,Vous devez confirmer les informations avant de valider le transfert.,On foondiraaki anndal ngol yeeso on foondiraago jaɓɓorgal ngal.,,true
+phrases,ERROR_NETWORK,high,Erreur réseau : le service est temporairement indisponible. Réessayez.,Fooyre network: kuugal ngal ina waawataa wakkati.,,true
+phrases,ACTION_CONFIRM,high,Confirmer,Fedde jaaynde,,true
+phrases,ACTION_CANCEL,low,Annuler,Fedde jaaynde,,true
+phrases,ACTION_BACK,low,Retour,Daartol,,true
+phrases,ACTION_REPEAT,low,Répéter,Ɗuuruki,,true
+phrases,ACTION_SLOWER,low,Plus lentement,Ɓeydaaki,,true
+phrases,ACTION_YES,low,Oui,Haa,,true
+phrases,ACTION_NO,low,Non,Na'o,,true
+phrases,ACTION_DONT_UNDERSTAND,low,Je n'ai pas compris.,Mi meeɗaa faamugo.,,true
+phrases,SAFE_GENERIC_WARNING,high,Attention : un message de sécurité est affiché. Regardez l'écran ou demandez de l'aide.,Yiɗugo: feewde sirlude ɗon holla. Ndaa wallugo wala ɗaɓɓita wallude.,,true
+phrases,SAFE_GENERIC_ERROR,high,Une erreur est affichée. Regardez l'écran ou demandez de l'aide.,Fooyre ɗon yi'a. Ndaa dow dow dow dow walluki wala ɗaɓɓita wallude.,,true
+phrases,SAFE_GENERIC_INFO,medium,Un nouveau message est affiché. Regardez l'écran ou demandez de l'aide.,Ɗuum woni habaruuji keso. Ndaaree dow dow walluki wala nodda wallude.,,true

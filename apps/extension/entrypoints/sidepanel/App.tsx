@@ -19,19 +19,21 @@ import {
   injectContentScript,
   requestOriginPermission,
 } from "../../lib/permissions";
-import { safeSpeechTexts } from "../../lib/speech";
+import {
+  failureCopyKey,
+  parseBackendFailure,
+  voiceStateFromHealth,
+  type HealthResponse,
+  type VoiceState,
+} from "../../lib/backend";
+import { buildSpeechPlan, shouldSpeakPageAction } from "../../lib/speech";
 import { copy, type PanelCopy } from "./copy";
 
 const API = "http://127.0.0.1:8000";
 const SETTINGS_KEY = "zteam.panel.settings.v1";
-const DEFAULT_SETTINGS: PanelSettings = { uiLang: "fr", speed: 1 };
+const DEFAULT_SETTINGS: PanelSettings = { uiLang: "fr", speed: 1, speakValues: false };
 
 type AudioState = "idle" | "loading" | "playing" | "paused";
-type VoiceState = "unknown" | "stub" | "ready" | "offline";
-
-interface HealthResponse {
-  backends?: { tts?: string };
-}
 
 function percent(value: number): string {
   return `${Math.round(value * 100)} %`;
@@ -65,13 +67,31 @@ export default function App() {
   const [audio, setAudio] = useState<AudioState>("idle");
   const [audioError, setAudioError] = useState("");
   const [voice, setVoice] = useState<VoiceState>("unknown");
+  const [voiceLocal, setVoiceLocal] = useState(true);
   const [readback, setReadback] = useState<Readback | null>(null);
+  const [pendingAction, setPendingAction] = useState<ActionView | null>(null);
   const [openSentences, setOpenSentences] = useState(true);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const spokenPendingRef = useRef<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const urlsRef = useRef<string[]>([]);
   const t = copy[settings.uiLang];
+  const plan = useMemo(
+    () =>
+      status
+        ? buildSpeechPlan(status, {
+            step: t.step,
+            stepLabels: t.stepLabels,
+            valuesNote: t.valuesNotSpoken,
+            amountLabel: t.amount,
+            feeLabel: t.fee,
+            actionsNote: t.actionsPlanNote,
+            noContent: t.noContentPlan,
+          }, { allowValues: settings.speakValues && voiceLocal })
+        : null,
+    [status, t, settings.speakValues, voiceLocal],
+  );
 
   const cleanupAudio = useCallback(() => {
     abortRef.current?.abort();
@@ -125,8 +145,8 @@ export default function App() {
       const response = await fetch(`${API}/health`, { cache: "no-store" });
       if (!response.ok) throw new Error(`health ${response.status}`);
       const data = (await response.json()) as HealthResponse;
-      const backend = data.backends?.tts ?? "unknown";
-      setVoice(backend === "stub" ? "stub" : backend === "unknown" ? "unknown" : "ready");
+      setVoice(voiceStateFromHealth(data));
+      setVoiceLocal(data.tts?.local ?? true);
     } catch {
       setVoice("offline");
     }
@@ -178,12 +198,19 @@ export default function App() {
       });
     }, 750);
 
+    // Keep the voice state in sync when the local API is restarted with a
+    // different provider (stub -> mms -> camb) during a model comparison.
+    const healthPoll = window.setInterval(() => {
+      if (document.visibilityState === "visible") void checkHealth();
+    }, 5000);
+
     const health = window.setInterval(() => {
       void checkHealth();
     }, 15_000);
 
     return () => {
       window.clearInterval(poll);
+      window.clearInterval(healthPoll);
       window.clearInterval(health);
       chrome.tabs.onActivated.removeListener(onActivated);
       chrome.tabs.onUpdated.removeListener(onUpdated);
@@ -286,6 +313,59 @@ export default function App() {
     });
   }
 
+  async function confirmPageClick() {
+    if (!status?.pendingPageAction || !tab?.id) return;
+    setBusy(true);
+    try {
+      const result = await sendToTab<{ ok: boolean; error?: string }>(tab.id, {
+        type: "CONFIRM_PAGE_ACTION",
+        actionId: status.pendingPageAction.id,
+        snapshotId: status.actionSnapshotId,
+      });
+      setMessage(result.ok ? t.pageClickArmed : t.staleAction);
+      await refreshStatus();
+    } catch (error) {
+      setMessage(humanizeError(error instanceof Error ? error.message : String(error), t));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function cancelPageClick() {
+    if (!tab?.id) return;
+    await sendToTab(tab.id, { type: "CANCEL_PAGE_ACTION" }).catch(() => undefined);
+    setMessage("");
+    await refreshStatus();
+  }
+
+  useEffect(() => {
+    const pending = status?.pendingPageAction;
+    if (!pending) {
+      spokenPendingRef.current = null;
+      return;
+    }
+    if (spokenPendingRef.current === pending.id) return;
+    spokenPendingRef.current = pending.id;
+    if (voice !== "ready") return;
+    if (!shouldSpeakPageAction(pending, status?.protectedValues ?? [])) return;
+    void playTexts([pending.name]);
+    // playTexts is intentionally read through the render closure; the id guard
+    // prevents a second announcement while the status keeps polling.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, voice]);
+
+  async function verifyAction(action: ActionView) {
+    setPendingAction(action);
+    setMessage(t.actionSpoken);
+    if (voice === "ready") await playTexts([action.name]);
+  }
+
+  function confirmAction() {
+    const action = pendingAction;
+    setPendingAction(null);
+    if (action) void highlight(action);
+  }
+
   async function highlight(action: ActionView) {
     if (!status || !tab?.id) return;
     setBusy(true);
@@ -307,9 +387,15 @@ export default function App() {
   }
 
   async function playAudio() {
-    if (!status || voice !== "ready") return;
-    const texts = safeSpeechTexts(status);
+    if (!plan) return;
+    await playTexts(plan.spoken);
+  }
 
+  async function playTexts(texts: string[]) {
+    if (voice !== "ready") {
+      setMessage(t.audioUnavailable);
+      return;
+    }
     if (!texts.length) {
       setMessage(t.noSpeech);
       return;
@@ -329,7 +415,18 @@ export default function App() {
           body: JSON.stringify({ text: text.slice(0, 500), voice: "demo", speed: settings.speed }),
           signal: controller.signal,
         });
-        if (!response.ok) throw new Error(`Backend ${response.status}`);
+        if (!response.ok) {
+          let body: unknown = null;
+          try {
+            body = await response.json();
+          } catch {
+            body = null;
+          }
+          const failure = parseBackendFailure(response.status, body);
+          setAudio("idle");
+          setAudioError(t[failureCopyKey(failure)]);
+          return;
+        }
 
         if (response.headers.get("X-ZTeam-Stub") === "1") {
           setVoice("stub");
@@ -520,6 +617,48 @@ export default function App() {
         </section>
       ) : null}
 
+      {status?.pendingPageAction ? (
+        <section className="card page-guard" role="alertdialog" aria-live="assertive">
+          <p className="label">{t.pageClickTitle}</p>
+          <p className="guard-name">{status.pendingPageAction.name}</p>
+          <span className={`risk ${status.pendingPageAction.risk}`}>{t.highRisk}</span>
+          <p className="hint">{t.pageClickHint}</p>
+          <div className="confirm-row">
+            <button type="button" onClick={confirmPageClick} disabled={busy}>
+              {t.pageClickConfirm}
+            </button>
+            <button type="button" onClick={cancelPageClick} disabled={busy}>
+              {t.pageClickCancel}
+            </button>
+          </div>
+        </section>
+      ) : null}
+
+      {status && plan ? (
+        <section className="card summary">
+          <div className="readback-head">
+            <h2>{t.summary}</h2>
+            <button
+              type="button"
+              onClick={playAudio}
+              disabled={voice !== "ready" || audio === "loading"}
+            >
+              ▶ {t.speakSummary}
+            </button>
+          </div>
+          <ol className="plan-list">
+            {plan.items.map((item) => (
+              <li key={item.id} className={`plan-item ${item.kind}`}>
+                <span className="kind">{item.kind}</span>
+                <span>{item.text}</span>
+                {!item.speakable ? <span className="count">🔇</span> : null}
+              </li>
+            ))}
+          </ol>
+          <p className="hint">{t.summaryHint}</p>
+        </section>
+      ) : null}
+
       <details
         className="card details"
         open={openSentences}
@@ -591,9 +730,27 @@ export default function App() {
                   </span>
                   <span className="action-name">{action.name}</span>
                 </div>
-                <button type="button" onClick={() => void highlight(action)} disabled={busy}>
-                  {t.showOnPage}
-                </button>
+                {pendingAction?.id === action.id ? (
+                  <div className="confirm-row">
+                    <button type="button" onClick={confirmAction} disabled={busy}>
+                      {t.confirmAction}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPendingAction(null);
+                        setMessage("");
+                      }}
+                      disabled={busy}
+                    >
+                      {t.cancelAction}
+                    </button>
+                  </div>
+                ) : (
+                  <button type="button" onClick={() => void verifyAction(action)} disabled={busy}>
+                    {t.verify}
+                  </button>
+                )}
               </li>
             ))}
             {locked.map((action) => (
@@ -659,9 +816,11 @@ export default function App() {
           <span className={`voice ${voice}`}>
             {voice === "stub"
               ? t.audioStub
-              : voice === "offline" || voice === "unknown"
-                ? t.audioUnavailable
-                : `${t.audio} : ${voice}`}
+              : voice === "unavailable"
+                ? t.voiceUnavailable
+                : voice === "offline" || voice === "unknown"
+                  ? t.audioUnavailable
+                  : `${t.audio} : ${voice}`}
           </span>
         </div>
         <div className="actions audio-actions">
@@ -710,6 +869,16 @@ export default function App() {
             <option value="fr">Français</option>
             <option value="en">English</option>
           </select>
+        </label>
+        <label className="footer-setting" title={t.speakValuesHint}>
+          <input
+            type="checkbox"
+            checked={settings.speakValues}
+            onChange={(event) =>
+              setSettings((current) => ({ ...current, speakValues: event.target.checked }))
+            }
+          />
+          {t.speakValues}
         </label>
         <span>{t.footer}</span>
       </footer>

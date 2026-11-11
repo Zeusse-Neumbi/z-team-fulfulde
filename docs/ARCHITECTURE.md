@@ -45,8 +45,12 @@ There is no cloud component. The only network calls are to `127.0.0.1`.
 - Makes a second pass idempotent: an already translated node is counted, a node that renders
   the source again is re-translated, and a node with new text is treated as a new source.
 - Observes mutations and re-applies after client-side re-renders.
-- Exposes **guided** actions to the side panel. `Montrer` scrolls and focuses the page action;
-  the extension never clicks it, never checks a confirmation box and never submits.
+- Builds a **spoken summary**, not a full read: the step, the important facts, the
+  warnings and up to three actions. A sentence that contains a protected value is
+  excluded from the TTS payload; the panel tells the user to verify it on screen.
+- Exposes **guided** actions to the side panel. `Vérifier` announces the action name aloud and
+  asks for confirmation; only `Confirmer` scrolls and focuses the page action. The extension
+  never clicks it, never checks a confirmation box and never submits.
 - Captures action names before translation, so a translated button keeps its original risk.
 - Restores the original page on Stop.
 
@@ -80,13 +84,22 @@ value substrings remain byte-identical in the target.
 
 | Endpoint | Purpose | Scaffold behaviour |
 |---|---|---|
-| `GET /health` | Liveness and backend mode | Real |
-| `GET /version` | Versions | Real |
-| `POST /tts` | Text → WAV | Silent 0.2 s WAV, `X-ZTeam-Stub: 1` |
-| `POST /asr` | Audio → intent | `UNKNOWN`, confidence 0 |
-| `POST /translate` | Novel text → FF | Returns source unchanged, `translated: false` |
+| `GET /health` | Liveness, active providers and readiness reasons | Real |
+| `GET /version` | Versions and the cloud switch | Real |
+| `GET /providers` | Provider catalogue with `ready`, `reason`, licence and credential variable | Real |
+| `POST /providers/reload` | Drop cached model instances | Real |
+| `POST /tts` | Text → WAV/MP3, provider selected by config or request | Stub silence until a voice is installed |
+| `POST /asr` | Audio → closed-set intent | `UNKNOWN`, confidence 0 |
+| `POST /translate` | FR/EN → FF, provider selected by config or request | Source unchanged, `translated: false` |
+| `GET /phrasebank` | TM/phrase counts, warnings and release gate | Real; `?full=true` returns entries |
+| `POST /phrasebank/reload` | Re-read the YAML after an edit | Real |
 | `GET /metrics` | Request counts and latency | Real |
 | `POST /demo/reset` | Clear metrics | Real |
+
+Providers are `stub`, `ollama`, `nllb`, `marian` and `google` for translation,
+and `stub`, `mms`, `camb` and `elevenlabs` for speech. Cloud providers are
+refused unless `ZTEAM_ALLOW_CLOUD=1`. See [`MODELS.md`](MODELS.md) and
+[ADR 0011](decisions/0011-configurable-model-providers.md).
 
 ## Translation pipeline
 

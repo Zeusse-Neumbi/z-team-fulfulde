@@ -1,4 +1,4 @@
-.PHONY: install hooks ai dev build test lint format audit ci package size e2e strings prewarm verify clean
+.PHONY: install hooks ai dev build test lint format audit ci package size e2e strings prewarm models probe verify clean
 
 install:
 	pnpm install
@@ -48,6 +48,12 @@ strings:
 
 prewarm:
 	pnpm prewarm
+
+models:
+	./scripts/download-models.sh mms
+
+probe:
+	uv run --project apps/server python scripts/probe-models.py --health --mt stub --tts stub
 
 verify:
 	pnpm verify

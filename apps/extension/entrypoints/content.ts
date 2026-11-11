@@ -62,6 +62,9 @@ let actionSignature = "";
 let originalNames = new WeakMap<HTMLElement, string>();
 let actionLanguage: PageLanguage = "unknown";
 let lastStatus: TranslationStatus = emptyStatus();
+let pendingPageAction: ActionView | null = null;
+let armedAction: { id: string; snapshotId: string; expiresAt: number } | null = null;
+const GUARD_TTL_MS = 20_000;
 
 function emptyStatus(): TranslationStatus {
   return {
@@ -342,6 +345,17 @@ function collectActions(root: HTMLElement): { actions: Map<string, ActionRecord>
   return { actions: next, snapshotId: actionSnapshot };
 }
 
+function actionView(record: ActionRecord): ActionView {
+  return {
+    id: record.id,
+    name: record.name,
+    role: record.role,
+    risk: record.risk,
+    enabled: record.enabled,
+    locked: record.locked,
+  };
+}
+
 function actionViews(): ActionView[] {
   return Array.from(actions.values()).map((record) => ({
     id: record.id,
@@ -421,6 +435,7 @@ function buildStatus(
     protectedValues: protectedViews(vault),
     actions: actionViews(),
     actionSnapshotId: snapshotId,
+    pendingPageAction: pendingPageAction ?? undefined,
     aborted: stats.aborted,
     abortReason: stats.abortReason,
   };
@@ -476,6 +491,8 @@ function startTranslation(): TranslationStatus {
   if (!memory) memory = new TranslationMemory(translationUnits);
   active = true;
   actionLanguage = "unknown";
+  pendingPageAction = null;
+  armedAction = null;
   originalNames = new WeakMap();
 
   if (!observer) {
@@ -508,10 +525,74 @@ function stopTranslation(): TranslationStatus {
     actionSignature = "";
     originalNames = new WeakMap();
     actionLanguage = "unknown";
+    pendingPageAction = null;
+    armedAction = null;
     lastStatus = emptyStatus();
   }
 
   return lastStatus;
+}
+
+function guardPageClick(event: MouseEvent): void {
+  if (!active) return;
+  const target = event.target as Element | null;
+  const element = target?.closest<HTMLElement>(
+    'button, a[href], [role="button"], input[type="submit"], input[type="button"]',
+  );
+  if (!element) return;
+  const record = Array.from(actions.values()).find((item) => item.element === element);
+  // Only consequential actions are paused. Navigation and form fields keep
+  // their native behaviour; the panel already lists them.
+  if (!record || record.risk !== "high") return;
+
+  if (
+    armedAction &&
+    armedAction.id === record.id &&
+    armedAction.snapshotId === record.snapshotId &&
+    Date.now() < armedAction.expiresAt
+  ) {
+    // Keep the action armed for the TTL: after a validation error the user may
+    // legitimately retry the same button without a second announcement.
+    pendingPageAction = null;
+    lastStatus = { ...lastStatus, pendingPageAction: undefined };
+    return;
+  }
+
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  pendingPageAction = actionView(record);
+  lastStatus = { ...lastStatus, pendingPageAction };
+}
+
+function confirmPageAction(
+  actionId: string,
+  expectedSnapshot: string,
+): { ok: boolean; error?: string } {
+  const record = actions.get(actionId);
+  if (
+    !pendingPageAction ||
+    pendingPageAction.id !== actionId ||
+    !record ||
+    record.snapshotId !== expectedSnapshot ||
+    record.snapshotId !== actionSnapshot
+  ) {
+    return { ok: false, error: "stale_action" };
+  }
+  armedAction = {
+    id: actionId,
+    snapshotId: expectedSnapshot,
+    expiresAt: Date.now() + GUARD_TTL_MS,
+  };
+  pendingPageAction = null;
+  lastStatus = { ...lastStatus, pendingPageAction: undefined };
+  return { ok: true };
+}
+
+function cancelPageAction(): { ok: boolean } {
+  pendingPageAction = null;
+  armedAction = null;
+  lastStatus = { ...lastStatus, pendingPageAction: undefined };
+  return { ok: true };
 }
 
 function highlightAction(actionId: string, expectedSnapshot: string): { ok: boolean; error?: string } {
@@ -540,6 +621,7 @@ export default defineContentScript({
   main() {
     if (windowWithGuard.__zteamLoaded) return;
     windowWithGuard.__zteamLoaded = true;
+    document.addEventListener("click", guardPageClick, true);
 
     chrome.runtime.onMessage.addListener(
       (
@@ -573,6 +655,12 @@ export default defineContentScript({
               break;
             case "HIGHLIGHT_ACTION":
               sendResponse(highlightAction(message.actionId, message.snapshotId));
+              break;
+            case "CONFIRM_PAGE_ACTION":
+              sendResponse(confirmPageAction(message.actionId, message.snapshotId));
+              break;
+            case "CANCEL_PAGE_ACTION":
+              sendResponse(cancelPageAction());
               break;
             default:
               sendResponse({ error: "unknown_message" });

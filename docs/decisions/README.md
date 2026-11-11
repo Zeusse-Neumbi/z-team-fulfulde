@@ -16,3 +16,5 @@ accepted record.
 | [0008](0008-panel-guided-actions.md) | Guided panel actions; no auto-click and no auto-check |
 | [0009](0009-fr-en-first-test-fixture.md) | Support FR/EN sources now; keep Fulfulde behind the validated pack |
 | [0010](0010-generalization-harness.md) | Test-only generic fallback, broad-host fixture build and 30-page canary sweep |
+| [0011](0011-configurable-model-providers.md) | Configurable model providers, typed failures and a phrasebank API for the test bench |
+| [0012](0012-spoken-values-and-click-guard.md) | Opt-in spoken values on the local voice and a confirm-before-click guard |

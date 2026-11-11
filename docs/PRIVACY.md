@@ -31,15 +31,28 @@ this table describes what ships.
 ## Network
 
 - The extension's only host permission besides the target site is `http://127.0.0.1:8000/*`.
-- There is no cloud provider, no API key, no telemetry and no remote configuration.
-  Development tooling keys (`GH_TOKEN`, `GITHUB_PERSONAL_ACCESS_TOKEN`, `HF_TOKEN`,
-  `CONTEXT7_API_KEY`) are never read by the shipped extension or API; they exist
-  only for local agent, CLI and model-download workflows.
-- The local API binds to `127.0.0.1`.
-- The panel calls `/health` to discover whether a real voice is configured. If the TTS backend
-  is the stub, the read button is disabled and the panel labels the stub as test silence.
-- With a real voice, `/tts` receives the translated sentence text and never a raw financial
-  value from the page. The API does not log request bodies.
+- There is no cloud provider by default, no API key at runtime, no telemetry and no remote
+  configuration. Development tooling keys (`GH_TOKEN`, `GITHUB_PERSONAL_ACCESS_TOKEN`, `HF_TOKEN`,
+  `CONTEXT7_API_KEY`) are never read by the shipped extension or API; they exist only for local
+  agent, CLI and model-download workflows.
+- The local API binds to `127.0.0.1` and refuses a cloud provider unless
+  `ZTEAM_ALLOW_CLOUD=1` is set for a measurement run. In that run the response carries
+  `X-ZTeam-Local: 0` and the provider is named in the panel. Shipping a cloud provider
+  would require a new decision record and an update to this document.
+- The panel calls `/health` to discover whether a real voice is configured. It reads
+  `ready.tts`; a configured but unusable backend (missing model, missing key, disabled
+  cloud) is reported as unavailable and the play button stays disabled.
+- With a real voice, `/tts` receives the spoken summary: the step, the important labels,
+  the warnings and the action names. By default a sentence that contains a protected value
+  is excluded before the request.
+- The user may opt in to **spoken amounts** (`speakValues`). Only `amount` and `fee` values
+  are then sent, only to a backend that reports `local: true`, and only to `127.0.0.1`.
+  Accounts, phones, references, names and user input are still excluded. The API does not
+  log request bodies and keeps no value on disk. A cloud voice cannot receive values: the
+  panel forces the option off when `tts.local` is false.
+- The API does not log request bodies.
+- The summary and the action-confirmation phrases stay in the browser; no page value is sent
+  to the local API to build them.
 - The e2e journey records every request and asserts that no request goes to a non-loopback host.
 
 ## Permissions

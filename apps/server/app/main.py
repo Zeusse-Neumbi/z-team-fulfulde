@@ -4,10 +4,12 @@ import time
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from .config import settings
+from .errors import ProviderError
 from .metrics import metrics
-from .routers import asr, health, translate, tts
+from .routers import asr, health, phrasebank, providers, translate, tts
 
 app = FastAPI(
     title="Z-Team Local API",
@@ -21,7 +23,23 @@ app.add_middleware(
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
+    # The panel reads these from a cross-origin fetch to 127.0.0.1.
+    expose_headers=[
+        "X-ZTeam-Backend",
+        "X-ZTeam-Model",
+        "X-ZTeam-Stub",
+        "X-ZTeam-Local",
+        "X-ZTeam-Speech-Source",
+        "X-ZTeam-Sample-Rate",
+        "X-ZTeam-Cache",
+        "X-Request-Duration-Ms",
+    ],
 )
+
+
+@app.exception_handler(ProviderError)
+async def provider_error_handler(request: Request, exc: ProviderError) -> JSONResponse:
+    return JSONResponse(status_code=exc.status_code, content={"detail": exc.as_detail()})
 
 
 @app.middleware("http")
@@ -35,6 +53,8 @@ async def timing_middleware(request: Request, call_next):
 
 
 app.include_router(health.router)
+app.include_router(providers.router)
+app.include_router(phrasebank.router)
 app.include_router(tts.router)
 app.include_router(asr.router)
 app.include_router(translate.router)

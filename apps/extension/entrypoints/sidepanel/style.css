@@ -590,3 +590,59 @@ details.card[open] summary::before {
     scroll-behavior: auto !important;
   }
 }
+
+.plan-list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.plan-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.5rem;
+  align-items: start;
+  padding: 0.45rem 0.55rem;
+  border-radius: 0.45rem;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 0.85rem;
+  line-height: 1.35;
+}
+
+.plan-item.warning {
+  border-left: 3px solid #d97706;
+}
+
+.plan-item.action {
+  border-left: 3px solid #2563eb;
+}
+
+.plan-item.note {
+  color: #64748b;
+}
+
+.confirm-row {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.confirm-row button:first-child {
+  background: #2563eb;
+  color: #fff;
+}
+
+.page-guard {
+  border: 2px solid #b45309;
+}
+
+.guard-name {
+  font-size: 1.05rem;
+  font-weight: 650;
+  margin: 0.2rem 0 0.4rem;
+}
+
+.footer-setting input {
+  margin-right: 0.35rem;
+}

@@ -30,7 +30,9 @@
     "build:test": "node scripts/build-test-extension.mjs",
     "serve:eval": "node scripts/serve-eval.mjs",
     "check:live": "node scripts/check-live.mjs",
-    "check:sites": "node scripts/check-sites.mjs"
+    "check:sites": "node scripts/check-sites.mjs",
+    "models:download": "./scripts/download-models.sh",
+    "probe:models": "uv run --project apps/server python scripts/probe-models.py"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",

@@ -6,6 +6,15 @@ import { z } from "zod";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 
+/**
+ * `ZTEAM_PHRASEBANK=mt` loads the machine-translated candidate pack
+ * (`tm.mt.yaml` / `phrases.mt.yaml`) for an evaluation build. Those entries
+ * have no validator and no back-translation, so `build:release` still fails.
+ */
+function packSuffix(): string {
+  return process.env.ZTEAM_PHRASEBANK === "mt" ? ".mt" : "";
+}
+
 const tmFileSchema = z.object({
   version: z.string(),
   units: z.array(translationUnitSchema),
@@ -52,8 +61,8 @@ function assertUnique(ids: string[]): void {
 }
 
 export function loadAll(): PhrasebankData {
-  const tmRaw = tmFileSchema.parse(readYaml("entries/tm.yaml"));
-  const phraseRaw = phraseFileSchema.parse(readYaml("entries/phrases.yaml"));
+  const tmRaw = tmFileSchema.parse(readYaml(`entries/tm${packSuffix()}.yaml`));
+  const phraseRaw = phraseFileSchema.parse(readYaml(`entries/phrases${packSuffix()}.yaml`));
   const numbers = numbersSchema.parse(
     JSON.parse(readFileSync(`${root}numbers/numbers.fub.json`, "utf8")),
   );
