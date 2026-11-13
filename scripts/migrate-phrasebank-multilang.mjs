@@ -79,7 +79,7 @@ function mirror(file, key) {
   for (const entry of source[key]) {
     entry.target = { [ybb]: { text: "", origin: "human" } };
   }
-  writeFileSync(join(ybbDir, file), stringify(source, { lineWidth: 0 }), "utf8");
+  writeFileSync(join(ybbDir, file), stringify(source, { lineWidth: 0, schema: "yaml-1.1" }), "utf8");
   console.log(`[migrate] wrote entries/${ybb}/${file} (${source[key].length} entries)`);
 }
 

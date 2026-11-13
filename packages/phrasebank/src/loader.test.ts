@@ -183,9 +183,17 @@ describe("machine-translated candidate pack", () => {
       expect(
         releaseGate({ fub: { ...candidate.fub, status: "validated" } as LanguagePack }).length,
       ).toBeGreaterThan(0);
-      // ybb has no candidate pack yet: it falls back to the base pack and says so.
-      expect(candidate.ybb?.packSource).toBe("validated");
-      expect(candidate.ybb?.warnings.some((warning) => warning.includes("candidate"))).toBe(true);
+      // Both packs now have candidates; neither is a validated release.
+      expect(candidate.fub?.packSource).toBe("mt");
+      expect(candidate.ybb?.packSource).toBe("mt");
+      expect(
+        candidate.ybb?.translationUnits.every(
+          (unit) => (unit.target.ybb?.text.length ?? 0) > 0,
+        ),
+      ).toBe(true);
+      expect(candidate.ybb?.warnings.some((warning) => warning.includes("candidate"))).toBe(
+        false,
+      );
     } finally {
       if (previous === undefined) delete process.env.ZTEAM_PHRASEBANK;
       else process.env.ZTEAM_PHRASEBANK = previous;

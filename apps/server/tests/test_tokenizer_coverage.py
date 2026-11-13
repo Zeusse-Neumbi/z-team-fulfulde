@@ -98,3 +98,68 @@ def test_cli_exit_code_on_an_incomplete_vocab(tmp_path):
 
     assert result.returncode == 1
     assert "missing: ɛ ɔ ɲ ʼ" in result.stdout
+
+
+def _registry_row(path: Path, code: str, letters: str, model: str) -> None:
+    path.write_text(
+        f'code: {code}\nletters: "{letters}"\nspeech:\n'
+        f"  provider: mms\n  model: {model}\n  tone: none\n",
+        encoding="utf-8",
+    )
+
+
+def test_registry_mode_reads_every_language(tmp_path, capsys):
+    module = _load_module()
+    languages = tmp_path / "languages"
+    languages.mkdir()
+    complete = _vocab(tmp_path / "fub", COMPLETE)
+    partial = _vocab(tmp_path / "ybb", "ab")
+    _registry_row(languages / "fub.yaml", "fub", COMPLETE, str(complete))
+    _registry_row(languages / "ybb.yaml", "ybb", "abc", str(partial))
+
+    code = module.main(["--registry", "--registry-dir", str(languages), "--warn-only"])
+
+    assert code == 0
+    out = capsys.readouterr().out
+    assert "language" in out
+    assert "fub" in out
+    assert "ybb" in out
+    assert "status=pass" in out
+    assert "status=warn" in out
+
+
+def test_registry_mode_fails_strict_on_a_gap(tmp_path):
+    module = _load_module()
+    languages = tmp_path / "languages"
+    languages.mkdir()
+    partial = _vocab(tmp_path / "ybb", "ab")
+    _registry_row(languages / "ybb.yaml", "ybb", "abc", str(partial))
+
+    code = module.main(["--registry", "--registry-dir", str(languages)])
+
+    assert code == 1
+
+
+def test_registry_mode_skips_a_missing_model(tmp_path, capsys):
+    module = _load_module()
+    languages = tmp_path / "languages"
+    languages.mkdir()
+    _registry_row(languages / "ybb.yaml", "ybb", "abc", str(tmp_path / "absent"))
+
+    code = module.main(["--registry", "--registry-dir", str(languages)])
+
+    assert code == 0
+    out = capsys.readouterr().out
+    assert "skipped" in out
+    assert "reason=model_missing" in out
+
+
+def test_repository_registry_is_readable(capsys):
+    module = _load_module()
+
+    code = module.main(["--registry", "--warn-only"])
+
+    assert code == 0
+    out = capsys.readouterr().out
+    assert "fub" in out
+    assert "ybb" in out

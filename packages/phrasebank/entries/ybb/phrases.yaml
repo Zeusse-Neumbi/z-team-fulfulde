@@ -389,7 +389,7 @@ phrases:
     category: command
     risk: low
     fr: Oui
-    en: Yes
+    en: "Yes"
     target:
       ybb:
         text: ""
@@ -401,7 +401,7 @@ phrases:
     category: command
     risk: low
     fr: Non
-    en: No
+    en: "No"
     target:
       ybb:
         text: ""

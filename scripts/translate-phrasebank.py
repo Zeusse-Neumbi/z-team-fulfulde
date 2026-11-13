@@ -80,6 +80,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--base-url", default="http://127.0.0.1:8002")
     parser.add_argument("--provider", default="nllb")
+    parser.add_argument("--model", default="", help="model label recorded in the candidate pack")
     parser.add_argument("--source", default="fr", choices=["fr", "en"])
     parser.add_argument("--lang", default="fub")
     parser.add_argument("--limit", type=int, default=0)
@@ -87,6 +88,14 @@ def main() -> int:
 
     if not re.fullmatch(r"[a-z]{3}", args.lang):
         parser.error("--lang must be an ISO 639-3 code (three lowercase letters)")
+
+    registry_path = ROOT / "languages" / f"{args.lang}.yaml"
+    if registry_path.is_file():
+        registry = yaml.safe_load(registry_path.read_text(encoding="utf-8")) or {}
+        if isinstance(registry, dict) and registry.get("status") == "validated":
+            parser.error(
+                f"{args.lang} is validated; refuse to overwrite it with machine candidates"
+            )
 
     lang_dir = ENTRIES / args.lang
     tm_data = yaml.safe_load((lang_dir / "tm.yaml").read_text(encoding="utf-8"))
@@ -148,7 +157,7 @@ def main() -> int:
         )
         copy = dict(entry)
         copy["mtProvider"] = args.provider
-        copy["mtModel"] = "nllb-200-600m-int8"
+        copy["mtModel"] = args.model or args.provider
         copy["mtAt"] = datetime.now(UTC).strftime("%Y-%m-%d")
         copy["mtPlaceholdersOk"] = placeholders_ok
         target = dict(copy.get("target") or {})
