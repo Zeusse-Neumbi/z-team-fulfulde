@@ -33,8 +33,10 @@ class FakeMMS:
     name = "mms"
     local = True
 
-    def __init__(self, model_path: str, device: str = "cpu") -> None:
+    def __init__(self, model_path: str, device: str = "cpu", lang: str = "fub") -> None:
         self.model = model_path
+        self.device = device
+        self.lang = lang
 
     def synthesize(self, text: str, voice: str, speed: float) -> TTSResult:
         return TTSResult(
@@ -81,6 +83,28 @@ def test_mms_route_reports_local_non_stub(client, monkeypatch, tmp_path):
     assert response.headers["x-zteam-speech-source"] == "local"
     assert response.headers["x-zteam-model"].endswith("mms")
     assert response.content[:4] == b"RIFF"
+
+
+def test_mms_route_passes_the_request_language_to_the_provider(monkeypatch, tmp_path):
+    model_dir = tmp_path / "mms"
+    model_dir.mkdir()
+    monkeypatch.setattr(settings, "tts_model", str(model_dir))
+    monkeypatch.setattr(tts_module, "MMSTTS", FakeMMS)
+
+    provider = tts_module.get_tts(settings, provider="mms", language="fub")
+
+    assert provider.lang == "fub"
+
+
+def test_mms_defaults_to_fulfulde(monkeypatch, tmp_path):
+    model_dir = tmp_path / "mms"
+    model_dir.mkdir()
+    monkeypatch.setattr(settings, "tts_model", str(model_dir))
+    monkeypatch.setattr(tts_module, "MMSTTS", FakeMMS)
+
+    provider = tts_module.get_tts(settings, provider="mms")
+
+    assert provider.lang == "fub"
 
 
 def test_mms_route_caches_by_text(client, monkeypatch, tmp_path):

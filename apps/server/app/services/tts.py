@@ -14,6 +14,7 @@ import httpx
 from ..config import Settings
 from ..errors import ProviderError
 from ..provider_catalog import spec_for
+from .speech_norm import normalize_for_speech
 
 
 @dataclass
@@ -72,7 +73,7 @@ class MMSTTS:
     name = "mms"
     local = True
 
-    def __init__(self, model_path: str, device: str = "cpu") -> None:
+    def __init__(self, model_path: str, device: str = "cpu", lang: str = "fub") -> None:
         if not Path(model_path).exists():
             raise ProviderError(
                 "model_missing",
@@ -103,11 +104,10 @@ class MMSTTS:
             ) from exc
         self.model = model_path
         self._sample_rate = int(self._model.config.sampling_rate)
+        self._lang = lang
 
     def synthesize(self, text: str, voice: str, speed: float) -> TTSResult:
-        normalized = (
-            text.replace("ɲ", "ny").replace("ꞌ", "'").replace("\u00a0", " ").replace("\u202f", " ")
-        )
+        normalized = normalize_for_speech(self._lang, text)
         inputs = self._tokenizer(normalized, return_tensors="pt").to(self._device)
         try:
             with self._torch.no_grad():
@@ -525,6 +525,10 @@ def _default_language(settings: Settings, name: str) -> str:
         return settings.camb_language
     if name == "elevenlabs":
         return settings.elevenlabs_language
+    # The shipped local voice is the Fulfulde MMS checkpoint, so the speech
+    # normalizer must see `fub` by default (Track B sends the real language).
+    if name == "mms":
+        return "fub"
     return "ff"
 
 
@@ -541,6 +545,7 @@ def _build_tts(
         return MMSTTS(
             model_path=str(settings.resolve_path(settings.tts_model)),
             device=settings.tts_device,
+            lang=language,
         )
     if name == "camb":
         return CambTTS(

@@ -22,3 +22,4 @@ accepted record.
 | [0014](0014-loopback-api-discovery.md) | Discover the local API on the loopback range 8000–8010 |
 | [0015](0015-runtime-local-mt-fallback.md) | Use labelled local machine translation as a runtime fallback |
 | [0016](0016-ship-labelled-mt-pack-and-audio.md) | Ship the labelled MT draft pack, bundled synthetic clips and a label-collision guard |
+| [0017](0017-cameroonian-fulfulde-mt.md) | Serve Cameroonian Fulfulde text and stop the voice dropping AGLC letters |

@@ -525,6 +525,7 @@ def get_mt(
         selected_model,
         settings.mt_runtime,
         settings.mt_model,
+        settings.mt_marian_model,
         settings.mt_tokenizer,
         settings.mt_device,
         settings.mt_compute_type,
@@ -554,7 +555,7 @@ def _default_model(settings: Settings, name: str) -> str:
     if name == "nllb":
         return settings.mt_model
     if name == "marian":
-        return settings.mt_model
+        return settings.mt_marian_model
     if name == "google":
         return "google-cloud-translation-v2"
     return "stub"
@@ -592,7 +593,7 @@ def _build_mt(settings: Settings, name: str, model: str) -> MTProvider:
         )
     if name == "marian":
         return MarianMT(
-            model_path=str(settings.resolve_path(settings.mt_model)),
+            model_path=str(settings.resolve_path(settings.mt_marian_model)),
             device=settings.mt_device,
             compute_type=settings.mt_compute_type,
         )
