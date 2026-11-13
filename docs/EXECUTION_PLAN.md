@@ -8,7 +8,8 @@ battle.
 - **Internal submission:** Friday 13 November 2026, 18:00 Africa/Douala.
 - **Freeze:** Thursday 12 November 2026, 18:00.
 - **Hard deadline:** Saturday 14 November 2026, 23:59 Africa/Douala.
-- **Working branch:** `chore/preselection-execution`.
+- **Working branch:** one `<type>/<slug>` branch per change set, landed through a
+  pull request; `main` is PR-only and never committed to directly.
 - **Team:** 3 people, Douala.
 - **Form deliverables:** a French PDF of at most 5 pages and under 10 MB, the
   extension ZIP under 10 MB, a video link, and the public GitHub link.
