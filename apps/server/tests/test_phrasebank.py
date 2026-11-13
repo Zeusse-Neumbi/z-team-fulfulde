@@ -24,10 +24,8 @@ version: "test-tm"
 units:
   - id: tm.test
     source: {{ fr: "Solde", en: "Balance" }}
-    target: {{ ff: "{tm_ff}" }}
+    target: {{ fub: {{ text: "{tm_ff}", origin: human, validatedBy: [], backTranslationFr: "" }} }}
     risk: {risk}
-    validatedBy: []
-    backTranslationFr: ""
     version: "1"
 """,
         encoding="utf-8",
@@ -42,23 +40,23 @@ phrases:
     risk: {risk}
     fr: "Votre solde est de {{amount}}."
     en: "Your balance is {{amount}}."
-    ff: "{phrase_ff}"
+    target: {{ fub: {{ text: "{phrase_ff}", origin: human, validatedBy: [], backTranslationFr: "" }} }}
     segments:
       - slot: amount
     slots:
       amount: {{ type: amount, currency: XAF }}
-    validatedBy: []
-    backTranslationFr: ""
 """,
         encoding="utf-8",
     )
-    (numbers / "numbers.fub.json").write_text(
+    (numbers / "fub.json").write_text(
         json.dumps({"version": "test-numbers"}),
         encoding="utf-8",
     )
     return Settings(
+        target_lang="fub",
+        languages_dir="languages",
         phrasebank_dir=str(entries),
-        phrasebank_numbers=str(numbers / "numbers.fub.json"),
+        phrasebank_numbers=str(numbers / "fub.json"),
     )
 
 
@@ -91,6 +89,15 @@ def test_phrasebank_missing_directory(client, monkeypatch, tmp_path):
     response = client.get("/phrasebank")
     assert response.status_code == 503
     assert response.json()["detail"]["code"] == "phrasebank_missing"
+
+
+def test_phrasebank_rejects_unknown_target_language(client, monkeypatch):
+    monkeypatch.setattr(settings, "target_lang", "deu")
+    response = client.get("/phrasebank")
+    assert response.status_code == 422
+    detail = response.json()["detail"]
+    assert detail["code"] == "unsupported_language"
+    assert detail["valid"] == ["fub", "ybb"]
 
 
 def test_phrasebank_invalid_yaml(client, monkeypatch, tmp_path):

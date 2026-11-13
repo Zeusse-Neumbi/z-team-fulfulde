@@ -3,6 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Response
 
 from ..config import settings
+from ..languages import get_language
 from ..models import TTSRequest
 from ..services.tts import synthesize
 
@@ -20,6 +21,12 @@ def synthesize_route(request: TTSRequest) -> Response:
             },
         )
 
+    # An explicit language is validated against the registry; an omitted one
+    # follows ZTEAM_TARGET_LANG. Either way the provider sees the resolved code.
+    if request.language is not None:
+        get_language(request.language, settings)
+    language = request.language or settings.target_lang
+
     result, cache_state = synthesize(
         settings,
         text=request.text,
@@ -27,7 +34,7 @@ def synthesize_route(request: TTSRequest) -> Response:
         speed=request.speed,
         provider=request.provider,
         voice_id=request.voice_id,
-        language=request.language,
+        language=language,
     )
     source = "stub" if result.stub else ("local" if result.local else "cloud")
     return Response(

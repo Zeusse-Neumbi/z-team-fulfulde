@@ -6,6 +6,7 @@ from typing import Any, Literal
 
 from .config import Settings
 from .errors import ProviderError
+from .languages import resolve_mt_model, resolve_speech_model
 
 Kind = Literal["mt", "tts", "asr"]
 
@@ -251,9 +252,9 @@ def _active_model(settings: Settings, spec: ProviderSpec) -> str:
     if spec.name == "nllb":
         return settings.mt_model
     if spec.name == "marian":
-        return settings.mt_marian_model
+        return resolve_mt_model(settings, settings.target_lang)
     if spec.name == "mms":
-        return settings.tts_model
+        return resolve_speech_model(settings, settings.target_lang)
     if spec.name == "camb":
         return settings.camb_model
     if spec.name == "elevenlabs":
@@ -307,7 +308,11 @@ def describe(settings: Settings, kind: Kind, name: str) -> Readiness:
             readiness.reason = "dependency_missing"
             readiness.detail = "Install torch for the transformers runtime."
             return readiness
-        selected = settings.mt_model if spec.name == "nllb" else settings.mt_marian_model
+        selected = (
+            settings.mt_model
+            if spec.name == "nllb"
+            else resolve_mt_model(settings, settings.target_lang)
+        )
         ready, reason = _model_ready(settings, selected)
         if not ready:
             readiness.ready = False
@@ -321,11 +326,12 @@ def describe(settings: Settings, kind: Kind, name: str) -> Readiness:
             readiness.reason = "dependency_missing"
             readiness.detail = "Install the speech extra to load MMS-TTS."
             return readiness
-        ready, reason = _model_ready(settings, settings.tts_model)
+        selected = resolve_speech_model(settings, settings.target_lang)
+        ready, reason = _model_ready(settings, selected)
         if not ready:
             readiness.ready = False
             readiness.reason = reason
-            readiness.detail = _model_detail(settings.tts_model, reason)
+            readiness.detail = _model_detail(selected, reason)
         return readiness
 
     if spec.requires_credentials:

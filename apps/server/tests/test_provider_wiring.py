@@ -67,6 +67,23 @@ class FakeNLLB:
         )
 
 
+class FakeMarian:
+    name = "marian"
+    local = True
+
+    def __init__(self, model_path: str, device: str = "cpu", compute_type: str = "int8") -> None:
+        self.model = model_path
+
+    def translate(self, text: str, source: str, target: str) -> MTResult:
+        return MTResult(
+            text=f"YBB<{text}>",
+            translated=True,
+            provider=self.name,
+            model=self.model,
+            local=True,
+        )
+
+
 def test_mms_route_reports_local_non_stub(client, monkeypatch, tmp_path):
     model_dir = tmp_path / "mms"
     model_dir.mkdir()
@@ -141,7 +158,32 @@ def test_nllb_route_reports_local_model(client, monkeypatch, tmp_path):
     assert body["stub"] is False
     assert body["translated"] is True
     assert body["text"] == "FF<Votre solde.>"
-    assert body["target_lang"] == "fuv"
+    assert body["target_lang"] == "fub"
+
+
+def test_marian_resolves_the_registry_model_for_ybb(client, monkeypatch):
+    monkeypatch.setattr(settings, "mt_backend", "nllb")
+    monkeypatch.setattr(mt_module, "MarianMT", FakeMarian)
+
+    response = client.post("/translate", json={"text": "Votre solde.", "target": "ybb"})
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["provider"] == "marian"
+    assert body["model"].endswith("francais-yemba")
+    assert body["target_lang"] == "ybb"
+
+
+def test_tts_resolves_the_registry_voice_for_ybb(monkeypatch):
+    monkeypatch.setattr(tts_module, "MMSTTS", FakeMMS)
+
+    fub = tts_module.get_tts(settings, provider="mms", language="fub")
+    ybb = tts_module.get_tts(settings, provider="mms", language="ybb")
+
+    assert fub.model.endswith("mms-tts-ful")
+    assert ybb.model.endswith("mms-tts-ybb")
+    assert fub is not ybb
+    assert ybb.lang == "ybb"
 
 
 def test_fake_wav_is_valid():

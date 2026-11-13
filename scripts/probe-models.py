@@ -86,7 +86,7 @@ def probe_mt(base: str, provider: str) -> list[dict[str, Any]]:
             status, headers, payload = request(
                 "POST",
                 f"{base}/translate",
-                {"text": text, "source": source, "target": "ff", "provider": provider},
+                {"text": text, "source": source, "target": "fub", "provider": provider},
             )
             wall_ms = round((time.perf_counter() - started) * 1000, 1)
             if status == 200:

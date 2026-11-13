@@ -240,7 +240,7 @@ async function deepTranslate(url) {
       body: JSON.stringify({
         text: "Votre solde est de 250 000 FCFA.",
         source: "fr",
-        target: "ff",
+        target: "fub",
         provider: "nllb",
       }),
       signal: AbortSignal.timeout(180_000),

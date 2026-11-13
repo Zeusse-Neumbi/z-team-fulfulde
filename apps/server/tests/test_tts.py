@@ -43,6 +43,19 @@ def test_tts_rejects_unknown_provider(client):
     assert response.json()["detail"]["code"] == "provider_unknown"
 
 
+def test_tts_rejects_unknown_language(client):
+    response = client.post("/tts", json={"text": "Bonjour", "language": "deu"})
+    assert response.status_code == 422
+    detail = response.json()["detail"]
+    assert detail["code"] == "unsupported_language"
+    assert detail["valid"] == ["fub", "ybb"]
+
+
+def test_tts_accepts_a_registered_language(client):
+    response = client.post("/tts", json={"text": "Bonjour", "language": "ybb"})
+    assert response.status_code == 200
+
+
 def test_tts_cloud_is_refused_without_opt_in(client):
     response = client.post("/tts", json={"text": "Bonjour", "provider": "camb"})
     assert response.status_code == 403

@@ -10,6 +10,7 @@ import httpx
 
 from ..config import Settings
 from ..errors import ProviderError
+from ..languages import get_language, resolve_mt_model
 from ..provider_catalog import spec_for
 
 
@@ -34,8 +35,9 @@ SOURCE_NAMES = {"fr": "French", "en": "English"}
 NLLB_LANGS = {
     "fr": "fra_Latn",
     "en": "eng_Latn",
-    "ff": "fuv_Latn",
-    "fub": "fuv_Latn",
+    # Explicit Nigerian Fulfulde token. Adamawa Fulfulde (`fub`) resolves
+    # through the language registry and, when NLLB is selected, falls back to
+    # this token; `ff` is no longer a language code.
     "fuv": "fuv_Latn",
 }
 
@@ -341,7 +343,12 @@ class NLLBTransformersMT:
 
 
 class MarianMT:
-    """Local CTranslate2 Marian backend, loaded only when configured."""
+    """Local CTranslate2 Marian backend, loaded only when configured.
+
+    One model directory is one direction: the registry pairs are French pivot
+    to one target, so `source` and `target` are intentionally ignored here.
+    The language is resolved before the provider is built.
+    """
 
     name = "marian"
     local = True
@@ -508,8 +515,15 @@ def get_mt(
     settings: Settings,
     provider: str | None = None,
     model: str | None = None,
+    target_lang: str | None = None,
 ) -> MTProvider:
     name = provider or settings.mt_backend
+    language = target_lang or settings.target_lang
+    # NLLB is the measured default for Fulfulde. It has no Yemba token, so an
+    # unqualified request for another registered language uses that language's
+    # registry provider instead of silently translating into fuv.
+    if provider is None and name == "nllb" and language != settings.target_lang:
+        name = get_language(language, settings).mt_provider
     spec = spec_for("mt", name)
     if not spec.local and not settings.allow_cloud:
         raise ProviderError(
@@ -519,9 +533,10 @@ def get_mt(
             provider=name,
         )
 
-    selected_model = model or _default_model(settings, name)
+    selected_model = model or _default_model(settings, name, language)
     key = (
         name,
+        language,
         selected_model,
         settings.mt_runtime,
         settings.mt_model,
@@ -549,19 +564,23 @@ def get_mt(
         return instance
 
 
-def _default_model(settings: Settings, name: str) -> str:
+def _default_model(settings: Settings, name: str, target_lang: str) -> str:
     if name == "ollama":
         return settings.ollama_model
     if name == "nllb":
         return settings.mt_model
     if name == "marian":
-        return settings.mt_marian_model
+        return resolve_mt_model(settings, target_lang)
     if name == "google":
         return "google-cloud-translation-v2"
     return "stub"
 
 
-def _build_mt(settings: Settings, name: str, model: str) -> MTProvider:
+def _build_mt(
+    settings: Settings,
+    name: str,
+    model: str,
+) -> MTProvider:
     if name == "stub":
         return StubMT()
     if name == "ollama":
@@ -593,7 +612,7 @@ def _build_mt(settings: Settings, name: str, model: str) -> MTProvider:
         )
     if name == "marian":
         return MarianMT(
-            model_path=str(settings.resolve_path(settings.mt_marian_model)),
+            model_path=str(settings.resolve_path(model)),
             device=settings.mt_device,
             compute_type=settings.mt_compute_type,
         )

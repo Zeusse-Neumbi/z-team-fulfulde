@@ -1,5 +1,7 @@
 from pydantic import BaseModel, Field
 
+from .config import settings
+
 
 class TTSRequest(BaseModel):
     text: str = Field(min_length=1, max_length=2000)
@@ -26,7 +28,7 @@ class ASRResponse(BaseModel):
 class TranslateRequest(BaseModel):
     text: str = Field(min_length=1, max_length=4000)
     source: str = "fr"
-    target: str = "ff"
+    target: str = Field(default_factory=lambda: settings.target_lang)
     provider: str | None = None
     model: str | None = None
 

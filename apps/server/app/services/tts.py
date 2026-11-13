@@ -13,6 +13,7 @@ import httpx
 
 from ..config import Settings
 from ..errors import ProviderError
+from ..languages import resolve_speech_model
 from ..provider_catalog import spec_for
 from .speech_norm import normalize_for_speech
 
@@ -464,9 +465,9 @@ def get_tts(
             provider=name,
         )
 
-    selected_model = model or _default_model(settings, name)
-    selected_voice = voice_id or _default_voice(settings, name)
     selected_language = language or _default_language(settings, name)
+    selected_model = model or _default_model(settings, name, selected_language)
+    selected_voice = voice_id or _default_voice(settings, name)
     key = (
         "provider",
         name,
@@ -502,9 +503,9 @@ def get_tts(
 _PROVIDERS: dict[tuple[object, ...], TTSProvider] = {}
 
 
-def _default_model(settings: Settings, name: str) -> str:
+def _default_model(settings: Settings, name: str, language: str) -> str:
     if name == "mms":
-        return settings.tts_model
+        return resolve_speech_model(settings, language)
     if name == "camb":
         return settings.camb_model
     if name == "elevenlabs":
@@ -525,10 +526,10 @@ def _default_language(settings: Settings, name: str) -> str:
         return settings.camb_language
     if name == "elevenlabs":
         return settings.elevenlabs_language
-    # The shipped local voice is the Fulfulde MMS checkpoint, so the speech
-    # normalizer must see `fub` by default (Track B sends the real language).
+    # The shipped local voice is per language; the registry resolves the MMS
+    # checkpoint, and the normalizer receives the real code.
     if name == "mms":
-        return "fub"
+        return settings.target_lang
     return "ff"
 
 
@@ -543,7 +544,7 @@ def _build_tts(
         return StubTTS()
     if name == "mms":
         return MMSTTS(
-            model_path=str(settings.resolve_path(settings.tts_model)),
+            model_path=str(settings.resolve_path(model)),
             device=settings.tts_device,
             lang=language,
         )

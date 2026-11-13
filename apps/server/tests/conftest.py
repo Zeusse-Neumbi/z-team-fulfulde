@@ -19,12 +19,12 @@ def default_settings(monkeypatch):
     monkeypatch.setattr(settings, "tts_backend", "stub")
     monkeypatch.setattr(settings, "asr_backend", "stub")
     monkeypatch.setattr(settings, "allow_cloud", False)
+    monkeypatch.setattr(settings, "target_lang", "fub")
+    monkeypatch.setattr(settings, "languages_dir", "languages")
     monkeypatch.setattr(settings, "mt_model", "models/nllb-200-600m-int8")
     monkeypatch.setattr(settings, "tts_model", "models/mms-tts-ful")
-    monkeypatch.setattr(settings, "phrasebank_dir", "packages/phrasebank/entries")
-    monkeypatch.setattr(
-        settings, "phrasebank_numbers", "packages/phrasebank/numbers/numbers.fub.json"
-    )
+    monkeypatch.setattr(settings, "phrasebank_dir", "packages/phrasebank/entries/fub")
+    monkeypatch.setattr(settings, "phrasebank_numbers", "packages/phrasebank/numbers/fub.json")
     yield
 
 

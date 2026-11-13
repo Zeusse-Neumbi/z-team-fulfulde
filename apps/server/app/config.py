@@ -37,6 +37,12 @@ class Settings(BaseSettings):
     allow_cloud: bool = False
     cloud_timeout_s: float = 20.0
 
+    # --- Languages -------------------------------------------------------
+    # The registry lives in `languages/*.yaml`; one row per target language.
+    # Adding a language must not need a code change.
+    target_lang: str = "fub"
+    languages_dir: str = "languages"
+
     # --- Translation -----------------------------------------------------
     # "stub" keeps the scaffold dependency-light. "ollama" uses a local Ollama
     # server. "nllb" and "marian" need the speech extra and a local model.
@@ -47,7 +53,8 @@ class Settings(BaseSettings):
     # Opt-in: the Marian backend can load the Cameroonian FR->Fufulde pair from
     # flagship-ai/cameroon-int8 (AGLC orthography). It is not the default: it
     # failed the value-preservation head-to-head, so NLLB above stays first.
-    mt_marian_model: str = "models/cameroon-int8/francais-fufulde"
+    # Empty resolves the model from `languages/<code>.yaml` for the target.
+    mt_marian_model: str = ""
     mt_runtime: str = "ct2"  # ct2 | transformers
     mt_device: str = "cpu"
     mt_compute_type: str = "int8"
@@ -70,7 +77,8 @@ class Settings(BaseSettings):
 
     # --- Speech ----------------------------------------------------------
     tts_backend: str = "stub"
-    tts_model: str = "models/mms-tts-ful"
+    # Empty resolves the voice from `languages/<code>.yaml` for the target.
+    tts_model: str = ""
     tts_device: str = "cpu"
     tts_max_chars: int = 500
     tts_cache_size: int = 32
@@ -93,9 +101,10 @@ class Settings(BaseSettings):
     elevenlabs_timeout_s: float = 60.0
 
     # --- Phrasebank ------------------------------------------------------
-    # Default language pack. The registry derives these per target language.
-    phrasebank_dir: str = "packages/phrasebank/entries/fub"
-    phrasebank_numbers: str = "packages/phrasebank/numbers/fub.json"
+    # Empty means "derive from ZTEAM_TARGET_LANG + languages/<code>.yaml".
+    # Set either one to use a test fixture or an out-of-tree pack.
+    phrasebank_dir: str = ""
+    phrasebank_numbers: str = ""
 
 
 settings = Settings()
