@@ -16,7 +16,7 @@ the transfer; do not commit credentials or personal paths.
 | uv | 0.11.16 |
 | Python | 3.13.9 (system); the project requires >=3.11, CI uses 3.12 |
 | Chrome/Chromium | installed through Playwright |
-| Models | `models/mms-tts-ful`, `models/nllb-200-600m-int8` |
+| Models | `models/mms-tts-ful`, `models/nllb-200-600m-int8`, `models/cameroon-int8/francais-fufulde` |
 | Model checksums | `models/manifest.json` |
 | API | `127.0.0.1:8000` |
 

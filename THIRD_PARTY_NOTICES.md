@@ -38,6 +38,7 @@ terms.
 |---|---|---|---|
 | MMS-TTS Fulah (`facebook/mms-tts-ful`) | 36M VITS | CC-BY-NC-4.0 | Local speech baseline |
 | NLLB-200 distilled 600M (`facebook/nllb-200-distilled-600M`) | 600M | CC-BY-NC-4.0 | Local translation baseline |
+| Cameroonian Fufulde (`flagship-ai/cameroon-int8`, `francais-fufulde`) | 77 MB int8 | CC-BY-NC-4.0 (fp32 originals CC-BY-4.0) | Default FR→Fufulde translation, AGLC normalised |
 | Fine-tuned MMS/VITS | 36M | CC-BY-NC-4.0 (inherits) | Optional validated voice |
 | Ollama model (`ZTEAM_OLLAMA_MODEL`) | installed locally | Model-dependent | Local LLM translation test |
 
@@ -69,7 +70,8 @@ when a skill is refreshed.
 | `facebook/mms-tts-ful` | CC-BY-NC-4.0 | TTS base | Non-commercial; declare |
 | Fine-tuned TTS | CC-BY-NC-4.0 (inherits) | Optional voice | Non-commercial; declare |
 | **Bundled demo clips** (`apps/extension/public/audio/demo/*.opus`) | CC-BY-NC-4.0 (model output) | 115 short synthetic clips shipped in the ZIP | Non-commercial; the clip, the manifest and the panel state that the voice is synthetic and unvalidated |
-| `flagship-ai/francais-fufulde` | CC-BY-4.0 | Optional local FR→FF fallback | Attribution |
+| `flagship-ai/cameroon-int8` (`francais-fufulde`) | 77 MB int8 | **CC-BY-NC-4.0** (fp32 originals CC-BY-4.0) | Default FR→Fufulde MT (AGLC) | Non-commercial; declare both licences |
+| `flagship-ai/francais-fufulde` (fp32 upstream) | fp32 | CC-BY-4.0 | Optional local FR→FF fallback | Attribution |
 | `DS4H-ICTU/linguo_mt_en_fub` | Apache-2.0 | Optional local EN→FUB fallback | Attribution |
 | CTranslate2 | MIT | Local MT runtime | Attribution |
 | Transformers / PyTorch | Apache-2.0 / BSD-3-Clause | Model runtime | Attribution |

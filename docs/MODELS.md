@@ -19,7 +19,7 @@ GPU vendor and the recommended backend; `pnpm models:download` uses
 | MT | `stub` | local | project | nothing |
 | MT | `ollama` | local | model-dependent | Ollama on `127.0.0.1:11434` |
 | MT | `nllb` | local | CC-BY-NC-4.0 | speech extra + model dir |
-| MT | `marian` | local | model-dependent | speech extra + CT2 model |
+| MT | `marian` | local | CC-BY-NC-4.0 | speech extra + `models/cameroon-int8/francais-fufulde` |
 | MT | `google` | cloud | proprietary | `ZTEAM_GOOGLE_TRANSLATE_API_KEY` |
 | TTS | `stub` | local | project | nothing |
 | TTS | `mms` | local | CC-BY-NC-4.0 | speech extra + `models/mms-tts-ful` |
@@ -29,10 +29,29 @@ GPU vendor and the recommended backend; `pnpm models:download` uses
 
 Notes that matter for the comparison:
 
-- **NLLB has no `fub` token.** It uses `fuv_Latn` (Nigerian Fulfulde). Treat
-  Adamawa output as a proxy until a fine-tune exists.
-- **MMS-TTS `ful`** is the macrolanguage checkpoint closest to Fulfulde. It has
-  `ɓ ɗ ƴ ŋ` but no `ɲ` or `ꞌ`; the backend normalizes those to `ny` and `'`.
+- **Fulfulde text is Cameroonian by default.** The `marian` backend loads
+  `flagship-ai/cameroon-int8/francais-fufulde`: an int8 CTranslate2 Marian pair
+  (77 MB) normalised under the AGLC alphabet (Alphabet Général des Langues
+  Camerounaises). Its 59,514-entry sentencepiece vocabulary covers
+  `ɛ ɔ ŋ ʉ ɓ ɗ ɲ ʼ` and the tone marks `á à ǎ â ā`. One letter is missing: `ƴ`
+  (see the probe below). It is a **French-pivot** checkpoint, so English pages
+  stay on the NLLB fallback.
+- **NLLB has no `fub` token.** It uses `fuv_Latn` (Nigerian Fulfulde), so it is
+  kept as an explicit fallback and comparison baseline
+  (`ZTEAM_MT_BACKEND=nllb`, `ZTEAM_MT_MODEL=models/nllb-200-600m-int8`), not as
+  the default Fulfulde route. The `fuv_Latn` mapping stays in `NLLB_LANGS`.
+- **MMS-TTS `ful` is the Fulah macrolanguage voice, not an Adamawa voice.** Its
+  41-entry vocabulary contains `ŋ ƴ ɓ ɗ` but **no `ɛ`, `ɔ`, `ɲ`, `ʼ` and no
+  tone marks**, so the tokenizer silently dropped them:
+  `nɛɛsa → |n|s|a|`, `ɲaamdu → |a|a|m|d|u|`. AGLC coverage is **26/30 = 86.7%**.
+  The backend now maps `ɛ ɔ ɲ ʼ` and folds tone marks before synthesis, which
+  keeps the word shape but is **not** a validated Adamawa voice. Do not claim
+  one. `pnpm check:tokenizer` reproduces the measurement.
+- **`ƴ` probe (13 November 2026).** `ƴ` is absent from the Cameroon bundle's
+  shared sentencepiece vocabulary: `check-tokenizer-coverage.py --model
+  models/cameroon-int8/francais-fufulde` reports `missing: ƴ`, 29/30 = 96.7%.
+  The MMS voice *does* have `ƴ`, so the speech normalizer preserves it. Treat
+  any `ƴ` in MT output as unverified until the output probe below is repeated.
 - **Camb.ai** is the only provider that advertises an explicit Adamawa locale
   (`fub-cm`).
 - **ElevenLabs** advertises `ff` as Fula/Pulaar, not Adamawa.
@@ -41,14 +60,17 @@ Notes that matter for the comparison:
 ## Download the local models
 
 ```bash
-./scripts/download-models.sh                 # MMS-TTS Fulah, ~138 MB
-./scripts/download-models.sh mms nllb-ct2    # + NLLB-200 600M int8, ~647 MB
-./scripts/download-models.sh mms nllb        # + the fp32 checkpoint, ~2.6 GB
+pnpm models:download mt-fub                  # Cameroonian FR→Fufulde, ~78 MB
+pnpm models:download                         # MMS-TTS Fulah, ~145 MB
+pnpm models:download mms nllb-ct2            # + NLLB-200 600M int8, ~647 MB
+pnpm models:verify                           # size + SHA-256 from the manifest
 ```
 
-The script re-resolves the Hugging Face signed URL on every retry and resumes,
-because a plain `wget -c` fails with HTTP 403 once the CDN URL expires. It
-writes into `models/` (gitignored).
+The downloader re-resolves the Hugging Face signed URL on every retry and
+resumes, because a plain `wget -c` fails with HTTP 403 once the CDN URL expires.
+It writes into `models/` (gitignored). `mt-fub` is an alias of the
+`mt-fufulde-cameroon` entry in [`models/manifest.json`](../models/manifest.json);
+the files land in `models/cameroon-int8/francais-fufulde/`.
 
 NLLB needs a one-time CTranslate2 conversion:
 
@@ -130,7 +152,8 @@ config change.
 | Variable | Default | Meaning |
 | --- | --- | --- |
 | `ZTEAM_MT_BACKEND` | `stub` | default MT provider |
-| `ZTEAM_MT_MODEL` | `models/nllb-200-600m-int8` | NLLB/Marian model dir |
+| `ZTEAM_MT_MODEL` | `models/nllb-200-600m-int8` | NLLB model dir (the fallback) |
+| `ZTEAM_MT_MARIAN_MODEL` | `models/cameroon-int8/francais-fufulde` | Cameroonian FR→Fufulde Marian dir |
 | `ZTEAM_MT_TOKENIZER` | `models/nllb-200-600m-tokenizer` | tokenizer dir (falls back to the model dir) |
 | `ZTEAM_MT_RUNTIME` | `ct2` | `ct2` or `transformers` |
 | `ZTEAM_MT_DEVICE` | `cpu` | `cpu` or `cuda` |
@@ -209,6 +232,8 @@ make the egress explicit.
 | Provider | Request | Latency | Note |
 | --- | --- | --- | --- |
 | `stub` MT | FR/EN sentence | < 1 ms | returns the source |
+| `marian` int8 (Cameroon) | FR sentence | 1.35–1.41 s | AGLC letters, but see the spot check below |
+| `marian` int8 (Cameroon) | short string | 0.22 s | warm, cached model |
 | `nllb` int8 | FR sentence | 0.99–1.29 s | `250 000 FCFA` and `0 FCFA` byte-identical |
 | `nllb` int8 | EN sentence | 0.78–0.91 s | `0 FCFA` byte-identical |
 | `ollama` `gemma4:12b-it-qat` | FR sentence | 11–24 s | kept `250 000 FCFA` and `0 FCFA` byte-identical |
@@ -230,7 +255,7 @@ matches the Hugging Face `x-linked-etag`
 Reproduce the MMS numbers:
 
 ```bash
-./scripts/download-models.sh mms
+pnpm models:download mms
 uv sync --project apps/server --extra dev --extra speech
 ZTEAM_TTS_BACKEND=mms uv run --project apps/server uvicorn app.main:app --port 8001
 uv run --project apps/server python scripts/probe-models.py \
@@ -259,6 +284,40 @@ the fp32 checkpoint plus a local conversion:
 ct2-transformers-converter --model models/nllb-200-600m \
   --output_dir models/nllb-200-600m-int8 --quantization int8 --force
 ```
+
+### Cameroonian pair spot check (13 November 2026)
+
+`ZTEAM_MT_BACKEND=marian`, `ZTEAM_MT_MARIAN_MODEL=models/cameroon-int8/francais-fufulde`,
+`ZTEAM_MT_BEAM_SIZE=2`. Unedited output through `POST /translate`:
+
+| Source (FR) | Output |
+| --- | --- |
+| Votre solde est disponible. | Ɓale mooɗon boo, nde on kanjum. |
+| Solde | Balance |
+| Numéro de compte | Nden kam, Allah wi'i: |
+| Le transfert est terminé. | Ndaa, ndaa, ndaa, ndaa. |
+| Frais de transfert | Ɗowtaneeɓe ɗe'e, nden kam ɓe ndokka ɓe. |
+| Bonjour, Aïssatou | Koo moy yi'i Aiyatu, koo moy yiɗi ɗum. |
+
+**Result: a candidate, not usable text.** The pair is heavily scripture-biased
+(`Allah wi'i`, `Linjiila`), leaves French words (`Balance`), repeats under beam
+search, never emits `ɛ` or `ɔ` in 26 sampled sentences (it writes `e`/`o`), and
+alters a name (`Aïssatou` → `Aiyatu`). It does emit `ŋ ɓ ɗ`, so the vocabulary
+is AGLC, but the corpus is not a financial-UI corpus. Treat every sentence as an
+unvalidated candidate, keep the `MT` label visible, and prefer
+`ZTEAM_MT_BACKEND=nllb` for the demo until a native speaker has reviewed a
+sample. The extension's protected-value masking is what keeps amounts and names
+off this path (ADR 0015); never send a mixed node to `/translate`.
+
+**`ƴ` probe.** Confirmed missing in both directions:
+
+| Input | Output |
+| --- | --- |
+| `ƴeewndo` | `eewndo` |
+| `ƴiiƴam` | `iiam` |
+
+The sentencepiece vocabulary has no `ƴ` piece, so it is dropped on encode and
+cannot be produced on decode. Any word containing `ƴ` is corrupted.
 
 ## Failure codes
 
