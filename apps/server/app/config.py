@@ -93,8 +93,9 @@ class Settings(BaseSettings):
     elevenlabs_timeout_s: float = 60.0
 
     # --- Phrasebank ------------------------------------------------------
-    phrasebank_dir: str = "packages/phrasebank/entries"
-    phrasebank_numbers: str = "packages/phrasebank/numbers/numbers.fub.json"
+    # Default language pack. The registry derives these per target language.
+    phrasebank_dir: str = "packages/phrasebank/entries/fub"
+    phrasebank_numbers: str = "packages/phrasebank/numbers/fub.json"
 
 
 settings = Settings()

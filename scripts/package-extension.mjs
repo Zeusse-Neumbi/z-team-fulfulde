@@ -90,13 +90,35 @@ for (const [relativePath, bytes] of Object.entries(files)) {
 const generated = path.join(root, "packages/phrasebank/src/generated.ts");
 if (existsSync(generated)) {
   const source = readFileSync(generated, "utf8");
-  const empty = (source.match(/"ff": ""/g) ?? []).length;
-  if (empty > 0) {
-    console.error(
-      `[package] refusing to package a build with ${empty} empty Fulfulde target(s).`,
+  const marker = "export const languages: Record<string, Pack> = ";
+  const start = source.indexOf(marker);
+  if (start >= 0) {
+    const packs = JSON.parse(source.slice(start + marker.length).trim().replace(/;\s*$/, ""));
+    const empty = {};
+    for (const [code, pack] of Object.entries(packs)) {
+      const entries = [...(pack.translationUnits ?? []), ...(pack.phrases ?? [])];
+      const missing = entries.filter((entry) => !entry.target?.[code]?.text).length;
+      if (missing > 0) empty[code] = missing;
+    }
+    const blocked = Object.entries(empty).filter(
+      ([code]) => packs[code]?.status === "validated",
     );
-    console.error("[package] run `pnpm build:submission` before `pnpm package`.");
-    process.exit(1);
+    if (blocked.length > 0) {
+      console.error(
+        `[package] refusing to package empty targets for validated language(s): ${blocked
+          .map(([code, count]) => `${code} (${count})`)
+          .join(", ")}.`,
+      );
+      console.error("[package] run `pnpm build:submission` before `pnpm package`.");
+      process.exit(1);
+    }
+    const drafts = Object.keys(empty);
+    if (drafts.length > 0) {
+      console.warn(
+        `[package] warning: draft language(s) ${drafts.join(", ")} ship with empty targets; ` +
+          "the panel labels them as draft.",
+      );
+    }
   }
 }
 

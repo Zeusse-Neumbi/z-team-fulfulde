@@ -3,8 +3,8 @@
 
 The output is a **candidate pack**, not a validated pack:
 
-    packages/phrasebank/entries/tm.mt.yaml
-    packages/phrasebank/entries/phrases.mt.yaml
+    packages/phrasebank/entries/<lang>/tm.mt.yaml
+    packages/phrasebank/entries/<lang>/phrases.mt.yaml
     eval/linguistic/mt-candidates.csv
 
 `validatedBy` stays empty and `backTranslationFr` stays empty, so the release
@@ -14,7 +14,7 @@ release TM without that review.
 
 Usage:
     uv run --project apps/server python scripts/translate-phrasebank.py \
-        --base-url http://127.0.0.1:8002 --source fr
+        --base-url http://127.0.0.1:8002 --source fr --lang fub
 """
 
 from __future__ import annotations
@@ -38,9 +38,9 @@ REPORT = ROOT / "eval/linguistic/mt-candidates.csv"
 PLACEHOLDER = re.compile(r"\{[a-zA-Z_][a-zA-Z0-9_]*\}")
 
 
-def translate(base_url: str, text: str, source: str, provider: str) -> tuple[str, bool]:
+def translate(base_url: str, text: str, source: str, target: str, provider: str) -> tuple[str, bool]:
     payload = json.dumps(
-        {"text": text, "source": source, "target": "ff", "provider": provider}
+        {"text": text, "source": source, "target": target, "provider": provider}
     ).encode("utf-8")
     request = urllib.request.Request(
         f"{base_url.rstrip('/')}/translate",
@@ -81,11 +81,21 @@ def main() -> int:
     parser.add_argument("--base-url", default="http://127.0.0.1:8002")
     parser.add_argument("--provider", default="nllb")
     parser.add_argument("--source", default="fr", choices=["fr", "en"])
+    parser.add_argument("--lang", default="fub")
     parser.add_argument("--limit", type=int, default=0)
     args = parser.parse_args()
 
-    tm_data = yaml.safe_load((ENTRIES / "tm.yaml").read_text(encoding="utf-8"))
-    phrase_data = yaml.safe_load((ENTRIES / "phrases.yaml").read_text(encoding="utf-8"))
+    if not re.fullmatch(r"[a-z]{3}", args.lang):
+        parser.error("--lang must be an ISO 639-3 code (three lowercase letters)")
+
+    lang_dir = ENTRIES / args.lang
+    tm_data = yaml.safe_load((lang_dir / "tm.yaml").read_text(encoding="utf-8"))
+    phrase_data = yaml.safe_load((lang_dir / "phrases.yaml").read_text(encoding="utf-8"))
+    report = (
+        REPORT
+        if args.lang == "fub"
+        else REPORT.with_name(f"mt-candidates.{args.lang}.csv")
+    )
     tm_units: list[dict[str, Any]] = tm_data.get("units", [])
     phrases: list[dict[str, Any]] = phrase_data.get("phrases", [])
 
@@ -103,17 +113,17 @@ def main() -> int:
             source_text = str((entry.get("source") or {}).get(args.source) or "").strip()
         else:
             source_text = str(entry.get(args.source) or "").strip()
-        current = (
-            str((entry.get("target") or {}).get("ff") or "")
-            if kind == "tm"
-            else str(entry.get("ff") or "")
+        current = str(
+            ((entry.get("target") or {}).get(args.lang) or {}).get("text") or ""
         )
         if current or not source_text:
             skipped += 1
             return entry
         masked, tokens = mask(source_text)
         try:
-            candidate, ok = translate(args.base_url, masked, args.source, args.provider)
+            candidate, ok = translate(
+                args.base_url, masked, args.source, args.lang, args.provider
+            )
         except (urllib.error.URLError, TimeoutError, ValueError) as exc:
             print(f"  ! {entry.get('id')}: {exc}")
             skipped += 1
@@ -141,12 +151,14 @@ def main() -> int:
         copy["mtModel"] = "nllb-200-600m-int8"
         copy["mtAt"] = datetime.now(UTC).strftime("%Y-%m-%d")
         copy["mtPlaceholdersOk"] = placeholders_ok
-        if kind == "tm":
-            target = dict(copy.get("target") or {})
-            target["ff"] = restored
-            copy["target"] = target
-        else:
-            copy["ff"] = restored
+        target = dict(copy.get("target") or {})
+        language_target = dict(target.get(args.lang) or {})
+        language_target["text"] = restored
+        language_target["origin"] = "mt"
+        language_target.setdefault("validatedBy", [])
+        language_target.setdefault("backTranslationFr", "")
+        target[args.lang] = language_target
+        copy["target"] = target
         return copy
 
     for unit in tm_units:
@@ -164,17 +176,17 @@ def main() -> int:
         "version": f"{phrase_data.get('version', '')}+mt",
         "phrases": phrase_candidates,
     }
-    (ENTRIES / "tm.mt.yaml").write_text(
+    (lang_dir / "tm.mt.yaml").write_text(
         yaml.safe_dump(tm_out, allow_unicode=True, sort_keys=False),
         encoding="utf-8",
     )
-    (ENTRIES / "phrases.mt.yaml").write_text(
+    (lang_dir / "phrases.mt.yaml").write_text(
         yaml.safe_dump(phrase_out, allow_unicode=True, sort_keys=False),
         encoding="utf-8",
     )
 
-    REPORT.parent.mkdir(parents=True, exist_ok=True)
-    with REPORT.open("w", encoding="utf-8", newline="") as handle:
+    report.parent.mkdir(parents=True, exist_ok=True)
+    with report.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]) if rows else ["kind"])
         writer.writeheader()
         writer.writerows(rows)
@@ -184,8 +196,11 @@ def main() -> int:
         f"[phrasebank-mt] translated={translated} skipped={skipped} "
         f"placeholder_failures={placeholder_failures} in {elapsed:.1f}s"
     )
-    print(f"[phrasebank-mt] candidates: {ENTRIES / 'tm.mt.yaml'}, {ENTRIES / 'phrases.mt.yaml'}")
-    print(f"[phrasebank-mt] report: {REPORT}")
+    print(
+        f"[phrasebank-mt] candidates: {lang_dir / 'tm.mt.yaml'}, "
+        f"{lang_dir / 'phrases.mt.yaml'}"
+    )
+    print(f"[phrasebank-mt] report: {report}")
     return 0 if translated else 1
 
 

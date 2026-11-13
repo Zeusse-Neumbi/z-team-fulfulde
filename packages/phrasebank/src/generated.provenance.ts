@@ -2,9 +2,16 @@
 export type PackSource = "validated" | "mt" | "fixture";
 
 /**
- * Where the bundled Fulfulde targets came from. The panel reads this to label
- * a draft pack: a machine-translated pack must never look validated.
+ * Where each bundled language's targets came from. The panel reads this to
+ * label a draft pack: a machine-translated pack must never look validated.
+ * "packValidated" is true only for a validated language that passes the gate.
  */
-export const packSource: PackSource = "mt";
+export const packSource: Record<string, PackSource> = {
+  "fub": "validated",
+  "ybb": "validated"
+};
 
-export const packValidated: boolean = false;
+export const packValidated: Record<string, boolean> = {
+  "fub": false,
+  "ybb": false
+};

@@ -25,6 +25,55 @@ export type PlaceholderKind =
 
 export type Classification = "translatable" | "protected" | "ignore";
 
+/** ISO 639-3 target language code. A plain string: adding one needs no code. */
+export type LanguageCode = string;
+
+export type LanguageStatus = "validated" | "draft" | "text-only";
+
+export type LanguageTargetOrigin = "human" | "mt" | "seed";
+
+/** One target language for one phrasebank entry. */
+export interface LanguageTarget {
+  text: string;
+  origin: LanguageTargetOrigin;
+  validatedBy: string[];
+  backTranslationFr: string;
+}
+
+export interface LanguageRegistryEntry {
+  code: LanguageCode;
+  endonym: string;
+  names: Record<string, string>;
+  script: string;
+  direction: "ltr" | "rtl";
+  orthography: string;
+  status: LanguageStatus;
+  letters: string;
+  mt: { provider: string; model: string; pivot: string };
+  speech: {
+    provider: string;
+    model: string;
+    tone: "none" | "partial" | "full";
+    substitutions: Record<string, string>;
+  };
+  numbers: string;
+  pack: string;
+}
+
+export interface NumbersLexicon {
+  version: string;
+  units: string[];
+  tens: Record<string, string>;
+  hundred: string;
+  thousand: string;
+  million: string;
+  billion: string;
+  and: string;
+  plus: string;
+  minus: string;
+  currency: string;
+}
+
 export type ProtectedReason =
   | "value"
   | "name"
@@ -39,7 +88,7 @@ export interface TextUnit {
   nodeId: string;
   text: string;
   normalized: string;
-  lang: "fr" | "en" | "ff" | "unknown";
+  lang: "fr" | "en" | "unknown" | LanguageCode;
   classification: Classification;
   protectedReason?: ProtectedReason;
   parentRole?: Role;
@@ -101,12 +150,10 @@ export interface PageSnapshot {
 export interface TranslationUnit {
   id: string;
   source: { fr: string; en: string };
-  target: { ff: string };
+  target: Record<LanguageCode, LanguageTarget>;
   placeholders?: string[];
   risk: "low" | "medium" | "high";
   protected?: boolean;
-  validatedBy: string[];
-  backTranslationFr: string;
   version: string;
 }
 
@@ -117,11 +164,9 @@ export interface PhraseEntry {
   risk: "low" | "medium" | "high";
   fr: string;
   en: string;
-  ff: string;
+  target: Record<LanguageCode, LanguageTarget>;
   segments: Array<{ audio: string } | { slot: string }>;
   slots: Record<string, { type: string; currency?: string; doNotTranslate?: boolean }>;
-  validatedBy: string[];
-  backTranslationFr: string;
 }
 
 export interface SayItem {
@@ -320,6 +365,8 @@ export interface TranslationStatus {
 
 export interface PanelSettings {
   uiLang: UiLanguage;
+  /** Target language for page translation, independent of the panel UI. */
+  targetLang: LanguageCode;
   speed: number;
   /** Speak exact page values through a local TTS only. */
   speakValues: boolean;

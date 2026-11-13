@@ -38,11 +38,67 @@ export const protectedReasonSchema = z.enum([
   "code",
 ]);
 
+/** ISO 639-3. Deliberately not a z.enum: adding a language must not need code. */
+export const languageCodeSchema = z.string().regex(/^[a-z]{3}$/);
+
+/** Source languages the phrasebank ships today (ISO 639-1). */
+export const sourceLanguageCodeSchema = z.string().regex(/^[a-z]{2,3}$/);
+
+export const languageStatusSchema = z.enum(["validated", "draft", "text-only"]);
+
+export const languageTargetOriginSchema = z.enum(["human", "mt", "seed"]);
+
+export const languageTargetSchema = z.object({
+  text: z.string(),
+  origin: languageTargetOriginSchema,
+  validatedBy: z.array(z.string()).default([]),
+  backTranslationFr: z.string().default(""),
+});
+
+export const numbersLexiconSchema = z.object({
+  version: z.string(),
+  units: z.array(z.string()),
+  tens: z.record(z.string(), z.string()),
+  hundred: z.string(),
+  thousand: z.string(),
+  million: z.string(),
+  billion: z.string(),
+  and: z.string(),
+  plus: z.string(),
+  minus: z.string(),
+  currency: z.string(),
+});
+
+/** One `languages/<code>.yaml` row. Adding a language is one file, no code. */
+export const languageRegistryEntrySchema = z.object({
+  code: languageCodeSchema,
+  endonym: z.string().min(1),
+  names: z.record(sourceLanguageCodeSchema, z.string()),
+  script: z.string().min(1),
+  direction: z.enum(["ltr", "rtl"]),
+  orthography: z.string().min(1),
+  status: languageStatusSchema,
+  letters: z.string(),
+  mt: z.object({
+    provider: z.string().min(1),
+    model: z.string().min(1),
+    pivot: z.string().min(1),
+  }),
+  speech: z.object({
+    provider: z.string().min(1),
+    model: z.string().min(1),
+    tone: z.enum(["none", "partial", "full"]),
+    substitutions: z.record(z.string(), z.string()).default({}),
+  }),
+  numbers: z.string().min(1),
+  pack: z.string().min(1),
+});
+
 export const textUnitSchema = z.object({
   nodeId: z.string(),
   text: z.string(),
   normalized: z.string(),
-  lang: z.enum(["fr", "en", "ff", "unknown"]),
+  lang: z.union([z.enum(["fr", "en", "unknown"]), languageCodeSchema]),
   classification: z.enum(["translatable", "protected", "ignore"]),
   protectedReason: protectedReasonSchema.optional(),
   parentRole: roleSchema.optional(),
@@ -103,12 +159,10 @@ export const pageSnapshotSchema = z.object({
 export const translationUnitSchema = z.object({
   id: z.string(),
   source: z.object({ fr: z.string(), en: z.string() }),
-  target: z.object({ ff: z.string() }),
+  target: z.record(languageCodeSchema, languageTargetSchema),
   placeholders: z.array(z.string()).optional(),
   risk: z.enum(["low", "medium", "high"]),
   protected: z.boolean().optional(),
-  validatedBy: z.array(z.string()),
-  backTranslationFr: z.string(),
   version: z.string(),
 });
 
@@ -119,7 +173,7 @@ export const phraseEntrySchema = z.object({
   risk: z.enum(["low", "medium", "high"]),
   fr: z.string(),
   en: z.string(),
-  ff: z.string(),
+  target: z.record(languageCodeSchema, languageTargetSchema),
   segments: z.array(z.union([z.object({ audio: z.string() }), z.object({ slot: z.string() })])),
   slots: z.record(
     z.string(),
@@ -129,8 +183,6 @@ export const phraseEntrySchema = z.object({
       doNotTranslate: z.boolean().optional(),
     }),
   ),
-  validatedBy: z.array(z.string()),
-  backTranslationFr: z.string(),
 });
 
 export const mtModeSchema = z.enum(["off", "fallback", "primary"]);
@@ -245,6 +297,8 @@ export const readbackSchema = z.object({
 
 export const panelSettingsSchema = z.object({
   uiLang: z.enum(["fr", "en", "ff"]),
+  /** Target language for page translation. Independent of `uiLang`. */
+  targetLang: languageCodeSchema.default("fub"),
   speed: z.number().min(0.5).max(2),
   /** Speak exact page values through the local TTS (never a cloud voice). */
   speakValues: z.boolean().default(false),
