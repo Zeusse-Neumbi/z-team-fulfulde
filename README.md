@@ -10,7 +10,8 @@ service's source code, and it never sends page data off the device.
 
 **Execution board:** [Z-Team Fulfulde Assistant — Preselection](https://github.com/users/Zeusse-Neumbi/projects/4)
 
-> **Status: browser mechanics and local MT fallback complete; validated Fulfulde pack pending.**
+> **Status: browser mechanics, labelled MT draft pack and bundled audio complete; the
+> native-speaker session is scheduled and the validated pack is pending.**
 > The extension scans FR/EN pages, translates in place from a validated TM, protects values
 > byte-for-byte, survives re-renders, restores on Stop and exposes a guided panel with
 > read-back. The checked-in TM still has empty Fulfulde targets. The production build can now

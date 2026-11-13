@@ -2,14 +2,16 @@
 
 Two paths, never mixed:
 
-- **Product demo** — production build + validated Fulfulde pack. This is the jury path and the video.
+- **Product demo** — `pnpm build:submission`: the labelled MT draft pack plus the
+  bundled Opus clips. This is the jury path and the video, and the panel states
+  **Fulfulde : MT — non validée** on every screen.
 - **Mechanics test** — fixture build with `⟦FF:…⟧` tokens. This is for e2e and `check:live`; never record it as Fulfulde.
 
-The production build is honest about the pack. With the panel's local-API mode off, the page
-stays in its source language while the pack is a seed. With the default **Repli après la TM**
-mode and the local API running, plain labels are translated by NLLB and marked **MT — non
-validée**. That is machine output, not native-speaker validation. After the validated pack is
-installed, the same build uses the pack first.
+The production build is honest about the pack. The submission build bundles the NLLB draft
+(`packSource: "mt"`); the panel states **MT — non validée** and the audio player withholds 33
+clips whose draft is a warning, an error, an ambiguous control, a source echo or a degenerate
+repetition. When the validated pack replaces the draft, `build:release` passes and the same
+panel reads **validated**. Machine output is never presented as native-speaker validation.
 
 The complete build/load/run walkthrough is in
 [`MANUAL_DEMO.md`](MANUAL_DEMO.md).

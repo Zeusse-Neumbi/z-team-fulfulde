@@ -23,6 +23,11 @@ describe("phrasebank data", () => {
   it("blocks a release while high-risk entries are unvalidated", () => {
     expect(releaseErrors(data).length).toBeGreaterThan(0);
   });
+
+  it("marks the default pack as validated-source and unvalidated in content", () => {
+    expect(data.packSource).toBe("validated");
+    expect(releaseErrors(data).length).toBeGreaterThan(0);
+  });
 });
 
 describe("machine-translated candidate pack", () => {
@@ -31,6 +36,7 @@ describe("machine-translated candidate pack", () => {
     process.env.ZTEAM_PHRASEBANK = "mt";
     try {
       const data = loadAll();
+      expect(data.packSource).toBe("mt");
       expect(data.tmVersion).toContain("+mt");
       expect(data.translationUnits.length).toBeGreaterThan(10);
       expect(data.translationUnits.every((unit) => unit.target.ff.length > 0)).toBe(true);

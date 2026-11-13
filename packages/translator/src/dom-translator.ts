@@ -13,6 +13,7 @@ export interface TranslatedSentence {
   status: "applied" | "missed";
   risk: TranslationRisk;
   protectedReason?: ProtectedReason;
+  holdReason?: "label_collision";
   origin?: "tm" | "mt" | "fixture";
   provider?: string;
 }
@@ -43,6 +44,8 @@ export interface TranslationStats {
   protectedCount: number;
   missed: number;
   coverage: number;
+  /** Interactive labels held in the source language to avoid an ambiguity. */
+  labelCollisions: number;
   aborted: boolean;
   abortReason?: "protected_changed" | "mixed_value_missing" | "target_value_mismatch";
   sentences: TranslatedSentence[];
@@ -77,6 +80,49 @@ interface PlannedWrite {
 }
 
 const MAX_SENTENCES = 500;
+
+const INTERACTIVE_TAGS = new Set(["BUTTON", "A", "INPUT", "SELECT", "TEXTAREA", "SUMMARY"]);
+const INTERACTIVE_ROLES = new Set([
+  "button",
+  "link",
+  "tab",
+  "menuitem",
+  "menuitemradio",
+  "menuitemcheckbox",
+  "option",
+  "switch",
+  "checkbox",
+  "radio",
+  "combobox",
+]);
+/** Unit ids that name a control rather than a piece of prose. */
+const CONTROL_UNIT_ID = /(^|\.)(action|cta)(\.|$)|\.(confirm|edit|submit|cancel|continue|back)$/i;
+
+function parentOf(element: Element): Element | null {
+  if (element.parentElement) return element.parentElement;
+  const root = element.getRootNode();
+  if (typeof ShadowRoot !== "undefined" && root instanceof ShadowRoot) return root.host;
+  return null;
+}
+
+/**
+ * True when the text is (or sits inside) a control the user can activate.
+ * Two controls that read the same are a safety problem, not a style problem.
+ */
+export function isInteractiveText(node: Text): boolean {
+  let element: Element | null = node.parentElement;
+  while (element) {
+    if (INTERACTIVE_TAGS.has(element.tagName)) return true;
+    const role = element.getAttribute("role");
+    if (role && INTERACTIVE_ROLES.has(role.toLowerCase())) return true;
+    element = parentOf(element);
+  }
+  return false;
+}
+
+function looksLikeControl(plan: PlannedWrite): boolean {
+  return CONTROL_UNIT_ID.test(plan.unit.id) || isInteractiveText(plan.node);
+}
 
 export interface MaskedSource {
   source: string;
@@ -339,13 +385,46 @@ export class DomTranslator {
         protectedCount,
         missed,
         coverage: 0,
+        labelCollisions: 0,
         aborted: true,
         abortReason,
         sentences: [],
       };
     }
 
+    // Two different sources that now read the same make two controls
+    // indistinguishable. Keep the control label in the source language and say
+    // so; never let a confirmation and a cancellation look identical.
+    const held = new Set<PlannedWrite>();
+    const byTarget = new Map<string, PlannedWrite[]>();
     for (const plan of plans) {
+      const key = normalizeSource(plan.target);
+      if (!key) continue;
+      const group = byTarget.get(key);
+      if (group) group.push(plan);
+      else byTarget.set(key, [plan]);
+    }
+    for (const group of byTarget.values()) {
+      if (group.length < 2) continue;
+      const sources = new Set(group.map((plan) => normalizeSource(plan.original.source)));
+      if (sources.size < 2) continue;
+      for (const plan of group) {
+        if (looksLikeControl(plan)) held.add(plan);
+      }
+    }
+
+    for (const plan of held) {
+      applied -= 1;
+      missed += 1;
+      if (plan.origin === "mt") mtApplied -= 1;
+      else tmApplied -= 1;
+      plan.sentence.status = "missed";
+      plan.sentence.target = null;
+      plan.sentence.holdReason = "label_collision";
+    }
+
+    for (const plan of plans) {
+      if (held.has(plan)) continue;
       plan.node.nodeValue = plan.written;
       this.changed.add(plan.node);
       this.applied.set(plan.node, {
@@ -369,6 +448,7 @@ export class DomTranslator {
           protectedCount,
           missed,
           coverage: 0,
+          labelCollisions: 0,
           aborted: true,
           abortReason: "protected_changed",
           sentences: [],
@@ -387,6 +467,7 @@ export class DomTranslator {
             protectedCount,
             missed,
             coverage: 0,
+            labelCollisions: 0,
             aborted: true,
             abortReason: "mixed_value_missing",
             sentences: [],
@@ -402,6 +483,7 @@ export class DomTranslator {
       protectedCount,
       missed,
       coverage: applied / Math.max(1, applied + missed),
+      labelCollisions: held.size,
       aborted: false,
       sentences,
     };

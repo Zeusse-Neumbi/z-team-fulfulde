@@ -6,13 +6,22 @@ import { z } from "zod";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 
+export type PackSource = "validated" | "mt";
+
 /**
  * `ZTEAM_PHRASEBANK=mt` loads the machine-translated candidate pack
  * (`tm.mt.yaml` / `phrases.mt.yaml`) for an evaluation build. Those entries
  * have no validator and no back-translation, so `build:release` still fails.
+ *
+ * The pack source is carried into the generated module so the panel can label
+ * the draft it is showing. A draft pack is never presented as validated.
  */
+function packSource(): PackSource {
+  return process.env.ZTEAM_PHRASEBANK === "mt" ? "mt" : "validated";
+}
+
 function packSuffix(): string {
-  return process.env.ZTEAM_PHRASEBANK === "mt" ? ".mt" : "";
+  return packSource() === "mt" ? ".mt" : "";
 }
 
 const tmFileSchema = z.object({
@@ -40,6 +49,7 @@ const numbersSchema = z.object({
 });
 
 export interface PhrasebankData {
+  packSource: PackSource;
   tmVersion: string;
   phrasebankVersion: string;
   translationUnits: TranslationUnit[];
@@ -87,6 +97,7 @@ export function loadAll(): PhrasebankData {
   }
 
   return {
+    packSource: packSource(),
     tmVersion: tmRaw.version,
     phrasebankVersion: phraseRaw.version,
     translationUnits: tmRaw.units,

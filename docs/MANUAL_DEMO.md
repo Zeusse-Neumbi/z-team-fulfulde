@@ -549,7 +549,8 @@ pnpm check:sites  # 30 public pages, canary values
 
 **Not real yet**
 
-- A native-speaker-validated Fulfulde pack. The checked-in targets are empty.
+- A native-speaker-validated Fulfulde pack. The checked-in `generated.ts` is the
+  NLLB draft (`packSource: "mt"`), not a validated pack.
 - Native validation of the NLLB output. The panel says **non validée** for a
   reason.
 - A native-validated Fulfulde panel. The **FF** option is a machine-translated

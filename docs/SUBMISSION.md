@@ -52,10 +52,14 @@ submission/
 5. Open https://safinum.cm/hackathon-test
 6. Click the extension icon, then **Activer sur ce site**.
 
-The validated page translation is bundled and works without the local API.
-Without the API, uncovered strings stay in the source language. The optional
-local API adds the labelled NLLB machine-translation fallback and the voice; see
-[`SETUP.md`](SETUP.md). The ZIP contains `INSTALL.md` with the same steps.
+The ZIP carries the **labelled MT draft pack** (NLLB-200, generated locally) and
+82 playable Opus clips, so the page is translated and the voice works without
+installing a model. The panel shows **Fulfulde : MT — non validée** at all times;
+no native-speaker session has been run yet, and the note says so. Two action
+labels whose draft would read the same stay in French on purpose. Without the
+API, strings outside the pack stay in the source language. The optional local
+API adds the live NLLB fallback and live speech for sentences without a clip;
+see [`SETUP.md`](SETUP.md). The ZIP contains `INSTALL.md` with the same steps.
 
 ## Before submitting
 
@@ -66,8 +70,11 @@ local API adds the labelled NLLB machine-translation fallback and the voice; see
       (Git Bash or WSL on Windows).
 - [ ] `pnpm verify:node` passes (Windows-friendly) or `pnpm verify` on Unix.
 - [ ] The extension installs from the ZIP in a clean Chrome profile.
-- [ ] The validated Fulfulde pack is installed and
-      `pnpm --filter @zteam/phrasebank build:release` passes.
+- [ ] `pnpm build:submission` was the last build, so the ZIP carries the draft
+      pack (the packaging step refuses a build with empty targets).
+- [ ] `node scripts/build-audio-pack.mjs --check` passes.
+- [ ] `node scripts/check-draft.mjs` passes against the local demo page.
+- [ ] The note states that the native-speaker session has not run.
 - [ ] The full journey works on the live test page in French; the EN path is
       covered by e2e.
 - [ ] The fixture journey and live check pass (`pnpm build:test`, `pnpm e2e`,

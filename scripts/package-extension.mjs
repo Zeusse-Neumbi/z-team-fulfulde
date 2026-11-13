@@ -46,9 +46,19 @@ files["INSTALL.md"] = new TextEncoder().encode(`# Z-Team Fulfulde Assistant — 
 8. The page is translated into Fulfulde in place. Amounts, fees, totals,
    balances, names, phones, accounts, references and your input stay unchanged.
 
-The page translation is bundled and works without the local API.
+## What Fulfulde you are reading
 
-The voice is optional. To enable it, start the local API from the repository:
+The bundled Fulfulde is a **machine-translated draft** (NLLB-200, local) and is
+labelled **MT — non validée** in the panel. It has **not** been reviewed by a
+native speaker yet; the listening pack and the protocol are in the repository.
+Buttons whose draft would read the same as another button stay in French on
+purpose, so that a confirmation and a cancellation can never look identical.
+
+The page translation and the short spoken clips are bundled and work without
+the local API.
+
+The voice is optional. To enable live speech for text that has no bundled clip,
+start the local API from the repository:
 
 \`\`\`bash
 uv run --project apps/server uvicorn app.main:app --host 127.0.0.1 --port 8000
@@ -77,20 +87,24 @@ for (const [relativePath, bytes] of Object.entries(files)) {
   }
 }
 
+const generated = path.join(root, "packages/phrasebank/src/generated.ts");
+if (existsSync(generated)) {
+  const source = readFileSync(generated, "utf8");
+  const empty = (source.match(/"ff": ""/g) ?? []).length;
+  if (empty > 0) {
+    console.error(
+      `[package] refusing to package a build with ${empty} empty Fulfulde target(s).`,
+    );
+    console.error("[package] run `pnpm build:submission` before `pnpm package`.");
+    process.exit(1);
+  }
+}
+
 const archive = zipSync(files, { level: 9 });
 writeFileSync(out, archive);
 
 const { size } = statSync(out);
 console.log(`[package] ${out}`);
-console.log(`[package] ${size} bytes (${(size / 1024 / 1024).toFixed(2)} MB), ${Object.keys(files).length} files`);
-
-const generated = path.join(root, "packages/phrasebank/src/generated.ts");
-if (existsSync(generated)) {
-  const empty = (readFileSync(generated, "utf8").match(/"ff": ""/g) ?? []).length;
-  if (empty > 0) {
-    console.warn(
-      `[package] warning: ${empty} empty Fulfulde target(s). Run ` +
-        "`pnpm --filter @zteam/phrasebank build:release` before submitting.",
-    );
-  }
-}
+console.log(
+  `[package] ${size} bytes (${(size / 1024 / 1024).toFixed(2)} MB), ${Object.keys(files).length} files`,
+);

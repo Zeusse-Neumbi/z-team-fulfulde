@@ -8,6 +8,7 @@ import type {
   UiLanguage,
 } from "@zteam/shared";
 import { panelSettingsSchema } from "@zteam/shared";
+import { packSource } from "@zteam/phrasebank";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   getTargetTab,
@@ -36,6 +37,12 @@ import {
   shouldSpeakPageAction,
   type SpeechPlanStrings,
 } from "../../lib/speech";
+import {
+  type AudioPack,
+  indexPack,
+  planAudioSources,
+  type AudioSource,
+} from "../../lib/audio-pack";
 import { copy, type PanelCopy } from "./copy";
 
 const SETTINGS_KEY = "zteam.panel.settings.v1";
@@ -87,6 +94,7 @@ export default function App() {
   const [readback, setReadback] = useState<Readback | null>(null);
   const [pendingAction, setPendingAction] = useState<ActionView | null>(null);
   const [openSentences, setOpenSentences] = useState(true);
+  const [audioPack, setAudioPack] = useState<AudioPack | null>(null);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const spokenPendingRef = useRef<string | null>(null);
@@ -94,6 +102,8 @@ export default function App() {
   const abortRef = useRef<AbortController | null>(null);
   const urlsRef = useRef<string[]>([]);
   const t = copy[settings.uiLang];
+  const clipIndex = useMemo(() => indexPack(audioPack), [audioPack]);
+  const audioReady = voice === "ready" || (audioPack?.spoken ?? 0) > 0;
   const plan = useMemo(
     () =>
       status
@@ -213,6 +223,21 @@ export default function App() {
     if (!settingsLoaded) return;
     void chrome.storage.local.set({ [SETTINGS_KEY]: settings });
   }, [settings, settingsLoaded]);
+
+  useEffect(() => {
+    let alive = true;
+    fetch(chrome.runtime.getURL("audio/demo/manifest.json"))
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data: AudioPack | null) => {
+        if (alive && data && Array.isArray(data.clips)) setAudioPack(data);
+      })
+      .catch(() => {
+        // No bundled audio is a valid build (the pack may be a stub).
+      });
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   useEffect(() => {
     let alive = true;
@@ -419,7 +444,7 @@ export default function App() {
     }
     if (spokenPendingRef.current === pending.id) return;
     spokenPendingRef.current = pending.id;
-    if (voice !== "ready") return;
+    if (!audioReady) return;
     if (!shouldSpeakPageAction(pending, status?.protectedValues ?? [])) return;
     const name = pending.spokenName ?? pending.name;
     if (!isLikelyFulfulde(name)) return;
@@ -427,13 +452,13 @@ export default function App() {
     // playTexts is intentionally read through the render closure; the id guard
     // prevents a second announcement while the status keeps polling.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status, voice]);
+  }, [status, voice, audioReady]);
 
   async function verifyAction(action: ActionView) {
     setPendingAction(action);
     setMessage(t.actionSpoken);
     const name = action.spokenName ?? action.name;
-    if (voice === "ready" && isLikelyFulfulde(name)) await playTexts([name]);
+    if (audioReady && isLikelyFulfulde(name)) await playTexts([name]);
   }
 
   function confirmAction() {
@@ -488,12 +513,14 @@ export default function App() {
   }
 
   async function playTexts(texts: string[]) {
-    if (voice !== "ready") {
-      setMessage(t.audioUnavailable);
-      return;
-    }
     if (!texts.length) {
       setMessage(t.noSpeech);
+      return;
+    }
+
+    const bundle = planAudioSources(clipIndex, texts, { voiceReady: voice === "ready" });
+    if (bundle.clips === 0 && bundle.tts === 0) {
+      setMessage(bundle.blocked > 0 ? t.audioBlocked : t.audioUnavailable);
       return;
     }
 
@@ -504,50 +531,17 @@ export default function App() {
     abortRef.current = controller;
 
     try {
-      for (const text of texts) {
-        const response = await fetch(`${apiBaseUrl}/tts`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: text.slice(0, 500), voice: "demo", speed: settings.speed }),
-          signal: controller.signal,
-        });
-        if (!response.ok) {
-          let body: unknown = null;
-          try {
-            body = await response.json();
-          } catch {
-            body = null;
-          }
-          const failure = parseBackendFailure(response.status, body);
-          setAudio("idle");
-          setAudioError(t[failureCopyKey(failure)]);
-          return;
+      for (const source of bundle.sources) {
+        if (source.kind === "blocked" || source.kind === "unavailable") continue;
+        if (source.kind === "clip") {
+          await playElement(chrome.runtime.getURL(`audio/demo/${source.file}`), controller.signal);
+          continue;
         }
-
-        if (response.headers.get("X-ZTeam-Stub") === "1") {
-          setVoice("stub");
-          setAudio("idle");
-          setAudioError(t.audioStub);
-          return;
-        }
-
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        urlsRef.current.push(url);
-        const element = new Audio(url);
-        element.playbackRate = settings.speed;
-        audioRef.current = element;
-        setAudio("playing");
-        await element.play();
-        await new Promise<void>((resolve, reject) => {
-          element.addEventListener("ended", () => resolve(), { once: true });
-          element.addEventListener("error", () => reject(new Error("audio")), { once: true });
-        });
-        URL.revokeObjectURL(url);
-        urlsRef.current = urlsRef.current.filter((item) => item !== url);
-        audioRef.current = null;
+        await playRemote(source, controller.signal);
       }
       setAudio("idle");
+      if (bundle.blocked > 0) setMessage(t.audioBlocked);
+      else if (bundle.unavailable > 0) setMessage(t.audioPartial);
     } catch (error) {
       if (error instanceof DOMException && error.name === "AbortError") return;
       setAudio("idle");
@@ -557,11 +551,71 @@ export default function App() {
     }
   }
 
+  /** Plays a bundled clip. The URL belongs to the extension, never to the page. */
+  async function playElement(url: string, signal: AbortSignal) {
+    if (signal.aborted) throw new DOMException("aborted", "AbortError");
+    const element = new Audio(url);
+    element.playbackRate = settings.speed;
+    audioRef.current = element;
+    setAudio("playing");
+    await element.play();
+    await new Promise<void>((resolve, reject) => {
+      element.addEventListener("ended", () => resolve(), { once: true });
+      element.addEventListener("error", () => reject(new Error("audio")), { once: true });
+    });
+    audioRef.current = null;
+  }
+
+  /** Calls the loopback voice for a sentence that has no bundled clip. */
+  async function playRemote(source: Extract<AudioSource, { kind: "tts" }>, signal: AbortSignal) {
+    const response = await fetch(`${apiBaseUrl}/tts`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: source.text.slice(0, 500), voice: "demo", speed: settings.speed }),
+      signal,
+    });
+    if (!response.ok) {
+      let body: unknown = null;
+      try {
+        body = await response.json();
+      } catch {
+        body = null;
+      }
+      const failure = parseBackendFailure(response.status, body);
+      setAudio("idle");
+      setAudioError(t[failureCopyKey(failure)]);
+      return;
+    }
+
+    if (response.headers.get("X-ZTeam-Stub") === "1") {
+      setVoice("stub");
+      setAudio("idle");
+      setAudioError(t.audioStub);
+      return;
+    }
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    urlsRef.current.push(url);
+    const element = new Audio(url);
+    element.playbackRate = settings.speed;
+    audioRef.current = element;
+    setAudio("playing");
+    await element.play();
+    await new Promise<void>((resolve, reject) => {
+      element.addEventListener("ended", () => resolve(), { once: true });
+      element.addEventListener("error", () => reject(new Error("audio")), { once: true });
+    });
+    URL.revokeObjectURL(url);
+    urlsRef.current = urlsRef.current.filter((item) => item !== url);
+    audioRef.current = null;
+  }
+
   actionAnnounceRef.current = (name: string) => {
     const display = t.actionClicked.replace("{name}", name);
     const audioText = copy.ff.actionClicked.replace("{name}", name);
     setMessage(display);
-    if (voice === "ready" && isLikelyFulfulde(name)) void playTexts([audioText]);
+    if (audioReady && isLikelyFulfulde(name)) void playTexts([audioText]);
   };
 
   useEffect(() => {
@@ -623,15 +677,21 @@ export default function App() {
   const mtRunning = status?.mt.state === "running";
   const mtUsed = (status?.mtApplied ?? 0) > 0;
   const noTm = (status?.translations ?? 0) === 0;
+  // The content script reports "ready" both when it translated nothing and when
+  // the API answered. Only the health probe can tell those apart, so the label
+  // never claims a live local model while the loopback API is offline.
+  const apiLive = voice === "ready";
   const mtStateLabel = mtRunning
     ? `${t.mtProgress} ${status?.mt.done ?? 0}/${status?.mt.total ?? 0}`
     : status?.mt.state === "offline" || status?.mt.state === "error"
       ? t.error
-      : status?.mt.state === "ready"
-        ? `${t.mtLocal} · ${t.mtUnvalidated}`
-        : !status?.active && settings.apiTranslation !== "off"
-          ? t.mtReady
-          : t.apiModeOff;
+      : status?.mt.state === "ready" && apiLive
+        ? status?.mt.done
+          ? `${t.mtLocal} · ${t.mtUnvalidated}`
+          : `${t.mtLocal} · ${t.mtReady}`
+        : packSource === "validated"
+          ? t.apiModeOff
+          : t.apiModeOffDraft;
 
   return (
     <main className="shell" aria-busy={busy}>
@@ -663,6 +723,15 @@ export default function App() {
           </label>
         </div>
       </header>
+
+      <p className={`pack-source ${packSource}`} role="status">
+        <strong>{t.packSourceLabel}</strong> :{" "}
+        {packSource === "mt"
+          ? `${t.mtBadge} — ${t.packSourceMt}`
+          : packSource === "fixture"
+            ? t.fixtureBadge
+            : t.packSourceValidated}
+      </p>
 
       {settings.uiLang === "ff" ? <p className="notice ff-draft">{t.ffDraftNote}</p> : null}
 
@@ -765,7 +834,9 @@ export default function App() {
             }
             disabled={busy}
           >
-            <option value="off">{t.apiModeOff}</option>
+            <option value="off">
+              {packSource === "validated" ? t.apiModeOff : t.apiModeOffDraft}
+            </option>
             <option value="fallback">{t.apiModeFallback}</option>
             <option value="primary">{t.apiModePrimary}</option>
           </select>
@@ -873,7 +944,7 @@ export default function App() {
               type="button"
               onClick={playAudio}
               disabled={
-                voice !== "ready" ||
+                !audioReady ||
                 audio === "loading" ||
                 status?.mt.state === "running"
               }
@@ -926,6 +997,10 @@ export default function App() {
                   </span>
                   {sentence.target ? (
                     <span lang="fub">{sentence.target}</span>
+                  ) : sentence.holdReason === "label_collision" ? (
+                    <span className="missed held" title={t.heldLabel}>
+                      {t.heldLabel}
+                    </span>
                   ) : (
                     <span className="missed">{t.missedBadge}</span>
                   )}
@@ -1059,14 +1134,16 @@ export default function App() {
       <section className="card audio">
         <div className="audio-head">
           <h2>{t.audio}</h2>
-          <span className={`voice ${voice}`}>
+          <span className={`voice ${audioReady ? "ready" : voice}`}>
             {voice === "stub"
               ? t.audioStub
-              : voice === "unavailable"
-                ? t.voiceUnavailable
-                : voice === "offline" || voice === "unknown"
-                  ? t.audioUnavailable
-                  : `${t.audio} : ${voice}`}
+              : audioPack && audioPack.spoken > 0
+                ? `${t.audioBundled} · ${audioPack.spoken}`
+                : voice === "unavailable"
+                  ? t.voiceUnavailable
+                  : voice === "offline" || voice === "unknown"
+                    ? t.audioUnavailable
+                    : `${t.audio} : ${voice}`}
           </span>
         </div>
         <div className="actions audio-actions">
@@ -1075,7 +1152,7 @@ export default function App() {
             onClick={playAudio}
             disabled={
               busy ||
-              voice !== "ready" ||
+              !audioReady ||
               audio === "loading" ||
               !status?.applied ||
               status?.mt.state === "running"

@@ -147,6 +147,16 @@ battle.
 - [x] D1.1 Write the submission checklist and the form fields in
   `docs/SUBMISSION.md`.
 - [x] D1.2 Add `scripts/assemble-submission.mjs` (`pnpm submission`).
+- [x] D1.10 Decide what the ZIP carries before the speaker session
+  ([ADR 0016](decisions/0016-ship-labelled-mt-pack-and-audio.md)): the labelled
+  MT draft pack, 115 bundled Opus clips, a permanent "MT — non validée" banner
+  and a control-label collision guard. Evidence: `pnpm ci:local` green,
+  `node scripts/check-draft.mjs` PASS (92 % coverage, 11 protected values
+  unchanged, 2 held labels).
+- [x] D1.11 Rewrite the note's validation sections as not-yet-executed and
+  remove every placeholder; `pnpm note:build` produces 5 pages, 0.11 MB.
+- [x] D1.12 Package the listening pack (`pnpm pack:listening`, 0.72 MB) and
+  attach it to a draft release as the instrument for the speaker session.
 - [ ] D1.3 Run the form dry-run: PDF and ZIP accepted, no field below
   `Extension`, team/lead details correct.
 - [ ] D1.4 Build the final ZIP, install it in a clean Chrome profile, capture

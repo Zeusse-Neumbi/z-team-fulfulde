@@ -67,6 +67,14 @@ describe("translationStatusSchema", () => {
           origin: "mt",
           provider: "nllb",
         },
+        {
+          id: "n2",
+          source: "Annuler",
+          target: null,
+          status: "missed",
+          risk: "high",
+          holdReason: "label_collision",
+        },
       ],
       protectedValues: [{ value: "250 000 FCFA", kind: "amount", reason: "value" }],
       actions: [

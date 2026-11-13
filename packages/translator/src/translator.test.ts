@@ -147,6 +147,108 @@ describe("DomTranslator", () => {
   });
 });
 
+describe("label collision guard", () => {
+  const collidingTm = () =>
+    new TranslationMemory([
+      unit({
+        id: "tm.action.confirm",
+        source: { fr: "Confirmer", en: "Confirm" },
+        target: { ff: "FF_SAME" },
+        risk: "high",
+      }),
+      unit({
+        id: "tm.action.cancel",
+        source: { fr: "Annuler", en: "Cancel" },
+        target: { ff: "FF_SAME" },
+        risk: "high",
+      }),
+      unit({
+        id: "tm.step.fees",
+        source: { fr: "Frais", en: "Fees" },
+        target: { ff: "FF_FRAIS" },
+        risk: "low",
+      }),
+    ]);
+
+  it("keeps two controls with the same draft label in the source language", () => {
+    document.body.innerHTML = `
+      <button id="confirm">Confirmer</button>
+      <button id="cancel">Annuler</button>
+      <p id="fees">Frais</p>`;
+    const translator = new DomTranslator();
+    const stats = translator.translate(document.body, collidingTm(), vault);
+
+    expect(document.getElementById("confirm")?.textContent).toBe("Confirmer");
+    expect(document.getElementById("cancel")?.textContent).toBe("Annuler");
+    expect(document.getElementById("fees")?.textContent).toBe("FF_FRAIS");
+    expect(stats.labelCollisions).toBe(2);
+    expect(stats.applied).toBe(1);
+    expect(stats.missed).toBe(2);
+    expect(stats.coverage).toBeCloseTo(1 / 3, 5);
+    expect(stats.sentences.filter((sentence) => sentence.holdReason === "label_collision")).toHaveLength(2);
+    expect(stats.sentences.every((sentence) => sentence.status !== "missed" || sentence.target === null)).toBe(true);
+  });
+
+  it("does not hold the same source repeated in two places", () => {
+    document.body.innerHTML = `
+      <button id="one">Frais</button>
+      <button id="two">Frais</button>`;
+    const translator = new DomTranslator();
+    const stats = translator.translate(document.body, collidingTm(), vault);
+
+    expect(document.getElementById("one")?.textContent).toBe("FF_FRAIS");
+    expect(document.getElementById("two")?.textContent).toBe("FF_FRAIS");
+    expect(stats.labelCollisions).toBe(0);
+    expect(stats.applied).toBe(2);
+  });
+
+  it("still translates colliding prose that is not a control", () => {
+    document.body.innerHTML = `<p id="a">Confirmer</p><p id="b">Annuler</p>`;
+    const proseTm = new TranslationMemory([
+      unit({
+        id: "tm.step.one",
+        source: { fr: "Confirmer", en: "Confirm" },
+        target: { ff: "FF_SAME" },
+        risk: "high",
+      }),
+      unit({
+        id: "tm.step.two",
+        source: { fr: "Annuler", en: "Cancel" },
+        target: { ff: "FF_SAME" },
+        risk: "high",
+      }),
+    ]);
+    const translator = new DomTranslator();
+    const stats = translator.translate(document.body, proseTm, vault);
+
+    expect(document.getElementById("a")?.textContent).toBe("FF_SAME");
+    expect(document.getElementById("b")?.textContent).toBe("FF_SAME");
+    expect(stats.labelCollisions).toBe(0);
+    expect(stats.applied).toBe(2);
+  });
+
+  it("holds a control label even when the control markup is not semantic", () => {
+    document.body.innerHTML = `<span id="confirm">Confirmer</span><span id="cancel">Annuler</span>`;
+    const translator = new DomTranslator();
+    const stats = translator.translate(document.body, collidingTm(), vault);
+
+    expect(document.getElementById("confirm")?.textContent).toBe("Confirmer");
+    expect(stats.labelCollisions).toBe(2);
+  });
+
+  it("treats a role=button element as a control", () => {
+    document.body.innerHTML = `
+      <div role="button" id="confirm">Confirmer</div>
+      <div role="button" id="cancel">Annuler</div>`;
+    const translator = new DomTranslator();
+    const stats = translator.translate(document.body, collidingTm(), vault);
+
+    expect(document.getElementById("confirm")?.textContent).toBe("Confirmer");
+    expect(document.getElementById("cancel")?.textContent).toBe("Annuler");
+    expect(stats.labelCollisions).toBe(2);
+  });
+});
+
 describe("computeCoverage", () => {
   it("computes the share of changed baseline text nodes", () => {
     expect(computeCoverage(["Solde disponible", "Frais"], ["FF_SOLDE", "Frais"])).toBe(0.5);
