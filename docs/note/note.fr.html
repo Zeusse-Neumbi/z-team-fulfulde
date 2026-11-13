@@ -141,6 +141,7 @@
     <ul>
       <li><strong>Mémoire de traduction</strong> : chaînes exactes FR/EN et motifs à emplacements (<code>Numéro de compte : {account}</code>).</li>
       <li><strong>Nœuds mixtes</strong> : réécrits uniquement par un motif validé qui conserve la valeur capturée à l'octet près.</li>
+      <li><strong>Libellés d'action</strong> : si deux contrôles différents liraient la même chaîne, les deux restent en français et le panneau les compte comme « conservés ». Un bouton « Confirmer » et un bouton « Annuler » ne peuvent jamais devenir identiques — c'est une règle de sûreté, pas de style.</li>
       <li><strong>Normalisation</strong> : espaces insécables, espaces fines, ponctuation et retours à la ligne, sans changer la valeur affichée.</li>
       <li><strong>Idempotence</strong> : une seconde passe ne duplique rien ; un nœud qui réaffiche la source est retraduit ; un texte nouveau est traité comme une nouvelle source.</li>
       <li><strong>MutationObserver</strong> : le contenu ajouté après le chargement est repris avec la même protection et le même chemin de restauration.</li>
@@ -157,19 +158,19 @@
       <li><strong>Passe aveugle</strong> : seul l'audio corrigé est joué. Le locuteur dit le sens en français. L'équipe enregistre la rétro-traduction, la note de sens, la naturalité et l'erreur critique.</li>
       <li><strong>Confirmation</strong> : l'entrée corrigée est synthétisée à nouveau ; le locuteur écoute et confirme.</li>
     </ol>
-    <p>La méthode et sa limite — un seul locuteur, revue orale, pas de rétro-traduction écrite — sont enregistrées dans l'ADR 0013. La note ne prétend pas que le locuteur a traduit chaque chaîne : elle dit qu'il a <strong>révisé et évalué à l'écoute</strong>, et que les corrections ont été appliquées.</p>
+    <p>La méthode et sa limite — un seul locuteur, revue orale, pas de rétro-traduction écrite — sont enregistrées dans l'ADR 0013. La note ne prétendra pas que le locuteur a traduit chaque chaîne : elle dira qu'il a <strong>révisé et évalué à l'écoute</strong>, et que les corrections ont été appliquées.</p>
+    <div class="callout"><strong>État au 13 novembre 2026 : session non exécutée.</strong> Le protocole, les 115 clips d'écoute, la page à deux passes et les gabarits de saisie sont prêts et versionnés. La session est planifiée avec un locuteur unique ; elle n'a pas eu lieu avant la soumission. Aucune note de sens, de naturalité ou d'intelligibilité n'est publiée dans cette note. Le pack livré est un <strong>brouillon machine étiqueté MT</strong>, jamais présenté comme validé.</div>
 
-    <h2>12. Résultats</h2>
+    <h2>12. Résultats mesurés</h2>
     <table>
       <thead><tr><th>Mesure</th><th class="num">Résultat</th><th>Preuve</th></tr></thead>
       <tbody>
         <tr><td>Balayage de 30 pages publiques</td><td class="num">26 réussies, 4 ignorées (réseau), 0 échec produit</td><td><code>pnpm check:sites</code></td></tr>
-        <tr><td>Cas unitaires de protection</td><td class="num">50</td><td><code>integrity.test.ts</code></td></tr>
-        <tr><td>Tests Playwright</td><td class="num">12</td><td><code>pnpm e2e</code></td></tr>
-        <tr><td>Couverture de la page de démonstration</td><td class="num">[[couverture %]]</td><td><code>pnpm check:live</code></td></tr>
-        <tr><td>Erreurs critiques de sens</td><td class="num">[[0 attendu]]</td><td><code>back-translation.csv</code></td></tr>
-        <tr><td>Sens ≥ 4/5</td><td class="num">[[% attendu ≥ 95]]</td><td><code>back-translation.csv</code></td></tr>
-        <tr><td>Naturalité ≥ 4/5</td><td class="num">[[% attendu ≥ 90]]</td><td><code>back-translation.csv</code></td></tr>
+        <tr><td>Tests unitaires</td><td class="num">153 réussis</td><td><code>pnpm test</code></td></tr>
+        <tr><td>Tests Playwright</td><td class="num">14 réussis, 1 ignoré</td><td><code>pnpm e2e</code></td></tr>
+        <tr><td>Couverture de la page de démonstration (brouillon MT)</td><td class="num">92 % (23 traduits, 2 conservés, 11 valeurs protégées)</td><td><code>node scripts/check-draft.mjs</code></td></tr>
+        <tr><td>Libellés conservés pour ambiguïté</td><td class="num">2 : « Effectuer un transfert », « Consulter les frais »</td><td><code>check-draft.mjs</code></td></tr>
+        <tr><td>Erreurs critiques de sens, sens ≥ 4/5, naturalité ≥ 4/5</td><td class="num">non mesuré — session à venir</td><td><code>back-translation.csv</code> (vide)</td></tr>
       </tbody>
     </table>
   </section>
@@ -182,35 +183,28 @@
     <table>
       <thead><tr><th>Test</th><th class="num">CPU (4 cœurs)</th><th class="num">GPU</th></tr></thead>
       <tbody>
-        <tr><td>Synthèse à froid (<code>Jam waali.</code>)</td><td class="num">10,8 s</td><td class="num">[[à mesurer]]</td></tr>
-        <tr><td>Synthèse à chaud</td><td class="num">1,4–1,8 s pour 1,3–1,5 s d'audio</td><td class="num">[[à mesurer]]</td></tr>
-        <tr><td>RTF</td><td class="num">1,1–1,9</td><td class="num">[[à mesurer]]</td></tr>
+        <tr><td>Synthèse à froid (<code>Jam waali.</code>)</td><td class="num">10,8 s</td><td class="num">non mesuré</td></tr>
+        <tr><td>Synthèse à chaud</td><td class="num">1,4–1,8 s pour 1,3–1,5 s d'audio</td><td class="num">non mesuré</td></tr>
+        <tr><td>RTF</td><td class="num">1,1–1,9</td><td class="num">non mesuré</td></tr>
         <tr><td>Répétition en cache</td><td class="num">6,6 ms</td><td class="num">—</td></tr>
-        <tr><td>Traduction NLLB int8, phrase FR</td><td class="num">0,99–1,29 s</td><td class="num">[[à mesurer]]</td></tr>
+        <tr><td>Traduction NLLB int8, phrase FR</td><td class="num">0,99–1,29 s</td><td class="num">non mesuré</td></tr>
       </tbody>
     </table>
     <p class="small muted">Le CPU est plus lent que le temps réel. Le cache et le préchauffage rendent la démonstration répétable ; le GPU est un bonus de vitesse, pas une condition de soumission.</p>
 
     <h2>15. Évaluation par le locuteur</h2>
-    <table>
-      <thead><tr><th>Test</th><th class="num">Résultat</th><th>Cible</th></tr></thead>
-      <tbody>
-        <tr><td>Naturalité (1–5, un locuteur)</td><td class="num">[[note]]</td><td>≥ 3,8</td></tr>
-        <tr><td>Intelligibilité (1–5)</td><td class="num">[[note]]</td><td>≥ 4</td></tr>
-        <tr><td>Mots critiques (implosives, <code>ɲ</code>, longueur vocalique)</td><td class="num">[[erreurs]]</td><td>0 erreur de sens</td></tr>
-        <tr><td>Nombres (20 montants)</td><td class="num">[[%]]</td><td>100 % intelligibles</td></tr>
-        <tr><td>Noms (10)</td><td class="num">[[%]]</td><td>100 % intelligibles</td></tr>
-      </tbody>
-    </table>
+    <p><strong>Non exécutée à ce jour.</strong> Les cinq mesures prévues — naturalité, intelligibilité, mots critiques, nombres, noms — seront saisies dans <code>eval/linguistic/tts-mos.csv</code> et <code>back-translation.csv</code> à l'issue de la session. Tant que ces fichiers sont vides, la note n'avance aucune valeur, et <code>pnpm --filter @zteam/phrasebank build:release</code> échoue volontairement : c'est le garde-fou qui empêche un brouillon de devenir un pack « validé ».</p>
 
     <h2>16. Décision sur la voix</h2>
-    <p>La voix MMS est la voix optionnelle de la démonstration. Elle est locale, licenciée pour un usage non commercial, et déjà intégrée. Aucun fine-tune n'a été tenté pendant cette présélection : le corpus d'entraînement sous licence manque et le temps de GPU était incertain. Le résultat est documenté comme un résultat négatif, pas comme une promesse. Si le locuteur juge la voix inintelligible, elle est désactivée par défaut et des clips enregistrés ou un fine-tune deviennent la feuille de route. La traduction de la page, elle, ne dépend pas de l'API : l'examinateur peut charger l'extension et voir la page traduite sans installer de modèle.</p>
+    <p>La voix MMS est la voix optionnelle de la démonstration. Elle est locale, licenciée pour un usage non commercial, et déjà intégrée. Aucun fine-tune n'a été tenté pendant cette présélection : le corpus d'entraînement sous licence manque et le temps de GPU était incertain. Le résultat est documenté comme un résultat négatif, pas comme une promesse. Si le locuteur juge la voix inintelligible, elle est désactivée par défaut et des clips enregistrés ou un fine-tune deviennent la feuille de route. La traduction de la page, elle, ne dépend pas de l'API : l'archive contient le pack de brouillon MT et 82 clips audio jouables, donc l'examinateur voit la page traduite et entend les phrases sans installer de modèle. Le panneau affiche en permanence « Fulfulde : MT — non validée ».</p>
 
     <h2>17. Limites de la voix</h2>
     <ul>
       <li>Le MMS est un modèle de macrolangue : il n'est pas spécifiquement entraîné sur l'adamawa.</li>
       <li>Le RTF dépasse 1 sur ce CPU ; la voix n'est pas fluide en temps réel sans GPU ou cache.</li>
       <li>Les nombres sont lus par le verbaliseur ; les mots hors lexique sont écartés plutôt que devinés.</li>
+      <li>Trente-trois clips sont volontairement muets : avertissements, erreurs, libellés d'action ambigus, cibles qui recopient la source et répétitions dégénérées. Une phrase prononcée ne se relit pas.</li>
+      <li>Un clip n'est joué que si la phrase entendue correspond exactement au texte rendu : un montant différent à l'écran ne déclenche jamais un clip enregistré avec un autre montant.</li>
       <li>La voix ne remplace pas la traduction de la page : elle est la couche d'accessibilité au-dessus.</li>
     </ul>
   </section>

@@ -1,5 +1,24 @@
 # Linguistic validation
 
+## Status (2026-11-13)
+
+**The session has not run.** No entry has a validator, no back-translation has
+been recorded, and no score is published. The submission ships the NLLB
+candidate pack, labelled **MT — non validée** in the panel, in `INSTALL.md` and
+in the technical note. `pnpm --filter @zteam/phrasebank build:release` fails on
+purpose and must stay failing until the session fills `validatedBy` and
+`backTranslationFr`.
+
+Ready to use:
+
+- `docs/SPEAKER_PACKET.md` — the 45-minute protocol, written for a speaker who
+  does not read Fulfulde.
+- `pnpm pack:listening` — the 115-clip two-pass pack as a single ZIP
+  (`dist/zteam-listening-pack-v0.1.0.zip`, ~0.7 MB), attached as a draft release
+  asset. It opens offline in a browser.
+- `eval/linguistic/back-translation.template.csv` and
+  `eval/linguistic/tts-mos.template.csv` — 115 rows each.
+
 ## Language
 
 - **Adamawa Fulfulde**, ISO 639-3 `fub`, Cameroon.
