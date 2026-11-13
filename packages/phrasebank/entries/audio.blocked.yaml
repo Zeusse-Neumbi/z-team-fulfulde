@@ -1,0 +1,35 @@
+# Entries whose bundled audio must never be played.
+#
+# The submission ships the machine-translated draft pack. Some drafts are
+# dangerous to *speak* even when the page text is acceptable, because the user
+# cannot re-read a spoken sentence. The build script merges this list with four
+# automatic rules (see scripts/build-audio-pack.mjs):
+#
+#   1. warnings, errors and generic safety fallbacks are never spoken;
+#   2. a control whose draft collides with another control is never spoken;
+#   3. a target that merely echoes the source is never spoken;
+#   4. a target with degenerate repetition is never spoken.
+#
+# A blocked entry keeps its page text and its transcript; only the audio is
+# withheld. The panel states why.
+version: "2026-11-13.1"
+
+blocked:
+  - id: ACTION_CONFIRM
+    reason: "collides with ACTION_CANCEL (both 'Fedde jaaynde'); a spoken confirm must never be the same sound as a spoken cancel"
+  - id: ACTION_CANCEL
+    reason: "collides with ACTION_CONFIRM (both 'Fedde jaaynde')"
+  - id: FEE_TOTAL
+    reason: "duplicated determiner 'Fedde nden nden', documented in docs/PHRASEBANK_MT.md"
+  - id: TRANSFER_RECIPIENT
+    reason: "duplicated noun plus an invented place name 'Jaɓɓorgo Jaɓɓorgo Fuuta'"
+  - id: SUMMARY_CONFIRM
+    reason: "an unvalidated spoken confirmation question; the user must read the value on screen"
+  - id: ACCOUNT_IS
+    reason: "reads an account identifier aloud; identifiers are never spoken"
+  - id: TRANSFER_REFERENCE
+    reason: "reads a reference identifier aloud; identifiers are never spoken"
+  - id: ERROR_INSUFFICIENT
+    reason: "negation not reliable in the draft, documented in docs/PHRASEBANK_MT.md"
+  - id: WARN_CHECK_BEFORE_CONFIRM
+    reason: "degenerate repeated participle in the draft"
