@@ -42,13 +42,6 @@ const outDir = join(root, "apps/extension/public/audio/demo");
 const manifestPath = join(outDir, "manifest.json");
 const BITRATE = "32k";
 
-if (!existsSync(sessionManifestPath)) {
-  console.error(`[audio] missing ${sessionManifestPath}`);
-  console.error("[audio] generate the listening pack first: pnpm generate:listening");
-  process.exit(1);
-}
-
-const session = JSON.parse(readFileSync(sessionManifestPath, "utf8"));
 const blocked = YAML.parse(readFileSync(blockedPath, "utf8"));
 const explicit = new Map((blocked.blocked ?? []).map((entry) => [entry.id, entry.reason]));
 
@@ -89,26 +82,6 @@ function echoesSource(entry) {
   });
 }
 
-const entries = session.entries ?? [];
-const byId = new Map(entries.map((entry) => [entry.id, entry]));
-
-// Collisions: two different sources that now read the same.
-const byTarget = new Map();
-for (const entry of entries) {
-  const key = normalize(entry.ff ?? "");
-  if (!key) continue;
-  const group = byTarget.get(key);
-  if (group) group.push(entry);
-  else byTarget.set(key, [entry]);
-}
-const collidingControls = new Set();
-for (const group of byTarget.values()) {
-  if (group.length < 2) continue;
-  const sources = new Set(group.map((entry) => normalize(entry.fr ?? "")));
-  if (sources.size < 2) continue;
-  for (const entry of group) if (CONTROL.test(entry.id)) collidingControls.add(entry.id);
-}
-
 function blockReason(entry) {
   if (explicit.has(entry.id)) return explicit.get(entry.id);
   if (WARNING_OR_ERROR.test(entry.id)) return "warning or error text is never spoken before validation";
@@ -119,6 +92,8 @@ function blockReason(entry) {
 }
 
 if (check) {
+  // `--check` verifies the committed clips and manifest only: the listener
+  // session is gitignored and is not present in CI.
   if (!existsSync(manifestPath)) {
     console.error("[audio] no committed pack manifest; run without --check to build it");
     process.exit(1);
@@ -144,6 +119,26 @@ if (check) {
   if (bad > 0) process.exit(1);
   console.log(`[audio] OK: ${committed.clips.length} clips, ${committed.spoken} playable`);
   process.exit(0);
+}
+
+const session = JSON.parse(readFileSync(sessionManifestPath, "utf8"));
+const entries = session.entries ?? [];
+
+// Collisions: two different sources that now read the same.
+const byTarget = new Map();
+for (const entry of entries) {
+  const key = normalize(entry.ff ?? "");
+  if (!key) continue;
+  const group = byTarget.get(key);
+  if (group) group.push(entry);
+  else byTarget.set(key, [entry]);
+}
+const collidingControls = new Set();
+for (const group of byTarget.values()) {
+  if (group.length < 2) continue;
+  const sources = new Set(group.map((entry) => normalize(entry.fr ?? "")));
+  if (sources.size < 2) continue;
+  for (const entry of group) if (CONTROL.test(entry.id)) collidingControls.add(entry.id);
 }
 
 mkdirSync(outDir, { recursive: true });
