@@ -88,7 +88,7 @@ MT_SPECS: dict[str, ProviderSpec] = {
     "marian": ProviderSpec(
         kind="mt",
         name="marian",
-        label="Marian (local, Cameroonian Fufulde)",
+        label="Marian (local, Cameroonian Fufulde, opt-in)",
         runtime="ctranslate2",
         local=True,
         requires_credentials=False,
@@ -96,7 +96,8 @@ MT_SPECS: dict[str, ProviderSpec] = {
         licence="CC-BY-NC-4.0",
         notes=(
             "flagship-ai/cameroon-int8 francais-fufulde: int8 FR->Fufulde, "
-            "AGLC normalised, French pivot only."
+            "AGLC normalised, French pivot only. Opt-in candidate: it failed "
+            "the value-preservation head-to-head, NLLB is the default."
         ),
         model="models/cameroon-int8/francais-fufulde",
     ),
