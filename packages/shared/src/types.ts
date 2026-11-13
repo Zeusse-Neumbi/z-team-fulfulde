@@ -206,13 +206,8 @@ export type ExtensionMessage =
   | { type: "CONFIRM_PAGE_ACTION"; actionId: string; snapshotId: string }
   | { type: "CANCEL_PAGE_ACTION" }
   | { type: "PAGE_ACTION_CLICKED"; actionId: string; name: string; risk: ActionView["risk"] }
-  | {
-      type: "MT_TRANSLATE";
-      texts: string[];
-      source: "fr" | "en";
-      provider?: string | null;
-      baseUrl?: string | null;
-    }
+  | { type: "MT_TRANSLATE"; texts: string[]; source: "fr" | "en"; provider?: string | null; baseUrl?: string | null; targetLang?: string }
+  | { type: "MT_CLEAR_CACHE" }
   | { type: "MT_PROGRESS"; done: number; total: number };
 
 export type PanelStep = 1 | 2 | 3 | 4 | 5 | "unknown";
@@ -269,6 +264,8 @@ export interface MtRequestOptions {
   mode: MtMode;
   provider: string | null;
   baseUrl?: string;
+  /** Target language pack; absent means the default (fub). */
+  targetLang?: string;
 }
 
 export interface MtTranslation {

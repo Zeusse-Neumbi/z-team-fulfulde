@@ -1,5 +1,5 @@
 import type { ExtensionMessage, MtTranslateResponse } from "@zteam/shared";
-import { translateTexts } from "../lib/mt";
+import { clearMtCache, translateTexts } from "../lib/mt";
 
 export default defineBackground(() => {
   chrome.sidePanel?.setPanelBehavior({ openPanelOnActionClick: true }).catch(() => {
@@ -12,6 +12,11 @@ export default defineBackground(() => {
       sender: chrome.runtime.MessageSender,
       sendResponse: (response: MtTranslateResponse) => void,
     ) => {
+      if (message.type === "MT_CLEAR_CACHE") {
+        clearMtCache();
+        sendResponse({ ok: true });
+        return false;
+      }
       if (message.type !== "MT_TRANSLATE") return;
 
       const source = message.source === "en" ? "en" : message.source === "fr" ? "fr" : null;
@@ -24,6 +29,7 @@ export default defineBackground(() => {
       void translateTexts({
         texts: message.texts,
         source,
+        targetLang: typeof message.targetLang === "string" ? message.targetLang : undefined,
         baseUrl: typeof message.baseUrl === "string" ? message.baseUrl : null,
         provider: typeof message.provider === "string" ? message.provider : null,
         onProgress: tabId

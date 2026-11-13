@@ -113,6 +113,12 @@ export interface PanelCopy {
   packSourceLabel: string;
   packSourceMt: string;
   packSourceValidated: string;
+  /** A human pack that has not passed the release gate yet. */
+  packDraft: string;
+  /** Target-language picker label. */
+  targetLanguage: string;
+  /** Shown when the target language has no voice. */
+  noVoice: string;
   heldLabel: string;
   audioBundled: string;
   audioBlocked: string;
@@ -266,6 +272,9 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     packSourceMt:
       "brouillon machine (MT), non validé par un locuteur natif. Les libellés d’action ambigus restent en français.",
     packSourceValidated: "pack validé par un locuteur natif.",
+    packDraft: "brouillon — non validé par un locuteur natif.",
+    targetLanguage: "Langue de traduction",
+    noVoice: "Aucune voix n’est disponible pour cette langue : la traduction texte reste active.",
     heldLabel: "conservé en français : deux contrôles liraient la même chose",
     audioBundled: "clips inclus",
     audioBlocked:
@@ -427,6 +436,9 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     packSourceMt:
       "machine-translated draft, not reviewed by a native speaker. Ambiguous action labels stay in French.",
     packSourceValidated: "pack reviewed by a native speaker.",
+    packDraft: "draft — not validated by a native speaker.",
+    targetLanguage: "Translation language",
+    noVoice: "No voice is available for this language; text translation stays available.",
     heldLabel: "kept in French: two controls would read the same",
     audioBundled: "clips bundled",
     audioBlocked:

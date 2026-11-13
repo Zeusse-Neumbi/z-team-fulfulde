@@ -3,10 +3,17 @@ import type { NumbersLexicon, PhraseEntry, TranslationUnit } from "@zteam/shared
 
 export interface Pack {
   code: string;
+  endonym: string;
+  names: Record<string, string>;
   status: "validated" | "draft" | "text-only";
   packSource: "validated" | "mt" | "fixture";
   /** True only when the language is validated and the release gate agrees. */
   packValidated: boolean;
+  speech: {
+    provider: string;
+    model: string;
+    tone: "none" | "partial" | "full";
+  };
   tmVersion: string;
   phrasebankVersion: string;
   translationUnits: TranslationUnit[];
@@ -22,9 +29,19 @@ export const languageCodes: string[] = [
 export const languages: Record<string, Pack> = {
   "fub": {
     "code": "fub",
+    "endonym": "Fulfulde",
+    "names": {
+      "fr": "Fulfulde (Adamaoua)",
+      "en": "Adamawa Fulfulde"
+    },
     "status": "draft",
     "packSource": "validated",
     "packValidated": false,
+    "speech": {
+      "provider": "mms",
+      "model": "models/mms-tts-ful",
+      "tone": "none"
+    },
     "tmVersion": "2026-11-09.2",
     "phrasebankVersion": "2026-11-09.1",
     "translationUnits": [
@@ -2152,9 +2169,19 @@ export const languages: Record<string, Pack> = {
   },
   "ybb": {
     "code": "ybb",
+    "endonym": "Yemba",
+    "names": {
+      "fr": "Yemba",
+      "en": "Yemba"
+    },
     "status": "draft",
     "packSource": "validated",
     "packValidated": false,
+    "speech": {
+      "provider": "mms",
+      "model": "models/mms-tts-ybb",
+      "tone": "partial"
+    },
     "tmVersion": "2026-11-09.2",
     "phrasebankVersion": "2026-11-09.1",
     "translationUnits": [

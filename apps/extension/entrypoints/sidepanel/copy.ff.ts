@@ -78,6 +78,9 @@ export const ffCopy: PanelCopy = {
   packSourceMt:
     "brouillon MT — jaɓaaka e gootol Fulfulde. Kuɗe ɗe mbaawi winndude gootol ina keɓa e Faransi.",
   packSourceValidated: "jaɓaangal e gootol Fulfulde.",
+  packDraft: "brouillon — non validé par un locuteur natif.",
+  targetLanguage: "Langue de traduction",
+  noVoice: "Aucune voix disponible pour cette langue.",
   heldLabel: "ina keɓa e Faransi: kuɗe ɗiɗi ina mbaawi winndude gootol",
   audioBundled: "klip ina nder",
   audioBlocked: "Audio momtaama: brouillon oo waawaa haaleede so jaɓaaka.",

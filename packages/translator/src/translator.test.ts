@@ -11,13 +11,15 @@ function unit(partial: Partial<TranslationUnit> & Pick<TranslationUnit, "id">): 
   return {
     id,
     source: { fr: "", en: "" },
-    target: { ff: "" },
+    target: { fub: { text: "", origin: "human", validatedBy: [], backTranslationFr: "" } },
     risk: "low",
-    validatedBy: ["speaker_1"],
-    backTranslationFr: "",
     version: "test",
     ...rest,
   };
+}
+
+function target(text: string) {
+  return { text, origin: "human" as const, validatedBy: [], backTranslationFr: "" };
 }
 
 const vault: Vault = {
@@ -53,11 +55,38 @@ describe("TranslationMemory", () => {
       unit({
         id: "tm.balance.available",
         source: { fr: "Solde disponible", en: "Available balance" },
-        target: { ff: "FF_SOLDE" },
+        target: { fub: { text: "FF_SOLDE", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     expect(tm.lookup("Solde disponible")?.target).toBe("FF_SOLDE");
     expect(tm.lookup("Available balance")?.target).toBe("FF_SOLDE");
+  });
+
+  it("reads only the requested language target", () => {
+    const units = [
+      unit({
+        id: "tm.balance.available",
+        source: { fr: "Solde disponible", en: "Available balance" },
+        target: { fub: target("FUB_SOLDE"), ybb: target("YBB_SOLDE") },
+      }),
+    ];
+    expect(new TranslationMemory(units, "fub").lookup("Solde disponible")?.target).toBe(
+      "FUB_SOLDE",
+    );
+    expect(new TranslationMemory(units, "ybb").lookup("Solde disponible")?.target).toBe(
+      "YBB_SOLDE",
+    );
+  });
+
+  it("skips a unit that has no target for the requested language", () => {
+    const units = [
+      unit({
+        id: "tm.fub.only",
+        source: { fr: "Solde disponible", en: "Available balance" },
+        target: { fub: target("FUB_SOLDE") },
+      }),
+    ];
+    expect(new TranslationMemory(units, "ybb").lookup("Solde disponible")).toBeNull();
   });
 
   it("fills placeholders from a mixed source string", () => {
@@ -68,7 +97,7 @@ describe("TranslationMemory", () => {
           fr: "Numéro de compte : {account}",
           en: "Account number: {account}",
         },
-        target: { ff: "Namba konte : {account}" },
+        target: { fub: { text: "Namba konte : {account}", origin: "human", validatedBy: [], backTranslationFr: "" } },
         placeholders: ["account"],
       }),
     ]);
@@ -86,7 +115,7 @@ describe("DomTranslator", () => {
       unit({
         id: "tm.balance",
         source: { fr: "250 000 FCFA", en: "250,000 FCFA" },
-        target: { ff: "FF_SOLDE" },
+        target: { fub: { text: "FF_SOLDE", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const stats = translator.translate(document.body, tm, vault);
@@ -102,7 +131,7 @@ describe("DomTranslator", () => {
       unit({
         id: "tm.account.line",
         source: { fr: "Numéro de compte : {account}", en: "Account number: {account}" },
-        target: { ff: "Namba konte : {account}" },
+        target: { fub: { text: "Namba konte : {account}", origin: "human", validatedBy: [], backTranslationFr: "" } },
         placeholders: ["account"],
         risk: "high",
       }),
@@ -121,7 +150,7 @@ describe("DomTranslator", () => {
       unit({
         id: "tm.balance.available",
         source: { fr: "Solde disponible", en: "Available balance" },
-        target: { ff: "FF_SOLDE" },
+        target: { fub: { text: "FF_SOLDE", origin: "human", validatedBy: [], backTranslationFr: "" } },
         risk: "high",
       }),
     ]);
@@ -138,7 +167,7 @@ describe("DomTranslator", () => {
       unit({
         id: "tm.balance.available",
         source: { fr: "Solde disponible", en: "Available balance" },
-        target: { ff: "FF_SOLDE" },
+        target: { fub: { text: "FF_SOLDE", origin: "human", validatedBy: [], backTranslationFr: "" } },
         risk: "high",
       }),
     ]);
@@ -153,19 +182,19 @@ describe("label collision guard", () => {
       unit({
         id: "tm.action.confirm",
         source: { fr: "Confirmer", en: "Confirm" },
-        target: { ff: "FF_SAME" },
+        target: { fub: { text: "FF_SAME", origin: "human", validatedBy: [], backTranslationFr: "" } },
         risk: "high",
       }),
       unit({
         id: "tm.action.cancel",
         source: { fr: "Annuler", en: "Cancel" },
-        target: { ff: "FF_SAME" },
+        target: { fub: { text: "FF_SAME", origin: "human", validatedBy: [], backTranslationFr: "" } },
         risk: "high",
       }),
       unit({
         id: "tm.step.fees",
         source: { fr: "Frais", en: "Fees" },
-        target: { ff: "FF_FRAIS" },
+        target: { fub: { text: "FF_FRAIS", origin: "human", validatedBy: [], backTranslationFr: "" } },
         risk: "low",
       }),
     ]);
@@ -208,13 +237,13 @@ describe("label collision guard", () => {
       unit({
         id: "tm.step.one",
         source: { fr: "Confirmer", en: "Confirm" },
-        target: { ff: "FF_SAME" },
+        target: { fub: { text: "FF_SAME", origin: "human", validatedBy: [], backTranslationFr: "" } },
         risk: "high",
       }),
       unit({
         id: "tm.step.two",
         source: { fr: "Annuler", en: "Cancel" },
-        target: { ff: "FF_SAME" },
+        target: { fub: { text: "FF_SAME", origin: "human", validatedBy: [], backTranslationFr: "" } },
         risk: "high",
       }),
     ]);

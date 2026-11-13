@@ -8,7 +8,7 @@ import type {
   UiLanguage,
 } from "@zteam/shared";
 import { panelSettingsSchema } from "@zteam/shared";
-import { packSource } from "@zteam/phrasebank";
+import { languageCodes, languages, packSource, packValidated } from "@zteam/phrasebank";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   getTargetTab,
@@ -43,11 +43,13 @@ import {
   planAudioSources,
   type AudioSource,
 } from "../../lib/audio-pack";
+import { packStatusLabel } from "../../lib/pack-status";
 import { copy, type PanelCopy } from "./copy";
 
 const SETTINGS_KEY = "zteam.panel.settings.v1";
 const DEFAULT_SETTINGS: PanelSettings = {
   uiLang: "fr",
+  targetLang: "fub",
   speed: 1,
   speakValues: false,
   apiTranslation: "fallback",
@@ -102,6 +104,14 @@ export default function App() {
   const abortRef = useRef<AbortController | null>(null);
   const urlsRef = useRef<string[]>([]);
   const t = copy[settings.uiLang];
+  const pack = languages[settings.targetLang];
+  const currentPackSource = packSource[settings.targetLang] ?? "validated";
+  const currentPackValidated = packValidated[settings.targetLang] ?? false;
+  const targetHasVoice = pack?.status !== "text-only" && pack?.speech.provider !== "none";
+  const targetName = (code: string): string => {
+    const language = languages[code];
+    return language?.names[settings.uiLang] ?? language?.endonym ?? code;
+  };
   const clipIndex = useMemo(() => indexPack(audioPack), [audioPack]);
   const audioReady = voice === "ready" || (audioPack?.spoken ?? 0) > 0;
   const plan = useMemo(
@@ -352,7 +362,7 @@ export default function App() {
     }
   }
 
-  async function start() {
+  async function start(targetLang = settings.targetLang) {
     setAudioError("");
     await withTab(async (target) => {
       if (!(await ensureReady(target))) return;
@@ -362,6 +372,7 @@ export default function App() {
           mode: settings.apiTranslation,
           provider: settings.mtProvider,
           baseUrl: apiDiscovered ? apiBaseUrl : undefined,
+          targetLang,
         },
       });
       setStatus(next);
@@ -382,6 +393,7 @@ export default function App() {
           mode: settings.apiTranslation,
           provider: settings.mtProvider,
           baseUrl: apiDiscovered ? apiBaseUrl : undefined,
+          targetLang: settings.targetLang,
         },
       });
       setStatus(next);
@@ -445,6 +457,7 @@ export default function App() {
     if (spokenPendingRef.current === pending.id) return;
     spokenPendingRef.current = pending.id;
     if (!audioReady) return;
+    if (!targetHasVoice) return;
     if (!shouldSpeakPageAction(pending, status?.protectedValues ?? [])) return;
     const name = pending.spokenName ?? pending.name;
     if (!isLikelyFulfulde(name)) return;
@@ -513,6 +526,10 @@ export default function App() {
   }
 
   async function playTexts(texts: string[]) {
+    if (!targetHasVoice) {
+      setMessage(t.noVoice);
+      return;
+    }
     if (!texts.length) {
       setMessage(t.noSpeech);
       return;
@@ -689,7 +706,7 @@ export default function App() {
         ? status?.mt.done
           ? `${t.mtLocal} · ${t.mtUnvalidated}`
           : `${t.mtLocal} · ${t.mtReady}`
-        : packSource === "validated"
+        : currentPackValidated
           ? t.apiModeOff
           : t.apiModeOffDraft;
 
@@ -704,6 +721,24 @@ export default function App() {
           <span className={`badge ${badge.className}`} role="status" aria-live="polite">
             {badge.label}
           </span>
+          <label className="lang-switch">
+            <span className="sr-only">{t.targetLanguage}</span>
+            <select
+              value={settings.targetLang}
+              onChange={(event) => {
+                const targetLang = event.target.value;
+                setSettings((current) => ({ ...current, targetLang }));
+                if (status?.active) void start(targetLang);
+              }}
+              aria-label={t.targetLanguage}
+            >
+              {languageCodes.map((code) => (
+                <option key={code} value={code}>
+                  {targetName(code)} ({code})
+                </option>
+              ))}
+            </select>
+          </label>
           <label className="lang-switch">
             <span className="sr-only">{t.language}</span>
             <select
@@ -724,13 +759,9 @@ export default function App() {
         </div>
       </header>
 
-      <p className={`pack-source ${packSource}`} role="status">
-        <strong>{t.packSourceLabel}</strong> :{" "}
-        {packSource === "mt"
-          ? `${t.mtBadge} — ${t.packSourceMt}`
-          : packSource === "fixture"
-            ? t.fixtureBadge
-            : t.packSourceValidated}
+      <p className={`pack-source ${currentPackSource}`} role="status">
+        <strong>{pack?.endonym ?? t.packSourceLabel}</strong> :{" "}
+        {packStatusLabel(currentPackSource, currentPackValidated, t)}
       </p>
 
       {settings.uiLang === "ff" ? <p className="notice ff-draft">{t.ffDraftNote}</p> : null}
@@ -835,7 +866,7 @@ export default function App() {
             disabled={busy}
           >
             <option value="off">
-              {packSource === "validated" ? t.apiModeOff : t.apiModeOffDraft}
+              {currentPackValidated ? t.apiModeOff : t.apiModeOffDraft}
             </option>
             <option value="fallback">{t.apiModeFallback}</option>
             <option value="primary">{t.apiModePrimary}</option>
@@ -892,7 +923,7 @@ export default function App() {
         <button
           type="button"
           className="primary"
-          onClick={start}
+          onClick={() => void start()}
           disabled={busy || !tab || isRestrictedTab(tab.url)}
         >
           {!permitted ? t.enable : isActive ? t.translate : t.start}
@@ -944,6 +975,7 @@ export default function App() {
               type="button"
               onClick={playAudio}
               disabled={
+                !targetHasVoice ||
                 !audioReady ||
                 audio === "loading" ||
                 status?.mt.state === "running"
@@ -1146,12 +1178,14 @@ export default function App() {
                     : `${t.audio} : ${voice}`}
           </span>
         </div>
+        {!targetHasVoice ? <p className="hint">{t.noVoice}</p> : null}
         <div className="actions audio-actions">
           <button
             type="button"
             onClick={playAudio}
             disabled={
               busy ||
+              !targetHasVoice ||
               !audioReady ||
               audio === "loading" ||
               !status?.applied ||

@@ -1,4 +1,4 @@
-import { translationUnits } from "@zteam/phrasebank";
+import { languages } from "@zteam/phrasebank";
 import type {
   ActionView,
   ExtensionMessage,
@@ -17,6 +17,7 @@ import type {
   TranslationStatus,
 } from "@zteam/shared";
 import {
+  DEFAULT_TARGET_LANG,
   DomTranslator,
   TranslationMemory,
   addPatternValues,
@@ -72,7 +73,11 @@ let actionLanguage: PageLanguage = "unknown";
 let lastStatus: TranslationStatus = emptyStatus();
 let pendingPageAction: ActionView | null = null;
 let armedAction: { id: string; snapshotId: string; expiresAt: number } | null = null;
-let mtOptions: MtRequestOptions = { mode: "off", provider: null };
+let mtOptions: MtRequestOptions = {
+  mode: "off",
+  provider: null,
+  targetLang: DEFAULT_TARGET_LANG,
+};
 let mtStatus: MtStatus = { mode: "off", state: "off", done: 0, total: 0 };
 let applyChain: Promise<unknown> = Promise.resolve();
 let applyGeneration = 0;
@@ -801,6 +806,7 @@ async function prepareMt(): Promise<void> {
       source: language,
       provider: mtOptions.provider,
       baseUrl: mtOptions.baseUrl,
+      targetLang: mtOptions.targetLang,
     })) as MtTranslateResponse;
   } catch (error) {
     if (!active) return;
@@ -927,20 +933,34 @@ function scheduleApply(): Promise<TranslationStatus> {
   return next;
 }
 
+function targetLangOf(options: MtRequestOptions): string {
+  return options.targetLang ?? DEFAULT_TARGET_LANG;
+}
+
 function optionsChanged(next: MtRequestOptions): boolean {
   return (
     next.mode !== mtOptions.mode ||
     next.provider !== mtOptions.provider ||
-    (next.baseUrl ?? "") !== (mtOptions.baseUrl ?? "")
+    (next.baseUrl ?? "") !== (mtOptions.baseUrl ?? "") ||
+    targetLangOf(next) !== targetLangOf(mtOptions)
   );
 }
 
+/** Rebuilds the TM for a language and clears the worker's MT cache. */
+function switchLanguage(language: string): TranslationMemory {
+  memory = new TranslationMemory(languages[language]?.translationUnits ?? [], language);
+  void chrome.runtime.sendMessage({ type: "MT_CLEAR_CACHE" }).catch(() => undefined);
+  return memory;
+}
+
 function startTranslation(options?: MtRequestOptions): Promise<TranslationStatus> {
-  mtOptions = options ?? { mode: "off", provider: null };
+  const next = options ?? { mode: "off", provider: null };
+  const languageChanged = targetLangOf(next) !== targetLangOf(mtOptions);
+  mtOptions = next;
   applyGeneration += 1;
   if (active && translator) translator.restore(document.body);
   if (!translator) translator = new DomTranslator();
-  if (!memory) memory = new TranslationMemory(translationUnits);
+  if (!memory || languageChanged) memory = switchLanguage(targetLangOf(mtOptions));
   memory.clearRuntime();
   pageBaselines.clear();
   pageBaselineKey = "";
@@ -975,10 +995,12 @@ function startTranslation(options?: MtRequestOptions): Promise<TranslationStatus
 function rescan(options?: MtRequestOptions): Promise<TranslationStatus> {
   if (!active) return Promise.resolve(lastStatus);
   if (options) {
+    const languageChanged = targetLangOf(options) !== targetLangOf(mtOptions);
     if (optionsChanged(options)) {
       applyGeneration += 1;
       translator?.restore(document.body);
-      memory?.clearRuntime();
+      if (languageChanged) memory = switchLanguage(targetLangOf(options));
+      else memory?.clearRuntime();
     }
     mtOptions = options;
   }

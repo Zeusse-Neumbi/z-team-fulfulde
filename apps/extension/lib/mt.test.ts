@@ -112,6 +112,27 @@ describe("translateTexts", () => {
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
+  it("sends the target language and keeps the cache per language", async () => {
+    const fetcher = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+      const body = JSON.parse(String(init?.body)) as { text: string; target: string };
+      return jsonResponse(payload(`${body.target}:${body.text}`));
+    });
+    const options = {
+      texts: ["Frais"],
+      source: "fr" as const,
+      baseUrl: "http://127.0.0.1:8000",
+      fetcher: fetcher as unknown as typeof fetch,
+    };
+    const fub = await translateTexts({ ...options, targetLang: "fub" });
+    const ybb = await translateTexts({ ...options, targetLang: "ybb" });
+    const cached = await translateTexts({ ...options, targetLang: "fub" });
+
+    expect(fub.translations?.[0]?.target).toBe("fub:Frais");
+    expect(ybb.translations?.[0]?.target).toBe("ybb:Frais");
+    expect(cached.translations?.[0]?.target).toBe("fub:Frais");
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
   it("skips a stub or unchanged target and reports the miss", async () => {
     const fetcher = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
       const body = JSON.parse(String(init?.body)) as { text: string };

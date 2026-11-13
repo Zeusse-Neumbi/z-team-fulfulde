@@ -11,8 +11,6 @@ function unit(
 ): TranslationUnit {
   return {
     risk: "high",
-    validatedBy: ["speaker_1"],
-    backTranslationFr: "",
     version: "test",
     ...partial,
   };
@@ -123,7 +121,7 @@ describe("DomTranslator values", () => {
       unit({
         id: "tm.amount",
         source: { fr: "250 000 FCFA", en: "250,000 FCFA" },
-        target: { ff: "FF_AMOUNT" },
+        target: { fub: { text: "FF_AMOUNT", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const stats = translator.translate(
@@ -143,7 +141,7 @@ describe("DomTranslator values", () => {
       unit({
         id: "tm.number",
         source: { fr: "250000", en: "250,000" },
-        target: { ff: "FF_NUMBER" },
+        target: { fub: { text: "FF_NUMBER", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const stats = translator.translate(document.body, tm, vault());
@@ -160,7 +158,7 @@ describe("DomTranslator values", () => {
       unit({
         id: "tm.currency",
         source: { fr: "FCFA", en: "FCFA" },
-        target: { ff: "FF_CURRENCY" },
+        target: { fub: { text: "FF_CURRENCY", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const stats = translator.translate(
@@ -179,7 +177,7 @@ describe("DomTranslator values", () => {
       unit({
         id: "tm.name",
         source: { fr: "Amina Ngo Bell", en: "Amina Ngo Bell" },
-        target: { ff: "FF_NAME" },
+        target: { fub: { text: "FF_NAME", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const stats = translator.translate(
@@ -198,7 +196,7 @@ describe("DomTranslator values", () => {
       unit({
         id: "tm.reason",
         source: { fr: "Paiement de services", en: "Payment for services" },
-        target: { ff: "FF_REASON" },
+        target: { fub: { text: "FF_REASON", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const stats = translator.translate(document.body, tm, vault());
@@ -213,7 +211,7 @@ describe("DomTranslator values", () => {
       unit({
         id: "tm.solde",
         source: { fr: "Solde", en: "Balance" },
-        target: { ff: "FF_SOLDE" },
+        target: { fub: { text: "FF_SOLDE", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const stats = translator.translate(document.body, tm, vault());
@@ -229,7 +227,7 @@ describe("DomTranslator values", () => {
       unit({
         id: "tm.account.line",
         source: { fr: "Numéro de compte : {account}", en: "Account number : {account}" },
-        target: { ff: "FF_COMPTE : {account}" },
+        target: { fub: { text: "FF_COMPTE : {account}", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const stats = translator.translate(
@@ -243,6 +241,50 @@ describe("DomTranslator values", () => {
     expect(stats.applied).toBe(1);
   });
 
+  it("keeps a mixed account line byte-identical in both languages", () => {
+    const targets = {
+      fub: {
+        text: "FF_COMPTE : {account}",
+        origin: "human" as const,
+        validatedBy: [],
+        backTranslationFr: "",
+      },
+      ybb: {
+        text: "YBB_COMPTE : {account}",
+        origin: "human" as const,
+        validatedBy: [],
+        backTranslationFr: "",
+      },
+    };
+    for (const [lang, expected] of [
+      ["fub", "FF_COMPTE : CM 001 2345 6789 01"],
+      ["ybb", "YBB_COMPTE : CM 001 2345 6789 01"],
+    ] as const) {
+      body(`<p id="account">Numéro de compte : CM 001 2345 6789 01</p>`);
+      const translator = new DomTranslator();
+      const tm = new TranslationMemory(
+        [
+          unit({
+            id: "tm.account.line",
+            source: {
+              fr: "Numéro de compte : {account}",
+              en: "Account number : {account}",
+            },
+            target: targets,
+          }),
+        ],
+        lang,
+      );
+      const stats = translator.translate(
+        document.body,
+        tm,
+        vault(value("CM 001 2345 6789 01", "account")),
+      );
+      expect(document.getElementById("account")?.textContent).toBe(expected);
+      expect(stats.applied).toBe(1);
+    }
+  });
+
   it("rejects a mixed target that drops the value", () => {
     body(`<p id="account">Numéro de compte : CM 001 2345 6789 01</p>`);
     const translator = new DomTranslator();
@@ -250,7 +292,7 @@ describe("DomTranslator values", () => {
       unit({
         id: "tm.account.line",
         source: { fr: "Numéro de compte : {account}", en: "Account number : {account}" },
-        target: { ff: "FF_COMPTE" },
+        target: { fub: { text: "FF_COMPTE", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const stats = translator.translate(
@@ -272,7 +314,7 @@ describe("DomTranslator values", () => {
       unit({
         id: "tm.total",
         source: { fr: "Total : {amount}", en: "Total: {amount}" },
-        target: { ff: "FF_TOTAL : 25 000 FCFA + 30 000 FCFA" },
+        target: { fub: { text: "FF_TOTAL : 25 000 FCFA + 30 000 FCFA", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const stats = translator.translate(
@@ -295,7 +337,7 @@ describe("DomTranslator values", () => {
           fr: "Safinum Pay — environnement de démonstration.",
           en: "Safinum Pay — demonstration environment.",
         },
-        target: { ff: "FF Safinum Pay — démonstration." },
+        target: { fub: { text: "FF Safinum Pay — démonstration.", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const stats = translator.translate(document.body, tm, vault(value("Safinum", "other")));
@@ -315,7 +357,7 @@ describe("DomTranslator values", () => {
           fr: "Safinum Pay — environnement de démonstration.",
           en: "Safinum Pay — demonstration environment.",
         },
-        target: { ff: "FF — démonstration." },
+        target: { fub: { text: "FF — démonstration.", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const stats = translator.translate(document.body, tm, vault(value("Safinum", "other")));
@@ -333,7 +375,7 @@ describe("DomTranslator values", () => {
       unit({
         id: "tm.total",
         source: { fr: "Total : {amount}", en: "Total: {amount}" },
-        target: { ff: "FF_TOTAL : {amount}" },
+        target: { fub: { text: "FF_TOTAL : {amount}", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const stats = translator.translate(
@@ -427,7 +469,7 @@ describe("DomTranslator passes", () => {
       unit({
         id: "tm.balance.available",
         source: { fr: "Solde disponible", en: "Available balance" },
-        target: { ff: "FF_SOLDE" },
+        target: { fub: { text: "FF_SOLDE", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const vaultValue = vault(value("250 000 FCFA", "amount"));
@@ -498,7 +540,7 @@ describe("DomTranslator passes", () => {
       unit({
         id: "tm.balance.available",
         source: { fr: "Solde disponible", en: "Available balance" },
-        target: { ff: "FF_SOLDE" },
+        target: { fub: { text: "FF_SOLDE", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const stats = translator.translate(document.body, tm, vault());

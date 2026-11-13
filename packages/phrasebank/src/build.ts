@@ -1,12 +1,13 @@
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import type { LanguageTarget } from "@zteam/shared";
-import { type PackSource, loadAll, releaseErrors, releaseGate } from "./loader";
+import { type PackSource, loadAll, loadRegistry, releaseErrors, releaseGate } from "./loader";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const release = process.argv.includes("--release");
 const fixture = process.argv.includes("--fixture");
 const packs = loadAll();
+const registry = new Map(loadRegistry().map((entry) => [entry.code, entry]));
 const codes = Object.keys(packs).sort();
 
 const warnings = codes.flatMap((code) => {
@@ -66,13 +67,21 @@ const generated = Object.fromEntries(
   codes.map((code) => {
     const pack = packs[code];
     if (!pack) throw new Error(`Missing language pack: ${code}`);
+    const entry = registry.get(code);
     return [
       code,
       {
         code,
+        endonym: entry?.endonym ?? code,
+        names: entry?.names ?? {},
         status: pack.status,
         packSource: packSourceOf(code),
         packValidated: packValidatedOf(code),
+        speech: {
+          provider: entry?.speech.provider ?? "none",
+          model: entry?.speech.model ?? "",
+          tone: entry?.speech.tone ?? "none",
+        },
         tmVersion: pack.tmVersion,
         phrasebankVersion: pack.phrasebankVersion,
         translationUnits: fixture
@@ -102,10 +111,17 @@ import type { NumbersLexicon, PhraseEntry, TranslationUnit } from "@zteam/shared
 
 export interface Pack {
   code: string;
+  endonym: string;
+  names: Record<string, string>;
   status: "validated" | "draft" | "text-only";
   packSource: "validated" | "mt" | "fixture";
   /** True only when the language is validated and the release gate agrees. */
   packValidated: boolean;
+  speech: {
+    provider: string;
+    model: string;
+    tone: "none" | "partial" | "full";
+  };
   tmVersion: string;
   phrasebankVersion: string;
   translationUnits: TranslationUnit[];

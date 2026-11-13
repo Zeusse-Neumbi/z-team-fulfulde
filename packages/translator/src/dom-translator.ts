@@ -30,10 +30,15 @@ export interface TranslateOptions {
 const FALLBACK_UNIT: TranslationUnit = {
   id: "fixture.fallback",
   source: { fr: "", en: "" },
-  target: { ff: "" },
+  target: {
+    fub: {
+      text: "",
+      origin: "seed",
+      validatedBy: ["fixture"],
+      backTranslationFr: "",
+    },
+  },
   risk: "low",
-  validatedBy: ["fixture"],
-  backTranslationFr: "",
   version: "fixture",
 };
 
