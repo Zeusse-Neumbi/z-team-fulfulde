@@ -14,7 +14,7 @@ The side panel now:
 4. asks for a confirmation after announcing an action, and only then shows it
    on the page.
 
-Playwright suite (`pnpm e2e`), 10 tests:
+Playwright suite (`pnpm e2e`), 12 tests:
 
 | Spec | What it proves |
 |---|---|
@@ -132,8 +132,8 @@ The candidate pack is evaluation-only; `validatedBy` is empty and
 
 - MMS-TTS is slower than real time on this CPU (RTF 1.1–1.9).
 - NLLB uses `fuv_Latn`; the output is Nigerian Fulfulde, not validated Adamawa.
-- The spoken summary reads labels and actions, not amounts. Values stay on
-  screen by design; speaking them needs recorded digit clips or a value-safe
-  TTS path.
+- The spoken summary reads labels and actions. With `speakValues` enabled it can
+  also read amounts and fees through the local voice; accounts, phones,
+  references and names stay out of the TTS payload by design.
 - Some sites remove injected nodes during hydration; the harness treats that as
   a skip only when the canary disappears before translation, never as a pass.

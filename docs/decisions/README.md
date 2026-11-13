@@ -18,3 +18,6 @@ accepted record.
 | [0010](0010-generalization-harness.md) | Test-only generic fallback, broad-host fixture build and 30-page canary sweep |
 | [0011](0011-configurable-model-providers.md) | Configurable model providers, typed failures and a phrasebank API for the test bench |
 | [0012](0012-spoken-values-and-click-guard.md) | Opt-in spoken values on the local voice and a confirm-before-click guard |
+| [0013](0013-oral-validation-by-listening.md) | Validate Fulfulde by listening, with the local voice as the interface |
+| [0014](0014-loopback-api-discovery.md) | Discover the local API on the loopback range 8000–8010 |
+| [0015](0015-runtime-local-mt-fallback.md) | Use labelled local machine translation as a runtime fallback |

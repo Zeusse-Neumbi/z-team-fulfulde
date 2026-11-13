@@ -119,10 +119,30 @@ pnpm setup:e2e
 ✓ GitKraken        connected
 ```
 
-### `failed: Request timed out` after a config or network change
+### `failed: Request timed out` on a remote server
 
-The OpenCode service can keep stale MCP connections. Restart it, then check
-again:
+This is usually a transient resolver failure, not a bad config and not a missing
+credential. Find the real cause in the log:
+
+```bash
+grep -E 'server=huggingface|EAI_AGAIN' ~/.local/share/opencode/log/opencode.log | tail
+```
+
+`getaddrinfo EAI_AGAIN <host>` means name resolution timed out. When several
+remote servers fail in the same second, the local resolver is the cause, not the
+endpoint. A server that fails once stays `failed` for the life of the service and
+is never retried, so `opencode mcp list` keeps reporting the stale state long
+after the network recovers.
+
+Reconnect a single server without restarting the service:
+
+```bash
+opencode api post \
+  "/api/experimental/mcp/huggingface/connect?location%5Bdirectory%5D=$PWD"
+```
+
+Restart the service only when several servers are stale or the service itself is
+unhealthy:
 
 ```bash
 opencode service restart
@@ -133,38 +153,43 @@ Use `/reload` in the TUI if the agent session still has the old tool list.
 
 ### Local servers: `playwright` and `chrome-devtools`
 
-Both start through `npx`. Pre-cache the packages once so startup does not depend
-on a slow registry:
+Both start through `npx` with an exact version pinned in `opencode.json`. Do not
+use `@latest`: npm re-resolves the dist-tag on every spawn, and on a slow resolver
+that lookup outlives the startup timeout, so the server reports
+`Request timed out`. Pre-cache the pinned packages once:
 
 ```bash
-npx -y @playwright/mcp@latest --version
-npx -y chrome-devtools-mcp@latest --version
+npx -y @playwright/mcp@0.0.85 --version
+npx -y chrome-devtools-mcp@1.13.0 --version
 pnpm setup:e2e             # Chromium for Playwright
 google-chrome --version    # Chrome DevTools MCP officially targets Chrome
 ```
+
+Keep the versions here and in `opencode.json` in step when you bump one.
 
 If a container blocks the sandbox, add `--no-sandbox` to the Playwright command
 and `--chrome-arg=--no-sandbox` to the Chrome DevTools command. Do not add these
 flags on a normal desktop without a reason.
 
-### `context7` reports `getaddrinfo EAI_AGAIN` or times out
+### A remote server reports `getaddrinfo EAI_AGAIN`
 
-The endpoint may resolve to IPv6 first on a dual-stack network. Probe IPv4:
-
-```bash
-curl -4 -sS -o /dev/null -w '%{http_code}\n' https://mcp.context7.com/mcp
-# 405 is normal for a GET probe; it proves DNS and TLS work.
-```
-
-If IPv4 works, start OpenCode from a shell with:
+Resolution timed out, so the request never reached the endpoint. This is local to
+the machine and usually hits every remote server at once. Probe the endpoint and
+the resolver separately:
 
 ```bash
-export NODE_OPTIONS=--dns-result-order=ipv4first
-opencode service restart
+curl -4 -sS -o /dev/null -w 'endpoint %{http_code}\n' https://huggingface.co/mcp
+resolvectl query huggingface.co
 ```
 
-Retry on a stable network if DNS still fails. `CONTEXT7_API_KEY` raises rate
-limits but does not fix DNS.
+If the endpoint answers and `resolvectl` is slow or fails, fix DNS before
+reconnecting. `resolvectl status` shows a degraded upstream, and
+`journalctl -t systemd-resolved` shows repeated `Clock change detected. Flushing
+caches.` lines that discard the cache on every clock step.
+
+`NODE_OPTIONS=--dns-result-order=ipv4first` only changes address ordering. It
+does not fix a resolver timeout, so it is not the remedy for `EAI_AGAIN`.
+`CONTEXT7_API_KEY` and `HF_TOKEN` raise rate limits; they do not fix DNS.
 
 ### `huggingface` is connected but rate-limited
 

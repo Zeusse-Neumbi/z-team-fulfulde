@@ -11,14 +11,17 @@
     "servers": {
       "context7": {
         "type": "remote",
-        "url": "https://mcp.context7.com/mcp"
+        "url": "https://mcp.context7.com/mcp",
+        "timeout": {
+          "startup": 180000
+        }
       },
       "playwright": {
         "type": "local",
         "command": [
           "npx",
           "-y",
-          "@playwright/mcp@latest",
+          "@playwright/mcp@0.0.85",
           "--browser",
           "chromium",
           "--headless",
@@ -36,7 +39,7 @@
         "command": [
           "npx",
           "-y",
-          "chrome-devtools-mcp@latest",
+          "chrome-devtools-mcp@1.13.0",
           "--no-usage-statistics",
           "--no-performance-crux"
         ],
@@ -47,7 +50,10 @@
       },
       "huggingface": {
         "type": "remote",
-        "url": "https://huggingface.co/mcp"
+        "url": "https://huggingface.co/mcp",
+        "timeout": {
+          "startup": 180000
+        }
       },
       "github": {
         "type": "local",
@@ -63,8 +69,7 @@
         "environment": {
           "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_PERSONAL_ACCESS_TOKEN}",
           "GITHUB_TOOLSETS": "repos,issues,pull_requests,actions,code_security,projects"
-        },
-        "disabled": true
+        }
       }
     }
   },

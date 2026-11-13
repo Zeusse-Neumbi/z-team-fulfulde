@@ -1,5 +1,7 @@
 import type {
   ActionView,
+  ExtensionMessage,
+  MtMode,
   PanelSettings,
   Readback,
   TranslationStatus,
@@ -20,18 +22,30 @@ import {
   requestOriginPermission,
 } from "../../lib/permissions";
 import {
+  DEFAULT_API_BASE_URL,
+  discoverApiBaseUrl,
   failureCopyKey,
   parseBackendFailure,
   voiceStateFromHealth,
   type HealthResponse,
   type VoiceState,
 } from "../../lib/backend";
-import { buildSpeechPlan, shouldSpeakPageAction } from "../../lib/speech";
+import {
+  buildSpeechPlan,
+  isLikelyFulfulde,
+  shouldSpeakPageAction,
+  type SpeechPlanStrings,
+} from "../../lib/speech";
 import { copy, type PanelCopy } from "./copy";
 
-const API = "http://127.0.0.1:8000";
 const SETTINGS_KEY = "zteam.panel.settings.v1";
-const DEFAULT_SETTINGS: PanelSettings = { uiLang: "fr", speed: 1, speakValues: false };
+const DEFAULT_SETTINGS: PanelSettings = {
+  uiLang: "fr",
+  speed: 1,
+  speakValues: false,
+  apiTranslation: "fallback",
+  mtProvider: null,
+};
 
 type AudioState = "idle" | "loading" | "playing" | "paused";
 
@@ -68,12 +82,15 @@ export default function App() {
   const [audioError, setAudioError] = useState("");
   const [voice, setVoice] = useState<VoiceState>("unknown");
   const [voiceLocal, setVoiceLocal] = useState(true);
+  const [apiBaseUrl, setApiBaseUrl] = useState(DEFAULT_API_BASE_URL);
+  const [apiDiscovered, setApiDiscovered] = useState(false);
   const [readback, setReadback] = useState<Readback | null>(null);
   const [pendingAction, setPendingAction] = useState<ActionView | null>(null);
   const [openSentences, setOpenSentences] = useState(true);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const spokenPendingRef = useRef<string | null>(null);
+  const actionAnnounceRef = useRef<(name: string) => void>(() => undefined);
   const abortRef = useRef<AbortController | null>(null);
   const urlsRef = useRef<string[]>([]);
   const t = copy[settings.uiLang];
@@ -88,9 +105,33 @@ export default function App() {
             feeLabel: t.fee,
             actionsNote: t.actionsPlanNote,
             noContent: t.noContentPlan,
+            pagePurpose: t.pagePurpose,
           }, { allowValues: settings.speakValues && voiceLocal })
         : null,
     [status, t, settings.speakValues, voiceLocal],
+  );
+  const audioStrings = useMemo<SpeechPlanStrings>(
+    () => ({
+      step: copy.ff.step,
+      stepLabels: copy.ff.stepLabels,
+      valuesNote: copy.ff.valuesNotSpoken,
+      amountLabel: copy.ff.amount,
+      feeLabel: copy.ff.fee,
+      actionsNote: copy.ff.actionsPlanNote,
+      noContent: copy.ff.noContentPlan,
+      pagePurpose: copy.ff.pagePurpose,
+    }),
+    [],
+  );
+  const audioPlan = useMemo(
+    () =>
+      status
+        ? buildSpeechPlan(status, audioStrings, {
+            allowValues: settings.speakValues && voiceLocal,
+            requireFulfulde: true,
+          })
+        : null,
+    [status, audioStrings, settings.speakValues, voiceLocal],
   );
 
   const cleanupAudio = useCallback(() => {
@@ -142,7 +183,10 @@ export default function App() {
 
   const checkHealth = useCallback(async () => {
     try {
-      const response = await fetch(`${API}/health`, { cache: "no-store" });
+      const response = await fetch(`${apiBaseUrl}/health`, {
+        cache: "no-store",
+        signal: AbortSignal.timeout(2_000),
+      });
       if (!response.ok) throw new Error(`health ${response.status}`);
       const data = (await response.json()) as HealthResponse;
       setVoice(voiceStateFromHealth(data));
@@ -150,7 +194,7 @@ export default function App() {
     } catch {
       setVoice("offline");
     }
-  }, []);
+  }, [apiBaseUrl]);
 
   useEffect(() => {
     let alive = true;
@@ -169,6 +213,19 @@ export default function App() {
     if (!settingsLoaded) return;
     void chrome.storage.local.set({ [SETTINGS_KEY]: settings });
   }, [settings, settingsLoaded]);
+
+  useEffect(() => {
+    let alive = true;
+    void discoverApiBaseUrl().then((url) => {
+      if (alive && url) {
+        setApiBaseUrl((current) => (current === url ? current : url));
+        setApiDiscovered(true);
+      }
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   useEffect(() => {
     void refresh();
@@ -276,21 +333,37 @@ export default function App() {
       if (!(await ensureReady(target))) return;
       const next = await sendToTab<TranslationStatus>(target.id as number, {
         type: "START_TRANSLATION",
+        api: {
+          mode: settings.apiTranslation,
+          provider: settings.mtProvider,
+          baseUrl: apiDiscovered ? apiBaseUrl : undefined,
+        },
       });
       setStatus(next);
       setReadback(null);
       if (next.aborted) setMessage(abortMessage(next.abortReason, t));
-      else if (next.translations === 0) setMessage(t.packMissing);
+      else if (next.translations === 0 && next.mtApplied === 0 && next.mt.state !== "running") {
+        setMessage(t.packMissing);
+      }
     });
   }
 
   async function rescan() {
     await withTab(async (target) => {
       if (!(await ensureReady(target))) return;
-      const next = await sendToTab<TranslationStatus>(target.id as number, { type: "RESCAN" });
+      const next = await sendToTab<TranslationStatus>(target.id as number, {
+        type: "RESCAN",
+        api: {
+          mode: settings.apiTranslation,
+          provider: settings.mtProvider,
+          baseUrl: apiDiscovered ? apiBaseUrl : undefined,
+        },
+      });
       setStatus(next);
       if (next.aborted) setMessage(abortMessage(next.abortReason, t));
-      else if (next.translations === 0) setMessage(t.packMissing);
+      else if (next.translations === 0 && next.mtApplied === 0 && next.mt.state !== "running") {
+        setMessage(t.packMissing);
+      }
     });
   }
 
@@ -348,7 +421,9 @@ export default function App() {
     spokenPendingRef.current = pending.id;
     if (voice !== "ready") return;
     if (!shouldSpeakPageAction(pending, status?.protectedValues ?? [])) return;
-    void playTexts([pending.name]);
+    const name = pending.spokenName ?? pending.name;
+    if (!isLikelyFulfulde(name)) return;
+    void playTexts([name]);
     // playTexts is intentionally read through the render closure; the id guard
     // prevents a second announcement while the status keeps polling.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -357,7 +432,8 @@ export default function App() {
   async function verifyAction(action: ActionView) {
     setPendingAction(action);
     setMessage(t.actionSpoken);
-    if (voice === "ready") await playTexts([action.name]);
+    const name = action.spokenName ?? action.name;
+    if (voice === "ready" && isLikelyFulfulde(name)) await playTexts([name]);
   }
 
   function confirmAction() {
@@ -387,8 +463,28 @@ export default function App() {
   }
 
   async function playAudio() {
-    if (!plan) return;
-    await playTexts(plan.spoken);
+    let current = status;
+    try {
+      const target = await getTargetTab();
+      if (target?.id) {
+        current = await sendToTab<TranslationStatus>(target.id, { type: "GET_STATUS" });
+        for (let i = 0; i < 30 && current?.mt.state === "running"; i += 1) {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          current = await sendToTab<TranslationStatus>(target.id, { type: "GET_STATUS" });
+        }
+        setStatus(current);
+      }
+    } catch {
+      // Fall back to the last rendered status.
+    }
+    const spokenPlan = current
+      ? buildSpeechPlan(current, audioStrings, {
+          allowValues: settings.speakValues && voiceLocal,
+          requireFulfulde: true,
+        })
+      : audioPlan;
+    if (!spokenPlan) return;
+    await playTexts(spokenPlan.spoken);
   }
 
   async function playTexts(texts: string[]) {
@@ -409,7 +505,7 @@ export default function App() {
 
     try {
       for (const text of texts) {
-        const response = await fetch(`${API}/tts`, {
+        const response = await fetch(`${apiBaseUrl}/tts`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text: text.slice(0, 500), voice: "demo", speed: settings.speed }),
@@ -461,6 +557,23 @@ export default function App() {
     }
   }
 
+  actionAnnounceRef.current = (name: string) => {
+    const display = t.actionClicked.replace("{name}", name);
+    const audioText = copy.ff.actionClicked.replace("{name}", name);
+    setMessage(display);
+    if (voice === "ready" && isLikelyFulfulde(name)) void playTexts([audioText]);
+  };
+
+  useEffect(() => {
+    const onMessage = (message: ExtensionMessage) => {
+      if (message.type === "PAGE_ACTION_CLICKED") {
+        actionAnnounceRef.current(message.name);
+      }
+    };
+    chrome.runtime.onMessage.addListener(onMessage);
+    return () => chrome.runtime.onMessage.removeListener(onMessage);
+  }, []);
+
   function pauseAudio() {
     const element = audioRef.current;
     if (!element) return;
@@ -477,11 +590,6 @@ export default function App() {
     const next = settings.speed === 1 ? 0.8 : 1;
     setSettings((current) => ({ ...current, speed: next }));
     if (audioRef.current) audioRef.current.playbackRate = next;
-  }
-
-  function toggleUiLang() {
-    const next: UiLanguage = settings.uiLang === "fr" ? "en" : "fr";
-    setSettings((current) => ({ ...current, uiLang: next }));
   }
 
   useEffect(() => {
@@ -512,6 +620,19 @@ export default function App() {
     [status?.actions],
   );
 
+  const mtRunning = status?.mt.state === "running";
+  const mtUsed = (status?.mtApplied ?? 0) > 0;
+  const noTm = (status?.translations ?? 0) === 0;
+  const mtStateLabel = mtRunning
+    ? `${t.mtProgress} ${status?.mt.done ?? 0}/${status?.mt.total ?? 0}`
+    : status?.mt.state === "offline" || status?.mt.state === "error"
+      ? t.error
+      : status?.mt.state === "ready"
+        ? `${t.mtLocal} · ${t.mtUnvalidated}`
+        : !status?.active && settings.apiTranslation !== "off"
+          ? t.mtReady
+          : t.apiModeOff;
+
   return (
     <main className="shell" aria-busy={busy}>
       <header className="topbar">
@@ -523,14 +644,30 @@ export default function App() {
           <span className={`badge ${badge.className}`} role="status" aria-live="polite">
             {badge.label}
           </span>
-          <button type="button" className="lang-toggle" onClick={toggleUiLang}>
-            {settings.uiLang === "fr" ? "EN" : "FR"}
-          </button>
+          <label className="lang-switch">
+            <span className="sr-only">{t.language}</span>
+            <select
+              value={settings.uiLang}
+              onChange={(event) =>
+                setSettings((current) => ({
+                  ...current,
+                  uiLang: event.target.value as UiLanguage,
+                }))
+              }
+              aria-label={t.language}
+            >
+              <option value="fr">FR</option>
+              <option value="en">EN</option>
+              <option value="ff">FF</option>
+            </select>
+          </label>
         </div>
       </header>
 
+      {settings.uiLang === "ff" ? <p className="notice ff-draft">{t.ffDraftNote}</p> : null}
+
       {isActive ? (
-        <button type="button" className="stop-wide" onClick={stop} disabled={busy}>
+        <button type="button" className="stop-wide" onClick={stop}>
           ⏹ {t.stop}
         </button>
       ) : null}
@@ -552,7 +689,7 @@ export default function App() {
       </section>
 
       <section className="card stats" aria-label={t.coverage}>
-        <div className="meter-head">
+        <div className="meter-head coverage-meter-head">
           <span>{t.coverage}</span>
           <strong>{status ? percent(status.coverage) : "—"}</strong>
         </div>
@@ -566,6 +703,29 @@ export default function App() {
         >
           <span style={{ width: `${status ? Math.round(status.coverage * 100) : 0}%` }} />
         </div>
+        {status?.pageCoverage ? (
+          <div className="page-coverage">
+            <div className="meter-head">
+              <span>{t.pageCoverage}</span>
+              <strong>{status.pageCoverage.percent} %</strong>
+            </div>
+            <div
+              className="meter page-meter"
+              role="progressbar"
+              aria-label={t.pageCoverage}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={status.pageCoverage.percent}
+            >
+              <span style={{ width: `${status.pageCoverage.percent}%` }} />
+            </div>
+            <p className="hint">
+              {t.pageCoverageHint} {t.pageCoverageCeiling} :{" "}
+              {status.pageCoverage.safeCeiling} % · {status.pageCoverage.protectedOnly}{" "}
+              {t.pageCoverageProtected}
+            </p>
+          </div>
+        ) : null}
         <dl className="stat-grid">
           <div>
             <dt>{t.translated}</dt>
@@ -586,7 +746,76 @@ export default function App() {
         </dl>
       </section>
 
-      {status?.translations === 0 ? <p className="notice">{t.packMissing}</p> : null}
+      <section className="card mt-card" aria-labelledby="mt-heading">
+        <div className="mt-head">
+          <h2 id="mt-heading">{t.translationSource}</h2>
+          <span className={`mt-state ${status?.mt.state ?? "off"}${mtUsed ? " mt-used" : ""}`}>
+            {mtStateLabel}
+          </span>
+        </div>
+        <label className="mt-setting">
+          {t.apiMode}
+          <select
+            value={settings.apiTranslation}
+            onChange={(event) =>
+              setSettings((current) => ({
+                ...current,
+                apiTranslation: event.target.value as MtMode,
+              }))
+            }
+            disabled={busy}
+          >
+            <option value="off">{t.apiModeOff}</option>
+            <option value="fallback">{t.apiModeFallback}</option>
+            <option value="primary">{t.apiModePrimary}</option>
+          </select>
+        </label>
+        <label className="mt-setting">
+          {t.apiProvider}
+          <select
+            value={settings.mtProvider ?? "auto"}
+            onChange={(event) =>
+              setSettings((current) => ({
+                ...current,
+                mtProvider: event.target.value === "auto" ? null : event.target.value,
+              }))
+            }
+            disabled={busy || settings.apiTranslation === "off"}
+          >
+            <option value="auto">{t.apiAuto}</option>
+            <option value="nllb">{t.apiNllb}</option>
+            <option value="ollama">{t.apiOllama}</option>
+          </select>
+        </label>
+        <div className="mt-counts">
+          <span>
+            <strong>{status?.tmApplied ?? 0}</strong> {t.tmApplied}
+          </span>
+          <span>
+            <strong>{status?.mtApplied ?? 0}</strong> {t.mtApplied}
+          </span>
+        </div>
+        <p className="hint">{t.apiHint}</p>
+      </section>
+
+      {mtRunning ? (
+        <p className="notice mt-running" role="status" aria-live="polite">
+          {t.mtProgress} : {status?.mt.done ?? 0}/{status?.mt.total ?? 0}
+        </p>
+      ) : null}
+      {status?.mt.state === "offline" && !mtUsed ? (
+        <p className="notice">{t.mtOffline}</p>
+      ) : null}
+      {status?.mt.state === "error" ? <p className="notice">{t.mtError}</p> : null}
+      {mtUsed ? <p className="notice mt-warning">{t.mtWarning}</p> : null}
+      {status &&
+      noTm &&
+      !mtUsed &&
+      !mtRunning &&
+      status.mt.state !== "offline" &&
+      status.mt.state !== "error" ? (
+        <p className="notice">{t.packMissing}</p>
+      ) : null}
 
       <section className="actions">
         <button
@@ -620,7 +849,9 @@ export default function App() {
       {status?.pendingPageAction ? (
         <section className="card page-guard" role="alertdialog" aria-live="assertive">
           <p className="label">{t.pageClickTitle}</p>
-          <p className="guard-name">{status.pendingPageAction.name}</p>
+          <p className="guard-name">
+            {status.pendingPageAction.spokenName ?? status.pendingPageAction.name}
+          </p>
           <span className={`risk ${status.pendingPageAction.risk}`}>{t.highRisk}</span>
           <p className="hint">{t.pageClickHint}</p>
           <div className="confirm-row">
@@ -641,7 +872,11 @@ export default function App() {
             <button
               type="button"
               onClick={playAudio}
-              disabled={voice !== "ready" || audio === "loading"}
+              disabled={
+                voice !== "ready" ||
+                audio === "loading" ||
+                status?.mt.state === "running"
+              }
             >
               ▶ {t.speakSummary}
             </button>
@@ -677,7 +912,18 @@ export default function App() {
                   <span>{sentence.source}</span>
                 </div>
                 <div className="sentence-target">
-                  <span className="sentence-label">{t.target}</span>
+                  <span className="sentence-label">
+                    {t.target}
+                    {sentence.origin ? (
+                      <span className={`origin ${sentence.origin}`}>
+                        {sentence.origin === "mt"
+                          ? t.mtBadge
+                          : sentence.origin === "fixture"
+                            ? t.fixtureBadge
+                            : t.tmBadge}
+                      </span>
+                    ) : null}
+                  </span>
                   {sentence.target ? (
                     <span lang="fub">{sentence.target}</span>
                   ) : (
@@ -728,7 +974,7 @@ export default function App() {
                         ? t.mediumRisk
                         : t.lowRisk}
                   </span>
-                  <span className="action-name">{action.name}</span>
+                  <span className="action-name">{action.spokenName ?? action.name}</span>
                 </div>
                 {pendingAction?.id === action.id ? (
                   <div className="confirm-row">
@@ -757,7 +1003,7 @@ export default function App() {
               <li key={action.id} className="locked">
                 <div>
                   <span className="risk high">{t.highRisk}</span>
-                  <span className="action-name">{action.name}</span>
+                  <span className="action-name">{action.spokenName ?? action.name}</span>
                 </div>
                 <span className="locked-note">{t.lockedCheckbox}</span>
               </li>
@@ -827,7 +1073,13 @@ export default function App() {
           <button
             type="button"
             onClick={playAudio}
-            disabled={busy || voice !== "ready" || audio === "loading" || !status?.applied}
+            disabled={
+              busy ||
+              voice !== "ready" ||
+              audio === "loading" ||
+              !status?.applied ||
+              status?.mt.state === "running"
+            }
           >
             ▶ {t.play}
           </button>
@@ -868,8 +1120,10 @@ export default function App() {
           >
             <option value="fr">Français</option>
             <option value="en">English</option>
+            <option value="ff">Fulfulde (MT)</option>
           </select>
         </label>
+        {settings.uiLang === "ff" ? <p className="hint">{t.ffDraftNote}</p> : null}
         <label className="footer-setting" title={t.speakValuesHint}>
           <input
             type="checkbox"

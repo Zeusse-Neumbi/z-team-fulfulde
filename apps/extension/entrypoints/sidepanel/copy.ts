@@ -1,4 +1,5 @@
-import type { UiLanguage } from "@zteam/shared";
+import type { PageKind, UiLanguage } from "@zteam/shared";
+import { ffCopy } from "./copy.ff";
 
 export interface PanelCopy {
   eyebrow: string;
@@ -95,6 +96,35 @@ export interface PanelCopy {
   pageClickArmed: string;
   speakValues: string;
   speakValuesHint: string;
+  translationSource: string;
+  apiMode: string;
+  apiModeOff: string;
+  apiModeFallback: string;
+  apiModePrimary: string;
+  apiProvider: string;
+  apiAuto: string;
+  apiNllb: string;
+  apiOllama: string;
+  apiHint: string;
+  mtLocal: string;
+  mtUnvalidated: string;
+  mtReady: string;
+  mtWarning: string;
+  mtProgress: string;
+  mtOffline: string;
+  mtError: string;
+  tmBadge: string;
+  mtBadge: string;
+  fixtureBadge: string;
+  tmApplied: string;
+  mtApplied: string;
+  actionClicked: string;
+  ffDraftNote: string;
+  pageCoverage: string;
+  pageCoverageHint: string;
+  pageCoverageCeiling: string;
+  pageCoverageProtected: string;
+  pagePurpose: Record<PageKind, string>;
 }
 
 export const copy: Record<UiLanguage, PanelCopy> = {
@@ -134,7 +164,7 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     sentences: "Phrases de cette étape",
     noSentences: "Aucune phrase traduisible détectée.",
     packMissing:
-      "Aucune traduction fulfulde n’est installée. La page reste dans sa langue d’origine ; le pipeline et les valeurs protégées sont actifs.",
+      "Aucune traduction fulfulde validée n’est installée. Activez l’API locale ou installez le pack validé ; le pipeline et les valeurs protégées restent actifs.",
     original: "Original",
     target: "Fulfulde",
     missedBadge: "manquant",
@@ -176,7 +206,7 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     privacyTitle: "Ce qui quitte cette page",
     privacyValue: "Rien — traitement local",
     privacyHint:
-      "Aucune donnée ne quitte cet appareil. Le service local 127.0.0.1 ne reçoit que le texte à prononcer.",
+      "Aucune donnée ne quitte cet appareil. Le service local 127.0.0.1 reçoit le texte à prononcer et, si vous activez l’API locale, les libellés traduisibles — jamais les montants, noms, comptes, téléphones, références ou saisies.",
     integrityTitle: "Intégrité compromise",
     abortProtected: "Une valeur protégée a changé. La traduction a été annulée et la page restaurée.",
     abortMixed: "Une traduction ne préservait pas une valeur. La traduction a été annulée.",
@@ -209,7 +239,47 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     pageClickArmed: "Clic autorisé. Cliquez à nouveau sur le bouton dans la page.",
     speakValues: "Lire aussi les montants",
     speakValuesHint:
-      "Les montants sont alors envoyés à la voix locale 127.0.0.1, jamais à un service cloud."
+      "Les montants sont alors envoyés à la voix locale 127.0.0.1, jamais à un service cloud.",
+    translationSource: "Traduction",
+    apiMode: "Mode API locale",
+    apiModeOff: "Désactivée (TM validée)",
+    apiModeFallback: "Repli après la TM",
+    apiModePrimary: "API locale d’abord",
+    apiProvider: "Fournisseur",
+    apiAuto: "Auto (API)",
+    apiNllb: "NLLB local",
+    apiOllama: "Ollama local",
+    apiHint: "Le changement s’applique au prochain démarrage ou rescan.",
+    mtLocal: "MT local",
+    mtUnvalidated: "non validée",
+    mtReady: "Prêt",
+    mtWarning:
+      "Traduction automatique locale — sortie non validée par un locuteur natif. Les montants, noms, comptes, téléphones, références et saisies ne sont jamais envoyés à l’API.",
+    mtProgress: "Traduction locale en cours",
+    mtOffline:
+      "API locale indisponible. La page reste dans sa langue d’origine ; la TM validée reste active.",
+    mtError: "La traduction locale a échoué. La TM validée reste active.",
+    tmBadge: "TM",
+    mtBadge: "MT",
+    fixtureBadge: "TEST",
+    tmApplied: "TM validée",
+    mtApplied: "API locale",
+    actionClicked: "Vous avez cliqué : {name}.",
+    ffDraftNote:
+      "Interface fulfulde : brouillon automatique (MT), à valider par un locuteur natif.",
+    pageCoverage: "Couverture de la page",
+    pageCoverageHint: "Tous les textes visibles, valeurs protégées comprises.",
+    pageCoverageCeiling: "Plafond sûr",
+    pageCoverageProtected: "valeurs protégées",
+    pagePurpose: {
+      balance: "Page de solde : consultez votre solde et vos transactions récentes.",
+      fees: "Page des frais : choisissez l’opération et vérifiez les frais et le total.",
+      beneficiary: "Page du bénéficiaire : vérifiez le nom et le numéro avant de continuer.",
+      summary: "Page de récapitulatif : vérifiez les informations avant de confirmer.",
+      receipt: "Page de confirmation : le transfert est terminé ; vérifiez la référence.",
+      error: "Page d’erreur : lisez le message et vérifiez les valeurs à l’écran.",
+      unknown: "Page de l’application : consultez les informations et les actions."
+    }
   },
   en: {
     eyebrow: "Z-Team",
@@ -247,7 +317,7 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     sentences: "Sentences on this step",
     noSentences: "No translatable sentence detected.",
     packMissing:
-      "No Fulfulde translation pack is installed. The page stays in its original language; the pipeline and protected values are still active.",
+      "No validated Fulfulde pack is installed. Enable the local API or install the validated pack; the pipeline and protected values remain active.",
     original: "Original",
     target: "Fulfulde",
     missedBadge: "missed",
@@ -288,7 +358,7 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     privacyTitle: "What leaves this page",
     privacyValue: "Nothing — local processing",
     privacyHint:
-      "No data leaves this device. The local 127.0.0.1 service only receives the text to pronounce.",
+      "No data leaves this device. The local 127.0.0.1 service receives the text to pronounce and, when you enable the local API, translatable labels — never amounts, names, accounts, phones, references or user input.",
     integrityTitle: "Integrity check failed",
     abortProtected: "A protected value changed. The translation was cancelled and the page restored.",
     abortMixed: "A translation did not preserve a value. The translation was cancelled.",
@@ -320,5 +390,47 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     pageClickArmed: "Click allowed. Click the page button again.",
     speakValues: "Read amounts aloud too",
     speakValuesHint:
-      "Amounts are then sent to the local 127.0.0.1 voice, never to a cloud service.",  },
+      "Amounts are then sent to the local 127.0.0.1 voice, never to a cloud service.",
+    translationSource: "Translation",
+    apiMode: "Local API mode",
+    apiModeOff: "Off (validated TM)",
+    apiModeFallback: "Fallback after TM",
+    apiModePrimary: "Local API first",
+    apiProvider: "Provider",
+    apiAuto: "Auto (API)",
+    apiNllb: "Local NLLB",
+    apiOllama: "Local Ollama",
+    apiHint: "The change applies on the next start or rescan.",
+    mtLocal: "Local MT",
+    mtUnvalidated: "not validated",
+    mtReady: "Ready",
+    mtWarning:
+      "Local machine translation — output not validated by a native speaker. Amounts, names, accounts, phones, references and user input are never sent to the API.",
+    mtProgress: "Local translation in progress",
+    mtOffline:
+      "Local API unavailable. The page stays in its source language; the validated TM remains active.",
+    mtError: "Local translation failed. The validated TM remains active.",
+    tmBadge: "TM",
+    mtBadge: "MT",
+    fixtureBadge: "TEST",
+    tmApplied: "Validated TM",
+    mtApplied: "Local API",
+    actionClicked: "You clicked: {name}.",
+    ffDraftNote:
+      "Fulfulde interface: machine-translated draft, needs native-speaker validation.",
+    pageCoverage: "Page coverage",
+    pageCoverageHint: "All visible text, including protected values.",
+    pageCoverageCeiling: "Safe ceiling",
+    pageCoverageProtected: "protected values",
+    pagePurpose: {
+      balance: "Balance page: check your balance and recent transactions.",
+      fees: "Fees page: choose the operation and check the fee and total.",
+      beneficiary: "Beneficiary page: verify the name and number before continuing.",
+      summary: "Summary page: verify the information before confirming.",
+      receipt: "Confirmation page: the transfer is complete; check the reference.",
+      error: "Error page: read the message and check the values on screen.",
+      unknown: "Application page: review the information and actions."
+    }
+  },
+  ff: ffCopy,
 };

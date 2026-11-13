@@ -152,18 +152,95 @@ export interface Analysis {
 
 export type ExtensionMessage =
   | { type: "PING" }
-  | { type: "START_TRANSLATION"; force?: boolean }
+  | { type: "START_TRANSLATION"; force?: boolean; api?: MtRequestOptions }
   | { type: "STOP_TRANSLATION" }
-  | { type: "RESCAN" }
+  | { type: "RESCAN"; api?: MtRequestOptions }
   | { type: "GET_STATUS" }
   | { type: "GET_READBACK" }
   | { type: "HIGHLIGHT_ACTION"; actionId: string; snapshotId: string }
   | { type: "CONFIRM_PAGE_ACTION"; actionId: string; snapshotId: string }
-  | { type: "CANCEL_PAGE_ACTION" };
+  | { type: "CANCEL_PAGE_ACTION" }
+  | { type: "PAGE_ACTION_CLICKED"; actionId: string; name: string; risk: ActionView["risk"] }
+  | {
+      type: "MT_TRANSLATE";
+      texts: string[];
+      source: "fr" | "en";
+      provider?: string | null;
+      baseUrl?: string | null;
+    }
+  | { type: "MT_PROGRESS"; done: number; total: number };
 
 export type PanelStep = 1 | 2 | 3 | 4 | 5 | "unknown";
 export type PageLanguage = "fr" | "en" | "unknown";
-export type UiLanguage = "fr" | "en";
+export type UiLanguage = "fr" | "en" | "ff";
+
+export type PageKind =
+  | "balance"
+  | "fees"
+  | "beneficiary"
+  | "summary"
+  | "receipt"
+  | "error"
+  | "unknown";
+
+export interface PageBriefSection {
+  heading: string;
+  text: string;
+}
+
+export interface PageBrief {
+  kind: PageKind;
+  title?: string;
+  purpose?: string;
+  sections: PageBriefSection[];
+  warnings: string[];
+  actions: string[];
+}
+
+export interface PageCoverage {
+  tracked: number;
+  changed: number;
+  percent: number;
+  protectedOnly: number;
+  safeCeiling: number;
+}
+
+/** Validated TM first, local API for misses, or the API first. */
+export type MtMode = "off" | "fallback" | "primary";
+export type MtState = "off" | "ready" | "running" | "offline" | "error";
+export type TranslationOrigin = "tm" | "mt" | "fixture";
+
+export interface MtStatus {
+  mode: MtMode;
+  state: MtState;
+  provider?: string;
+  model?: string;
+  done: number;
+  total: number;
+  error?: string;
+}
+
+export interface MtRequestOptions {
+  mode: MtMode;
+  provider: string | null;
+  baseUrl?: string;
+}
+
+export interface MtTranslation {
+  source: string;
+  target: string;
+  provider: string;
+  model: string;
+}
+
+export interface MtTranslateResponse {
+  ok: boolean;
+  baseUrl?: string;
+  provider?: string;
+  model?: string;
+  translations?: MtTranslation[];
+  error?: string;
+}
 
 export interface SentenceView {
   id: string;
@@ -172,6 +249,9 @@ export interface SentenceView {
   status: "applied" | "missed";
   risk: "low" | "medium" | "high" | "unknown";
   protectedReason?: ProtectedReason;
+  /** Where the applied target came from. */
+  origin?: TranslationOrigin;
+  provider?: string;
 }
 
 export interface ProtectedValueView {
@@ -182,7 +262,10 @@ export interface ProtectedValueView {
 
 export interface ActionView {
   id: string;
+  /** Original page name, used for risk and snapshots. */
   name: string;
+  /** Current accessible name after translation, when it differs. */
+  spokenName?: string;
   role: "button" | "link" | "input" | "select" | "checkbox";
   risk: "low" | "medium" | "high";
   enabled: boolean;
@@ -207,9 +290,17 @@ export interface TranslationStatus {
   language: PageLanguage;
   coverage: number;
   applied: number;
+  /** Applied strings whose target came from the validated TM. */
+  tmApplied: number;
+  /** Applied strings whose target came from the local API. */
+  mtApplied: number;
   protectedCount: number;
   missed: number;
+  /** Number of validated TM units bundled in the build. */
   translations: number;
+  mt: MtStatus;
+  pageBrief?: PageBrief;
+  pageCoverage?: PageCoverage;
   sentences: SentenceView[];
   protectedValues: ProtectedValueView[];
   actions: ActionView[];
@@ -226,4 +317,8 @@ export interface PanelSettings {
   speed: number;
   /** Speak exact page values through a local TTS only. */
   speakValues: boolean;
+  /** Off, validated TM then local API, or local API first. */
+  apiTranslation: MtMode;
+  /** API provider override; null uses the API default. */
+  mtProvider: string | null;
 }

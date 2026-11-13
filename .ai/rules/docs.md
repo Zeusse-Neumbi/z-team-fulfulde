@@ -11,7 +11,8 @@ Applies to `docs/**`, `README.md`, `CONTRIBUTING.md`, `AGENTS.md`, `LICENSE` and
 - Put durable decisions in `docs/decisions/` with a date and a status.
 - Put execution plans in `docs/PROJECT_BOARD.md`; keep `scripts/project-plan.json`
   in sync with the live GitHub Project.
-- The technical note is French, 4–6 pages and PDF ≤8 MB.
+- The technical note is French, **5 pages maximum**, and the PDF must be
+  **under 10 MB** (the form's limit).
 
 ## Truth rules
 

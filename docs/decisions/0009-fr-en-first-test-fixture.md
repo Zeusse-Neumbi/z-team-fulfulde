@@ -2,6 +2,9 @@
 
 - Date: 2026-11-08
 - Status: Accepted
+- **Amended by:** [0015](0015-runtime-local-mt-fallback.md) — production may
+  now use a labelled local-API fallback for plain strings. The validated pack
+  remains the only validated source, and the fixture rules are unchanged.
 
 ## Context
 

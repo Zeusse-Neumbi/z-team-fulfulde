@@ -133,6 +133,18 @@ export const phraseEntrySchema = z.object({
   backTranslationFr: z.string(),
 });
 
+export const mtModeSchema = z.enum(["off", "fallback", "primary"]);
+
+export const mtStatusSchema = z.object({
+  mode: mtModeSchema,
+  state: z.enum(["off", "ready", "running", "offline", "error"]),
+  provider: z.string().optional(),
+  model: z.string().optional(),
+  done: z.number().int().min(0),
+  total: z.number().int().min(0),
+  error: z.string().optional(),
+});
+
 export const sentenceViewSchema = z.object({
   id: z.string(),
   source: z.string(),
@@ -140,6 +152,8 @@ export const sentenceViewSchema = z.object({
   status: z.enum(["applied", "missed"]),
   risk: z.enum(["low", "medium", "high", "unknown"]),
   protectedReason: protectedReasonSchema.optional(),
+  origin: z.enum(["tm", "mt", "fixture"]).optional(),
+  provider: z.string().optional(),
 });
 
 export const protectedValueViewSchema = z.object({
@@ -151,10 +165,38 @@ export const protectedValueViewSchema = z.object({
 export const actionViewSchema = z.object({
   id: z.string(),
   name: z.string(),
+  spokenName: z.string().optional(),
   role: z.enum(["button", "link", "input", "select", "checkbox"]),
   risk: z.enum(["low", "medium", "high"]),
   enabled: z.boolean(),
   locked: z.boolean(),
+});
+
+export const pageKindSchema = z.enum([
+  "balance",
+  "fees",
+  "beneficiary",
+  "summary",
+  "receipt",
+  "error",
+  "unknown",
+]);
+
+export const pageBriefSchema = z.object({
+  kind: pageKindSchema,
+  title: z.string().optional(),
+  purpose: z.string().optional(),
+  sections: z.array(z.object({ heading: z.string(), text: z.string() })),
+  warnings: z.array(z.string()),
+  actions: z.array(z.string()),
+});
+
+export const pageCoverageSchema = z.object({
+  tracked: z.number().int().min(0),
+  changed: z.number().int().min(0),
+  percent: z.number().min(0).max(100),
+  protectedOnly: z.number().int().min(0),
+  safeCeiling: z.number().min(0).max(100),
 });
 
 export const translationStatusSchema = z.object({
@@ -172,9 +214,14 @@ export const translationStatusSchema = z.object({
   language: z.enum(["fr", "en", "unknown"]),
   coverage: z.number().min(0).max(1),
   applied: z.number().int().min(0),
+  tmApplied: z.number().int().min(0),
+  mtApplied: z.number().int().min(0),
   protectedCount: z.number().int().min(0),
   missed: z.number().int().min(0),
   translations: z.number().int().min(0),
+  mt: mtStatusSchema,
+  pageBrief: pageBriefSchema.optional(),
+  pageCoverage: pageCoverageSchema.optional(),
   sentences: z.array(sentenceViewSchema),
   protectedValues: z.array(protectedValueViewSchema),
   actions: z.array(actionViewSchema),
@@ -196,10 +243,12 @@ export const readbackSchema = z.object({
 });
 
 export const panelSettingsSchema = z.object({
-  uiLang: z.enum(["fr", "en"]),
+  uiLang: z.enum(["fr", "en", "ff"]),
   speed: z.number().min(0.5).max(2),
   /** Speak exact page values through the local TTS (never a cloud voice). */
   speakValues: z.boolean().default(false),
+  apiTranslation: mtModeSchema.default("fallback"),
+  mtProvider: z.string().min(1).max(40).nullable().default(null),
 });
 
 export const analysisSchema = z.object({

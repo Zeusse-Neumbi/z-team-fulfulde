@@ -43,9 +43,12 @@ describe("translationStatusSchema", () => {
       language: "fr",
       coverage: 0.9,
       applied: 9,
+      tmApplied: 7,
+      mtApplied: 2,
       protectedCount: 5,
       missed: 1,
       translations: 68,
+      mt: { mode: "fallback", state: "ready", provider: "nllb", done: 2, total: 2 },
       sentences: [
         {
           id: "n0",
@@ -53,6 +56,16 @@ describe("translationStatusSchema", () => {
           target: "FF_TEST",
           status: "applied",
           risk: "high",
+          origin: "tm",
+        },
+        {
+          id: "n1",
+          source: "Frais",
+          target: "FF_FRAIS",
+          status: "applied",
+          risk: "medium",
+          origin: "mt",
+          provider: "nllb",
         },
       ],
       protectedValues: [{ value: "250 000 FCFA", kind: "amount", reason: "value" }],
@@ -81,9 +94,12 @@ describe("translationStatusSchema", () => {
       language: "unknown",
       coverage: 1.2,
       applied: 0,
+      tmApplied: 0,
+      mtApplied: 0,
       protectedCount: 0,
       missed: 0,
       translations: 0,
+      mt: { mode: "off", state: "off", done: 0, total: 0 },
       sentences: [],
       protectedValues: [],
       actions: [],
@@ -108,12 +124,29 @@ describe("readbackSchema", () => {
 });
 
 describe("panelSettingsSchema", () => {
-  it("accepts French and English UI settings", () => {
-    expect(panelSettingsSchema.safeParse({ uiLang: "fr", speed: 1 }).success).toBe(true);
+  it("accepts French and English UI settings and fills local-API defaults", () => {
+    const fr = panelSettingsSchema.parse({ uiLang: "fr", speed: 1 });
+    expect(fr.apiTranslation).toBe("fallback");
+    expect(fr.mtProvider).toBeNull();
     expect(panelSettingsSchema.safeParse({ uiLang: "en", speed: 0.8 }).success).toBe(true);
   });
 
-  it("rejects an unsupported speed", () => {
+  it("accepts an explicit local API mode, provider and Fulfulde UI", () => {
+    expect(
+      panelSettingsSchema.safeParse({
+        uiLang: "fr",
+        speed: 1,
+        apiTranslation: "primary",
+        mtProvider: "nllb",
+      }).success,
+    ).toBe(true);
+    expect(panelSettingsSchema.safeParse({ uiLang: "ff", speed: 1 }).success).toBe(true);
+  });
+
+  it("rejects an unsupported speed or mode", () => {
     expect(panelSettingsSchema.safeParse({ uiLang: "fr", speed: 3 }).success).toBe(false);
+    expect(panelSettingsSchema.safeParse({ uiLang: "fr", speed: 1, apiTranslation: "x" }).success).toBe(
+      false,
+    );
   });
 });

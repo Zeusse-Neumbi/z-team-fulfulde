@@ -26,7 +26,9 @@ every candidate, so `releaseErrors()` still lists the pack and
 
 ## How to preview the candidates
 
-The production build is unchanged. To build an evaluation pack:
+The validated production pack is unchanged; the runtime local-API fallback in
+[ADR 0015](decisions/0015-runtime-local-mt-fallback.md) is a separate, labelled
+path and does not promote these candidates. To build an evaluation pack:
 
 ```bash
 ZTEAM_PHRASEBANK=mt pnpm --filter @zteam/phrasebank build

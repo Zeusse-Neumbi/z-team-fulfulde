@@ -10,9 +10,12 @@ const base: TranslationStatus = {
   language: "fr",
   coverage: 1,
   applied: 3,
+  tmApplied: 3,
+  mtApplied: 0,
   protectedCount: 2,
   missed: 0,
   translations: 10,
+  mt: { mode: "off", state: "off", done: 0, total: 0 },
   sentences: [
     {
       id: "n0",
@@ -87,6 +90,15 @@ const strings = {
   feeLabel: "Frais",
   actionsNote: "Actions possibles ci-dessous.",
   noContent: "Aucun texte disponible.",
+  pagePurpose: {
+    balance: "Page de solde.",
+    fees: "Page des frais.",
+    beneficiary: "Page du bénéficiaire.",
+    summary: "Page de récapitulatif.",
+    receipt: "Page de confirmation.",
+    error: "Page d’erreur.",
+    unknown: "Page de l’application.",
+  },
 };
 
 const summaryStatus: TranslationStatus = {
@@ -138,6 +150,42 @@ const summaryStatus: TranslationStatus = {
 };
 
 describe("buildSpeechPlan", () => {
+  it("uses the structured page brief before the flat sentence fallback", () => {
+    const briefStatus: TranslationStatus = {
+      ...summaryStatus,
+      pageBrief: {
+        kind: "balance",
+        title: "Safinum Pay",
+        purpose: "Consultez votre solde et lancez un transfert en toute sécurité.",
+        sections: [
+          {
+            heading: "Transactions récentes",
+            text: "Paiement marchand, salaire reçu, transfert reçu.",
+          },
+        ],
+        warnings: ["Vérifiez le nom et le numéro du bénéficiaire avant de confirmer."],
+        actions: ["Effectuer un transfert", "Consulter les frais"],
+      },
+    };
+    const plan = buildSpeechPlan(briefStatus, strings);
+    const kinds = plan.items.map((item) => item.kind);
+    expect(kinds).toContain("page");
+    expect(kinds).toContain("purpose");
+    expect(kinds).toContain("section");
+    expect(kinds).toContain("warning");
+    expect(kinds).toContain("action");
+    expect(plan.items.some((item) => item.text.includes("Safinum Pay"))).toBe(true);
+    expect(plan.items.some((item) => item.text.includes("Consultez votre solde"))).toBe(true);
+    expect(plan.items.some((item) => item.text.includes("Transactions récentes"))).toBe(true);
+
+    const fallbackStatus: TranslationStatus = {
+      ...briefStatus,
+      pageBrief: { ...briefStatus.pageBrief!, purpose: undefined },
+    };
+    const fallbackPlan = buildSpeechPlan(fallbackStatus, strings);
+    expect(fallbackPlan.items.some((item) => item.text.includes("Page de solde"))).toBe(true);
+  });
+
   it("summarises step, facts, warnings and actions instead of every sentence", () => {
     const plan = buildSpeechPlan(summaryStatus, strings);
     const kinds = plan.items.map((item) => item.kind);

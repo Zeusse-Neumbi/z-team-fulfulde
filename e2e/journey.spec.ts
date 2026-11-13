@@ -27,7 +27,7 @@ test("full French journey keeps every protected value", async () => {
     await startOnPanel(panel);
 
     await expect(panel.locator(".badge")).toHaveText(/Actif/);
-    await expect.poll(async () => clean(await panel.locator(".meter-head strong").innerText())).toBe(
+    await expect.poll(async () => clean(await panel.locator(".coverage-meter-head strong").innerText())).toBe(
       "100 %",
     );
     await expect(panel.locator(".sentence.missed")).toHaveCount(0);
@@ -158,7 +158,7 @@ test("English page keeps the same protection", async () => {
     await startOnPanel(panel);
 
     await expect(panel.locator(".page-meta")).toContainText("EN");
-    await expect.poll(async () => clean(await panel.locator(".meter-head strong").innerText())).toBe(
+    await expect.poll(async () => clean(await panel.locator(".coverage-meter-head strong").innerText())).toBe(
       "100 %",
     );
     await expect(panel.locator(".sentence.missed")).toHaveCount(0);
