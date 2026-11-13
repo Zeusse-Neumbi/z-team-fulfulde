@@ -55,22 +55,31 @@ for (let index = 0; index < args.length; index += 1) {
 }
 
 const names = Object.keys(manifest.models);
+const aliases = new Map();
+for (const name of names) {
+  for (const alias of manifest.models[name].alias ?? []) aliases.set(alias, name);
+}
 
 if (options.list || args.includes("--help") || args.includes("-h")) {
   console.log("Models:");
   for (const name of names) {
     const model = manifest.models[name];
     const size = model.files.reduce((total, file) => total + file.size, 0);
+    const also = model.alias?.length ? `  (alias: ${model.alias.join(", ")})` : "";
     console.log(
-      `  ${name.padEnd(9)} ${model.repo}  ${(size / 1024 / 1024).toFixed(0)} MB  ${model.licence}`,
+      `  ${name.padEnd(22)} ${model.repo}  ${(size / 1024 / 1024).toFixed(0)} MB  ${model.licence}${also}`,
     );
   }
   console.log(`\nOutput: ${options.out}`);
-  console.log("Usage: node scripts/download-models.mjs [--out DIR] [--check] [--force] [mms] [nllb-ct2]");
+  console.log(
+    "Usage: node scripts/download-models.mjs [--out DIR] [--check] [--force] [mms] [nllb-ct2] [mt-fub]",
+  );
   process.exit(0);
 }
 
 if (options.targets.length === 0) options.targets = options.check ? names : ["mms"];
+
+options.targets = [...new Set(options.targets.map((target) => aliases.get(target) ?? target))];
 
 for (const target of options.targets) {
   if (!manifest.models[target]) {
@@ -222,5 +231,9 @@ for (const target of options.targets) {
   const model = manifest.models[target];
   if (target === "mms") console.log(`  ZTEAM_TTS_MODEL=${join(options.out, model.dir)}`);
   if (target === "nllb-ct2") console.log(`  ZTEAM_MT_MODEL=${join(options.out, model.dir)}`);
+  if (target === "mt-fufulde-cameroon") {
+    console.log(`  ZTEAM_MT_BACKEND=marian`);
+    console.log(`  ZTEAM_MT_MARIAN_MODEL=${join(options.out, model.dir, "francais-fufulde")}`);
+  }
 }
 console.log("  curl -s http://127.0.0.1:8000/health");

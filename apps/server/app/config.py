@@ -44,6 +44,10 @@ class Settings(BaseSettings):
     mt_backend: str = "stub"
     mt_model: str = "models/nllb-200-600m-int8"
     mt_tokenizer: str = "models/nllb-200-600m-tokenizer"
+    # The Marian backend loads the Cameroonian FR->Fufulde pair from
+    # flagship-ai/cameroon-int8 (AGLC orthography: ɛ ɔ ŋ ɓ ɗ). It is a
+    # French-pivot model, so English stays on the nllb fallback above.
+    mt_marian_model: str = "models/cameroon-int8/francais-fufulde"
     mt_runtime: str = "ct2"  # ct2 | transformers
     mt_device: str = "cpu"
     mt_compute_type: str = "int8"

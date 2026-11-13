@@ -1,0 +1,132 @@
+{
+  "version": "2026-11-13.1",
+  "models": {
+    "mms": {
+      "repo": "facebook/mms-tts-ful",
+      "dir": "mms-tts-ful",
+      "licence": "CC-BY-NC-4.0",
+      "note": "VITS baseline for the local voice. Not bundled in the extension ZIP.",
+      "files": [
+        {
+          "name": "config.json",
+          "size": 1641,
+          "sha256": "e7dbd6e0ec39b90fd3b0a58e8d6604110efbaf189b84e876f9c86b124944fd69"
+        },
+        {
+          "name": "model.safetensors",
+          "size": 145229816,
+          "sha256": "ab724e06ef6c906211a6df91b71223348b0ec9f8840900b684100b8b3f86021c"
+        },
+        {
+          "name": "special_tokens_map.json",
+          "size": 47,
+          "sha256": "845f635933c404f060a1d7a2f4c4494bf4a91f8ebec99a41108778d026426dfc"
+        },
+        {
+          "name": "tokenizer_config.json",
+          "size": 287,
+          "sha256": "bb27a52274cebb9dc0b8d34282945c19ed998b2958e9260db95fee0ebad534d2"
+        },
+        {
+          "name": "vocab.json",
+          "size": 452,
+          "sha256": "54bc0448f2ea01b143c6a7417e751bc43b6d5437e9e432e16e9ac148f360e548"
+        }
+      ]
+    },
+    "nllb-ct2": {
+      "repo": "JustFrederik/nllb-200-distilled-600M-ct2-int8",
+      "dir": "nllb-200-600m-int8",
+      "licence": "CC-BY-NC-4.0",
+      "note": "Community int8 CTranslate2 conversion. Uses the fuv_Latn token, not fub. Fallback provider only.",
+      "files": [
+        {
+          "name": "config.json",
+          "size": 159,
+          "sha256": "0c2f6fa2057c7264d052fb4a62ba3476eeae70487acddfa8e779a53a00cbf44c"
+        },
+        {
+          "name": "model.bin",
+          "size": 622595991,
+          "sha256": "ed1beaf75134de7505315a5223162f56acff397eff6b50638a500d3936fe707b"
+        },
+        {
+          "name": "sentencepiece.bpe.model",
+          "size": 4852054,
+          "sha256": "14bb8dfb35c0ffdea7bc01e56cea38b9e3d5efcdcb9c251d6b40538e1aab555a"
+        },
+        {
+          "name": "shared_vocabulary.txt",
+          "size": 2568098,
+          "sha256": "a132a83330f45514c2476eb81d1d69b3c41762264d16ce0a7ea982e5d6c728e5"
+        },
+        {
+          "name": "special_tokens_map.json",
+          "size": 3548,
+          "sha256": "992bd4ed610d644d6823081937bcc91bb8878dd556cea4ae5327f2480361330e"
+        },
+        {
+          "name": "tokenizer_config.json",
+          "size": 564,
+          "sha256": "d1aa8c3697d3e35674f97b5b7e9c99d22b010f528e80140257d97316be90d044"
+        },
+        {
+          "name": "tokenizer.json",
+          "size": 17331176,
+          "sha256": "e316b82de11d0f951f370943b3c438311629547285129b0b81dadabd01bca665"
+        }
+      ]
+    },
+    "mt-fufulde-cameroon": {
+      "repo": "flagship-ai/cameroon-int8",
+      "dir": "cameroon-int8",
+      "licence": "CC-BY-NC-4.0",
+      "alias": [
+        "mt-fub"
+      ],
+      "note": "int8 CTranslate2 Marian, FR->Fufulde (fub), AGLC normalised. French-pivot only: English stays on the nllb fallback.",
+      "files": [
+        {
+          "name": "francais-fufulde/config.json",
+          "size": 223,
+          "sha256": "8f6496adfc930cbfecbe8281112197705c488fab47d34b4829b06d7f478909af"
+        },
+        {
+          "name": "francais-fufulde/model.bin",
+          "size": 76714395,
+          "sha256": "361fc8619cc39c90cbde2a8e47c84d7c1199d2127959c5a6fa065556b9d85725"
+        },
+        {
+          "name": "francais-fufulde/shared_vocabulary.json",
+          "size": 1052697,
+          "sha256": "a157eb51a42817dd1ae4bc46cecf66e591ab32641df936da292bd09f2728631b"
+        },
+        {
+          "name": "francais-fufulde/source.spm",
+          "size": 802397,
+          "sha256": "78d0e717c77053f1c4b856d8661d9cb87c64f083a35418c087b9146300e4f585"
+        },
+        {
+          "name": "francais-fufulde/special_tokens_map.json",
+          "size": 74,
+          "sha256": "5e4d1f5e759d74cb1c2fe1d165cfc62b5237aa904de759380cd6f43042eec723"
+        },
+        {
+          "name": "francais-fufulde/target.spm",
+          "size": 778395,
+          "sha256": "173e9f493a668fe396d599e28d414a201193094e6ffd7a4678e5aab0f6d3d838"
+        },
+        {
+          "name": "francais-fufulde/tokenizer_config.json",
+          "size": 816,
+          "sha256": "ad8ca8690261cafefb6e996e67caf9a98c25756e3cef2ffa4be44e491af5a78b"
+        },
+        {
+          "name": "francais-fufulde/vocab.json",
+          "size": 1458196,
+          "sha256": "f2ba9c69ae20f96b8bd821239a9152be422394f980350b77907cffc183db5f2d"
+        }
+      ]
+    }
+  }
+}

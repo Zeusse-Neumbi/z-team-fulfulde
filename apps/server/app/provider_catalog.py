@@ -88,14 +88,17 @@ MT_SPECS: dict[str, ProviderSpec] = {
     "marian": ProviderSpec(
         kind="mt",
         name="marian",
-        label="Marian (local)",
+        label="Marian (local, Cameroonian Fufulde)",
         runtime="ctranslate2",
         local=True,
         requires_credentials=False,
         credential_env=None,
-        licence="Model-dependent",
-        notes="Bilingual model; source/target are fixed by the checkpoint.",
-        model="models/fr-ff-int8",
+        licence="CC-BY-NC-4.0",
+        notes=(
+            "flagship-ai/cameroon-int8 francais-fufulde: int8 FR->Fufulde, "
+            "AGLC normalised, French pivot only."
+        ),
+        model="models/cameroon-int8/francais-fufulde",
     ),
     "google": ProviderSpec(
         kind="mt",
@@ -247,7 +250,7 @@ def _active_model(settings: Settings, spec: ProviderSpec) -> str:
     if spec.name == "nllb":
         return settings.mt_model
     if spec.name == "marian":
-        return settings.mt_model
+        return settings.mt_marian_model
     if spec.name == "mms":
         return settings.tts_model
     if spec.name == "camb":
@@ -303,11 +306,12 @@ def describe(settings: Settings, kind: Kind, name: str) -> Readiness:
             readiness.reason = "dependency_missing"
             readiness.detail = "Install torch for the transformers runtime."
             return readiness
-        ready, reason = _model_ready(settings, settings.mt_model)
+        selected = settings.mt_model if spec.name == "nllb" else settings.mt_marian_model
+        ready, reason = _model_ready(settings, selected)
         if not ready:
             readiness.ready = False
             readiness.reason = reason
-            readiness.detail = _model_detail(settings.mt_model, reason)
+            readiness.detail = _model_detail(selected, reason)
         return readiness
 
     if spec.name == "mms":
