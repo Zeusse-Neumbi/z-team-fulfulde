@@ -21,7 +21,7 @@ GPU notes are in [`docs/SETUP.md`](../docs/SETUP.md).
 | `facebook/nllb-200-distilled-600M` | CC-BY-NC-4.0 | FR/EN → Fulfulde baseline (fp32) |
 | `JustFrederik/nllb-200-distilled-600M-ct2-int8` | CC-BY-NC-4.0 | Community int8 conversion; loads with CTranslate2 |
 | Fine-tuned MMS/VITS | CC-BY-NC-4.0 (inherits) | Optional demo voice |
-| `flagship-ai/cameroon-int8` (`francais-fufulde`) | CC-BY-NC-4.0 (fp32 originals CC-BY-4.0) | Default FR→Fufulde, AGLC normalised |
+| `flagship-ai/cameroon-int8` (`francais-fufulde`) | CC-BY-NC-4.0 (fp32 originals CC-BY-4.0) | Optional FR→Fufulde candidate, opt-in (failed the value-preservation head-to-head) |
 | `DS4H-ICTU/linguo_mt_en_fub` | Apache-2.0 | Optional local EN→FUB fallback |
 | Intent classifier | Project licence | Closed-set voice commands |
 

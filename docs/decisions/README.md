@@ -24,3 +24,4 @@ accepted record.
 | [0016](0016-ship-labelled-mt-pack-and-audio.md) | Ship the labelled MT draft pack, bundled synthetic clips and a label-collision guard |
 | [0017](0017-cameroonian-fulfulde-mt.md) | Serve Cameroonian Fulfulde text and stop the voice dropping AGLC letters |
 | [0018](0018-a1-smoke-gate-evidence.md) | Record what the ɛ/ɔ/ŋ smoke-test gate can and cannot prove for `cameroon-int8` |
+| [0019](0019-nllb-default-mt.md) | Keep NLLB as the default Fulfulde MT; `cameroon-int8` stays opt-in |

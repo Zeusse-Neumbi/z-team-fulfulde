@@ -29,17 +29,22 @@ GPU vendor and the recommended backend; `pnpm models:download` uses
 
 Notes that matter for the comparison:
 
-- **Fulfulde text is Cameroonian by default.** The `marian` backend loads
-  `flagship-ai/cameroon-int8/francais-fufulde`: an int8 CTranslate2 Marian pair
-  (77 MB) normalised under the AGLC alphabet (Alphabet Général des Langues
-  Camerounaises). Its 59,514-entry sentencepiece vocabulary contains every AGLC
-  letter except `ƴ`, but `ɛ` and `ɔ` exist only as bare single characters and
-  never appear in the output (see the A1 gate record below). It is a
-  **French-pivot** checkpoint, so English pages stay on the NLLB fallback.
-- **NLLB has no `fub` token.** It uses `fuv_Latn` (Nigerian Fulfulde), so it is
-  kept as an explicit fallback and comparison baseline
-  (`ZTEAM_MT_BACKEND=nllb`, `ZTEAM_MT_MODEL=models/nllb-200-600m-int8`), not as
-  the default Fulfulde route. The `fuv_Latn` mapping stays in `NLLB_LANGS`.
+- **Fulfulde text defaults to NLLB-200 int8.** It is the only local model that
+  preserved every amount, phone number and reference in the 20-sentence
+  head-to-head (6/6 versus 0/6) and produced no repeated output. It uses the
+  `fuv_Latn` token, i.e. Nigerian Fulfulde, so the orthography and lexicon are
+  a proxy for Adamawa. See ADR 0019 for the decision.
+- **`cameroon-int8` is opt-in, not the default.** The `marian` backend loads
+  `flagship-ai/cameroon-int8/francais-fufulde` (int8 CTranslate2, 77 MB,
+  AGLC-normalised). It is the right alphabet and emits `ŋ ɓ ɗ`, but it failed
+  the financial head-to-head: it destroyed all six values, repeated text and
+  leaked scripture vocabulary. Keep it for evaluation with
+  `ZTEAM_MT_BACKEND=marian`; do not advertise it as the shipped translator.
+  Its 59,514-piece vocabulary contains every AGLC letter except `ƴ`, but `ɛ`
+  and `ɔ` exist only as bare characters and never appear in output (see the A1
+  gate record below). It is French-pivot only.
+- **NLLB has no `fub` token.** It uses `fuv_Latn` (Nigerian Fulfulde), which is
+  a proxy, not Adamawa validation. `NLLB_LANGS` keeps that mapping.
 - **MMS-TTS `ful` is the Fulah macrolanguage voice, not an Adamawa voice.** Its
   41-entry vocabulary contains `ŋ ƴ ɓ ɗ` but **no `ɛ`, `ɔ`, `ɲ`, `ʼ` and no
   tone marks**, so the tokenizer silently dropped them:
@@ -60,9 +65,8 @@ Notes that matter for the comparison:
 ## Download the local models
 
 ```bash
-pnpm models:download mt-fub                  # Cameroonian FR→Fufulde, ~78 MB
-pnpm models:download                         # MMS-TTS Fulah, ~145 MB
-pnpm models:download mms nllb-ct2            # + NLLB-200 600M int8, ~647 MB
+pnpm models:download mms nllb-ct2            # default stack: MMS + NLLB, ~790 MB
+pnpm models:download mt-fub                  # optional: Cameroonian candidate, ~78 MB
 pnpm models:verify                           # size + SHA-256 from the manifest
 ```
 
@@ -153,7 +157,7 @@ config change.
 | --- | --- | --- |
 | `ZTEAM_MT_BACKEND` | `stub` | default MT provider |
 | `ZTEAM_MT_MODEL` | `models/nllb-200-600m-int8` | NLLB model dir (the fallback) |
-| `ZTEAM_MT_MARIAN_MODEL` | `models/cameroon-int8/francais-fufulde` | Cameroonian FR→Fufulde Marian dir |
+| `ZTEAM_MT_MARIAN_MODEL` | `models/cameroon-int8/francais-fufulde` | opt-in Cameroonian candidate (not the default route) |
 | `ZTEAM_MT_TOKENIZER` | `models/nllb-200-600m-tokenizer` | tokenizer dir (falls back to the model dir) |
 | `ZTEAM_MT_RUNTIME` | `ct2` | `ct2` or `transformers` |
 | `ZTEAM_MT_DEVICE` | `cpu` | `cpu` or `cuda` |
@@ -232,7 +236,7 @@ make the egress explicit.
 | Provider | Request | Latency | Note |
 | --- | --- | --- | --- |
 | `stub` MT | FR/EN sentence | < 1 ms | returns the source |
-| `marian` int8 (Cameroon) | FR sentence | 1.35–1.41 s | AGLC letters, but see the spot check below |
+| `marian` int8 (Cameroon) | FR sentence | 1.35–1.41 s | opt-in only; kept 0/6 values in the head-to-head |
 | `marian` int8 (Cameroon) | short string | 0.22 s | warm, cached model |
 | `nllb` int8 | FR sentence | 0.99–1.29 s | `250 000 FCFA` and `0 FCFA` byte-identical |
 | `nllb` int8 | EN sentence | 0.78–0.91 s | `0 FCFA` byte-identical |
@@ -284,6 +288,36 @@ the fp32 checkpoint plus a local conversion:
 ct2-transformers-converter --model models/nllb-200-600m \
   --output_dir models/nllb-200-600m-int8 --quantization int8 --force
 ```
+
+## Head-to-head: NLLB vs cameroon-int8 (13 November 2026)
+
+Same 20 sentences, same `POST /translate`, same beam size (2), int8 on CPU. Full
+table: [`evidence/mt-head-to-head.tsv`](evidence/mt-head-to-head.tsv).
+
+| Metric | `nllb` int8 | `marian` cameroon-int8 |
+| --- | --- | --- |
+| Amounts / phone / reference kept byte-identical | **6/6** | **0/6** |
+| Name kept (`Aïssatou`) | 0/1 | 0/1 |
+| Rows with a repeated 3-gram (≥3×) | **0/20** | 1/20 (one row repeated 30×) |
+| Rows with any AGLC letter | 14/20 | 15/20 |
+| Median latency | 1278 ms | 737 ms |
+
+Representative rows, unedited:
+
+| Source (FR) | NLLB | cameroon-int8 |
+| --- | --- | --- |
+| Votre solde est de 250 000 FCFA. | Fedde mooɗon woni 250 000 FCFA. | On payi mooɗon ɗon njogi… (no amount) |
+| Le montant est de 250 000 FCFA. | Fedde nden ko 250 000 FCFA. | Limgal yimɓe boo ngeenaari… (no amount) |
+| Numéro de téléphone : 6 12 34 56 78 | Ɗerewol telefoŋ: 6 12 34 56 78 | Tel: wi'i: Jawmiraawo, jawdi am, jawdi am… (30×, no number) |
+| Annuler | Fedde jaaynde | Ndokke booɗɗum ngam haa ɓe njaɓa ɓe, ɓe keɓa ɓe… |
+| Bonjour, Aïssatou | Bonjour, Aissatou | Koo moy yi'i Aiyatu, koo moy yiɗi ɗum. |
+
+**Verdict:** NLLB wins the comparison that matters for a banking screen — it
+keeps every value and never rambles. The Cameroon pair is faster and uses the
+right alphabet, but it destroys amounts and drifts into scripture vocabulary,
+so it cannot be the default translator. Neither model preserves the name at the
+API level; the extension's protected-value masking (ADR 0015) is what keeps
+names and amounts off this path. ADR 0019 records the decision.
 
 ### Cameroonian pair spot check (13 November 2026)
 

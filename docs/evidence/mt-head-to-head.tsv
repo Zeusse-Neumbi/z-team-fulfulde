@@ -1,0 +1,21 @@
+source_fr	nllb_output	nllb_values_kept	nllb_aglc	nllb_ms	marian_output	marian_values_kept	marian_aglc	marian_ms
+Votre solde est de 250 000 FCFA.	Fedde mooɗon woni 250 000 FCFA.	True	ɗ	1509	On payi mooɗon ɗon njogi, nden kam haa fodde fodde: Fombinaaɗam, njoweeɗam.	False	ɗ	1116
+Le montant est de 250 000 FCFA.	Fedde nden ko 250 000 FCFA.	True		1462	Limgal yimɓe boo ngeenaari haa ɓesdaare, ɓe mbaɗi fodde ɓesdaare, ɓe ndokka.	False	ɓɗ	1171
+Frais de transfert : 1 000 FCFA.	Fedde jaɓɓorgo: 1 000 FCFA.	True	ɓ	1674	Tokki ɗum, nden kam nyiɓre: Ɓiɗɗo fodde ɓiɗɗo.	False	ɓɗ	877
+Total à payer : 25 500 FCFA.	Fuuta to'ol: 25 500 FCFA.	True		1558	Yimɓe ɓe'e fuu ɓe mbaɗa: Fombina haa ɓooyma nafuuda ngo'ol: Fombinaaɗo ngo'ol: Fombinaaɗo ngo'ol.	False	ɓɗ	1458
+Votre solde est disponible.	Fedde mooɗon ɗon haaje.	None	ɗ	1146	Ɓale mooɗon boo, nde on kanjum.	None	ɗ	563
+Le compte est bloqué.	Jaɓɓorgo jaɓɓorgo.	None	ɓ	1504	Ngam man ɗum jo'inaama.	None	ɗ	339
+Le transfert est terminé.	Jaɓɓorgo ngal timmi.	None	ɓ	1358	Ndaa, ndaa, ndaa, ndaa.	None		437
+Confirmer le paiement	Jaɓɓorgo Daartol	None	ɓ	1278	To gooŋɗini ɓe, nden kam ɓe njogi ɓe, ɓe njogi ɓe.	None	ŋɓɗ	811
+Annuler	Fedde jaaynde	None		894	Ndokke booɗɗum ngam haa ɓe njaɓa ɓe, ɓe keɓa ɓe, ɓe njaɓa ɓe, ɓe keɓa ɓe.	None	ɓɗ	1408
+Continuer	Ɗaɓɓitde	None	ɓ	882	Gooŋga mbi'anmi: To goɗɗo, nden kam mi ɗon wondi bee maɓɓe.	None	ŋɓɗ	1131
+Numéro de compte	Ɗuumɗinal	None	ɗ	994	Nden kam, Allah wi'i:	None		363
+Numéro de téléphone : 6 12 34 56 78	Ɗerewol telefoŋ: 6 12 34 56 78	True	ŋ	1470	Tel: wi'i: Jawmiraawo, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdi am, jawdaare boo, jawdi am, jawdaare boo, jawdi	False		4652
+Référence : ABC-1234	Firo: ABC-1234	True		1182	Ngam maajum, kanjum woni Almasiihu, ɗum laatiiɗo diga maayde.	False	ɗ	737
+Bonjour, Aïssatou	Bonjour, Aissatou	None		1182	Koo moy yi'i Aiyatu, koo moy yiɗi ɗum.	None	ɗ	604
+Le bénéficiaire a reçu l'argent.	Gooduɗo ceede jaɓi ceede.	None	ɓɗ	1785	Benefaaɗo heɓi ceede.	None	ɓɗ	422
+Une erreur est survenue.	Fowru waɗii.	None	ɗ	1190	Aawdi man waɗi.	None	ɗ	281
+Votre compte a été débité.	Jaɓɓorgo Jaɓɓorgo Fuuta.	None	ɓ	1850	Aawdi man, aawdi nde on ɗon winnda.	None	ɗ	437
+Payer maintenant	Fuli jooni	None		646	Jonta o warjoto on, o warjoto on, o warjoto on.	None		568
+Solde du compte	Ɗuumɗinal	None	ɗ	979	Acce ceede man	None		560
+Merci beaucoup	Naawɗee	None	ɗ	748	Yimɓe ɗuuɗɓe, ɓe ɗon mbi'a on: Koni on ngiɗi?	None	ɓɗ	1731

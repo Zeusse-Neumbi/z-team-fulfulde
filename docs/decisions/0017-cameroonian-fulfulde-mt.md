@@ -2,6 +2,9 @@
 
 - **Status:** accepted
 - **Date:** 2026-11-13
+- **Superseded for the default route by** [0019](0019-nllb-default-mt.md). The
+  model, its manifest entry, its downloader target and the evidence here remain
+  in force as an opt-in evaluation asset.
 - **Supersedes:** the "treat Adamawa output as a proxy" part of
   [0011](0011-configurable-model-providers.md) for the default Fulfulde route.
   The provider contract, typed failures and the NLLB fallback stay in force.
