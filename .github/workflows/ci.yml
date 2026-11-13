@@ -52,8 +52,11 @@ jobs:
       - name: Unit tests
         run: pnpm test
 
-      - name: Build
-        run: pnpm build
+      - name: Build submission extension
+        run: pnpm build:submission
+
+      - name: Check bundled audio
+        run: pnpm audio:check
 
       - name: Package extension
         run: pnpm package
