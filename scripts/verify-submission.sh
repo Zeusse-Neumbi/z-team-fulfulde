@@ -34,9 +34,10 @@ sh scripts/tests/test-githooks.sh
 
 echo "[verify] web"
 pnpm lint
+pnpm build:submission
 pnpm typecheck
 pnpm test
-pnpm build
+pnpm audio:check
 pnpm package
 pnpm size:check
 pnpm audit --audit-level high

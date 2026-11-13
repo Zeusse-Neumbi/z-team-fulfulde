@@ -58,5 +58,6 @@ Thumbs.db
 
 # Test-only fixture translation memory
 packages/phrasebank/src/generated.fixture.ts
+packages/phrasebank/src/generated.provenance.fixture.ts
 packages/phrasebank/src/fixture.ts
 apps/extension/.output-test/

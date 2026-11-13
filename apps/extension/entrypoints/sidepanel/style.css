@@ -337,6 +337,30 @@ h2 {
   color: var(--warn);
 }
 
+/* The bundled pack provenance is always visible, never foldable. */
+.pack-source {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.45;
+  border: 1px solid #f3d3a7;
+  background: #fff4e5;
+  color: var(--warn);
+}
+
+.pack-source.validated {
+  border-color: #c7e3cd;
+  background: #effaf1;
+  color: #1f6b35;
+}
+
+.pack-source.fixture {
+  border-color: #d5d9e0;
+  background: #f2f4f7;
+  color: #4a5261;
+}
+
 .actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -519,6 +543,11 @@ details.card[open] summary::before {
 .missed {
   font-style: italic;
   color: var(--warn);
+}
+
+.missed.held {
+  font-style: normal;
+  font-size: 11px;
 }
 
 .value-list li {

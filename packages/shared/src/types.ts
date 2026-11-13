@@ -249,6 +249,12 @@ export interface SentenceView {
   status: "applied" | "missed";
   risk: "low" | "medium" | "high" | "unknown";
   protectedReason?: ProtectedReason;
+  /**
+   * Set when a translation was deliberately kept in the source language.
+   * `label_collision`: the draft would have made two different controls read
+   * the same, so a user could not tell confirm from cancel.
+   */
+  holdReason?: "label_collision";
   /** Where the applied target came from. */
   origin?: TranslationOrigin;
   provider?: string;

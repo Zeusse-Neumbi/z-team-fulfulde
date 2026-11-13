@@ -152,6 +152,7 @@ export const sentenceViewSchema = z.object({
   status: z.enum(["applied", "missed"]),
   risk: z.enum(["low", "medium", "high", "unknown"]),
   protectedReason: protectedReasonSchema.optional(),
+  holdReason: z.enum(["label_collision"]).optional(),
   origin: z.enum(["tm", "mt", "fixture"]).optional(),
   provider: z.string().optional(),
 });

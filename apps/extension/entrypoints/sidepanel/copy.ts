@@ -108,6 +108,14 @@ export interface PanelCopy {
   apiHint: string;
   mtLocal: string;
   mtUnvalidated: string;
+  /** Banner that states which Fulfulde pack the build carries. */
+  packSourceLabel: string;
+  packSourceMt: string;
+  packSourceValidated: string;
+  heldLabel: string;
+  audioBundled: string;
+  audioBlocked: string;
+  audioPartial: string;
   mtReady: string;
   mtWarning: string;
   mtProgress: string;
@@ -252,6 +260,15 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     apiHint: "Le changement s’applique au prochain démarrage ou rescan.",
     mtLocal: "MT local",
     mtUnvalidated: "non validée",
+    packSourceLabel: "Fulfulde",
+    packSourceMt:
+      "brouillon machine (MT), non validé par un locuteur natif. Les libellés d’action ambigus restent en français.",
+    packSourceValidated: "pack validé par un locuteur natif.",
+    heldLabel: "conservé en français : deux contrôles liraient la même chose",
+    audioBundled: "clips inclus",
+    audioBlocked:
+      "Audio retiré : ce brouillon n’est pas prononçable sans validation (avertissement, erreur ou libellé ambigu).",
+    audioPartial: "Certaines phrases n’ont pas de clip : activez la voix locale pour les lire.",
     mtReady: "Prêt",
     mtWarning:
       "Traduction automatique locale — sortie non validée par un locuteur natif. Les montants, noms, comptes, téléphones, références et saisies ne sont jamais envoyés à l’API.",
@@ -403,6 +420,15 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     apiHint: "The change applies on the next start or rescan.",
     mtLocal: "Local MT",
     mtUnvalidated: "not validated",
+    packSourceLabel: "Fulfulde",
+    packSourceMt:
+      "machine-translated draft, not reviewed by a native speaker. Ambiguous action labels stay in French.",
+    packSourceValidated: "pack reviewed by a native speaker.",
+    heldLabel: "kept in French: two controls would read the same",
+    audioBundled: "clips bundled",
+    audioBlocked:
+      "Audio withheld: this draft is not safe to speak before validation (warning, error or ambiguous label).",
+    audioPartial: "Some sentences have no clip: start the local voice to read them.",
     mtReady: "Ready",
     mtWarning:
       "Local machine translation — output not validated by a native speaker. Amounts, names, accounts, phones, references and user input are never sent to the API.",
