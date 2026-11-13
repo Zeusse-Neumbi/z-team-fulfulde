@@ -35,15 +35,15 @@ export const languages: Record<string, Pack> = {
       "en": "Adamawa Fulfulde"
     },
     "status": "draft",
-    "packSource": "validated",
+    "packSource": "mt",
     "packValidated": false,
     "speech": {
       "provider": "mms",
       "model": "models/mms-tts-ful",
       "tone": "none"
     },
-    "tmVersion": "2026-11-09.2",
-    "phrasebankVersion": "2026-11-09.1",
+    "tmVersion": "2026-11-09.2+mt",
+    "phrasebankVersion": "2026-11-09.1+mt",
     "translationUnits": [
       {
         "id": "tm.nav.online_banking",
@@ -53,8 +53,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Banki e nder internet",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -70,8 +70,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Hawrugol test data fiction, walaa transaction goonga.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -87,8 +87,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuɓɓuki",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -104,8 +104,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Dawrugo to Hackathon",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -121,8 +121,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Fedde",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -138,8 +138,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Feeje",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -155,8 +155,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Jaɓɓorgo Fedde",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -172,8 +172,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Fuuɗuki",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -189,8 +189,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Jaɓɓorgo Fedde",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -206,8 +206,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Jaɓɓorgo Fedde",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -223,8 +223,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Hakkiilo",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -240,8 +240,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Wondirde tabbitunde",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -257,8 +257,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Bonjour, {name}",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -277,8 +277,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Numero account: {account}",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -297,8 +297,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndaa ceede mon nden fuɗɗita jaɓɓorgo.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -314,8 +314,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Soldi jaɓɓorgo",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -331,8 +331,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuumɗinal",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -348,8 +348,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Jaɓɓorgo Ganndal",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -365,8 +365,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Jaɓɓorgo Jaɓɓorgo",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -382,8 +382,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Jaɓɓorgo Ganndal",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -399,8 +399,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Kuugal ɓennuɗum",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -416,8 +416,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Payment trade",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -433,8 +433,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Maajirɗe jaɓaade",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -450,8 +450,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Jaɓɓorgo Jaɓɓorgo",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -467,8 +467,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Fedde jaaynde",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -484,8 +484,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ko'e mooɗon, on ndaara innde e limngal mo'o heɓan ko'e mooɗon.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -501,8 +501,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuɓɓingol",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -518,8 +518,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Taƴee ko'e ko'e maɓɓol e ko'e maɓɓol. Ɗuɓɓol ko'e maɓɓol ko'e maa.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -535,8 +535,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuɗal kuugal",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -552,8 +552,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Safinum",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -569,8 +569,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Jaɓɓorgo Kewuuji pinal",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -586,8 +586,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Banki feere",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -603,8 +603,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuum woni",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -620,8 +620,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Feeje",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -637,8 +637,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuɓɓugo",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -654,8 +654,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Total to be debited",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -671,8 +671,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Solde caggal jaaynde",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -688,8 +688,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Jaɓɓorgo Fedde",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -705,8 +705,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Hokka anndal jaɓɓorgo. Hakkiilo limgal ngam jaɓɓorgo.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -722,8 +722,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuum jaɓoowo naftirtaake nder ceede nden. Ndaa limol ngol yeeso.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -739,8 +739,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Innde jaɓɓorgo",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -756,8 +756,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗerewol tele",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -773,8 +773,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Dalil jaɓɓol ngol",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -790,8 +790,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Noot (kootol)",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -807,8 +807,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Mi ɗon ɗaɓɓita innde e limgal gooduɗo.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -824,8 +824,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Feeje {rate} % (min. {min} FCFA, max. {max} FCFA)",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -841,8 +841,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Safinum Pay babal hollaago.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -858,8 +858,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Fuuɗuki",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -875,8 +875,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Fuuɗani anndal ngol yeeso on anndina darnde.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -892,8 +892,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuum",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -909,8 +909,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Feeje",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -926,8 +926,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Fedde jaaynde",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -943,8 +943,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Jaɓɓorgo Fedde",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -960,8 +960,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Telefoni",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -977,8 +977,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Firo",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -994,8 +994,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Kuugal",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1011,8 +1011,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Mi ɗon hokki hokkugo anndal ngal dow ɗon goonga.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1028,8 +1028,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ceertol",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1045,8 +1045,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Jaɓɓorgo Daartol",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1062,8 +1062,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Jaɓɓorgo",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1079,8 +1079,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Jaɓɓorgo on naati.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1096,8 +1096,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Firo",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1113,8 +1113,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuum",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1130,8 +1130,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Feeje",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1147,8 +1147,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Fedde jaaynde",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1164,8 +1164,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Jaɓɓorgo Fedde",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1181,8 +1181,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Koolol",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1198,8 +1198,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɓeydaade",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1215,8 +1215,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Jaɓɓorgo Kewuuji",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1232,8 +1232,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuum woni habaruuji mawɗi ngam jaayndiyankooɓe...",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1249,8 +1249,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Footi waɗii",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1266,8 +1266,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Limgal ngal footi ɓeyda fu.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1283,8 +1283,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuum je'aaki ngam waɗugo jaɓɓorgo.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1300,8 +1300,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Wondira anndina innde e limngal jaɓowo.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1317,8 +1317,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Fooyre network: kuugal ngal ina waawataa wakkati.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1334,8 +1334,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "On foondiraaki anndal ngol yeeso on foondiraago jaɓɓorgal ngal.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1351,8 +1351,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Alerta jamiroore: tawtoree limgal jaɓoowo yeeso.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1368,8 +1368,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Alerta jamma: ko'e yimɓe ɓe'e ɓe'e ɓe'e ɓe'e ɓe'e ɓe'e ɓe'e ɓe'e ɓe'e ɓe'e ɓe'e.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1385,8 +1385,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Daartol",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1402,8 +1402,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗaɓɓitde",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1422,8 +1422,8 @@ export const languages: Record<string, Pack> = {
         "en": "This is your balance page.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuum woni karallaagal ceede mon.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1440,8 +1440,8 @@ export const languages: Record<string, Pack> = {
         "en": "Your balance is {amount}.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Fedde mon woni {amount} .",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1467,8 +1467,8 @@ export const languages: Record<string, Pack> = {
         "en": "Your account number is {account}.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuum ko {account} .",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1494,8 +1494,8 @@ export const languages: Record<string, Pack> = {
         "en": "This is the fees page.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuum woni jaaynde ceede.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1512,8 +1512,8 @@ export const languages: Record<string, Pack> = {
         "en": "The fee is {amount}.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Fedde nden ko {amount} .",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1539,8 +1539,8 @@ export const languages: Record<string, Pack> = {
         "en": "There is no fee for this operation.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Wala ceede ngam kuugal ngal.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1557,8 +1557,8 @@ export const languages: Record<string, Pack> = {
         "en": "The total will be {amount}.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Fedde nden nden ko {amount} .",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1584,8 +1584,8 @@ export const languages: Record<string, Pack> = {
         "en": "The balance after the operation will be {amount}.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Fedde ɓaawo jaaynde nden ko {amount} .",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1611,8 +1611,8 @@ export const languages: Record<string, Pack> = {
         "en": "This is the transfer form.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuum woni foomu jaɓɓorgo.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1629,8 +1629,8 @@ export const languages: Record<string, Pack> = {
         "en": "You are going to send {amount} to {name}.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "On ɗon nelda {amount} to {name} .",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1663,8 +1663,8 @@ export const languages: Record<string, Pack> = {
         "en": "The beneficiary is {name}.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Jaɓɓorgo Jaɓɓorgo Fuuta: {name} .",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1690,8 +1690,8 @@ export const languages: Record<string, Pack> = {
         "en": "The reference is {reference}.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Firoore nden ko {reference} .",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1717,8 +1717,8 @@ export const languages: Record<string, Pack> = {
         "en": "This is the summary before confirmation.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗo'o woni jaaynde yeeso jaaynde.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1735,8 +1735,8 @@ export const languages: Record<string, Pack> = {
         "en": "Do you want to confirm this operation?",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "On yiɗi tabbitinugo kuugal ngal ?",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1753,8 +1753,8 @@ export const languages: Record<string, Pack> = {
         "en": "Never share your PIN.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Taa ɓe ɓeydana ko'e maɓɓe ɓernde.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1771,8 +1771,8 @@ export const languages: Record<string, Pack> = {
         "en": "If you did not request this operation, cancel.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "To on meeɗaayi huuwugo kuugal ngal, on ngaɗataa.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1789,8 +1789,8 @@ export const languages: Record<string, Pack> = {
         "en": "Verify the amount and the beneficiary before confirming.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndaa ceede nden e jaɓuɗo jaɓuɗo yeeso jaɓugo.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1807,8 +1807,8 @@ export const languages: Record<string, Pack> = {
         "en": "This beneficiary has never been used on this account. Verify the number before continuing.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuum jaɓoowo naftirtaake nder ceede nden. Ndaa limol ngol yeeso.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1825,8 +1825,8 @@ export const languages: Record<string, Pack> = {
         "en": "Always verify the beneficiary name and number before confirming a transfer.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ko'e mooɗon, on ndaara innde e limngal mo'o heɓan ko'e mooɗon.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1843,8 +1843,8 @@ export const languages: Record<string, Pack> = {
         "en": "Insufficient balance for this transfer.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuum je'aaki ngam waɗugo jaɓɓorgo.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1861,8 +1861,8 @@ export const languages: Record<string, Pack> = {
         "en": "The amount must be greater than zero.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Limgal ngal footi ɓeyda fu.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1879,8 +1879,8 @@ export const languages: Record<string, Pack> = {
         "en": "Please provide the beneficiary name and phone number.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Wondira anndina innde e limngal jaɓowo.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1897,8 +1897,8 @@ export const languages: Record<string, Pack> = {
         "en": "You must confirm the details before validating the transfer.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "On foondiraaki anndal ngol yeeso on foondiraago jaɓɓorgal ngal.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1915,8 +1915,8 @@ export const languages: Record<string, Pack> = {
         "en": "Network error: the service is temporarily unavailable. Please try again.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Fooyre network: kuugal ngal ina waawataa wakkati.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1933,8 +1933,8 @@ export const languages: Record<string, Pack> = {
         "en": "Confirm",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Fedde jaaynde",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1951,8 +1951,8 @@ export const languages: Record<string, Pack> = {
         "en": "Cancel",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Fedde jaaynde",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1969,8 +1969,8 @@ export const languages: Record<string, Pack> = {
         "en": "Back",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Daartol",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -1987,8 +1987,8 @@ export const languages: Record<string, Pack> = {
         "en": "Repeat",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuuruki",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2005,8 +2005,8 @@ export const languages: Record<string, Pack> = {
         "en": "Slower",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɓeydaaki",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2023,8 +2023,8 @@ export const languages: Record<string, Pack> = {
         "en": "Yes",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Haa",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2041,8 +2041,8 @@ export const languages: Record<string, Pack> = {
         "en": "No",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Na'o",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2059,8 +2059,8 @@ export const languages: Record<string, Pack> = {
         "en": "I did not understand.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Mi meeɗaa faamugo.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2077,8 +2077,8 @@ export const languages: Record<string, Pack> = {
         "en": "Warning: a security message is displayed. Look at the screen or ask for help.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Yiɗugo: feewde sirlude ɗon holla. Ndaa wallugo wala ɗaɓɓita wallude.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2095,8 +2095,8 @@ export const languages: Record<string, Pack> = {
         "en": "An error is displayed. Look at the screen or ask for help.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Fooyre ɗon yi'a. Ndaa dow dow dow dow walluki wala ɗaɓɓita wallude.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2113,8 +2113,8 @@ export const languages: Record<string, Pack> = {
         "en": "A new message is displayed. Look at the screen or ask for help.",
         "target": {
           "fub": {
-            "text": "",
-            "origin": "human",
+            "text": "Ɗuum woni habaruuji keso. Ndaaree dow dow walluki wala nodda wallude.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2175,15 +2175,15 @@ export const languages: Record<string, Pack> = {
       "en": "Yemba"
     },
     "status": "draft",
-    "packSource": "validated",
+    "packSource": "mt",
     "packValidated": false,
     "speech": {
       "provider": "mms",
       "model": "models/mms-tts-ybb",
       "tone": "partial"
     },
-    "tmVersion": "2026-11-09.2",
-    "phrasebankVersion": "2026-11-09.1",
+    "tmVersion": "2026-11-09.2+mt",
+    "phrasebankVersion": "2026-11-09.1+mt",
     "translationUnits": [
       {
         "id": "tm.nav.online_banking",
@@ -2193,8 +2193,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ eleʼé mbwɛ̄t epuɔ pīi, pɔ́ é si nzhɛ́ɛ á légɛ, eleʼé mbwɛ́né epuɔ pīi, pɔ́ é si ŋgɔ́ epuɔ pīi, pɔ́ é si ŋgɔ́ epuɔ pīi, pɔ́ é si nzhɛ́ɛ á légɛ, epuɔ menɔŋ epuɔ pīi, pɔ́ é si ŋ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2210,8 +2210,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ajū mīi, ajū mīi mɛ́ é si nzhɛ́ɛ á légɛ, ajū mīi mɛ́ gɔ le lɔ̄k nzhɛ́ɛ á légɛ, ajū mīi mɛ́ gɔ le lɔ̄k nzhɛ́ɛ á légɛ, ajū mīi mɛ́ gɔ le lɔ̄k nzhɛ́ɛ á légɛ, aziɛ́ aziɛ́, aziɛ́ aziɛ́",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2227,8 +2227,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ á apwɛne. Ŋ́gɔ́ á apwɛ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2244,8 +2244,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋgʉ̄ɔ mé ŋakaŋ, ŋ́gɔ́ á ntē ŋgɔŋ ŋkāʼ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2261,8 +2261,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndém a lɛɛ́ ŋgɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yī",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2278,8 +2278,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Mɛ́ le zéŋ ŋgwɛ̄ azō, ńdɔkɔ ŋgwhʉ̄ɔ ŋgwhʉ̄ɛ azō. Mɛ́ le zéŋ ŋgwhʉ̄ azō, ńdɔkɔ ŋgwhʉ̄ɛ azō.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2295,8 +2295,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2312,8 +2312,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ńdɔkɔ ŋ́gɛ, ajūɔ tsem zīi, pɔ́ é si ŋgɔ́ epuɔ pīi, pɔ́ é si ndʉ́ɛ́ épúp.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2329,8 +2329,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Kwaʼ anu zīi, Ndém a le lɔ̄k ntswīi á légɛ, Ndém a le lɔ̄k ntswīi á légɛ, Ndém a le lɔ̄k ntswīi á légɛ, Ndém a le lɔ̄k ntswīi á légɛ, Ndém a le lɔ̄k ntswīi á légɛ, Ndém a le lɔ̄k ntswīi á légɛ, a le lɔ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2346,8 +2346,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ á légɛ, ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ á légɛ, ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ á légɛ, pɛ é si nzhɛ́ɛ á légɛ, ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ á légɛ, pɛ é si ŋgɔ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2363,8 +2363,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Púp, páʼ mɛ́ le zéŋ nzéŋ ŋgɔ́ á mbū Ndém. Páʼ mɛ́ le zéŋ nzéŋ ŋgɔ́ á mbū Ndém. Páʼ mɛ́ le zéŋ nzéŋ ŋgɔ́ á mbū Ndém. Páʼ mɛ́ le zéŋ nzéŋ ŋgɔ́ á mbū Ndém. Páʼ mɛ́ le zéŋ ŋgɔ́",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2380,8 +2380,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Secured ntē tepɔŋ, ńnɔŋ ŋkɔ̄ŋɔ ŋ́gɛ, epuɔ menɔŋ é si ŋkɔ̄ŋɔ ŋ́gɛ, epuɔ menɔŋ e e láʼ ezéŋ ŋgɔ́ á ŋiŋ yīi, epuɔ menɔŋ é si ŋkɔ̄ŋɔ.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2397,8 +2397,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɛ, Zzftɛzaz, ŋ́gɔ́ á athʉ́ lepé, mbɔɔ á mbū pɔ́p, ŋ́gɔ́ á athʉ́ lepé.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2417,8 +2417,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ajūɔ tsem zīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2437,8 +2437,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɛ ezéŋ nzɛ́ttɛ ŋ́gɛ, ndɛ́ʼ pɛ ezéŋ ŋgwɛ̄ azō, ńdɔk ŋgʉ̄ɔ mé mvhɔ.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2454,8 +2454,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndém a lɛɛ́ ŋkɔ̄ŋɔ azō á mbū Ndém, ńdɔkɔ nzwíʼtɛ á mbū yí.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2471,8 +2471,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Azwakne Ndém, ńdɔkɔ ndʉ́ɛ́ ŋ́gɛ:",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2488,8 +2488,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ajūɔ tsem zīi, mɛ́ gɔ́ áa ntsem yīi, mɛ́ gɔ áa ntsem yīi, mɛ́ gɔ́ áa ntsem yīi, mɛ́ gɔ́ áa ntsem yīi, mɛ́ gɔ́ áa ntsem yīi, mɛ́ gɔ́ áa ntsem yīi, mɛ́ gɔ́ áa ntsem yīi, mɛ́ gɔ́ áa ntsem y",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2505,8 +2505,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé apwɛne, ńdɔkɔ ŋgʉ̄ɔ mé apwɛne. Ŋ́gɔ́ mé apwɛne, ńdɔkɔ ŋgʉ̄ɔ mé apwɛne. Ŋ́gɔ́ mé apwɛne.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2522,8 +2522,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ azō á leghʉ azō á mbū pɔ́p, ŋ́gɔ́ éyi, mɛ́ le zéŋ ŋghʉ̄ɛ azō á mbū pɔ́p. Ŋ́gɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ éyi, mɛ́ le zéŋ ŋghʉ̄ɛ azō á mbū meŋ.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2539,8 +2539,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Táʼ, afʉʼ zīi a á si ŋgɔ́ ajūɔ tsem zīi, Ndém a le lɔ̄k ŋgɔ́ á ŋiŋ ndeŋ ndeŋ, á mbū pɔ́p, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ, ńdɔkɔ ŋgʉ̄ɔ mé ayiŋne.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2556,8 +2556,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé mvhɔ, mbɔ ŋgaŋ afaʼ mɛ́t, ŋ́gɔ́ á mbū pɔ́p, ŋ́gɔ́ á mbū pɔ́p. Ŋ́gɔ́ á mbū pɔ́p. Ŋ́gɔ́ á mbū pɔ́p, ŋ́gɔ́ á mbū yí.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2573,8 +2573,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ewɔŋkhʉ̄ páʼā, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ, ŋ́gɔ́ á ŋiŋ páʼā,",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2590,8 +2590,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndém a lɛɛ́ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2607,8 +2607,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Púp, ḿbīŋ ntswīi ŋgɔ́ éyi, mɛ́ lɔkɔ ntswīi ŋgɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ ezwhí á yí.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2624,8 +2624,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɛ ezéŋ nnɔ̄ŋ nzhɛ́ɛ á légɛ, ndɛ́ʼ pɛ ezwhí á légɛ, Ndém a a láʼ ezwhí á mbū Ndém, ńzwhí á mbū Ndém, ńdɔk ŋgwɛ̄ azō.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2641,8 +2641,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé apwɛne, ńdɔkɔ ntswīi ŋ́gɛ, afʉʼ zīi a gɔ́ éyi a á ŋiŋ ndeŋ ndeŋ, á mbū pɔ́p, á mbū pɔ́p, ńdɔkɔ ntswīi á mbū yí.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2658,8 +2658,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɛ etswíʼte ŋ́gɛ, ndɛ́ʼ pɛ ezéŋ ŋgwɛ̄ azō, ŋ́gwɛ̄ azō. Epuɔ menɔŋ é zéŋ ŋgwɛ̄ azō.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2675,8 +2675,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé afʉʼ zīi, a gɔ́ éyi, a gɔ́ éyi, mɛ́ éyi mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ ezwhíte á yí, ŋ́gɔ́ á ŋiŋ yīi, mɛ́ gɔ́ éyi, mɛ́ éyi mɛ́ gɔ́ éyi, mɛ́ g",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2692,8 +2692,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Safinum méŋwɛ̄t azō á mbū pɔ́p, ńdɔkɔ ntswīi á mbū yí.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2709,8 +2709,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́kó éwú, ŋ́kó ánɛ ajʉʼ zīi, Ndém a á si ŋgɔ́ á ntē aŋwaʼne Ndém. Ŋ́kó éwú, ńdɔkɔ ŋkó á ntē aŋwaʼne Ndém. Ŋ́kó á ntē aŋwaʼne Ndém. Ŋ́kó á ntē aŋwaʼne Ndém. Ŋ́kó á ntē a",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2726,8 +2726,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ éyi, ajʉʼ mɛ́t á gɔ́ éwú, ŋ́gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ ezwhí á yímpɛ azímpɛ.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2743,8 +2743,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndém a lɛɛ́ ŋgʉ̄ɔ mé mvhɔ, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ yīi, mɛ́ tɔ́ŋ ŋkó á yímpɛ, a egɔ́ á yímpɛ, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2760,8 +2760,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Mɛ́ le zéŋ ŋgwɛ̄ azō, ńdɔkɔ ŋgwhʉ̄ɔ ŋgwhʉ̄ɛ azō. Mɛ́ le zéŋ ŋgwhʉ̄ azō, ńdɔkɔ ŋgwhʉ̄ɛ azō.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2777,8 +2777,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé pɔ́k, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ yīi, Ndém a le lɔ̄k á yímpɛ, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ yīi, a le lɔ̄k á yímpɛ, ńdɔkɔ ŋiŋ ndeŋ ndeŋ, ńdɔk",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2794,8 +2794,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Púp, ndɛ́ʼ ŋgwɛ̄ ajūɔ tsem zīi, pɔ́ é si ŋgɔ́ á ŋiŋ yīi, pɔ́ é si ŋgɔ́ á ŋiŋ yīi, pɔ́ é si ŋgɔ́ á ŋiŋ yīi, pɔ́ é si ŋgɔ́ á ŋiŋ yīi, pɔ́ é si ŋgɔ́ á ŋiŋ yīi, pɔ́ é si",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2811,8 +2811,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Páʼ mbɔɔ afʉʼ zīi, mɛ́ lɔkɔ nzhɛ́ɛ á légɛ, afʉʼ zīi mɛ́ gɔ le zapá ánɛ afʉʼ zīi, mɛ́ lɔkɔ ŋgʉɔ̄ʼ mɛ́t, a á si ŋgɔ́ áa afʉʼ zīi, mɛ́ lɔkɔ nzhɛ́ɛ afʉʼ zīi, mɛ́ lɔkɔ ŋ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2828,8 +2828,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2845,8 +2845,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɛ ezhɛ́ á légɛ, epuɔ menɔŋ é si nzhɛ́ɛ á légɛ, epuɔ menɔŋ é si nzhɛ́ɛ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ ajū mīi, a á si nzhɛ́ɛ á légɛ, pɛ ezhɛ́ á légɛ, ajū mīi a á si nzhɛ́ɛ á légɛ, pɛ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2862,8 +2862,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndém a le gē ezéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ y",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2879,8 +2879,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndém a le ghʉ̄ʉ̄, ŋiŋ a gɔ́ áa ánɛ ŋiŋ yīi, Ndém a le ghʉ̄ʉ̄ʉ̄, ńdɔkɔ ŋghʉ̄ɛ afaʼ zīi, Ndém a le ghʉ̄ʉ̄ʉ̄, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yī",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2896,8 +2896,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé pɔ́p, ŋ́gɔ́ áa ŋiŋ yīi, a á si ŋgɔ́ áa ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋkɔ̄ŋɔ.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2913,8 +2913,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Menu mīi, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ, mɛ́ gɔ́ áa ánɛ ajʉʼ zīi, mɛ́ lɔkɔ ntswīi á légɛ, Ndém a á si ŋgɔ́ áa ánɛ ajʉʼ zīi, mɛ́ lɔkɔ ntswīi á légɛ, Ndém a á si ŋgɔ́ áa ánɛ ajʉʼ zīi, mɛ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2930,8 +2930,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ éyi, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ, mɛ́ lɔkɔ ndʉ́ɛ́ɛ́ ŋ́gɛ, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ, mɛ́ lɔkɔ ndʉ́ɛ́ɛ́ ŋ́gɛ, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2947,8 +2947,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Meŋ ke nɔ̄ŋ nzhɛ́ɛ á légɛ, meŋ ndɛ́ɛ́ ŋ́gɛ, mbɔɔ akɔ̄ lɛ́, ŋ́gɔ́ akɔ̄ lɛ́.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2964,8 +2964,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɔ́ zɔ́p ŋ́gɛ, zɔ́fɛ́t zɔ́p zɔ́p zɔ́p zɔp zɔp zɔp zɔp zɔp zɔp zɔp zɔp, ńzɔp zɔp Ffɛ́t zɔp zɔp zɔp zɔp zɔp zɔp zɔp, ńdɔkɔ efāʼa. Pɔ́ gɔ́ áa zɔp zɔp zɔp zɔp zɔp",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2981,8 +2981,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Safinum Pɔ́ɔl páʼā, ńdɔkɔ eshúŋɔ á anuúnē. Ndɛ́ʼ pɛ ezéŋ ŋgwɛ̄ anuúnē, ńdɔk nzhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, ajūɔ tsem zīi, a á si ŋkɔ̄ŋɔ á légɛ, ajūɔ tsem",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -2998,8 +2998,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ńdɔkɔ ŋ́gɛ, ajūɔ tsem zīi, pɔ́ é si ŋgɔ́ epuɔ pīi, pɔ́ é si ndʉ́ɛ́ épúp.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3015,8 +3015,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Púp, ndɛ́ʼ pɛ ezéŋ njúʼ ajū mīi, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ, ajū mīi a á si nzɛ́ttɛ á légɛ, ajū mīi a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋkɔ̄ŋɔ.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3032,8 +3032,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndém a lɛɛ́ ŋgɔ́ áa mbū Ndém, ŋ́gɔ́ áa mbū Ndém. Ndém a lɛɛ́ ŋgɔ́ áa mbū Ndém, ŋ́gɔ́ áa mbū Ndém.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3049,8 +3049,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Mɛ́ le zéŋ ŋgwɛ̄ azō, ńdɔkɔ ŋgwhʉ̄ɔ ŋgwhʉ̄ɛ azō. Mɛ́ le zéŋ ŋgwhʉ̄ azō, ńdɔkɔ ŋgwhʉ̄ɛ azō.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3066,8 +3066,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Mbɔ ajʉʼ zīi, a gɔ́ éyi, mɛ́ lɔkɔ ntswīi ŋgɔ́ á ŋiŋ yīi, mɛ́ lɔkɔ ntswīi ŋgɔ́ á yí, mɛ́ lɔkɔ ntswīi á yí á lelɔk ŋgʉ̄ɔ mé yí.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3083,8 +3083,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3100,8 +3100,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Púp, pɛ ezhɛ́ á légɛ, Ndém a elɛ ŋghʉ̄, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3117,8 +3117,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndém a lɛɛ́ ŋghʉ̄ɛ épúp, mbɔ Ndém a lɛɛ́ ŋghʉ̄ɛ azō á mbū Ndém, ńdɔkɔ ŋghʉ̄ɛ azō á mbū Ndém.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3134,8 +3134,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé afʉʼ zīi, Ndém a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋkɔ̄ŋɔ á yí, á mbū pɔ́p.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3151,8 +3151,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Meŋ á si nzhɛ́ɛ á légɛ, anu zīi anu zīi, anu zīi mɛ́ gɔ le lɔ̄kɔ nzhɛ́ɛ á légɛ, anu zīi mɛ́ gɔ le lɔ̄kɔ ŋkɔ̄ŋɔ.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3168,8 +3168,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ éyi, mɛ́ le zéŋ ŋghʉ̄, mɛ́ le zéŋ ŋghʉ̄, mbɔ Ndém a le zéŋ ŋgyá á mbū Ndém.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3185,8 +3185,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé agáʼ akɛtte zīi, mɛ́ lɔkɔ ntswīi á légɛ, Ndém a á si ŋgɔ́ ajūɔ tsem zīi, mɛ́ lɔkɔ ntswīi á légɛ, Ndém a á si ŋgɔ́ azō ánɛ ajūɔ tsem zīi, mɛ́ lɔkɔ ntswīi á légɛ, Ndém a á si",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3202,8 +3202,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé afʉʼ zīi, Ndém a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋkɔ̄ŋɔ á yí, a á si ŋgɔ́ áa afʉʼ zīi, a á si ŋgɔ́ á",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3219,8 +3219,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Mɛ́ le tó á wɛ́ ŋkó á wɛ́, mbɔ akɔ̄ lɛ́, mbɔ akɔ̄ lɛ́, mbɔ akɔ̄ lɛ́.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3236,8 +3236,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndém a lɛɛ́ ŋghʉ̄ɛ épúp, mbɔ Ndém a lɛɛ́ ŋghʉ̄ɛ azō á mbū Ndém, ńdɔkɔ ŋghʉ̄ɛ azō á mbū Ndém.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3253,8 +3253,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndém a lɛɛ́ ŋgɔ́ áa mbū Ndém, ŋ́gɔ́ áa mbū Ndém. Ndém a lɛɛ́ ŋgɔ́ áa mbū Ndém, ŋ́gɔ́ áa mbū Ndém.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3270,8 +3270,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Mɛ́ le zéŋ ŋgwɛ̄ azō, ńdɔkɔ ŋgwhʉ̄ɔ ŋgwhʉ̄ɛ azō. Mɛ́ le zéŋ ŋgwhʉ̄ azō, ńdɔkɔ ŋgwhʉ̄ɛ azō.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3287,8 +3287,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Mbɔ ajʉʼ zīi, a gɔ́ éyi, mɛ́ lɔkɔ ntswīi ŋgɔ́ á ŋiŋ yīi, mɛ́ lɔkɔ ntswīi ŋgɔ́ á yí, mɛ́ lɔkɔ ntswīi á yí á lelɔk ŋgʉ̄ɔ mé yí.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3304,8 +3304,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3321,8 +3321,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi,",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3338,8 +3338,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé afʉʼ zīi, Ndém a le lɔ̄k á wɛ́ á leghʉ afʉʼ zīi, Ndém a le lɔ̄k á wɛ́ á leghʉ afʉʼ zīi, Ndém a le lɔ̄k á wɛ́ á leghʉ afʉʼ zīi, a le lɔ̄k á wɛ́.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3355,8 +3355,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé afʉʼ zīi, Ndém a á si ŋgɔ́ á ŋiŋ yīi, Ndém a á si ŋgɔ́ á ŋiŋ yīi, Ndém a a láʼ ezéŋ ŋgɔ́ á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á si ŋgɔ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3372,8 +3372,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ajūɔ tsem zīi, a á si ŋgɔ́ á mbū epuɔ pīi, pɔ́ é si ŋgɔ́ á mbū epuɔ menɔŋ.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3389,8 +3389,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Mɛ́ le zéŋ ŋgɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ éwú, ŋ́gɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ éwú.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3406,8 +3406,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ajū mīi mɛ́ gɔ eghʉ̄ʉ ajū mīi, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ̄ʉ,",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3423,8 +3423,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ajū mīi mɛ́ le zéŋ ŋgwɛ̄ azō á mbū Ndém, á mbū pɔ́p, ńdɔkɔ ŋgwɛ̄ azō.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3440,8 +3440,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɛ ezhɛ́ á légɛ, akɔ̄ akɔ̄ lɛ́, pɛ ezhɛ́ á légɛ, akɔ̄ akɔ̄ lɛ́, pɛ ezhɛ́ á légɛ, Ndém a a láʼ eghʉ, pɛ ezhɛ́ á légɛ, Ndém a a láʼ eghʉ, pɛ ezhɛ́ á légɛ, Ndém a a láʼ eghʉ, pɛ ezhɛ́",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3457,8 +3457,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé ajʉʼ mɛ́t, ŋ́gɔ́ éyi, ŋgaŋ aziɛ́, aziɛ́ a te zéŋ ŋgɔ́ éyi, ŋgaŋ aziɛ́. Pɛ ezéŋ njʉ́ɔ áa ajʉʼ zīi, ŋgaŋ aziɛ́.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3474,8 +3474,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɛ ezéŋ ŋgwɛ̄ akɔ̄ lɛ́, pɛ ezéŋ ndɔk nzwíʼtɛ akɔ̄ lɛ́, tɛ́ ndɔk ŋgwɛ̄ akɔ̄ lɛ́.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3491,8 +3491,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Púp, pɛ ezéŋ njhʉ́ ajū mīi, a á si ŋgɔ́ á ajū mīi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3508,8 +3508,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Awíɛ awíɛ a á si ŋgɔ́ ajʉʼ zīi, a á si ŋgɔ́ á ajʉʼ zīi, a gɔ le zéŋ ŋgɔ́ á ajʉʼ zīi, a gɔ le zéŋ ŋgɔ́ á ajʉʼ zīi, a gɔ le zéŋ ŋgɔ́ á ayiŋne.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3525,8 +3525,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé nnɔ̄ŋ nzhɛ́ɛ á légɛ, Ndém a á si nzhɛ́ɛ á légɛ, pɔ́ egʉɔ nnɛ̄t ŋgyáa á mbū Ndém. Ŋ́gɔ́ mé nzhɛ́ɛ á légɛ, pɔ́ egʉɔ nnɛ̄t ŋgyáa á mbū Ndém. Ŋ́gɔ́ mé nzhɛ́ á légɛ, pɔ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3542,8 +3542,8 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3562,8 +3562,8 @@ export const languages: Record<string, Pack> = {
         "en": "This is your balance page.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ á légɛ, pɛ é si nzhɛ́ɛ ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ azō.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3580,8 +3580,8 @@ export const languages: Record<string, Pack> = {
         "en": "Your balance is {amount}.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɛ é si nzɛ́ttɛ ŋ́gɛ, ńdɔkɔ ŋgɔ́ á ZZghɛza.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3607,8 +3607,8 @@ export const languages: Record<string, Pack> = {
         "en": "Your account number is {account}.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɛ é si ŋkɔ̄ŋɔ á wɛ́, ńdɔkɔ ŋ́gɛ, ZZghīz azɔ́p.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3634,8 +3634,8 @@ export const languages: Record<string, Pack> = {
         "en": "This is the fees page.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ajūɔ tsem zīi, pɔ́ é si nzhɛ́ɛ á légɛ, ajūɔ tsem zīi, pɔ́ é si nzhɛ́ɛ á légɛ, ajūɔ tsem zīi, pɔ́ é si nzhɛ́ɛ á légɛ, ajūɔ tsem zīi, pɔ́ é si nzhɛ́ɛ á légɛ, ajūɔ tsem zīi, pɔ́ é si nzhɛ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3652,8 +3652,8 @@ export const languages: Record<string, Pack> = {
         "en": "The fee is {amount}.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɛ ezéŋ ŋgwɛ̄ á Zzftɛza.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3679,8 +3679,8 @@ export const languages: Record<string, Pack> = {
         "en": "There is no fee for this operation.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndɛ́ʼ pɛ ezéŋ ŋgɔ́ éyi, ajū mīi mɛ́ le zéŋ ŋgɔ́ éyi mɛ́ gɔ le zéŋ ŋgɔ́ éyi.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3697,8 +3697,8 @@ export const languages: Record<string, Pack> = {
         "en": "The total will be {amount}.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ajū mīi a gɔ eghʉ̄ʉ, ajū mīi a gɔ eghʉ̄ʉ, ajū mīi á zɔ́p á zɔ́p.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3724,8 +3724,8 @@ export const languages: Record<string, Pack> = {
         "en": "The balance after the operation will be {amount}.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ajū mīi afʉʼ zīi, afʉʼ zīi a á zéŋ ŋgɔ́ azō á mbū ZZftɛza.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3751,8 +3751,8 @@ export const languages: Record<string, Pack> = {
         "en": "This is the transfer form.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ajūɔ tsem zīi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3769,8 +3769,8 @@ export const languages: Record<string, Pack> = {
         "en": "You are going to send {amount} to {name}.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɛ egʉ̄ɔ mé ZZftɛza ŋ́gɛ, pɛ egʉ̄ɔ mé ZZftɛza ŋ́gɛ, pɛ egʉ̄ɔ mé ZZftɛza.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3803,8 +3803,8 @@ export const languages: Record<string, Pack> = {
         "en": "The beneficiary is {name}.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé Zzftɛza.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3830,8 +3830,8 @@ export const languages: Record<string, Pack> = {
         "en": "The reference is {reference}.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ajūɔ tsem zīi, a á si ŋgɔ́ á ZZftɛza.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3857,8 +3857,8 @@ export const languages: Record<string, Pack> = {
         "en": "This is the summary before confirmation.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ajūɔ tsem zīi, ajūɔ tsem zīi a á si nzɛ́ttɛ, ajūɔ tsem zīi, a á si nzɛ́ttɛ.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3875,8 +3875,8 @@ export const languages: Record<string, Pack> = {
         "en": "Do you want to confirm this operation?",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɛ ké ŋgɔ́ páʼā, ńdɔkɔ ndʉ́ɛ́ ŋ́gɛ, akɔ̄?",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3893,8 +3893,8 @@ export const languages: Record<string, Pack> = {
         "en": "Never share your PIN.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndɛ́ʼ pɛ ezéŋ ŋkɔ̄ŋɔ á wɛ́, ndɛ́ʼ pɛ ezéŋ ŋkɔ̄ŋɔ á wɛ́.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3911,8 +3911,8 @@ export const languages: Record<string, Pack> = {
         "en": "If you did not request this operation, cancel.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ éyi, pɛ kɛ te ndʉ́ɛ́ azō ɛ́, ńdɔkɔ ŋ́gɛ, pɛ elɔ̄ɔk azō.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3929,8 +3929,8 @@ export const languages: Record<string, Pack> = {
         "en": "Verify the amount and the beneficiary before confirming.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɛ etswíʼte ŋ́gɛ, mbɔ ajū mīi, a gɔ́ éyi, mɛ́ gɔ ezwhíte á mbū Ndém, ńdɔkɔ ntswīi á mbū yí, ńdɔkɔ ntswīi á mbū yí.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3947,8 +3947,8 @@ export const languages: Record<string, Pack> = {
         "en": "This beneficiary has never been used on this account. Verify the number before continuing.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndém a le gē ezéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ y",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3965,8 +3965,8 @@ export const languages: Record<string, Pack> = {
         "en": "Always verify the beneficiary name and number before confirming a transfer.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɛ ezéŋ nnɔ̄ŋ nzhɛ́ɛ á légɛ, ndɛ́ʼ pɛ ezwhí á légɛ, Ndém a a láʼ ezwhí á mbū Ndém, ńzwhí á mbū Ndém, ńdɔk ŋgwɛ̄ azō.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -3983,8 +3983,8 @@ export const languages: Record<string, Pack> = {
         "en": "Insufficient balance for this transfer.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ajū mīi mɛ́ le zéŋ ŋgwɛ̄ azō á mbū Ndém, á mbū pɔ́p, ńdɔkɔ ŋgwɛ̄ azō.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -4001,8 +4001,8 @@ export const languages: Record<string, Pack> = {
         "en": "The amount must be greater than zero.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ajū mīi mɛ́ gɔ eghʉ̄ʉ ajū mīi, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ̄ʉ,",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -4019,8 +4019,8 @@ export const languages: Record<string, Pack> = {
         "en": "Please provide the beneficiary name and phone number.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɛ ezhɛ́ á légɛ, akɔ̄ akɔ̄ lɛ́, pɛ ezhɛ́ á légɛ, akɔ̄ akɔ̄ lɛ́, pɛ ezhɛ́ á légɛ, Ndém a a láʼ eghʉ, pɛ ezhɛ́ á légɛ, Ndém a a láʼ eghʉ, pɛ ezhɛ́ á légɛ, Ndém a a láʼ eghʉ, pɛ ezhɛ́",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -4037,8 +4037,8 @@ export const languages: Record<string, Pack> = {
         "en": "You must confirm the details before validating the transfer.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɛ ezéŋ ŋgwɛ̄ akɔ̄ lɛ́, pɛ ezéŋ ndɔk nzwíʼtɛ akɔ̄ lɛ́, tɛ́ ndɔk ŋgwɛ̄ akɔ̄ lɛ́.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -4055,8 +4055,8 @@ export const languages: Record<string, Pack> = {
         "en": "Network error: the service is temporarily unavailable. Please try again.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé ajʉʼ mɛ́t, ŋ́gɔ́ éyi, ŋgaŋ aziɛ́, aziɛ́ a te zéŋ ŋgɔ́ éyi, ŋgaŋ aziɛ́. Pɛ ezéŋ njʉ́ɔ áa ajʉʼ zīi, ŋgaŋ aziɛ́.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -4073,8 +4073,8 @@ export const languages: Record<string, Pack> = {
         "en": "Confirm",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Anu zīi, Ndém a le lɔ̄k ashuŋne zīi, Ndém a le lɔ̄k ashuŋne zīi, Ndém a le lɔ̄k ashuŋne zīi, Ndém a le lɔ̄k ashuŋne á yí, ńdɔkɔ ntswīi á yí.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -4091,8 +4091,8 @@ export const languages: Record<string, Pack> = {
         "en": "Cancel",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé ajʉʼ zīi, Ndém a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ azí, a á si ŋgɔ́ azí, ńdɔkɔ ŋ́gɛ, a egɔ́ á ŋiŋ yīi, a á si ŋgɔ́ azí.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -4109,8 +4109,8 @@ export const languages: Record<string, Pack> = {
         "en": "Back",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ŋ́gɔ́ mé nnɔ̄ŋ nzhɛ́ɛ á légɛ, Ndém a á si nzhɛ́ɛ á légɛ, pɔ́ egʉɔ nnɛ̄t ŋgyáa á mbū Ndém. Ŋ́gɔ́ mé nzhɛ́ɛ á légɛ, pɔ́ egʉɔ nnɛ̄t ŋgyáa á mbū Ndém. Ŋ́gɔ́ mé nzhɛ́ á légɛ, pɔ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -4127,8 +4127,8 @@ export const languages: Record<string, Pack> = {
         "en": "Repeat",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Púp, pɛ etswíʼte á Ndém, ńdɔkɔ ntswīi á légɛ, pɛ ezéŋ ntswíte á Ndém. Pɛ etswíte á Ndém, ńtswíte á Ndém.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -4145,8 +4145,8 @@ export const languages: Record<string, Pack> = {
         "en": "Slower",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Pɛ eké nnɔ̄ŋ nzɛ́ttɛ ŋ́gɛ, Ndém a lɛɛ́ ndáʼ ndɔkɔ ndáʼa ŋgɔ́ áa mbū Ndém, ńdɔkɔ ndáʼa ŋgɔ́ áa mbū Ndém, ńdɔkɔ ndáʼa ŋgɔ́ áa mbū Ndém.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -4163,8 +4163,8 @@ export const languages: Record<string, Pack> = {
         "en": "Yes",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Yɛɛ́so á zéŋ ndé ŋ́gɛ:",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -4181,8 +4181,8 @@ export const languages: Record<string, Pack> = {
         "en": "No",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndɛ́ʼ ŋ́gɛ: «Ndɛ́ʼ ŋiŋ á légɛ, Ndɛ́ʼ ŋiŋ á lɔkɔ ŋiŋ á lɔkɔ ŋgʉɔ̄ʼɔ, ŋiŋ á lɔkɔ ŋiŋ á lɔkɔ ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -4199,8 +4199,8 @@ export const languages: Record<string, Pack> = {
         "en": "I did not understand.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Meŋ ndɛ́ɛ́ páʼa, meŋ ndɛ́ɛ́ páʼa.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -4217,8 +4217,8 @@ export const languages: Record<string, Pack> = {
         "en": "Warning: a security message is displayed. Look at the screen or ask for help.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Ndɛ́ʼ pɛ ezéŋ ŋgɔ́ á ajʉʼ zīi, a shʉʼ ezéŋ eshúŋɔ á wɛ́. Pɛ ezéŋ njʉ́ɔ á ajʉʼ zīi, a á si ŋgɔ́ á ajʉʼ zīi, a á si ŋgɔ́ á ajʉʼ zīi, a á si ŋgɔ́ á ajʉʼ zīi, a á si ŋgɔ́ á ajʉ",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -4235,8 +4235,8 @@ export const languages: Record<string, Pack> = {
         "en": "An error is displayed. Look at the screen or ask for help.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Mɛ́ é si ŋgɔ́ ajʉʼ mɛ́t, ńjʉ́ɔ ajʉʼ mɛ́t. Pɛ ezéŋ njʉ́ɔ á ajʉʼ mɛ́t, ńdɔkɔ ŋ́gɛ, ajʉʼ mɛ́t anu zīi, a á si ŋgɔ́ á ajʉʼ mɛ́t, á gɔ́ á ajʉʼ mɛ́t.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
@@ -4253,8 +4253,8 @@ export const languages: Record<string, Pack> = {
         "en": "A new message is displayed. Look at the screen or ask for help.",
         "target": {
           "ybb": {
-            "text": "",
-            "origin": "human",
+            "text": "Awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ.",
+            "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }

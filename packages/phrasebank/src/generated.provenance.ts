@@ -7,8 +7,8 @@ export type PackSource = "validated" | "mt" | "fixture";
  * "packValidated" is true only for a validated language that passes the gate.
  */
 export const packSource: Record<string, PackSource> = {
-  "fub": "validated",
-  "ybb": "validated"
+  "fub": "mt",
+  "ybb": "mt"
 };
 
 export const packValidated: Record<string, boolean> = {
