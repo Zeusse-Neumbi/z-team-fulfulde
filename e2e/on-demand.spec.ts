@@ -13,11 +13,11 @@ test("the panel injects the runtime on demand outside the manifest matches", asy
 
     await panel.getByRole("button", { name: /Démarrer sur cette page/ }).click();
     await expect(panel.locator(".badge")).toHaveText(/Actif/);
-    await expect(page.locator("body")).toContainText("⟦FF:");
+    await expect(page.locator("body")).toContainText("⟦FUB:");
     await expect(panel.locator(".coverage-meter-head strong")).toHaveText("100 %");
 
     await panel.getByRole("button", { name: /Arrêter/ }).click();
-    await expect(page.locator("body")).not.toContainText("⟦FF:");
+    await expect(page.locator("body")).not.toContainText("⟦FUB:");
   } finally {
     await context.close();
   }

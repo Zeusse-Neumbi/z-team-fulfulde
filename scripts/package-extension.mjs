@@ -81,7 +81,7 @@ if (broadHosts.length > 0) {
 }
 for (const [relativePath, bytes] of Object.entries(files)) {
   const text = decoder.decode(bytes);
-  if (text.includes("⟦FF:") || text.includes("FF:tm")) {
+  if (/⟦[A-Z]{3}:/.test(text) || /(?:FUB|YBB):tm/.test(text)) {
     console.error(`[package] refusing to package fixture token in ${relativePath}`);
     process.exit(1);
   }

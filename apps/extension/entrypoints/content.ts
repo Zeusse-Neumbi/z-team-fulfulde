@@ -887,7 +887,9 @@ function applyTranslation(): TranslationStatus {
       FIXTURE_MODE
         ? {
             fallback: (source: string) =>
-              source.trim() ? `⟦FF:novel⟧ ${source.trim()}` : null,
+              source.trim()
+                ? `⟦${targetLangOf(mtOptions).toUpperCase()}:novel⟧ ${source.trim()}`
+                : null,
           }
         : undefined,
     );

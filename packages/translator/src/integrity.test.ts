@@ -389,7 +389,7 @@ describe("DomTranslator values", () => {
 });
 
 describe("DomTranslator test-only fallback", () => {
-  const fallback = (source: string) => `⟦FF:novel⟧ ${source.trim()}`;
+  const fallback = (source: string) => `⟦FUB:novel⟧ ${source.trim()}`;
 
   it("applies the fallback to unknown translatable text", () => {
     body(`<p id="welcome">Bienvenue sur ce site</p>`);
@@ -404,7 +404,7 @@ describe("DomTranslator test-only fallback", () => {
     expect(stats.applied).toBe(1);
     expect(stats.missed).toBe(0);
     expect(document.getElementById("welcome")?.textContent).toBe(
-      "⟦FF:novel⟧ Bienvenue sur ce site",
+      "⟦FUB:novel⟧ Bienvenue sur ce site",
     );
   });
 
@@ -420,7 +420,7 @@ describe("DomTranslator test-only fallback", () => {
     expect(stats.aborted).toBe(false);
     expect(stats.applied).toBe(1);
     expect(document.getElementById("total")?.textContent).toContain("25 000 FCFA");
-    expect(document.getElementById("total")?.textContent).toContain("⟦FF:novel⟧");
+    expect(document.getElementById("total")?.textContent).toContain("⟦FUB:novel⟧");
   });
 
   it("does not abort on a cross-node whitespace variant of a name", () => {

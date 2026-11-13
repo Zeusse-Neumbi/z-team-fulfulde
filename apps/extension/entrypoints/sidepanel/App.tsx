@@ -108,6 +108,11 @@ export default function App() {
   const currentPackSource = packSource[settings.targetLang] ?? "validated";
   const currentPackValidated = packValidated[settings.targetLang] ?? false;
   const targetHasVoice = pack?.status !== "text-only" && pack?.speech.provider !== "none";
+  const packStatusClass = currentPackValidated
+    ? "validated"
+    : currentPackSource === "fixture"
+      ? "fixture"
+      : "draft";
   const targetName = (code: string): string => {
     const language = languages[code];
     return language?.names[settings.uiLang] ?? language?.endonym ?? code;
@@ -721,7 +726,7 @@ export default function App() {
           <span className={`badge ${badge.className}`} role="status" aria-live="polite">
             {badge.label}
           </span>
-          <label className="lang-switch">
+          <label className="target-switch">
             <span className="sr-only">{t.targetLanguage}</span>
             <select
               value={settings.targetLang}
@@ -759,7 +764,7 @@ export default function App() {
         </div>
       </header>
 
-      <p className={`pack-source ${currentPackSource}`} role="status">
+      <p className={`pack-source ${packStatusClass}`} role="status">
         <strong>{pack?.endonym ?? t.packSourceLabel}</strong> :{" "}
         {packStatusLabel(currentPackSource, currentPackValidated, t)}
       </p>

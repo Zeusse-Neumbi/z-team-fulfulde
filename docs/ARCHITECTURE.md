@@ -224,7 +224,7 @@ but the classifier is not wired yet.
 
 - `eval/pages/journey/` is a local five-step mock with a different DOM from the live page.
 - `node scripts/serve-eval.mjs` serves it on `127.0.0.1:4173`.
-- `pnpm build:test` generates a fixture TM (`⟦FF:<id>⟧` plus the source strings), builds the
+- `pnpm build:test` generates a fixture TM (`⟦FUB:<id>⟧` plus the source strings), builds the
   extension to `apps/extension/.output-test/` and is never packaged.
 - `pnpm e2e` runs the local journey, English page, novel content, errors, keyboard and axe tests.
 - `pnpm check:live` runs the same mechanics against `https://safinum.cm/hackathon-test` with the
@@ -243,7 +243,7 @@ accessible names, not bank-specific selectors.
 The production translation memory is domain-scoped. When a page string has no
 validated entry, production leaves the source visible and flags it as missed, or
 uses the labelled local-API fallback for a plain node when that mode is enabled.
-The **test fixture** adds a generic fallback (`⟦FF:novel⟧ <source>`) so a
+The **test fixture** adds a generic fallback (`⟦FUB:novel⟧ <source>`) so a
 30-page canary sweep can prove that every non-sensitive node reaches the
 replacement path without inventing Fulfulde. The fixture build alone declares
 `<all_urls>`; the production manifest stays narrow and the package script

@@ -83,7 +83,7 @@ see [`SETUP.md`](SETUP.md). The ZIP contains `INSTALL.md` with the same steps.
       text.
 - [ ] If the local API fallback is enabled for the demo, the panel shows
       **MT — non validée** and the output is not presented as validated Fulfulde.
-- [ ] The production ZIP contains no `⟦FF:` or `FF:tm` fixture token.
+- [ ] The production ZIP contains no `⟦<code>:` fixture token.
 - [ ] Stop restores the page.
 - [ ] The novel-content path works without a reload.
 - [ ] The technical note is French, **5 pages maximum**, **10 MB maximum**, no

@@ -146,7 +146,7 @@ Output:
 apps/extension/.output-test/chrome-mv3
 ```
 
-This build replaces every string with a visible `⟦FF:<id>⟧` marker plus the
+This build replaces every string with a visible `⟦FUB:<id>⟧` marker plus the
 source. It proves scanning, rewriting, value protection, revert and re-render
 handling. It is **not Fulfulde** and it disables the local-API fallback so the
 e2e tests stay deterministic. Never present it as a language demo.
@@ -345,7 +345,7 @@ rescan.
 | Build | Output | Page | Use |
 | --- | --- | --- | --- |
 | Production | `.output/chrome-mv3` | Validated TM first; optional local NLLB marked MT; source if both unavailable | Real demo, local try |
-| Fixture | `.output-test/chrome-mv3` | `⟦FF:…⟧` test markers; API MT disabled | e2e and mechanics tests only |
+| Fixture | `.output-test/chrome-mv3` | `⟦FUB:…⟧` test markers; API MT disabled | e2e and mechanics tests only |
 
 The fixture is a harness. Its tokens are not Fulfulde. Do not record it as a
 language demo.
@@ -452,7 +452,7 @@ confirmation in the panel; the extension never clicks or submits for you.
 | Provider error after choosing Ollama | Ollama is not running, or its model is missing. Switch to **Auto (API)** or **NLLB local**, or start Ollama. |
 | Mixed greeting stays French | Intentional: the name is protected and mixed nodes are never sent. |
 | Panel says the pack is missing | The validated TM is empty. Enable **Repli après la TM** with the API running, or install the validated pack. |
-| Page shows `⟦FF:...⟧` | Fixture build. Not Fulfulde. |
+| Page shows `⟦FUB:...⟧` | Fixture build. Not Fulfulde. |
 | Voice buttons are disabled | The API is offline, the voice is a stub, or TTS is not ready. Page text still works. |
 | Port 4173 is busy | `pnpm serve:eval -- --port 4175`, then open the new URL. |
 | Old version after a rebuild | Click **Reload** on the extension card, then reopen/rescan. |
@@ -556,7 +556,7 @@ pnpm check:sites  # 30 public pages, canary values
 - A native-validated Fulfulde panel. The **FF** option is a machine-translated
   draft, labelled **Fulfulde (MT)**.
 - Voice input / ASR. The classifier is a stub.
-- The fixture `⟦FF:…⟧` tokens are test markers, not Fulfulde.
+- The fixture `⟦FUB:…⟧` tokens are test markers, not Fulfulde.
 
 Do not claim the machine output is validated Fulfulde. Do not record the fixture
 build as a language demo. The validated pack remains the release gate.

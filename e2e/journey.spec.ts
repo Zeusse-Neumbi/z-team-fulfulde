@@ -31,7 +31,7 @@ test("full French journey keeps every protected value", async () => {
       "100 %",
     );
     await expect(panel.locator(".sentence.missed")).toHaveCount(0);
-    await expect(page.locator("body")).toContainText("⟦FF:tm.");
+    await expect(page.locator("body")).toContainText("⟦FUB:tm.");
 
     let body = clean(await page.locator("body").innerText());
     for (const value of [
@@ -66,7 +66,7 @@ test("full French journey keeps every protected value", async () => {
 
     await page.locator("#continue").click();
     await expect(page.locator("#error")).toContainText("SECURITY_001");
-    await expect(page.locator("#error")).toContainText("FF:tm.warning.security_verify");
+    await expect(page.locator("#error")).toContainText("FUB:tm.warning.security_verify");
 
     await page.locator("#beneficiary-verified").check();
     await page.locator("#continue").click();
@@ -112,7 +112,7 @@ test("full French journey keeps every protected value", async () => {
     await expect(panel.locator(".notice")).toContainText("Clic autorisé");
     await page.locator("#confirm").click();
     await expect(page.locator("#error")).toContainText("CONFIRM_001");
-    await expect(page.locator("#error")).toContainText("FF:tm.error.confirm_required");
+    await expect(page.locator("#error")).toContainText("FUB:tm.error.confirm_required");
 
     await page.locator("#summary-confirmed").check();
     await page.locator("#confirm").click();
@@ -131,7 +131,7 @@ test("full French journey keeps every protected value", async () => {
     await panel.getByRole("button", { name: /Arrêter/ }).click();
     await expect(panel.locator(".badge")).toHaveText(/Inactif/);
     body = clean(await page.locator("body").innerText());
-    expect(body).not.toContain("⟦FF:tm.");
+    expect(body).not.toContain("⟦FUB:tm.");
     expect(body.toLowerCase()).toContain("transfert effectué");
     expect(body).toContain("SAF-2026-TEST01");
 
@@ -167,7 +167,7 @@ test("English page keeps the same protection", async () => {
     expect(body).toContain("175,000 FCFA");
     expect(body).toContain("CM 999 8887 7776 55");
     expect(body).toContain("Aïssatou Bello");
-    expect(body).toContain("⟦FF:tm.");
+    expect(body).toContain("⟦FUB:tm.");
 
     await page.locator("#to-fees").click();
     await expect(panel.locator(".chip").first()).toContainText("Étape 2/5");
@@ -189,7 +189,7 @@ test("novel content and errors are handled without a reload", async () => {
     await startOnPanel(panel);
 
     await page.locator("#inject-novel").click();
-    await expect(page.locator("#novel")).toContainText("FF:tm.novel.example", {
+    await expect(page.locator("#novel")).toContainText("FUB:tm.novel.example", {
       timeout: 1500,
     });
 
@@ -197,20 +197,20 @@ test("novel content and errors are handled without a reload", async () => {
     await expect(page.locator("#novel-unknown")).toContainText(
       "Le service sera indisponible demain",
     );
-    await expect(page.locator("#novel-unknown")).toContainText("FF:novel", {
+    await expect(page.locator("#novel-unknown")).toContainText("FUB:novel", {
       timeout: 1500,
     });
     await expect(panel.locator(".sentence.missed")).toHaveCount(0);
 
     await page.locator("#trigger-error").click();
     await expect(page.locator("#error")).toContainText("AMOUNT_002");
-    await expect(page.locator("#error")).toContainText("FF:tm.error.insufficient");
+    await expect(page.locator("#error")).toContainText("FUB:tm.error.insufficient");
 
     await page.locator("#to-fees").click();
     await page.locator("#amount").fill("300000");
     await page.locator("#continue").click();
     await expect(page.locator("#error")).toContainText("AMOUNT_002");
-    await expect(page.locator("#error")).toContainText("FF:tm.error.insufficient");
+    await expect(page.locator("#error")).toContainText("FUB:tm.error.insufficient");
     await expect(page.locator("#error")).toContainText("Solde insuffisant");
   } finally {
     await context.close();

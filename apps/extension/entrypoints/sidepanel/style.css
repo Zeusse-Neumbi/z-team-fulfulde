@@ -103,6 +103,7 @@ h2 {
 }
 
 .lang-toggle,
+.target-switch select,
 .lang-switch select,
 .footer-setting select {
   min-height: 44px;
