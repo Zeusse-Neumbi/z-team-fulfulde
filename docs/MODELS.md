@@ -32,10 +32,10 @@ Notes that matter for the comparison:
 - **Fulfulde text is Cameroonian by default.** The `marian` backend loads
   `flagship-ai/cameroon-int8/francais-fufulde`: an int8 CTranslate2 Marian pair
   (77 MB) normalised under the AGLC alphabet (Alphabet Général des Langues
-  Camerounaises). Its 59,514-entry sentencepiece vocabulary covers
-  `ɛ ɔ ŋ ʉ ɓ ɗ ɲ ʼ` and the tone marks `á à ǎ â ā`. One letter is missing: `ƴ`
-  (see the probe below). It is a **French-pivot** checkpoint, so English pages
-  stay on the NLLB fallback.
+  Camerounaises). Its 59,514-entry sentencepiece vocabulary contains every AGLC
+  letter except `ƴ`, but `ɛ` and `ɔ` exist only as bare single characters and
+  never appear in the output (see the A1 gate record below). It is a
+  **French-pivot** checkpoint, so English pages stay on the NLLB fallback.
 - **NLLB has no `fub` token.** It uses `fuv_Latn` (Nigerian Fulfulde), so it is
   kept as an explicit fallback and comparison baseline
   (`ZTEAM_MT_BACKEND=nllb`, `ZTEAM_MT_MODEL=models/nllb-200-600m-int8`), not as
@@ -301,7 +301,7 @@ ct2-transformers-converter --model models/nllb-200-600m \
 
 **Result: a candidate, not usable text.** The pair is heavily scripture-biased
 (`Allah wi'i`, `Linjiila`), leaves French words (`Balance`), repeats under beam
-search, never emits `ɛ` or `ɔ` in 26 sampled sentences (it writes `e`/`o`), and
+search, never emits `ɛ` or `ɔ` in 97 sampled sentences (it writes `e`/`o`), and
 alters a name (`Aïssatou` → `Aiyatu`). It does emit `ŋ ɓ ɗ`, so the vocabulary
 is AGLC, but the corpus is not a financial-UI corpus. Treat every sentence as an
 unvalidated candidate, keep the `MT` label visible, and prefer
@@ -318,6 +318,59 @@ off this path (ADR 0015); never send a mixed node to `/translate`.
 
 The sentencepiece vocabulary has no `ƴ` piece, so it is dropped on encode and
 cannot be produced on decode. Any word containing `ƴ` is corrupted.
+
+### A1 acceptance gate (recorded 13 November 2026)
+
+The A1 acceptance in the track plan asked for `/translate` output containing
+`ɛ`, `ɔ` or `ŋ`. The exact command and its output, unedited:
+
+```bash
+ZTEAM_MT_BACKEND=marian \
+ZTEAM_MT_MARIAN_MODEL=models/cameroon-int8/francais-fufulde \
+  uv run --project apps/server uvicorn app.main:app --port 8002
+
+curl -s localhost:8002/translate -H 'content-type: application/json' \
+  -d '{"text":"Votre solde est de 250 000 FCFA.","source":"fr","target":"fub"}'
+# {"text":"On payi mooɗon ɗon njogi, nden kam haa fodde fodde: Fombinaaɗam, njoweeɗam.",
+#  "translated":true,"provider":"marian",
+#  "model":"models/cameroon-int8/francais-fufulde","local":true,
+#  "latency_ms":919.93,"target_lang":"fuv","stub":false}
+```
+
+That sentence contains `ɗ` but **no `ɛ`, `ɔ` or `ŋ`**. A 97-sentence probe of
+the same endpoint (financial UI strings plus core vocabulary) measured:
+
+| Letter | Sentences containing it |
+| --- | --- |
+| `ɗ` | 50/97 |
+| `ɓ` | 34/97 |
+| `ŋ` | 12/97 |
+| `ɛ` | **0/97** |
+| `ɔ` | **0/97** |
+| `ɲ` | 0/97 |
+| `ƴ` | 0/97 |
+
+The 97 source/output pairs are in
+[`evidence/a1-smoke-probe.tsv`](evidence/a1-smoke-probe.tsv).
+
+The vocabulary explains the zeros. Of 59,514 pieces, `ɛ`, `ɔ`, `ŋ`, `ɓ` and `ɗ`
+each occur exactly once, as the bare character. `ɛ` and `ɔ` have **no
+multi-character piece at all**, while `e` has 27,058 and `o` 16,214: the corpus
+writes `e`/`o`, so the two AGLC vowels are present only as alphabet coverage.
+The decoder does compose `ŋ` into words (`mbaŋgina`, `gooŋɗini`, `ɓiŋngel`),
+which is why `ŋ` appears; it never selects `ɛ` or `ɔ`.
+
+**Verdict:** the `ŋ` part of the gate is met (12/97 sentences), and `ɓ`/`ɗ` are
+common. The literal `ɛ`/`ɔ` part is **not achievable with this checkpoint** and
+no decoding setting changes that. This is recorded as a gap, not a pass: the
+pair remains a labelled candidate, and a hard `ɛ`/`ɔ` requirement needs a
+different model or native-speaker post-editing. Reproduce one of the `ŋ` hits:
+
+```bash
+curl -s localhost:8002/translate -H 'content-type: application/json' \
+  -d '{"text":"Enfant","source":"fr","target":"fub"}'
+# {"text":"ɓiŋngel", ...}
+```
 
 ## Failure codes
 

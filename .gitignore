@@ -30,7 +30,6 @@ data/*
 !data/README.md
 models/*
 !models/README.md
-!models/manifest.json
 assets/audio/raw/
 assets/audio/*.wav
 assets/audio/*.mp3
