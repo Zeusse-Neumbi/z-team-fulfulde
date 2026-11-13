@@ -427,11 +427,23 @@ pnpm models:download mt-ybb mms-ybb
 # models/mms-tts-ybb; leave ZTEAM_MT_MARIAN_MODEL / ZTEAM_TTS_MODEL empty.
 ```
 
-The plan's tokenizer probe reports 96% coverage for the Yemba voice (no `r`) and
-high/mid tone marks. It was not re-measured here because the voice weights are
-not downloaded in this environment; `pnpm check:tokenizer` prints `skipped`
-instead of guessing. Do not claim a validated Yemba voice or a validated Yemba
-pack.
+Measured on 14 November 2026 with `models/mms-tts-ybb`:
+
+| Metric | Value |
+| --- | --- |
+| Segmental | 27/28 (96.4%), missing `r` |
+| Tone | partial — high and mid marks |
+| Vocabulary | 46 pieces |
+| Synthesis | 16 kHz mono WAV, 1.38 s for a short sentence, local MMS, no stub |
+
+The voice has `ʼ`, `ɛ`, `ɔ`, `ŋ` and the tone marks, but lacks `ɲ`, `Ɲ`, `ꞌ`
+and `r`. The speech normalizer maps `ɲ → ny`, `Ɲ → Ny`, `ꞌ → ʼ` and keeps the
+tone marks. `r` is a recorded gap, not silently replaced. The strict
+`pnpm check:tokenizer` passes the Yemba row; the `--warn-only` variant in
+`ci:local` also shows the fub row (86.7%, missing `ɛ ɔ ɲ ʼ`) when
+`models/mms-tts-ful` is present.
+
+Do not claim a validated Yemba voice or a validated Yemba pack.
 
 ## Failure codes
 

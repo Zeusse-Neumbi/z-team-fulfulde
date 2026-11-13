@@ -12,9 +12,19 @@ import unicodedata
 # `|a|a|m|d|u|`. In contrast `ŋ`, `ƴ`, `ɓ` and `ɗ` ARE in the vocab, so they
 # are preserved: mapping `ƴ` to `y` would throw away a sound the voice can
 # say. Reproduce with scripts/check-tokenizer-coverage.py.
+#
+# Measured on `models/mms-tts-ybb` (46 pieces, 27/28 letters, missing `r`):
+# `ɲ`, `Ɲ` and `ꞌ` are absent, while `ʼ`, `ɛ`, `ɔ`, `ŋ` and the high/mid tone
+# marks are present. Map the missing `ɲ`/`Ɲ` to `ny`/`Ny`, map `ꞌ` to the
+# modifier apostrophe the voice has, and keep the tones.
 SPEECH_SUBSTITUTIONS: dict[str, dict[str, str]] = {
     "fub": {"ɛ": "e", "ɔ": "o", "ɲ": "ny", "ʼ": "'", "ꞌ": "'"},
+    "ybb": {"ɲ": "ny", "Ɲ": "Ny", "ꞌ": "ʼ"},
 }
+
+# Voices with no tone inventory. Yemba's tokenizer has high and mid tone marks,
+# so folding them would throw away a distinction the voice can say.
+TONE_FOLD = {"fub"}
 
 
 def _fold_tones(text: str) -> str:
@@ -31,9 +41,10 @@ def normalize_for_speech(lang: str, text: str) -> str:
     Unknown languages are returned unchanged apart from NBSP collapsing: never
     guess a substitution for a language we have not measured.
     """
+    if lang in TONE_FOLD:
+        text = _fold_tones(text)
     table = SPEECH_SUBSTITUTIONS.get(lang)
     if table is not None:
-        text = _fold_tones(text)
         for source, target in table.items():
             text = text.replace(source, target)
     return text.replace("\u00a0", " ").replace("\u202f", " ")

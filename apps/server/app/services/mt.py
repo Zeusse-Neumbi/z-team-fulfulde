@@ -4,7 +4,7 @@ import html
 import threading
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Protocol
+from typing import Protocol, cast
 
 import httpx
 
@@ -223,11 +223,10 @@ class NLLBCT2MT:
     def translate(self, text: str, source: str, target: str) -> MTResult:
         source_lang = NLLB_LANGS.get(source, "fra_Latn")
         target_lang = NLLB_LANGS.get(target, self.target_lang)
-        tokens = self._tokenizer.convert_ids_to_tokens(
-            [
-                self._tokenizer.convert_tokens_to_ids(source_lang),
-                *self._tokenizer.encode(text),
-            ]
+        source_token = cast(int, self._tokenizer.convert_tokens_to_ids(source_lang))
+        tokens = cast(
+            list[str],
+            self._tokenizer.convert_ids_to_tokens([source_token, *self._tokenizer.encode(text)]),
         )
         results = self._translator.translate_batch(
             [tokens],
@@ -238,10 +237,9 @@ class NLLBCT2MT:
         output = results[0].hypotheses[0]
         if output and output[0] == target_lang:
             output = output[1:]
-        translated = self._tokenizer.decode(
-            self._tokenizer.convert_tokens_to_ids(output),
-            skip_special_tokens=True,
-        ).strip()
+        # transformers' tokenizer stubs return unions for batch and single input.
+        ids = cast(list[int], self._tokenizer.convert_tokens_to_ids(output))
+        translated = cast(str, self._tokenizer.decode(ids, skip_special_tokens=True)).strip()
         if not translated:
             raise ProviderError(
                 "upstream_error",
@@ -388,10 +386,9 @@ class MarianMT:
         tokens = self._tokenizer.convert_ids_to_tokens(self._tokenizer.encode(text))
         results = self._translator.translate_batch([tokens], beam_size=2)
         output = results[0].hypotheses[0]
-        translated = self._tokenizer.decode(
-            self._tokenizer.convert_tokens_to_ids(output),
-            skip_special_tokens=True,
-        ).strip()
+        # transformers' tokenizer stubs return unions for batch and single input.
+        ids = cast(list[int], self._tokenizer.convert_tokens_to_ids(output))
+        translated = cast(str, self._tokenizer.decode(ids, skip_special_tokens=True)).strip()
         return MTResult(
             text=translated,
             translated=True,

@@ -7,7 +7,7 @@ import wave
 from collections import OrderedDict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Protocol
+from typing import Any, Protocol, cast
 
 import httpx
 
@@ -95,7 +95,9 @@ class MMSTTS:
             self._torch = torch
             self._device = device
             self._tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
-            self._model = VitsModel.from_pretrained(model_path, local_files_only=True).to(device)
+            # transformers 5 types from_pretrained against PreTrainedModel.
+            model_class = cast(Any, VitsModel)
+            self._model = model_class.from_pretrained(model_path, local_files_only=True).to(device)
             self._model.eval()
         except Exception as exc:  # noqa: BLE001 - model loaders raise many types
             raise ProviderError(
