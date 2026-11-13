@@ -166,7 +166,16 @@ for (const entry of entries) {
   const target = join(outDir, file);
   execFileSync(
     "ffmpeg",
-    ["-v", "error", "-y", "-i", source, "-ac", "1", "-ar", "24000", "-c:a", "libopus", "-b:a", BITRATE, target],
+    [
+      "-v", "error", "-y", "-i", source,
+      "-ac", "1", "-ar", "24000",
+      "-c:a", "libopus", "-b:a", BITRATE,
+      // Deterministic Ogg serial and no encoder metadata: rebuilding the pack
+      // must produce byte-identical clips, otherwise the manifest checksums
+      // change on every run.
+      "-fflags", "+bitexact", "-flags", "+bitexact",
+      target,
+    ],
     { stdio: "inherit" },
   );
   const clipBytes = readFileSync(target);

@@ -40,7 +40,13 @@ for (const name of wavFiles) {
   const target = join(stage, "audio", name.replace(/\.wav$/, ".opus"));
   execFileSync(
     "ffmpeg",
-    ["-v", "error", "-y", "-i", join(sessionDir, "audio", name), "-ac", "1", "-ar", "24000", "-c:a", "libopus", "-b:a", "24k", target],
+    [
+      "-v", "error", "-y", "-i", join(sessionDir, "audio", name),
+      "-ac", "1", "-ar", "24000",
+      "-c:a", "libopus", "-b:a", "24k",
+      "-fflags", "+bitexact", "-flags", "+bitexact",
+      target,
+    ],
     { stdio: "inherit" },
   );
   bytes += statSync(target).size;
