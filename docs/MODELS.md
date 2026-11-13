@@ -406,6 +406,33 @@ curl -s localhost:8002/translate -H 'content-type: application/json' \
 # {"text":"ɓiŋngel", ...}
 ```
 
+## Yemba (`ybb`)
+
+| Item | Value |
+| --- | --- |
+| Text | `flagship-ai/cameroon-int8`, `francais-yemba` (77 MB int8, FR→Yemba, CC-BY-NC-4.0, AGLC) |
+| Voice | `facebook/mms-tts-ybb` (VITS 16 kHz, CC-BY-NC-4.0) |
+| Registry row | `languages/ybb.yaml` (`status: draft`) |
+| Candidate pack | `packages/phrasebank/entries/ybb/*.mt.yaml` (`origin: mt`) |
+
+The pair is French-pivot only: English pages stay on the NLLB fallback. The
+human pack is empty (`origin: human`). A local Marian run generated the
+candidate pack on 13 November 2026; it is **not validated**, and 11 of the 115
+entries failed the placeholder mask, so the release gate refuses the language
+until a native speaker reviews it.
+
+```bash
+pnpm models:download mt-ybb mms-ybb
+# The registry resolves models/cameroon-int8/francais-yemba and
+# models/mms-tts-ybb; leave ZTEAM_MT_MARIAN_MODEL / ZTEAM_TTS_MODEL empty.
+```
+
+The plan's tokenizer probe reports 96% coverage for the Yemba voice (no `r`) and
+high/mid tone marks. It was not re-measured here because the voice weights are
+not downloaded in this environment; `pnpm check:tokenizer` prints `skipped`
+instead of guessing. Do not claim a validated Yemba voice or a validated Yemba
+pack.
+
 ## Failure codes
 
 Every provider error returns `{"detail": {"code", "message", "provider"}}`.

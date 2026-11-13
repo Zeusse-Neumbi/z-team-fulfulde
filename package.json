@@ -43,6 +43,7 @@
     "check:sites": "node scripts/check-sites.mjs",
     "check:tokenizer": "uv run --project apps/server python scripts/check-tokenizer-coverage.py --registry",
     "check:tokenizer:warn": "uv run --project apps/server python scripts/check-tokenizer-coverage.py --registry --warn-only",
+    "lang:add": "node scripts/add-language.mjs",
     "models:download": "node scripts/download-models.mjs",
     "models:verify": "node scripts/download-models.mjs --check",
     "doctor": "node scripts/doctor.mjs",
