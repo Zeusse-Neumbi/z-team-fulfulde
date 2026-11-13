@@ -677,15 +677,21 @@ export default function App() {
   const mtRunning = status?.mt.state === "running";
   const mtUsed = (status?.mtApplied ?? 0) > 0;
   const noTm = (status?.translations ?? 0) === 0;
+  // The content script reports "ready" both when it translated nothing and when
+  // the API answered. Only the health probe can tell those apart, so the label
+  // never claims a live local model while the loopback API is offline.
+  const apiLive = voice === "ready";
   const mtStateLabel = mtRunning
     ? `${t.mtProgress} ${status?.mt.done ?? 0}/${status?.mt.total ?? 0}`
     : status?.mt.state === "offline" || status?.mt.state === "error"
       ? t.error
-      : status?.mt.state === "ready"
-        ? `${t.mtLocal} · ${t.mtUnvalidated}`
-        : !status?.active && settings.apiTranslation !== "off"
-          ? t.mtReady
-          : t.apiModeOff;
+      : status?.mt.state === "ready" && apiLive
+        ? status?.mt.done
+          ? `${t.mtLocal} · ${t.mtUnvalidated}`
+          : `${t.mtLocal} · ${t.mtReady}`
+        : packSource === "validated"
+          ? t.apiModeOff
+          : t.apiModeOffDraft;
 
   return (
     <main className="shell" aria-busy={busy}>
@@ -828,7 +834,9 @@ export default function App() {
             }
             disabled={busy}
           >
-            <option value="off">{t.apiModeOff}</option>
+            <option value="off">
+              {packSource === "validated" ? t.apiModeOff : t.apiModeOffDraft}
+            </option>
             <option value="fallback">{t.apiModeFallback}</option>
             <option value="primary">{t.apiModePrimary}</option>
           </select>
@@ -936,7 +944,7 @@ export default function App() {
               type="button"
               onClick={playAudio}
               disabled={
-                voice !== "ready" ||
+                !audioReady ||
                 audio === "loading" ||
                 status?.mt.state === "running"
               }

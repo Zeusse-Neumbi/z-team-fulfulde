@@ -20,6 +20,7 @@ export const ffCopy: PanelCopy = {
   apiMode: "Mode API local",
   apiModeFallback: "Repli ɓaawo TM",
   apiModeOff: "Dartii (TM jaɓaandi)",
+  apiModeOffDraft: "Dartii (pakki MT ina nder)",
   apiModePrimary: "API local adii",
   apiNllb: "NLLB local",
   apiOllama: "Ollama local",

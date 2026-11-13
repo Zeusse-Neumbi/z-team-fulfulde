@@ -99,6 +99,7 @@ export interface PanelCopy {
   translationSource: string;
   apiMode: string;
   apiModeOff: string;
+  apiModeOffDraft: string;
   apiModeFallback: string;
   apiModePrimary: string;
   apiProvider: string;
@@ -251,6 +252,7 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     translationSource: "Traduction",
     apiMode: "Mode API locale",
     apiModeOff: "Désactivée (TM validée)",
+    apiModeOffDraft: "Désactivée (pack MT embarqué)",
     apiModeFallback: "Repli après la TM",
     apiModePrimary: "API locale d’abord",
     apiProvider: "Fournisseur",
@@ -411,6 +413,7 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     translationSource: "Translation",
     apiMode: "Local API mode",
     apiModeOff: "Off (validated TM)",
+    apiModeOffDraft: "Off (bundled MT pack)",
     apiModeFallback: "Fallback after TM",
     apiModePrimary: "Local API first",
     apiProvider: "Provider",
