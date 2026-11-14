@@ -8,9 +8,9 @@ native-speaker validated.
 
 | Thing | Source | Current |
 | --- | --- | --- |
-| App and extension | root `package.json` | `0.2.0` |
+| App and extension | root `package.json` | `0.2.1` |
 | Technical note | `scripts/version.mjs` `NOTE_VERSION` | `1.1` |
-| Tag | `v<app>-preselection` | `v0.2.0-preselection` |
+| Tag | `v<app>-preselection` | `v0.2.1-preselection` |
 
 Everything that names an artifact reads the same source: `package-extension.mjs`,
 `size-check.mjs`, `demo.mjs`, `doctor.mjs`, `setup.mjs`, `assemble-submission.mjs`,
@@ -22,9 +22,9 @@ A public pre-release should carry:
 
 | Asset | Built by | Form upload |
 | --- | --- | --- |
-| `zteam-fulfulde-extension-v0.2.0.zip` | `pnpm build:submission && pnpm package` | yes |
+| `zteam-fulfulde-extension-v0.2.1.zip` | `pnpm build:submission && pnpm package` | yes |
 | `Z-Team_Fulfulde_Assistant_Technical_Note_v1.1.pdf` | `pnpm note:build` | yes |
-| `zteam-listening-pack-v0.2.0.zip` | `pnpm pack:listening` (needs the local WAV session) | no |
+| `zteam-listening-pack-v0.2.1.zip` | `pnpm pack:listening` (needs the local WAV session) | no |
 | `SHA256SUMS.txt` | `pnpm submission` | no |
 
 The listening pack is built from gitignored WAVs, so CI cannot regenerate it.
@@ -44,8 +44,8 @@ sha256sum -c submission/SHA256SUMS.txt
 
 git switch main
 git pull --ff-only
-git tag -a v0.2.0-preselection -m "Z-Team Fulfulde Assistant — preselection 0.2.0"
-git push origin v0.2.0-preselection
+git tag -a v0.2.1-preselection -m "Z-Team Fulfulde Assistant — preselection 0.2.1"
+git push origin v0.2.1-preselection
 ```
 
 The tag workflow runs the checks, builds the ZIP and the note, writes the
@@ -53,7 +53,7 @@ checksums and creates the GitHub pre-release. The listening pack is uploaded
 afterwards with:
 
 ```bash
-gh release upload v0.2.0-preselection dist/zteam-listening-pack-v0.2.0.zip --clobber
+gh release upload v0.2.1-preselection dist/zteam-listening-pack-v0.2.1.zip --clobber
 ```
 
 ## What the release notes must say

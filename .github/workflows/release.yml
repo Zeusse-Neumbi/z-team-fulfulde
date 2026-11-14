@@ -66,6 +66,9 @@ jobs:
       - name: Install Chromium
         run: pnpm exec playwright install --with-deps chromium
 
+      - name: Build fixture extension
+        run: pnpm build:test
+
       - name: End-to-end tests
         run: pnpm e2e
 
