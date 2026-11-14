@@ -183,7 +183,7 @@ jobs:
         run: |
           node scripts/serve-eval.mjs > "$RUNNER_TEMP/serve-eval.log" 2>&1 &
           echo $! > "$RUNNER_TEMP/serve-eval.pid"
-          for attempt in $(seq 1 30); do
+          for _ in $(seq 1 30); do
             if curl -fsS -o /dev/null http://127.0.0.1:4173/journey/; then exit 0; fi
             sleep 1
           done

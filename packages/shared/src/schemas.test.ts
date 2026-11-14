@@ -84,6 +84,7 @@ describe("languageRegistryEntrySchema", () => {
       provider: "mms",
       model: "models/mms-tts-ful",
       tone: "none",
+      voice: "none",
       substitutions: { "ɛ": "e" },
     },
     numbers: "numbers/fub.json",
