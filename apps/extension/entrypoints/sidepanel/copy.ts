@@ -147,7 +147,7 @@ export interface PanelCopy {
 export const copy: Record<UiLanguage, PanelCopy> = {
   fr: {
     eyebrow: "Z-Team",
-    title: "Assistant Fulfulde",
+    title: "Z-Team Lingua",
     active: "Actif",
     inactive: "Inactif",
     error: "Erreur",
@@ -315,7 +315,7 @@ export const copy: Record<UiLanguage, PanelCopy> = {
   },
   en: {
     eyebrow: "Z-Team",
-    title: "Fulfulde assistant",
+    title: "Z-Team Lingua",
     active: "Active",
     inactive: "Inactive",
     error: "Error",

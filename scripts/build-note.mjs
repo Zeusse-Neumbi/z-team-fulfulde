@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 /**
- * Render the French technical note to PDF with the Chromium that Playwright
- * already installs. No LaTeX, no Word, no remote font.
+ * Render the French or English technical note to PDF with the Chromium that
+ * Playwright already installs. No LaTeX, no Word, no remote font.
  *
- *   pnpm note:build -- --draft   # allow [[placeholders]] while drafting
- *   pnpm note:build              # final: placeholders and >5 pages fail
+ *   pnpm note:build -- --draft       # allow [[placeholders]] while drafting
+ *   pnpm note:build                  # French final: 5 pages max
+ *   pnpm note:build:en               # English final: 5 pages max
  */
 import { chromium } from "@playwright/test";
 import { mkdirSync, readFileSync, statSync } from "node:fs";
@@ -23,9 +24,19 @@ function option(name, fallback) {
   return inline ? inline.slice(name.length + 1) : fallback;
 }
 
-const htmlPath = resolve(option("--html", resolve(root, "docs/note/note.fr.html")));
+const lang = option("--lang", "fr").toLowerCase();
+if (lang !== "fr" && lang !== "en") {
+  console.error(`[note] --lang must be fr or en, got ${lang}`);
+  process.exit(2);
+}
+const htmlPath = resolve(
+  option("--html", resolve(root, `docs/note/note.${lang}.html`)),
+);
 const outPath = resolve(
-  option("--out", resolve(root, `dist/Z-Team_Fulfulde_Assistant_Technical_Note_v${NOTE_VERSION}.pdf`)),
+  option(
+    "--out",
+    resolve(root, `dist/Z-Team_Lingua_Technical_Note_v${NOTE_VERSION}_${lang.toUpperCase()}.pdf`),
+  ),
 );
 const maxBytes = 10 * 1024 * 1024;
 const maxPages = 5;

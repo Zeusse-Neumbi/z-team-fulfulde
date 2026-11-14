@@ -4,7 +4,7 @@ import path from "node:path";
 import { APP_VERSION } from "./version.mjs";
 
 const root = path.resolve(import.meta.dirname, "..");
-const zip = path.join(root, `dist/zteam-fulfulde-extension-v${APP_VERSION}.zip`);
+const zip = path.join(root, `dist/zteam-lingua-extension-v${APP_VERSION}.zip`);
 
 const TARGET_MB = 8;
 const HARD_MB = 10;

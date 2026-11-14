@@ -8,7 +8,7 @@ extension. The documentation and the extension are uploaded separately.
 
 | Field | Value | Limit |
 |---|---|---|
-| Nom du prototype | Z-Team Fulfulde Assistant | — |
+| Nom du prototype | Z-Team Lingua | — |
 | Nom de l'équipe | Z-Team | — |
 | Ville de l'équipe | Douala | — |
 | Nombre de membres | 3 | 3–5 |
@@ -17,10 +17,10 @@ extension. The documentation and the extension are uploaded separately.
 | Adresse e-mail du responsable | private form field; not stored in the repository | — |
 | Téléphone/WhatsApp du responsable | private form field; not stored in the repository | — |
 | Lien de la vidéo de présentation | to record and upload | ≤ 3:00 |
-| Documentation | `dist/Z-Team_Fulfulde_Assistant_Technical_Note_v1.1.pdf` | **≤ 5 pages, ≤ 10 MB** |
-| Lien du dépôt GitHub | https://github.com/Zeusse-Neumbi/z-team-fulfulde | public |
-| Release | https://github.com/Zeusse-Neumbi/z-team-fulfulde/releases/tag/v0.2.1-preselection | public pre-release |
-| Extension | `dist/zteam-fulfulde-extension-v0.2.1.zip` | ≤ 10 MB |
+| Documentation | `dist/Z-Team_Lingua_Technical_Note_v2.0_FR.pdf` (FR form upload); `_EN.pdf` companion | **≤ 5 pages, ≤ 10 MB** |
+| Lien du dépôt GitHub | https://github.com/Zeusse-Neumbi/z-team-lingua | public |
+| Release | https://github.com/Zeusse-Neumbi/z-team-lingua/releases/tag/v0.3.0-preselection | public pre-release |
+| Extension | `dist/zteam-lingua-extension-v0.3.0.zip` | ≤ 10 MB |
 | Licence | PolyForm Noncommercial 1.0.0 (source-available; commercial use requires a separate licence) | — |
 
 The brief, from the form itself: enable a user to access the information and
@@ -32,8 +32,9 @@ source code**, with **simulated operations only** and no real bank data.
 
 ```
 submission/
-├── Z-Team_Fulfulde_Assistant_Technical_Note_v1.1.pdf
-├── zteam-fulfulde-extension-v0.2.1.zip
+├── Z-Team_Lingua_Technical_Note_v2.0_FR.pdf
+├── Z-Team_Lingua_Technical_Note_v2.0_EN.pdf
+├── zteam-lingua-extension-v0.3.0.zip
 ├── video-link.txt
 ├── github-link.txt
 ├── SHA256SUMS.txt
@@ -96,8 +97,8 @@ same steps and the licence.
 - [ ] The production ZIP contains no `⟦<code>:` fixture token.
 - [ ] Stop restores the page.
 - [ ] The novel-content path works without a reload.
-- [ ] The technical note is French, **5 pages maximum**, **10 MB maximum**, no
-      `[[...]]` placeholders.
+- [ ] Both technical notes are **5 pages maximum**, **10 MB maximum**, no
+      `[[...]]` placeholders; the French one is the form upload.
 - [ ] The video is ≤ 3:00 with French subtitles and plays in an incognito window.
 - [ ] The repository is public and the README renders without login.
 - [ ] The licence is stated as PolyForm Noncommercial 1.0.0, not MIT or OSI open source.

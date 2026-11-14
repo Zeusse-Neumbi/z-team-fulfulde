@@ -1,4 +1,4 @@
-# Z-Team Fulfulde Assistant — preselection 0.2.1
+# Z-Team Lingua — preselection 0.3.0
 
 Two Cameroonian language packs, one local-first engine. This is a **labelled
 machine-translation draft release**, not a native-speaker-validated release.
@@ -29,18 +29,19 @@ machine-translation draft release**, not a native-speaker-validated release.
 
 ## Assets
 
-- `zteam-fulfulde-extension-v0.2.1.zip` — load unpacked; install steps in
+- `zteam-lingua-extension-v0.3.0.zip` — load unpacked; install steps in
   `INSTALL.md`.
-- `Z-Team_Fulfulde_Assistant_Technical_Note_v1.1.pdf` — French, 5 pages.
-- `zteam-listening-pack-v0.2.1.zip` — the Fulfulde oral-validation instrument,
+- `Z-Team_Lingua_Technical_Note_v2.0_FR.pdf` — French, 5 pages.
+- `Z-Team_Lingua_Technical_Note_v2.0_EN.pdf` — English companion, 5 pages.
+- `zteam-lingua-listening-pack-v0.3.0.zip` — the Fulfulde oral-validation instrument,
   when uploaded locally.
 - `SHA256SUMS.txt` — checksums for the form files.
 
 ## Documentation
 
-- <https://github.com/Zeusse-Neumbi/z-team-fulfulde/blob/main/docs/LANGUAGES.md>
-- <https://github.com/Zeusse-Neumbi/z-team-fulfulde/blob/main/docs/LINGUISTIC_VALIDATION.md>
-- <https://github.com/Zeusse-Neumbi/z-team-fulfulde/blob/main/docs/PRIVACY.md>
+- <https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/LANGUAGES.md>
+- <https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/LINGUISTIC_VALIDATION.md>
+- <https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/PRIVACY.md>
 
 Licence: PolyForm Noncommercial 1.0.0. Commercial use requires a separate
 written licence.

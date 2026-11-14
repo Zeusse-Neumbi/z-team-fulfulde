@@ -6,7 +6,7 @@ const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url),
 export const APP_VERSION = pkg.version;
 
 /** The French technical-note document version (independent of the app semver). */
-export const NOTE_VERSION = "1.1";
+export const NOTE_VERSION = "2.0";
 
 /** Preselection release tag; the GitHub release uses the same string. */
 export const RELEASE_TAG = `v${APP_VERSION}-preselection`;

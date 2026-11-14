@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Z-Team Lingua — Technical note</title>
+  <link rel="stylesheet" href="note.css">
+</head>
+<body>
+  <section class="page">
+    <p class="eyebrow">SAFINUM Innovate Challenge 2026 · Preselection</p>
+    <h1>Z-Team Lingua</h1>
+    <p class="subtitle">A language accessibility layer for Cameroonian digital financial services — Fulfulde and Yemba, without modifying the service.</p>
+    <div class="meta">
+      <span>Z-Team, Douala</span>
+      <span>Version 2.0 — 14 November 2026</span>
+      <span>Technical note EN</span>
+      <span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua">github.com/Zeusse-Neumbi/z-team-lingua</a></span>
+    </div>
+
+    <h2>1. The problem</h2>
+    <p>In Cameroon, many users of digital financial services speak a national language first, often only orally. Banking interfaces, mobile money and account-opening journeys remain mostly in French or English. The barrier is not only lexical: a user who is not fluent in French cannot check an amount, understand a fee, read a warning or confirm a beneficiary with the same confidence as a native reader.</p>
+    <p>Adamawa Fulfulde is a strongly oral language. Some of its speakers do not read the Latin orthography, even when they speak the language fluently. Voice is therefore not an add-on: it is a condition of access. In 2024, 60.9% of Cameroonian adults had a bank or mobile-money account (<a href="https://www.worldbank.org/en/publication/globalfindex">Global Findex 2025, World Bank</a>); access is growing, but the interface remains in French or English.</p>
+
+    <h2>2. The answer</h2>
+    <p>Z-Team Lingua is a Chrome MV3 extension that translates the visible interface of an existing or simulated financial service in place, from French or English into a Cameroonian language, and speaks it when a voice is available. The service is not modified: the extension works on the page as an accessibility layer. Amounts, fees, totals, balances, names, phones, accounts, references and user input remain byte-identical.</p>
+
+    <div class="kpis">
+      <div class="kpi"><div class="n">2</div><div class="l">languages shipped as drafts: Fulfulde (<code>fub</code>) and Yemba (<code>ybb</code>)</div></div>
+      <div class="kpi"><div class="n">115 / 103</div><div class="l">translated units: Fulfulde 115/115, Yemba 103/115 (12 withheld)</div></div>
+      <div class="kpi"><div class="n">82 / 115</div><div class="l">playable Fulfulde clips; 33 withheld before validation</div></div>
+      <div class="kpi"><div class="n">0</div><div class="l">packs validated by a native speaker: no score published</div></div>
+    </div>
+
+    <h2>3. What we ship</h2>
+    <table>
+      <thead><tr><th>Language</th><th>Pack</th><th>Voice in the ZIP</th><th>Status</th><th>Read more</th></tr></thead>
+      <tbody>
+        <tr><td>Adamawa Fulfulde <code>fub</code></td><td>NLLB-200 int8, 115/115 units</td><td>82 MMS clips; 33 withheld</td><td><span class="tag warn">MT draft</span></td><td><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/LANGUAGES.md">LANGUAGES.md</a></td></tr>
+        <tr><td>Yemba <code>ybb</code></td><td>Marian cameroon-int8, 103/115 (12 withheld)</td><td>Local API only; no clips</td><td><span class="tag warn">MT draft</span></td><td><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/MODELS.md">MODELS.md</a></td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout warn"><strong>The honesty rule.</strong> No pack is validated: the panel always says <strong>MT — not validated</strong>. <code>pnpm check:evidence</code> fails by design while both packs are drafts. A Fulfulde clip is never played under a Yemba label.</div>
+
+    <div class="link-grid">
+      <div class="link"><strong>Public release</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/releases/tag/v0.3.0-preselection">v0.3.0-preselection</a> · ZIP, FR/EN note, listening pack, checksums</span></div>
+      <div class="link"><strong>Live demo</strong><span><a href="https://safinum.cm/hackathon-test">safinum.cm/hackathon-test</a> · simulated page, fictional data</span></div>
+      <div class="link"><strong>Language registry</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/languages/README.md">languages/README.md</a> · one language = one YAML row, not code</span></div>
+      <div class="link"><strong>Decisions</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/tree/main/docs/decisions">docs/decisions/</a> · 21 dated ADRs</span></div>
+    </div>
+
+    <h2>What the demonstration proves</h2>
+    <div class="cards">
+      <div class="card"><h3>The page is translated in place</h3><p>Five steps without a reload: balance, fees, beneficiary, summary, confirmation. Content added after load is handled by the <code>MutationObserver</code>.</p></div>
+      <div class="card"><h3>Values stay exact</h3><p>A mismatch on an amount, name, account or reference restores the changed nodes and aborts the plan. The check is byte-for-byte, not a fuzzy comparison.</p></div>
+      <div class="card"><h3>Voice is a layer</h3><p>The panel reads the step, facts, warnings and actions. It never reads the whole page; a sentence containing a protected value is excluded by default.</p></div>
+      <div class="card"><h3>Nothing leaves the network</h3><p>The extension talks only to <code>127.0.0.1</code>. The value vault lives in memory and is cleared on Stop or navigation.</p></div>
+    </div>
+    <div class="callout good"><strong>The demo path:</strong> SAFINUM page in French → enable → Fulfulde translation → voice → Yemba text switch → Stop and restore. Screenshots, checksums and the release are in the links above.</div>
+
+    <div class="footer"><span>Z-Team Lingua · technical note v2.0</span><span>Page 1/5 · PolyForm Noncommercial 1.0.0</span></div>
+  </section>
+
+  <section class="page">
+    <h2>4. What we tried — and why we cut it</h2>
+    <p>The project started as a Fulfulde assistant. The experiments showed that a model which “speaks” a language does not necessarily translate a financial interface. We measured, compared, and cut everything that failed the value invariant. These five experiments decided the architecture.</p>
+
+    <table>
+      <thead><tr><th>Experiment</th><th>What worked</th><th>What disqualified it</th><th>Decision</th></tr></thead>
+      <tbody>
+        <tr><td><strong>NLLB-200 600M int8</strong><br><span class="small muted">Fulfulde, <code>fuv_Latn</code></span></td><td>6/6 amounts, phone and reference kept; 0/20 repetition; 1.28 s median</td><td>Nigerian variety, not <code>fub</code>; names changed at API level</td><td><span class="tag ok">Fulfulde default</span></td></tr>
+        <tr><td><strong>cameroon-int8 Marian</strong><br><span class="small muted">Fulfulde, AGLC</span></td><td>Right alphabet <code>ŋ ɓ ɗ</code>; 737 ms</td><td>0/6 values kept; 30× repetition; scripture vocabulary; 0/97 sentences with <code>ɛ</code>/<code>ɔ</code>; <code>ƴ</code> missing</td><td><span class="tag bad">rejected</span></td></tr>
+        <tr><td><strong>MMS-TTS Fulah</strong><br><span class="small muted">Fulfulde voice</span></td><td>Local voice, 82 bundled clips</td><td>Tokenizer 26/30 (86.7%): <code>ɛ ɔ ɲ ʼ</code> lost; RTF 1.1–1.9; 33 muted clips</td><td><span class="tag warn">optional voice</span></td></tr>
+        <tr><td><strong>Marian cameroon-int8</strong><br><span class="small muted">Yemba, first model</span></td><td>Concise on short commands; 1.27 s</td><td>11/20 sentences loop (up to 12×); 12/115 units withheld; over-generated sentences</td><td><span class="tag warn">Yemba draft</span></td></tr>
+        <tr><td><strong>M2M100 418M Yemba</strong><br><span class="small muted">second Yemba model</span></td><td>16/20 digit groups; 4/20 loops; 2/3 placeholders</td><td>11/80 labels fabricate “Yɛɛ́so Klísto”; <code>Aïssatou → Izatú</code>; 24.1 s</td><td><span class="tag bad">rejected</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="cards three">
+      <div class="quote"><div class="src">Fulfulde · cameroon-int8</div><p><span class="bad">Source:</span> “Numéro de téléphone : 6 12 34 56 78”</p><p><span class="bad">Output:</span> “Tel: wi’i: Jawmiraawo, jawdi am, jawdi am…” (30×, no number)</p><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/MODELS.md">MODELS.md</a></div>
+      <div class="quote"><div class="src">Yemba · Marian</div><p><span class="bad">Source:</span> “Le total sera de {amount}.”</p><p><span class="bad">Output:</span> repeated “ajū mīi” and lost <code>{amount}</code></p><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/evidence/ybb-mt-comparison.md">ybb-mt-comparison.md</a></div>
+      <div class="quote"><div class="src">Yemba · M2M100</div><p><span class="bad">Source:</span> “Bénéficiaire”</p><p><span class="bad">Output:</span> “… ánɛ Yɛɛ́so Klísto”</p><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/decisions/0021-reject-m2m100-yemba.md">ADR 0021</a></div>
+    </div>
+
+    <p><strong>What we learned.</strong> A good automatic score is not enough. M2M100 won on digits and repetition, but fabricated a religious proper name inside a financial label; the Marian Yemba model over-generated sentences and lost placeholders. The first is a <em>meaning</em> failure, the second a <em>form</em> failure. Both are blocking on a payment page. We kept NLLB for Fulfulde, Marian for Yemba, and turned every failure into a test or a withholding rule.</p>
+
+    <div class="link-grid">
+      <div class="link"><strong>Full benchmark</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/MODELS.md">docs/MODELS.md</a> · 20 sentences, latency, alphabet, A1 gate</span></div>
+      <div class="link"><strong>Yemba comparison</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/evidence/ybb-mt-comparison.md">docs/evidence/ybb-mt-comparison.md</a> · raw TSV</span></div>
+      <div class="link"><strong>NLLB vs cameroon-int8</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/decisions/0019-nllb-default-mt.md">ADR 0019</a> · why NLLB stays the default</span></div>
+      <div class="link"><strong>M2M100 rejection</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/decisions/0021-reject-m2m100-yemba.md">ADR 0021</a> · why the second Yemba model is out</span></div>
+      <div class="link"><strong>Hugging Face models</strong><span><a href="https://huggingface.co/JustFrederik/nllb-200-distilled-600M-ct2-int8">NLLB int8</a> · <a href="https://huggingface.co/flagship-ai/cameroon-int8">cameroon-int8</a> · <a href="https://huggingface.co/facebook/mms-tts-ful">MMS ful</a> · <a href="https://huggingface.co/facebook/mms-tts-ybb">MMS ybb</a></span></div>
+      <div class="link"><strong>Lamnso proof</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/ADD_A_LANGUAGE_PROOF.md">ADD_A_LANGUAGE_PROOF.md</a> · a third language without code changes</span></div>
+    </div>
+
+    <h2>Three rules from the bench</h2>
+    <div class="cards three">
+      <div class="card accent"><h3>01 · Measure values first</h3><p>A sentence can be “fluent” and unusable if it loses an amount. The first criterion is not BLEU; it is value preservation and no looping.</p></div>
+      <div class="card"><h3>02 · Mask before calling</h3><p>No model receives a raw name, account or amount. Mixed nodes go through placeholders; if a placeholder dies, the target is refused.</p></div>
+      <div class="card warn"><h3>03 · Label what remains</h3><p>A draft that passes tests is still a draft. The panel, note, ZIP and release say <strong>MT — not validated</strong> until a speaker signs.</p></div>
+    </div>
+
+    <div class="callout"><strong>What survived:</strong> NLLB for Fulfulde, Marian for Yemba, MMS for the Fulfulde voice. <strong>What was cut:</strong> cameroon-int8 as the Fulfulde translator, M2M100 as the Yemba pack, and every clip whose draft is not speakable. The reasons are in ADRs 0018, 0019 and 0021.</div>
+    <div class="steps">
+      <div class="step"><b>13 Nov · NLLB</b>6/6 values, 0 loops: NLLB becomes the Fulfulde default (ADR 0019).</div>
+      <div class="step"><b>13 Nov · A1</b>97 sentences: 0/97 with <code>ɛ</code>/<code>ɔ</code>, 12/97 with <code>ŋ</code>; <code>ƴ</code> missing.</div>
+      <div class="step"><b>14 Nov · Yemba</b>Marian: 103/115; 12 units withheld for placeholders or safety.</div>
+      <div class="step"><b>14 Nov · M2M100</b>11/80 “Yɛɛ́so Klísto”: semantic rejection, not just metrics (ADR 0021).</div>
+    </div>
+
+    <div class="footer"><span>Models are candidates, not validators.</span><span>Page 2/5</span></div>
+  </section>
+
+  <section class="page">
+    <h2>5. Architecture: a language is data</h2>
+    <p>The browser depends on no cloud service. The extension reads the page, applies the selected pack and verifies values; the local API receives only text that has already been filtered. The registry <code>languages/&lt;code&gt;.yaml</code> describes the language, pack, number lexicon, MT provider and voice policy. Adding a language changes neither the server, nor the translator, nor the extension.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 820 230" role="img" aria-label="Architecture: page, content script, language registry, side panel, local API and models">
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0b5d7a"/></marker>
+        </defs>
+        <rect x="10" y="18" width="200" height="64" rx="9" fill="#eef4f7" stroke="#9fc2d2"/>
+        <text x="24" y="42" font-family="system-ui" font-size="11" font-weight="700" fill="#17202a">Financial page</text>
+        <text x="24" y="60" font-family="system-ui" font-size="9" fill="#5d6b78">existing interface, unchanged</text>
+
+        <rect x="250" y="10" width="230" height="80" rx="9" fill="#ffffff" stroke="#0b5d7a"/>
+        <text x="264" y="33" font-family="system-ui" font-size="11" font-weight="700" fill="#17202a">Content script</text>
+        <text x="264" y="51" font-family="system-ui" font-size="9" fill="#5d6b78">scanner + classifier + translator</text>
+        <text x="264" y="66" font-family="system-ui" font-size="9" fill="#5d6b78">protect, apply, verify, restore</text>
+        <text x="264" y="81" font-family="system-ui" font-size="9" fill="#9f1239">amounts / names / accounts: never translated</text>
+
+        <rect x="520" y="10" width="285" height="80" rx="9" fill="#ffffff" stroke="#b45309"/>
+        <text x="534" y="33" font-family="system-ui" font-size="11" font-weight="700" fill="#17202a">Registry + packs</text>
+        <text x="534" y="51" font-family="system-ui" font-size="9" fill="#5d6b78">languages/fub.yaml · languages/ybb.yaml</text>
+        <text x="534" y="66" font-family="system-ui" font-size="9" fill="#5d6b78">TM, phrases, numbers, MT, voice, status</text>
+        <text x="534" y="81" font-family="system-ui" font-size="9" fill="#b45309">draft / validated / text-only</text>
+
+        <rect x="10" y="120" width="200" height="70" rx="9" fill="#eef4f7" stroke="#9fc2d2"/>
+        <text x="24" y="144" font-family="system-ui" font-size="11" font-weight="700" fill="#17202a">Side panel</text>
+        <text x="24" y="162" font-family="system-ui" font-size="9" fill="#5d6b78">coverage, values, actions</text>
+        <text x="24" y="177" font-family="system-ui" font-size="9" fill="#5d6b78">read-back, confirmation, language</text>
+
+        <rect x="250" y="120" width="230" height="70" rx="9" fill="#ffffff" stroke="#0b5d7a"/>
+        <text x="264" y="144" font-family="system-ui" font-size="11" font-weight="700" fill="#17202a">Local API 127.0.0.1</text>
+        <text x="264" y="162" font-family="system-ui" font-size="9" fill="#5d6b78">FastAPI · /translate /tts /health</text>
+        <text x="264" y="177" font-family="system-ui" font-size="9" fill="#9f1239">no outbound call</text>
+
+        <rect x="520" y="120" width="285" height="70" rx="9" fill="#ffffff" stroke="#b45309"/>
+        <text x="534" y="144" font-family="system-ui" font-size="11" font-weight="700" fill="#17202a">Local models</text>
+        <text x="534" y="162" font-family="system-ui" font-size="9" fill="#5d6b78">NLLB-200 · Marian · MMS-TTS</text>
+        <text x="534" y="177" font-family="system-ui" font-size="9" fill="#5d6b78">weights in models/, never in the ZIP</text>
+
+        <line x1="210" y1="50" x2="248" y2="50" stroke="#0b5d7a" stroke-width="2" marker-end="url(#arrow)"/>
+        <line x1="480" y1="50" x2="518" y2="50" stroke="#0b5d7a" stroke-width="2" marker-end="url(#arrow)"/>
+        <line x1="110" y1="120" x2="110" y2="84" stroke="#0b5d7a" stroke-width="2" marker-end="url(#arrow)"/>
+        <line x1="360" y1="120" x2="360" y2="92" stroke="#0b5d7a" stroke-width="2" marker-end="url(#arrow)"/>
+        <line x1="480" y1="155" x2="518" y2="155" stroke="#0b5d7a" stroke-width="2" marker-end="url(#arrow)"/>
+        <line x1="250" y1="155" x2="212" y2="155" stroke="#0b5d7a" stroke-width="2" marker-end="url(#arrow)"/>
+      </svg>
+      <div class="caption">Simplified diagram; the Mermaid source and detailed components are in <a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/ARCHITECTURE.md">docs/ARCHITECTURE.md</a>.</div>
+    </div>
+
+    <h2>6. The translation pipeline</h2>
+    <div class="steps">
+      <div class="step"><b>1 · Read</b>roles, accessible names, labels and text nodes. No bank-specific selector.</div>
+      <div class="step"><b>2 · Classify</b><code>translatable</code>, <code>mixed</code>, <code>protected</code>, <code>ignore</code>. Protected values never leave.</div>
+      <div class="step"><b>3 · Translate</b>validated pack or MT draft. Mixed nodes are masked with <code>&#91;&#91;Z1&#93;&#93;</code>.</div>
+      <div class="step"><b>4 · Verify</b>every value is compared byte-for-byte; a mismatch restores the page and aborts the plan.</div>
+    </div>
+
+    <div class="cards">
+      <div class="card accent"><h3>What stays in the browser</h3><p>Amounts, fees, totals, balances, names, phones, accounts, references, dates, codes and user input. The vault is in memory and cleared on Stop or navigation.</p></div>
+      <div class="card"><h3>What may reach the API</h3><p>Only plain labels, or mixed labels whose values are replaced by placeholders. The target is applied only if every placeholder survives.</p></div>
+    </div>
+
+    <div class="callout good"><strong>Tested invariant:</strong> 52 unit cases in <code>packages/translator/src/integrity.test.ts</code>, including a deliberate alteration that must trigger revert and abort. See <a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/ARCHITECTURE.md">ARCHITECTURE.md</a> and <a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/PRIVACY.md">PRIVACY.md</a>.</div>
+
+    <div class="link-grid">
+      <div class="link"><strong>Full architecture</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/ARCHITECTURE.md">docs/ARCHITECTURE.md</a> · components, pipeline, limits</span></div>
+      <div class="link"><strong>Privacy</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/PRIVACY.md">docs/PRIVACY.md</a> · flow, storage, permissions</span></div>
+      <div class="link"><strong>Why an extension</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/decisions/0008-panel-guided-actions.md">ADR 0008</a> · guided actions, no auto-click</span></div>
+      <div class="link"><strong>Registry and validation</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/ADD_A_LANGUAGE.md">ADD_A_LANGUAGE.md</a> · data, not code</span></div>
+    </div>
+
+    <h2>The registry in practice</h2>
+    <pre><code>code: fub                 # ISO 639-3, one row per language
+status: draft             # validated | draft | text-only
+pack: entries/fub         # TM + phrases
+numbers: numbers/fub.json # number lexicon
+mt: { provider: nllb, pivot: fr }
+speech: { provider: mms, voice: bundled }</code></pre>
+    <div class="cards three">
+      <div class="card"><h3>One pack, one status</h3><p>The loader rejects a missing pack, an unknown target or a malformed row. A <code>validated</code> pack without evidence breaks the build; a <code>draft</code> stays labelled.</p></div>
+      <div class="card"><h3>One voice, one policy</h3><p><code>bundled</code> for Fulfulde, <code>api</code> for Yemba, <code>none</code> for text-only. The panel cannot borrow another language’s clips.</p></div>
+      <div class="card"><h3>One proof, one language</h3><p>Validation is per language: a Fulfulde speaker does not validate Yemba. The generated test stays red until sign-off.</p></div>
+    </div>
+    <div class="callout"><strong>Design boundary:</strong> the local API never sees a protected or unmasked mixed node. The pack decides the language and voice; the code contains no hardcoded language list.</div>
+
+    <div class="footer"><span>The service is never modified; the page is an accessibility layer.</span><span>Page 3/5</span></div>
+  </section>
+
+  <section class="page">
+    <h2>7. Validation and results</h2>
+    <div class="callout warn"><strong>No native session has run.</strong> Neither Fulfulde nor Yemba has been reviewed by a speaker. The listening protocol (ADR 0013), the 115-clip pack and the CSV templates are ready; no meaning, naturalness, MOS or back-translation score is published. Both packs remain <code>status: draft</code>, <code>packValidated: false</code>.</div>
+
+    <table>
+      <thead><tr><th>Measure</th><th class="num">Result</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr><td>Unit tests</td><td class="num">184 passed</td><td><code>pnpm test</code> · shared, translator, phrasebank, extension</td></tr>
+        <tr><td>Playwright tests</td><td class="num">15 passed, 1 skipped</td><td><code>pnpm e2e</code> · the skipped test needs a live API</td></tr>
+        <tr><td>30-page public sweep</td><td class="num">26 passed, 4 skipped (network), 0 product failures</td><td><code>pnpm check:sites</code></td></tr>
+        <tr><td>Demo page, Fulfulde draft</td><td class="num">23 applied, 92%, 2 labels held, 11 protected values</td><td><code>node scripts/check-draft.mjs</code></td></tr>
+        <tr><td>Protected values changed</td><td class="num"><strong>0</strong></td><td>invariant + e2e + check-draft</td></tr>
+        <tr><td>Critical meaning errors, MOS, naturalness</td><td class="num">not measured</td><td><code>back-translation.csv</code> and <code>tts-mos.csv</code> empty</td></tr>
+      </tbody>
+    </table>
+
+    <h2>8. Voice: what is bundled, what is not</h2>
+    <div class="cards">
+      <div class="card"><h3>Fulfulde <span class="tag ok">bundled</span></h3><p><code>facebook/mms-tts-ful</code>, VITS, CC-BY-NC-4.0. 82 of 115 clips are playable; 33 are withheld because they are warnings, errors, ambiguous labels or repetitions. A clip plays only when the text matches the screen exactly.</p></div>
+      <div class="card"><h3>Yemba <span class="tag warn">API only</span></h3><p><code>facebook/mms-tts-ybb</code>, CC-BY-NC-4.0. No clips are bundled; without the local API, Play is disabled and the panel says why. A Fulfulde clip is never offered under the Yemba label.</p></div>
+    </div>
+
+    <div class="callout"><strong>The guard.</strong> <code>pnpm check:evidence</code> prints both packs and fails: Fulfulde 115/115, Yemba 103/115, 0 validated. <code>build:release</code> enforces evidence only for a language that declares <code>status: validated</code> (ADR 0020). That is deliberately weaker than validation: the ZIP is a labelled draft, not a linguistic release.</div>
+
+    <div class="link-grid">
+      <div class="link"><strong>Listening protocol</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/LINGUISTIC_VALIDATION.md">LINGUISTIC_VALIDATION.md</a> · ADR 0013, correction/blind passes</span></div>
+      <div class="link"><strong>Voice report</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/TTS_REPORT.md">TTS_REPORT.md</a> · MMS, RTF, what is not measured</span></div>
+      <div class="link"><strong>E2E and stress</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/E2E_REPORT.md">E2E_REPORT.md</a> · journey, a11y, clicks, network</span></div>
+      <div class="link"><strong>Live audit</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/LIVE_AUDIT.md">LIVE_AUDIT.md</a> · SAFINUM page, values, restore</span></div>
+    </div>
+
+    <h2>The protocol in three passes</h2>
+    <div class="steps">
+      <div class="step"><b>1 · Correction</b>French source visible, Fulfulde audio played; the speaker describes the error and the correct form.</div>
+      <div class="step"><b>2 · Blind</b>audio only; the speaker gives the French meaning and the team records the back-translation.</div>
+      <div class="step"><b>3 · Confirmation</b>the correction is re-synthesized; the speaker listens and confirms.</div>
+      <div class="step"><b>4 · Limit</b>one speaker, oral review, no second written validation: the limit is written, not hidden.</div>
+    </div>
+    <div class="cards">
+      <div class="card warn"><h3>What we do not claim</h3><ul><li>General Fulfulde or Yemba translation.</li><li>A measured MOS, naturalness or meaning score.</li><li>A validated voice, even when clips are playable.</li><li>Cross-validation between the two languages.</li></ul></div>
+      <div class="card accent"><h3>How to read the numbers</h3><p>The 184 tests and 15 Playwright tests are dated 14 November 2026. The 30-page sweep is a 13 November snapshot. A number without a date is not evidence.</p></div>
+    </div>
+    <div class="cards">
+      <div class="card accent"><h3>To validate</h3><p>A Fulfulde speaker, then a Yemba speaker; the 115-clip pack, the CSV templates, the correction and blind passes. Sign-off ends with <code>validatedBy</code> and <code>backTranslationFr</code>.</p></div>
+      <div class="card"><h3>After validation</h3><p><code>pnpm check:evidence</code> passes, <code>build:release</code> accepts the language, the panel reads <strong>validated</strong>, and clips are regenerated from corrected targets.</p></div>
+    </div>
+    <div class="callout warn"><strong>Evidence state:</strong> release <a href="https://github.com/Zeusse-Neumbi/z-team-lingua/releases/tag/v0.3.0-preselection">v0.3.0-preselection</a> is a draft pre-release. ZIP, FR/EN note and checksums are published; native validation, video and form remain open.</div>
+
+    <div class="footer"><span>A labelled draft is not a validation.</span><span>Page 4/5</span></div>
+  </section>
+
+  <section class="page">
+    <h2>9. Security and accessibility</h2>
+    <div class="callout good"><strong>14 checks, 14 proofs.</strong> No network call outside <code>127.0.0.1</code>; no page value in <code>chrome.storage</code> or logs; amounts, fees, names, phones, accounts, references and input unchanged; stale action rejected; no auto-submit or auto-check; prompt injection treated as text; ZIP without test tokens or <code>&lt;all_urls&gt;</code>.</div>
+
+    <div class="matrix">
+      <span><b>01</b> Network: loopback only</span><span><b>08</b> Mixed node: value kept</span>
+      <span><b>02</b> Storage: no page values</span><span><b>09</b> Altered target: revert + abort</span>
+      <span><b>03</b> Logs: no page values</span><span><b>10</b> Stale action rejected</span>
+      <span><b>04</b> Amount byte-identical</span><span><b>11</b> Double submit prevented</span>
+      <span><b>05</b> Fee / total / balance identical</span><span><b>12</b> No automatic click or check</span>
+      <span><b>06</b> Name / phone / account / reference / date</span><span><b>13</b> Prompt injection not executed</span>
+      <span><b>07</b> User input untouched</span><span><b>14</b> ZIP without token or <code>&lt;all_urls&gt;</code></span>
+    </div>
+    <p class="small muted">Detail: <a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/PRIVACY.md">PRIVACY.md</a> · <a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/decisions/0012-spoken-values-and-click-guard.md">ADR 0012</a> · <a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/decisions/0007-browser-translation-runtime.md">ADR 0007</a>.</p>
+
+    <h2>10. Reproduce in one command sequence</h2>
+    <pre><code>git clone https://github.com/Zeusse-Neumbi/z-team-lingua
+pnpm install --frozen-lockfile
+uv sync --project apps/server --frozen --extra dev
+pnpm models:download mms nllb-ct2   # + mt-ybb mms-ybb for Yemba
+pnpm build:submission
+pnpm e2e
+pnpm check:draft
+pnpm check:evidence   # fails while the packs are drafts</code></pre>
+    <p>The 1.10 MB ZIP is self-contained for Fulfulde and Yemba text translation; the Fulfulde voice is bundled, the Yemba voice needs the local API and model. The submitted commit is tagged and published in the release; checksums are in <code>SHA256SUMS.txt</code>.</p>
+
+    <h2>11. Roadmap</h2>
+    <ul>
+      <li><strong>Validation:</strong> a Fulfulde session, then a separate Yemba session; apply corrections and fill <code>validatedBy</code> and <code>backTranslationFr</code>.</li>
+      <li><strong>Voice:</strong> evaluate the Yemba MMS voice, then fine-tune Fulfulde on a licensed corpus or move to recorded clips.</li>
+      <li><strong>Languages:</strong> add a third language through the registry without touching the runtime; the Lamnso proof is already in the repository.</li>
+      <li><strong>Product:</strong> partner integration, accessibility SDK, then other national languages.</li>
+    </ul>
+
+    <h2>12. Read more</h2>
+    <div class="link-grid">
+      <div class="link"><strong>Languages</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/LANGUAGES.md">LANGUAGES.md</a> · status, 12 withheld Yemba units</span></div>
+      <div class="link"><strong>Decisions</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/tree/main/docs/decisions">docs/decisions/</a> · 21 ADRs, from squash merge to M2M100 rejection</span></div>
+      <div class="link"><strong>Models</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/blob/main/docs/MODELS.md">MODELS.md</a> · providers, licences, latency</span></div>
+      <div class="link"><strong>Release</strong><span><a href="https://github.com/Zeusse-Neumbi/z-team-lingua/releases/tag/v0.3.0-preselection">v0.3.0-preselection</a> · ZIP, FR/EN note, listening pack</span></div>
+      <div class="link"><strong>Hugging Face</strong><span><a href="https://huggingface.co/flagship-ai/cameroon-int8">cameroon-int8</a> · <a href="https://huggingface.co/danyanderson/m2m100-yemba-french-fr2ybb">M2M100 Yemba</a> · <a href="https://huggingface.co/facebook/mms-tts-ybb">MMS Yemba</a></span></div>
+      <div class="link"><strong>Licence</strong><span><a href="https://polyformproject.org/licenses/noncommercial/1.0.0/">PolyForm Noncommercial 1.0.0</a> · commercial use needs a written licence</span></div>
+    </div>
+
+    <h2>What we do not do</h2>
+    <div class="cards">
+      <div class="card"><h3>No automatic click</h3><p>The extension does not submit, check or validate for the user. A risky action is announced, then the user clicks it.</p></div>
+      <div class="card"><h3>No cloud</h3><p>No cloud provider by default, no runtime API key, no telemetry, no remote config. Weights stay in <code>models/</code>, never in the ZIP.</p></div>
+      <div class="card"><h3>No real data</h3><p>The demo uses fictional amounts, names, accounts and references. No real identifier is needed to load or test the extension.</p></div>
+      <div class="card"><h3>No undated promise</h3><p>Every claim points to a test, file, release or source. If evidence is missing, the sentence says “not measured”.</p></div>
+    </div>
+    <div class="callout"><strong>Before sending:</strong> <code>pnpm ci:local</code> green · <code>pnpm note:build</code> and <code>pnpm note:build:en</code> at 5 pages · ZIP &lt; 10 MB · <code>sha256sum -c</code> OK · public release · incognito read · 3-minute video.</div>
+
+    <div class="footer"><span>Z-Team Lingua · Douala · SAFINUM Innovate Challenge 2026</span><span>Page 5/5</span></div>
+  </section>
+</body>
+</html>

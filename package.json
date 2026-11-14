@@ -1,6 +1,6 @@
 {
-  "name": "z-team-fulfulde",
-  "version": "0.2.1",
+  "name": "z-team-lingua",
+  "version": "0.3.0",
   "private": true,
   "description": "Local-first Cameroonian-language accessibility layer for digital financial services.",
   "license": "SEE LICENSE IN LICENSE",
@@ -52,6 +52,7 @@
     "bootstrap": "node scripts/setup.mjs",
     "generate:listening": "node scripts/generate-listening-pack.mjs",
     "note:build": "node scripts/build-note.mjs",
+    "note:build:en": "node scripts/build-note.mjs --lang en",
     "submission": "node scripts/assemble-submission.mjs",
     "probe:models": "uv run --project apps/server python scripts/probe-models.py"
   },

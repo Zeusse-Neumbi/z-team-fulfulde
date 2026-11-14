@@ -22,7 +22,7 @@ test("full French journey keeps every protected value", async () => {
     const page = await openMock(context);
     const panel = await openPanel(context, extensionId);
 
-    await expect(panel.getByRole("heading", { name: "Assistant Fulfulde" })).toBeVisible();
+    await expect(panel.getByRole("heading", { name: "Z-Team Lingua" })).toBeVisible();
     await expect(panel.locator(".page-title")).toContainText("Banque Démo");
     await startOnPanel(panel);
 

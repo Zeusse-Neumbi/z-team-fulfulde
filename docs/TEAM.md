@@ -4,7 +4,7 @@
 - **City:** Douala, Cameroon
 - **Size:** 3
 - **Deadline timezone:** Africa/Douala (UTC+1)
-- **Repository:** https://github.com/Zeusse-Neumbi/z-team-fulfulde
+- **Repository:** https://github.com/Zeusse-Neumbi/z-team-lingua
 
 ## Roles
 

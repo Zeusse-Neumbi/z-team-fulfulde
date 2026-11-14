@@ -28,7 +28,7 @@ component. The security properties it does claim are:
 ## Reporting
 
 Open a private GitHub security advisory at
-<https://github.com/Zeusse-Neumbi/z-team-fulfulde/security/advisories/new> or
+<https://github.com/Zeusse-Neumbi/z-team-lingua/security/advisories/new> or
 email the team. Do not open a public issue for a vulnerability that could affect
 the demo environment.
 

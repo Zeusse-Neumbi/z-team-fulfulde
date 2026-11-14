@@ -13,7 +13,7 @@ from .routers import asr, health, phrasebank, providers, translate, tts
 
 app = FastAPI(
     title="Z-Team Local API",
-    version="0.2.1",
+    version="0.3.0",
     description="Local-only speech and translation services. No page data leaves the machine.",
 )
 

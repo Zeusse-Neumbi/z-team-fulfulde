@@ -72,8 +72,10 @@ jobs:
       - name: End-to-end tests
         run: pnpm e2e
 
-      - name: Build the technical note
-        run: pnpm note:build
+      - name: Build the technical notes
+        run: |
+          pnpm note:build
+          pnpm note:build:en
 
       - name: Assemble the form package and checksums
         run: pnpm submission
@@ -84,9 +86,9 @@ jobs:
           RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
         run: |
           gh release create "$RELEASE_TAG" \
-            dist/zteam-fulfulde-extension-*.zip \
-            dist/Z-Team_Fulfulde_Assistant_Technical_Note_*.pdf \
+            dist/zteam-lingua-extension-*.zip \
+            dist/Z-Team_Lingua_Technical_Note_*.pdf \
             submission/SHA256SUMS.txt \
-            --title "Z-Team Fulfulde Assistant — preselection $RELEASE_TAG" \
+            --title "Z-Team Lingua — preselection $RELEASE_TAG" \
             --notes-file docs/RELEASE_NOTES.md \
             --prerelease

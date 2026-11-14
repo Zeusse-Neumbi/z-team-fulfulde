@@ -67,7 +67,7 @@ const mmsModel = join(mmsDir, "model.safetensors");
 const nllbModel = join(nllbDir, "model.bin");
 const generated = join(root, "packages/phrasebank/src/generated.ts");
 const extension = join(root, "apps/extension/.output/chrome-mv3");
-const zip = join(root, `dist/zteam-fulfulde-extension-v${APP_VERSION}.zip`);
+const zip = join(root, `dist/zteam-lingua-extension-v${APP_VERSION}.zip`);
 const ports = Array.from({ length: 11 }, (_, index) => 8000 + index);
 
 function formatBytes(bytes) {

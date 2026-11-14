@@ -71,7 +71,7 @@ jobs:
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: extension-${{ github.run_id }}
-          path: dist/zteam-fulfulde-extension-*.zip
+          path: dist/zteam-lingua-extension-*.zip
           if-no-files-found: error
           retention-days: 14
 
@@ -193,16 +193,18 @@ jobs:
       - name: Check the submission pack on the demo page
         run: pnpm check:draft
 
-      - name: Build the 5-page technical note
-        run: pnpm note:build
+      - name: Build the 5-page technical notes
+        run: |
+          pnpm note:build
+          pnpm note:build:en
 
       - name: Upload submission artifacts
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: submission-${{ github.run_id }}
           path: |
-            dist/zteam-fulfulde-extension-v*.zip
-            dist/Z-Team_Fulfulde_Assistant_Technical_Note_v*.pdf
+            dist/zteam-lingua-extension-v*.zip
+            dist/Z-Team_Lingua_Technical_Note_v*.pdf
           retention-days: 14
 
   workflows:

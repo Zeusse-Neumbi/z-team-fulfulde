@@ -2,7 +2,7 @@
 
 ## What this is
 
-Z-Team Fulfulde Assistant is a local-first Chrome MV3 extension plus a loopback
+Z-Team Lingua is a local-first Chrome MV3 extension plus a loopback
 FastAPI service. It translates the visible interface of a financial web page
 into a selected Cameroonian language pack in place, speaks it when a voice is
 available, and never changes a financial value. Fulfulde (`fub`) is the

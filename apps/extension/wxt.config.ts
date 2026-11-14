@@ -34,7 +34,7 @@ export default defineConfig({
     },
   }),
   manifest: {
-    name: "Z-Team Fulfulde Assistant",
+    name: "Z-Team Lingua",
     description:
       "A local-first Cameroonian-language accessibility layer for digital financial services. Translates the page in place and speaks it, without modifying the service.",
     version: pkg.version,
@@ -45,7 +45,7 @@ export default defineConfig({
       default_path: "sidepanel.html",
     },
     action: {
-      default_title: "Open Fulfulde assistant",
+      default_title: "Open Z-Team Lingua",
     },
   },
 });
