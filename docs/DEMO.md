@@ -2,9 +2,10 @@
 
 Two paths, never mixed:
 
-- **Product demo** — `pnpm build:submission`: the labelled MT draft pack plus the
-  bundled Opus clips. This is the jury path and the video, and the panel states
-  **Fulfulde : MT — non validée** on every screen.
+- **Product demo** — `pnpm build:submission`: the labelled MT draft packs (NLLB
+  for Fulfulde, cameroon-int8 Marian for Yemba) plus the bundled Opus clips.
+  This is the jury path and the video, and the panel states **MT — non validée**
+  on every screen.
 - **Mechanics test** — fixture build with `⟦FUB:…⟧` tokens. This is for e2e and `check:live`; never record it as Fulfulde.
 
 The production build is honest about the pack. The submission build bundles the NLLB draft
