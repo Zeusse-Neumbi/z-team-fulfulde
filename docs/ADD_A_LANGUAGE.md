@@ -88,10 +88,17 @@ noncommercial redistribution.
 On a scratch branch:
 
 ```bash
-pnpm lang:add ewo --model facebook/mms-tts-ewo --mt francais-ewondo
+pnpm lang:add lns --model facebook/mms-tts-lns --mt francais-lamnso --name Lamnso
 git status --short
 ```
 
-The diff must contain only `languages/`, `packages/phrasebank/entries/`,
-`packages/phrasebank/numbers/`, `models/manifest.json` and the generated test.
-No existing `.ts` or `.py` file is edited.
+The diff contains only `languages/`, `packages/phrasebank/entries/`,
+`packages/phrasebank/numbers/`, `models/manifest.json` and the new generated
+test. No existing `.ts` or `.py` file is edited; the test suite derives the
+registry list and `MMSTTS` applies the registry `speech.substitutions`, so a
+new voice does not need a Python edit. The `letters` field and any
+substitutions are **data to be supplied by a speaker** — the scaffolder's ASCII
+placeholder is not an inventory. The generated test stays red until validation.
+
+A worked Lamnso run is recorded in
+[`ADD_A_LANGUAGE_PROOF.md`](ADD_A_LANGUAGE_PROOF.md).
