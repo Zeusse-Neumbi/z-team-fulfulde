@@ -68,18 +68,40 @@ The masked set uses the pack's `ZZPH<n>ZZ` placeholders.
   `ZZPH0Z` and `ZPH2Z` (missing characters) and truncates. The loader's
   placeholder check withholds that entry; it is not shipped as a translation.
 
-## Decision
+## Full-pack inspection: disqualifying contamination
 
-Adopt M2M100 for the Yemba candidate pack and as the `ybb` registry MT provider.
-The literal-sentence rule “no 3-gram repeated ≥3×” was not met in the strict
-sense (4/20 rows), but all four are the raw-amount sentences that the product
-never sends; on the masked path, where the extension actually operates, the
-candidate is better on placeholders, repetition, length and digits. Marian stays
-available as an explicit opt-in provider (`marian`) and is not deleted.
+The metrics above are not the whole result. A full 80-unit + 35-phrase candidate
+pack was generated with M2M100 and reviewed before adoption. It contains a
+failure the automatic checks cannot see: **11 of 80 UI strings fabricate
+“Yɛɛ́so” (Jesus), four of them also “Klísto” (Christ).**
 
-The latency cost is real and recorded: ~19–24× slower on this CPU. That is
-acceptable for an explicit Yemba selection and is why M2M100 is not the default
-for Fulfulde, and why it is not forced on any other language.
+| Entry | French source | M2M100 target |
+| --- | --- | --- |
+| `tm.ben.title`, `tm.step.beneficiary`, `tm.summary.beneficiary`, `tm.receipt.beneficiary` | Bénéficiaire | `… ánɛ Yɛɛ́so Klísto` |
+| `tm.ben.name` | Nom du bénéficiaire | `Yɛɛ́so á zéŋ ndé ŋ́gɛ: «Ntē ŋiŋ yīi…` |
+| `tm.fees.free` | Gratuit | `Yɛɛ́so á zéŋ ndé ŋ́gɛ: «Alémndēm` |
+| `tm.summary.confirm` | Confirmer le transfert | `… á mbū Yɛɛ́so, tɛ́ ndɔk ntsékne.` |
+| `tm.nav.back_hackathon` | Retour au hackathon | `… ŋke mbɔŋ Yɛɛ́so` |
+| `tm.ben.warning_new` | Ce bénéficiaire n'a jamais été utilisé… | `… á nzem Yɛɛ́so.` |
+| `tm.novel.example` | Un message important pour les clients… | `… pɔ́ é epuɔ Yɛɛ́so.` |
+| `WARN_NEW_BENEFICIARY` | new-beneficiary warning | `… ánɛ anu jɔ mɛ́t ɛ́…` + term |
+
+`Bénéficiaire → Jésus-Christ` is fabricated content in a financial label. At
+runtime the same model would translate unseen page text with no pack review, so
+the error cannot be contained by withholding the affected entries. The loader
+has no semantic check for this class of failure.
+
+## Verdict
+
+**Rejected.** M2M100 wins the automatic metrics but fails the semantic-safety
+requirement. The committed Yemba pack stays the Marian candidate, and
+`languages/ybb.yaml` stays on `marian`. The M2M100 provider, manifest entry and
+download alias remain as an opt-in experiment only; no registry row selects
+them. See [ADR 0021](../decisions/0021-reject-m2m100-yemba.md).
+
+The latency cost is also recorded: ~19–24× slower on this CPU. It is not the
+reason for rejection, but it reinforces the decision not to make M2M100 a
+default anywhere.
 
 ## Limits
 

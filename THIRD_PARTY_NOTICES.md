@@ -41,7 +41,7 @@ terms.
 | Cameroonian Fufulde (`flagship-ai/cameroon-int8`, `francais-fufulde`) | 77 MB int8 | CC-BY-NC-4.0 (fp32 originals CC-BY-4.0) | Optional FR→Fufulde candidate, opt-in (AGLC, failed value preservation) |
 | Cameroonian Yemba (`flagship-ai/cameroon-int8`, `francais-yemba`) | 77 MB int8 | CC-BY-NC-4.0 (fp32 originals CC-BY-4.0) | Draft FR→Yemba candidate (AGLC); no native validation |
 | MMS-TTS Yemba (`facebook/mms-tts-ybb`) | 36M VITS | CC-BY-NC-4.0 | Draft local Yemba voice |
-| M2M100 Yemba (`danyanderson/m2m100-yemba-french-fr2ybb`) | 418M, 1.85 GB | MIT | Optional FR→Yemba candidate |
+| M2M100 Yemba (`danyanderson/m2m100-yemba-french-fr2ybb`) | 418M, 1.85 GB | MIT | Evaluated, not adopted: fabricates names in the Yemba pack |
 | Fine-tuned MMS/VITS | 36M | CC-BY-NC-4.0 (inherits) | Optional validated voice |
 | Ollama model (`ZTEAM_OLLAMA_MODEL`) | installed locally | Model-dependent | Local LLM translation test |
 
@@ -76,7 +76,7 @@ when a skill is refreshed.
 | **Bundled demo clips** (`apps/extension/public/audio/demo/*.opus`) | CC-BY-NC-4.0 (model output) | 115 short synthetic clips shipped in the ZIP | Non-commercial; the clip, the manifest and the panel state that the voice is synthetic and unvalidated |
 | `flagship-ai/cameroon-int8` (`francais-fufulde`) | 77 MB int8 | **CC-BY-NC-4.0** (fp32 originals CC-BY-4.0) | Optional FR→Fufulde candidate (AGLC, opt-in) | Non-commercial; declare both licences |
 | `flagship-ai/cameroon-int8` (`francais-yemba`) | 77 MB int8 | **CC-BY-NC-4.0** (fp32 originals CC-BY-4.0) | Draft FR→Yemba candidate (AGLC) | Non-commercial; declare both licences |
-| `danyanderson/m2m100-yemba-french-fr2ybb` | 1.85 GB fp32 | MIT | Optional FR→Yemba candidate (M2M100 418M) | Attribution |
+| `danyanderson/m2m100-yemba-french-fr2ybb` | 1.85 GB fp32 | MIT | Evaluated, not adopted (fabricated names; opt-in experiment) | Attribution |
 | `flagship-ai/francais-fufulde` (fp32 upstream) | fp32 | CC-BY-4.0 | Optional local FR→FF fallback | Attribution |
 | `DS4H-ICTU/linguo_mt_en_fub` | Apache-2.0 | Optional local EN→FUB fallback | Attribution |
 | CTranslate2 | MIT | Local MT runtime | Attribution |

@@ -422,6 +422,14 @@ candidate pack on 13 November 2026; it is **not validated**, and 11 of the 115
 entries failed the placeholder mask, so the release gate refuses the language
 until a native speaker reviews it.
 
+M2M100 (`danyanderson/m2m100-yemba-french-fr2ybb`, MIT, 1.85 GB) was evaluated
+on 14 November 2026 as a replacement. It beat Marian on digits, repetition and
+masked placeholders, but the generated pack fabricated “Yɛɛ́so Klísto”
+(Jesus Christ) in 11 of 80 UI strings, including `Bénéficiaire` four times. It is
+**rejected** for the pack and remains an explicit opt-in experiment only. See
+[ADR 0021](decisions/0021-reject-m2m100-yemba.md) and the
+[comparison](evidence/ybb-mt-comparison.md).
+
 ```bash
 pnpm models:download mt-ybb mms-ybb
 # The registry resolves models/cameroon-int8/francais-yemba and
