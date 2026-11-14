@@ -4,7 +4,7 @@ import html
 import threading
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Protocol, cast
+from typing import Any, Protocol, cast
 
 import httpx
 
@@ -398,6 +398,104 @@ class MarianMT:
         )
 
 
+class M2M100MT:
+    """Local M2M100 Yemba fine-tune (FR->ybb) from the Hub, transformers runtime."""
+
+    name = "m2m100"
+    local = True
+
+    def __init__(
+        self,
+        model_path: str,
+        device: str = "cpu",
+        beam_size: int = 4,
+    ) -> None:
+        if not Path(model_path).exists():
+            raise ProviderError(
+                "model_missing",
+                f"M2M100 model directory not found: {model_path}.",
+                provider=self.name,
+            )
+        try:
+            import torch
+            from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
+        except ImportError as exc:
+            raise ProviderError(
+                "dependency_missing",
+                "Install the speech extra to use the M2M100 provider.",
+                provider=self.name,
+            ) from exc
+
+        try:
+            self._torch = torch
+            self._device = device
+            self._tokenizer = M2M100Tokenizer.from_pretrained(
+                model_path,
+                src_lang="fr",
+                extra_special_tokens={},
+                local_files_only=True,
+            )
+            # transformers 5 types from_pretrained against PreTrainedModel.
+            model_class = cast(Any, M2M100ForConditionalGeneration)
+            self._model = model_class.from_pretrained(model_path, local_files_only=True).to(device)
+            self._model.eval()
+            # transformers 5's M2M100Tokenizer has no additional_special_tokens
+            # property; the added-token id is the reliable check.
+            ybb_id = cast(int, self._tokenizer.convert_tokens_to_ids("__ybb__"))
+            if ybb_id == self._tokenizer.unk_token_id:
+                self._tokenizer.add_special_tokens({"additional_special_tokens": ["__ybb__"]})
+                self._model.resize_token_embeddings(len(self._tokenizer))
+                ybb_id = cast(int, self._tokenizer.convert_tokens_to_ids("__ybb__"))
+            self._tokenizer.lang_code_to_token["ybb"] = "__ybb__"
+            self._tokenizer.lang_token_to_id["__ybb__"] = ybb_id
+        except Exception as exc:  # noqa: BLE001
+            raise ProviderError(
+                "model_load_failed",
+                "M2M100 could not be loaded. Check the model files.",
+                provider=self.name,
+            ) from exc
+        self.model = model_path
+        self.beam_size = beam_size
+        self._ybb_id = ybb_id
+
+    def translate(self, text: str, source: str, target: str) -> MTResult:
+        # This checkpoint is the FR->Yemba direction. English pages need the
+        # separate en2ybb fine-tune; never silently translate EN with the FR model.
+        if source != "fr":
+            raise ProviderError(
+                "unsupported_language",
+                "The M2M100 Yemba pair is French-pivot only; use the en2ybb model for English.",
+                status_code=422,
+                provider=self.name,
+            )
+        self._tokenizer.src_lang = "fr"
+        inputs = self._tokenizer(text, return_tensors="pt").to(self._device)
+        with self._torch.inference_mode():
+            generated = self._model.generate(
+                **inputs,
+                forced_bos_token_id=self._ybb_id,
+                max_length=128,
+                num_beams=self.beam_size,
+            )
+        translated = cast(
+            str, self._tokenizer.batch_decode(generated, skip_special_tokens=True)[0]
+        ).strip()
+        if not translated:
+            raise ProviderError(
+                "upstream_error",
+                "M2M100 returned an empty translation.",
+                status_code=502,
+                provider=self.name,
+            )
+        return MTResult(
+            text=translated,
+            translated=True,
+            provider=self.name,
+            model=self.model,
+            local=True,
+        )
+
+
 class GoogleMT:
     name = "google"
     local = False
@@ -538,6 +636,7 @@ def get_mt(
         settings.mt_runtime,
         settings.mt_model,
         settings.mt_marian_model,
+        settings.mt_m2m100_model,
         settings.mt_tokenizer,
         settings.mt_device,
         settings.mt_compute_type,
@@ -568,6 +667,8 @@ def _default_model(settings: Settings, name: str, target_lang: str) -> str:
         return settings.mt_model
     if name == "marian":
         return resolve_mt_model(settings, target_lang)
+    if name == "m2m100":
+        return settings.mt_m2m100_model
     if name == "google":
         return "google-cloud-translation-v2"
     return "stub"
@@ -612,6 +713,12 @@ def _build_mt(
             model_path=str(settings.resolve_path(model)),
             device=settings.mt_device,
             compute_type=settings.mt_compute_type,
+        )
+    if name == "m2m100":
+        return M2M100MT(
+            model_path=str(settings.resolve_path(model)),
+            device=settings.mt_device,
+            beam_size=4,
         )
     if name == "google":
         return GoogleMT(

@@ -97,6 +97,15 @@ def test_translate_missing_marian_model_is_typed(client, monkeypatch, tmp_path):
     assert response.json()["detail"]["code"] == "model_missing"
 
 
+def test_translate_missing_m2m100_model_is_typed(client, monkeypatch, tmp_path):
+    monkeypatch.setattr(settings, "mt_m2m100_model", str(tmp_path / "absent"))
+    response = client.post(
+        "/translate", json={"text": "Solde", "target": "ybb", "provider": "m2m100"}
+    )
+    assert response.status_code == 503
+    assert response.json()["detail"]["code"] == "model_missing"
+
+
 def test_translate_empty_text_is_rejected(client):
     response = client.post("/translate", json={"text": ""})
     assert response.status_code == 422

@@ -72,7 +72,7 @@ if (options.list || args.includes("--help") || args.includes("-h")) {
   }
   console.log(`\nOutput: ${options.out}`);
   console.log(
-    "Usage: node scripts/download-models.mjs [--out DIR] [--check] [--force] [mms] [mms-ybb] [nllb-ct2] [mt-fub] [mt-ybb]",
+    "Usage: node scripts/download-models.mjs [--out DIR] [--check] [--force] [mms] [mms-ybb] [nllb-ct2] [mt-fub] [mt-ybb] [mt-ybb-m2m100]",
   );
   process.exit(0);
 }
@@ -240,6 +240,10 @@ for (const target of options.targets) {
   if (target === "mt-yemba-cameroon") {
     console.log("  # ybb resolves languages/ybb.yaml; leave ZTEAM_MT_MARIAN_MODEL empty.");
     console.log(`  # model: ${join(options.out, model.dir, "francais-yemba")}`);
+  }
+  if (target === "m2m100-yemba-fr2ybb") {
+    console.log("  # Candidate Yemba M2M100 model; compare before making it the registry default.");
+    console.log(`  # model: ${join(options.out, model.dir)}`);
   }
   if (target === "tts-yemba") {
     console.log("  # ybb resolves languages/ybb.yaml; leave ZTEAM_TTS_MODEL empty.");

@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-13.2",
+  "version": "2026-11-14.1",
   "models": {
     "mms": {
       "repo": "facebook/mms-tts-ful",
@@ -174,6 +174,50 @@
           "name": "francais-yemba/vocab.json",
           "size": 1458196,
           "sha256": "f2ba9c69ae20f96b8bd821239a9152be422394f980350b77907cffc183db5f2d"
+        }
+      ]
+    },
+    "m2m100-yemba-fr2ybb": {
+      "repo": "danyanderson/m2m100-yemba-french-fr2ybb",
+      "dir": "m2m100-yemba-fr2ybb",
+      "licence": "MIT",
+      "alias": ["mt-ybb-m2m100"],
+      "note": "M2M100 418M fine-tune, FR->Yemba (ybb), MIT. Candidate; compare before adopting.",
+      "files": [
+        {
+          "name": "model.safetensors",
+          "size": 1935653216,
+          "sha256": "1f9710ce676debedff0a2702001d9ed6442ead1a84f624b5f541ab43581e13c8"
+        },
+        {
+          "name": "config.json",
+          "size": 822,
+          "sha256": "dd2ec2619fe153c6af75012ba80ffb61a0b343542b9182ef4ddccf89dbc74137"
+        },
+        {
+          "name": "generation_config.json",
+          "size": 962,
+          "sha256": "a9469b4b43c6523da95e5fca2c6ef7fd5b2a6bbc7cb33431e018009bc98e75fd"
+        },
+        {
+          "name": "tokenizer_config.json",
+          "size": 18603,
+          "sha256": "e4b969791dfa634e9bc2ae78c0cf9c366a421db9bd79572869956191c0528ee1"
+        },
+        {
+          "name": "vocab.json",
+          "size": 3708092,
+          "sha256": "b6e77e474aeea8f441363aca7614317c06381f3eacfe10fb9856d5081d1074cc"
+        },
+        {
+          "name": "added_tokens.json",
+          "size": 2027,
+          "sha256": "b5251e72a6d790ea79799f673eb1d79fa2cc55e790fc2437fa8a84a52d08a35b"
+        },
+        {
+          "name": "sentencepiece.bpe.model",
+          "size": 2423393,
+          "sha256": "d8f7c76ed2a5e0822be39f0a4f95a55eb19c78f4593ce609e2edbc2aea4d380a"
         }
       ]
     },

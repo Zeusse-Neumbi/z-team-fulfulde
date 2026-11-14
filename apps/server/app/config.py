@@ -55,6 +55,9 @@ class Settings(BaseSettings):
     # failed the value-preservation head-to-head, so NLLB above stays first.
     # Empty resolves the model from `languages/<code>.yaml` for the target.
     mt_marian_model: str = ""
+    # danyanderson/m2m100-yemba-french-fr2ybb, MIT. Opt-in candidate: it is
+    # larger and slower than Marian, so it is not the default.
+    mt_m2m100_model: str = "models/m2m100-yemba-fr2ybb"
     mt_runtime: str = "ct2"  # ct2 | transformers
     mt_device: str = "cpu"
     mt_compute_type: str = "int8"

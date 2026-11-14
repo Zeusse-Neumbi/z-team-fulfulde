@@ -11,6 +11,7 @@ import io
 import wave
 
 from app.config import settings
+from app.errors import ProviderError
 from app.services import mt as mt_module
 from app.services import tts as tts_module
 from app.services.mt import MTResult
@@ -84,6 +85,23 @@ class FakeMarian:
     def translate(self, text: str, source: str, target: str) -> MTResult:
         return MTResult(
             text=f"YBB<{text}>",
+            translated=True,
+            provider=self.name,
+            model=self.model,
+            local=True,
+        )
+
+
+class FakeM2M100:
+    name = "m2m100"
+    local = True
+
+    def __init__(self, model_path: str, device: str = "cpu", beam_size: int = 4) -> None:
+        self.model = model_path
+
+    def translate(self, text: str, source: str, target: str) -> MTResult:
+        return MTResult(
+            text=f"M2M<{text}>",
             translated=True,
             provider=self.name,
             model=self.model,
@@ -179,6 +197,38 @@ def test_marian_resolves_the_registry_model_for_ybb(client, monkeypatch):
     assert body["provider"] == "marian"
     assert body["model"].endswith("francais-yemba")
     assert body["target_lang"] == "ybb"
+
+
+def test_m2m100_route_reports_its_local_model(client, monkeypatch, tmp_path):
+    model_dir = tmp_path / "m2m100"
+    model_dir.mkdir()
+    monkeypatch.setattr(settings, "mt_m2m100_model", str(model_dir))
+    monkeypatch.setattr(mt_module, "M2M100MT", FakeM2M100)
+
+    response = client.post(
+        "/translate",
+        json={"text": "Votre solde.", "target": "ybb", "provider": "m2m100"},
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["provider"] == "m2m100"
+    assert body["model"] == str(model_dir)
+    assert body["target_lang"] == "ybb"
+    assert body["translated"] is True
+
+
+def test_m2m100_rejects_english_source_before_touching_the_model():
+    provider = mt_module.M2M100MT.__new__(mt_module.M2M100MT)
+    provider.model = "fake-m2m100"
+
+    try:
+        provider.translate("Your balance", "en", "ybb")
+    except ProviderError as error:
+        assert error.status_code == 422
+        assert error.code == "unsupported_language"
+    else:  # pragma: no cover - the guard must raise
+        raise AssertionError("M2M100 accepted an English source")
 
 
 def test_tts_resolves_the_registry_voice_for_ybb(monkeypatch):

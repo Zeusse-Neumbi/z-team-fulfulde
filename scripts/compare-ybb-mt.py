@@ -72,10 +72,11 @@ def load_m2m100(model_path: Path):
     )
     model = M2M100ForConditionalGeneration.from_pretrained(str(model_path)).to("cpu")
     model.eval()
-    if "__ybb__" not in tokenizer.additional_special_tokens:
+    ybb_id = tokenizer.convert_tokens_to_ids("__ybb__")
+    if ybb_id == tokenizer.unk_token_id:
         tokenizer.add_special_tokens({"additional_special_tokens": ["__ybb__"]})
         model.resize_token_embeddings(len(tokenizer))
-    ybb_id = tokenizer.convert_tokens_to_ids("__ybb__")
+        ybb_id = tokenizer.convert_tokens_to_ids("__ybb__")
     tokenizer.lang_code_to_token["ybb"] = "__ybb__"
     tokenizer.lang_token_to_id["__ybb__"] = ybb_id
 

@@ -114,6 +114,21 @@ MT_SPECS: dict[str, ProviderSpec] = {
         notes="Cloud test only; sends text off the device. Target locale ff.",
         model="google-cloud-translation-v2",
     ),
+    "m2m100": ProviderSpec(
+        kind="mt",
+        name="m2m100",
+        label="M2M100 (local, Yemba FR->ybb, opt-in)",
+        runtime="transformers",
+        local=True,
+        requires_credentials=False,
+        credential_env=None,
+        licence="MIT",
+        notes=(
+            "danyanderson/m2m100-yemba-french-fr2ybb, 418M. FR->Yemba only; "
+            "larger and slower than Marian, so it is opt-in."
+        ),
+        model="models/m2m100-yemba-fr2ybb",
+    ),
 }
 
 TTS_SPECS: dict[str, ProviderSpec] = {
@@ -253,6 +268,8 @@ def _active_model(settings: Settings, spec: ProviderSpec) -> str:
         return settings.mt_model
     if spec.name == "marian":
         return resolve_mt_model(settings, settings.target_lang)
+    if spec.name == "m2m100":
+        return settings.mt_m2m100_model
     if spec.name == "mms":
         return resolve_speech_model(settings, settings.target_lang)
     if spec.name == "camb":
@@ -288,7 +305,7 @@ def describe(settings: Settings, kind: Kind, name: str) -> Readiness:
         readiness.extra = {"base_url": settings.ollama_base_url, "probe": "on_request"}
         return readiness
 
-    if spec.name in {"nllb", "marian"}:
+    if spec.name in {"nllb", "marian", "m2m100"}:
         if not _has_module("transformers"):
             readiness.ready = False
             readiness.reason = "dependency_missing"
@@ -308,11 +325,12 @@ def describe(settings: Settings, kind: Kind, name: str) -> Readiness:
             readiness.reason = "dependency_missing"
             readiness.detail = "Install torch for the transformers runtime."
             return readiness
-        selected = (
-            settings.mt_model
-            if spec.name == "nllb"
-            else resolve_mt_model(settings, settings.target_lang)
-        )
+        if spec.name == "m2m100":
+            selected = settings.mt_m2m100_model
+        elif spec.name == "nllb":
+            selected = settings.mt_model
+        else:
+            selected = resolve_mt_model(settings, settings.target_lang)
         ready, reason = _model_ready(settings, selected)
         if not ready:
             readiness.ready = False
