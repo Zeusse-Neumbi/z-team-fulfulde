@@ -4,12 +4,13 @@ import html
 import threading
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Protocol
+from typing import Any, Protocol, cast
 
 import httpx
 
 from ..config import Settings
 from ..errors import ProviderError
+from ..languages import get_language, resolve_mt_model
 from ..provider_catalog import spec_for
 
 
@@ -34,8 +35,9 @@ SOURCE_NAMES = {"fr": "French", "en": "English"}
 NLLB_LANGS = {
     "fr": "fra_Latn",
     "en": "eng_Latn",
-    "ff": "fuv_Latn",
-    "fub": "fuv_Latn",
+    # Explicit Nigerian Fulfulde token. Adamawa Fulfulde (`fub`) resolves
+    # through the language registry and, when NLLB is selected, falls back to
+    # this token; `ff` is no longer a language code.
     "fuv": "fuv_Latn",
 }
 
@@ -221,11 +223,10 @@ class NLLBCT2MT:
     def translate(self, text: str, source: str, target: str) -> MTResult:
         source_lang = NLLB_LANGS.get(source, "fra_Latn")
         target_lang = NLLB_LANGS.get(target, self.target_lang)
-        tokens = self._tokenizer.convert_ids_to_tokens(
-            [
-                self._tokenizer.convert_tokens_to_ids(source_lang),
-                *self._tokenizer.encode(text),
-            ]
+        source_token = cast(int, self._tokenizer.convert_tokens_to_ids(source_lang))
+        tokens = cast(
+            list[str],
+            self._tokenizer.convert_ids_to_tokens([source_token, *self._tokenizer.encode(text)]),
         )
         results = self._translator.translate_batch(
             [tokens],
@@ -236,10 +237,9 @@ class NLLBCT2MT:
         output = results[0].hypotheses[0]
         if output and output[0] == target_lang:
             output = output[1:]
-        translated = self._tokenizer.decode(
-            self._tokenizer.convert_tokens_to_ids(output),
-            skip_special_tokens=True,
-        ).strip()
+        # transformers' tokenizer stubs return unions for batch and single input.
+        ids = cast(list[int], self._tokenizer.convert_tokens_to_ids(output))
+        translated = cast(str, self._tokenizer.decode(ids, skip_special_tokens=True)).strip()
         if not translated:
             raise ProviderError(
                 "upstream_error",
@@ -341,7 +341,12 @@ class NLLBTransformersMT:
 
 
 class MarianMT:
-    """Local CTranslate2 Marian backend, loaded only when configured."""
+    """Local CTranslate2 Marian backend, loaded only when configured.
+
+    One model directory is one direction: the registry pairs are French pivot
+    to one target, so `source` and `target` are intentionally ignored here.
+    The language is resolved before the provider is built.
+    """
 
     name = "marian"
     local = True
@@ -381,10 +386,110 @@ class MarianMT:
         tokens = self._tokenizer.convert_ids_to_tokens(self._tokenizer.encode(text))
         results = self._translator.translate_batch([tokens], beam_size=2)
         output = results[0].hypotheses[0]
-        translated = self._tokenizer.decode(
-            self._tokenizer.convert_tokens_to_ids(output),
-            skip_special_tokens=True,
+        # transformers' tokenizer stubs return unions for batch and single input.
+        ids = cast(list[int], self._tokenizer.convert_tokens_to_ids(output))
+        translated = cast(str, self._tokenizer.decode(ids, skip_special_tokens=True)).strip()
+        return MTResult(
+            text=translated,
+            translated=True,
+            provider=self.name,
+            model=self.model,
+            local=True,
+        )
+
+
+class M2M100MT:
+    """Local M2M100 Yemba fine-tune (FR->ybb) from the Hub, transformers runtime."""
+
+    name = "m2m100"
+    local = True
+
+    def __init__(
+        self,
+        model_path: str,
+        device: str = "cpu",
+        beam_size: int = 5,
+    ) -> None:
+        if not Path(model_path).exists():
+            raise ProviderError(
+                "model_missing",
+                f"M2M100 model directory not found: {model_path}.",
+                provider=self.name,
+            )
+        try:
+            import torch
+            from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
+        except ImportError as exc:
+            raise ProviderError(
+                "dependency_missing",
+                "Install the speech extra to use the M2M100 provider.",
+                provider=self.name,
+            ) from exc
+
+        try:
+            self._torch = torch
+            self._device = device
+            self._tokenizer = M2M100Tokenizer.from_pretrained(
+                model_path,
+                src_lang="fr",
+                extra_special_tokens={},
+                local_files_only=True,
+            )
+            # transformers 5 types from_pretrained against PreTrainedModel.
+            model_class = cast(Any, M2M100ForConditionalGeneration)
+            self._model = model_class.from_pretrained(model_path, local_files_only=True).to(device)
+            self._model.eval()
+            # transformers 5's M2M100Tokenizer has no additional_special_tokens
+            # property; the added-token id is the reliable check. Marking the
+            # existing token special makes decode(strip specials) drop it.
+            ybb_id = cast(int, self._tokenizer.convert_tokens_to_ids("__ybb__"))
+            if ybb_id == self._tokenizer.unk_token_id:
+                self._tokenizer.add_special_tokens({"additional_special_tokens": ["__ybb__"]})
+                self._model.resize_token_embeddings(len(self._tokenizer))
+                ybb_id = cast(int, self._tokenizer.convert_tokens_to_ids("__ybb__"))
+            else:
+                self._tokenizer.add_special_tokens({"additional_special_tokens": ["__ybb__"]})
+            self._tokenizer.lang_code_to_token["ybb"] = "__ybb__"
+            self._tokenizer.lang_token_to_id["__ybb__"] = ybb_id
+        except Exception as exc:  # noqa: BLE001
+            raise ProviderError(
+                "model_load_failed",
+                "M2M100 could not be loaded. Check the model files.",
+                provider=self.name,
+            ) from exc
+        self.model = model_path
+        self.beam_size = beam_size
+        self._ybb_id = ybb_id
+
+    def translate(self, text: str, source: str, target: str) -> MTResult:
+        # This checkpoint is the FR->Yemba direction. English pages need the
+        # separate en2ybb fine-tune; never silently translate EN with the FR model.
+        if source != "fr":
+            raise ProviderError(
+                "unsupported_language",
+                "The M2M100 Yemba pair is French-pivot only; use the en2ybb model for English.",
+                status_code=422,
+                provider=self.name,
+            )
+        self._tokenizer.src_lang = "fr"
+        inputs = self._tokenizer(text, return_tensors="pt").to(self._device)
+        with self._torch.inference_mode():
+            generated = self._model.generate(
+                **inputs,
+                forced_bos_token_id=self._ybb_id,
+                max_length=200,
+                num_beams=self.beam_size,
+            )
+        translated = cast(
+            str, self._tokenizer.batch_decode(generated, skip_special_tokens=True)[0]
         ).strip()
+        if not translated:
+            raise ProviderError(
+                "upstream_error",
+                "M2M100 returned an empty translation.",
+                status_code=502,
+                provider=self.name,
+            )
         return MTResult(
             text=translated,
             translated=True,
@@ -508,8 +613,15 @@ def get_mt(
     settings: Settings,
     provider: str | None = None,
     model: str | None = None,
+    target_lang: str | None = None,
 ) -> MTProvider:
     name = provider or settings.mt_backend
+    language = target_lang or settings.target_lang
+    # NLLB is the measured default for Fulfulde. It has no Yemba token, so an
+    # unqualified request for another registered language uses that language's
+    # registry provider instead of silently translating into fuv.
+    if provider is None and name == "nllb" and language != settings.target_lang:
+        name = get_language(language, settings).mt_provider
     spec = spec_for("mt", name)
     if not spec.local and not settings.allow_cloud:
         raise ProviderError(
@@ -519,13 +631,15 @@ def get_mt(
             provider=name,
         )
 
-    selected_model = model or _default_model(settings, name)
+    selected_model = model or _default_model(settings, name, language)
     key = (
         name,
+        language,
         selected_model,
         settings.mt_runtime,
         settings.mt_model,
         settings.mt_marian_model,
+        settings.mt_m2m100_model,
         settings.mt_tokenizer,
         settings.mt_device,
         settings.mt_compute_type,
@@ -549,19 +663,25 @@ def get_mt(
         return instance
 
 
-def _default_model(settings: Settings, name: str) -> str:
+def _default_model(settings: Settings, name: str, target_lang: str) -> str:
     if name == "ollama":
         return settings.ollama_model
     if name == "nllb":
         return settings.mt_model
     if name == "marian":
-        return settings.mt_marian_model
+        return resolve_mt_model(settings, target_lang)
+    if name == "m2m100":
+        return settings.mt_m2m100_model
     if name == "google":
         return "google-cloud-translation-v2"
     return "stub"
 
 
-def _build_mt(settings: Settings, name: str, model: str) -> MTProvider:
+def _build_mt(
+    settings: Settings,
+    name: str,
+    model: str,
+) -> MTProvider:
     if name == "stub":
         return StubMT()
     if name == "ollama":
@@ -593,9 +713,15 @@ def _build_mt(settings: Settings, name: str, model: str) -> MTProvider:
         )
     if name == "marian":
         return MarianMT(
-            model_path=str(settings.resolve_path(settings.mt_marian_model)),
+            model_path=str(settings.resolve_path(model)),
             device=settings.mt_device,
             compute_type=settings.mt_compute_type,
+        )
+    if name == "m2m100":
+        return M2M100MT(
+            model_path=str(settings.resolve_path(model)),
+            device=settings.mt_device,
+            beam_size=5,
         )
     if name == "google":
         return GoogleMT(

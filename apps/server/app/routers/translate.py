@@ -6,16 +6,17 @@ from fastapi import APIRouter, HTTPException
 
 from ..config import settings
 from ..errors import ProviderError
+from ..languages import get_language
 from ..models import TranslateRequest, TranslateResponse
 from ..services.mt import get_mt
 
 router = APIRouter(tags=["translation"])
 
-ALLOWED_TARGETS = {"ff", "fub", "fuv"}
-
 
 @router.post("/translate", response_model=TranslateResponse)
 def translate(request: TranslateRequest) -> TranslateResponse:
+    # Unknown targets fail with a typed 422 that lists the registered codes.
+    get_language(request.target, settings)
     sources = {item.strip() for item in settings.mt_source_langs.split(",") if item.strip()}
     if request.source not in sources:
         raise HTTPException(
@@ -23,14 +24,6 @@ def translate(request: TranslateRequest) -> TranslateResponse:
             detail={
                 "code": "unsupported_language",
                 "message": f"Source language must be one of {sorted(sources)}.",
-            },
-        )
-    if request.target not in ALLOWED_TARGETS:
-        raise HTTPException(
-            status_code=422,
-            detail={
-                "code": "unsupported_language",
-                "message": "Target language must be ff, fub or fuv.",
             },
         )
     if len(request.text) > settings.mt_max_input_chars:
@@ -42,7 +35,12 @@ def translate(request: TranslateRequest) -> TranslateResponse:
             },
         )
 
-    provider = get_mt(settings, provider=request.provider, model=request.model)
+    provider = get_mt(
+        settings,
+        provider=request.provider,
+        model=request.model,
+        target_lang=request.target,
+    )
     started = time.perf_counter()
     try:
         result = provider.translate(request.text, request.source, request.target)
@@ -57,6 +55,6 @@ def translate(request: TranslateRequest) -> TranslateResponse:
         model=result.model,
         local=result.local,
         latency_ms=latency_ms,
-        target_lang="fuv" if request.target in {"ff", "fub"} else request.target,
+        target_lang=request.target,
         stub=result.provider == "stub",
     )

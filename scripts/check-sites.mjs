@@ -203,8 +203,8 @@ async function canaryState(page) {
       text,
       input: input?.value ?? "",
       edit: editable?.textContent ?? "",
-      canaryHasToken: text.includes("⟦FF:"),
-      bodyHasToken: document.body.textContent?.includes("⟦FF:") ?? false,
+      canaryHasToken: /⟦[A-Z]{3}:/.test(text),
+      bodyHasToken: /⟦[A-Z]{3}:/.test(document.body.textContent ?? ""),
     };
   });
 }
@@ -262,7 +262,7 @@ for (const [site, url] of sitesToRun) {
       const dynamicText = await page.evaluate(
         () => document.getElementById("zteam-dynamic")?.textContent ?? "",
       );
-      dynamic = dynamicText.includes("⟦FF:");
+      dynamic = /⟦[A-Z]{3}:/.test(dynamicText);
     }
 
     const stopStatus = await timeout(send(tabId, "STOP_TRANSLATION"), 10_000, "stop");

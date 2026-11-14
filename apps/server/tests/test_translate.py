@@ -12,8 +12,24 @@ def test_translate_stub_never_invents(client):
     assert body["text"] == "Solde disponible"
     assert body["local"] is True
     assert body["stub"] is True
-    assert body["target_lang"] == "fuv"
+    assert body["target_lang"] == "fub"
     assert isinstance(body["latency_ms"], float)
+
+
+def test_translate_follows_the_configured_target_language(client, monkeypatch):
+    monkeypatch.setattr(settings, "target_lang", "ybb")
+    response = client.post("/translate", json={"text": "Solde disponible"})
+    assert response.status_code == 200
+    assert response.json()["target_lang"] == "ybb"
+
+
+def test_translate_rejects_legacy_ff_target(client):
+    response = client.post("/translate", json={"text": "Hello", "target": "ff"})
+    assert response.status_code == 422
+    detail = response.json()["detail"]
+    assert detail["code"] == "unsupported_language"
+    assert {"fub", "ybb"} <= set(detail["valid"])
+    assert "ff" not in detail["valid"]
 
 
 def test_translate_rejects_unknown_source(client):
@@ -25,7 +41,10 @@ def test_translate_rejects_unknown_source(client):
 def test_translate_rejects_unknown_target(client):
     response = client.post("/translate", json={"text": "Hello", "target": "wo"})
     assert response.status_code == 422
-    assert response.json()["detail"]["code"] == "unsupported_language"
+    detail = response.json()["detail"]
+    assert detail["code"] == "unsupported_language"
+    assert {"fub", "ybb"} <= set(detail["valid"])
+    assert "wo" not in detail["valid"]
 
 
 def test_translate_rejects_oversized_input(client, monkeypatch):
@@ -68,6 +87,23 @@ def test_translate_missing_local_model_is_explicit(client, monkeypatch, tmp_path
     body = response.json()["detail"]
     # The dependency check runs before the model check on a bare install.
     assert body["code"] in {"dependency_missing", "model_missing"}
+
+
+def test_translate_missing_marian_model_is_typed(client, monkeypatch, tmp_path):
+    monkeypatch.setattr(settings, "mt_backend", "marian")
+    monkeypatch.setattr(settings, "mt_marian_model", str(tmp_path / "absent"))
+    response = client.post("/translate", json={"text": "Solde"})
+    assert response.status_code == 503
+    assert response.json()["detail"]["code"] == "model_missing"
+
+
+def test_translate_missing_m2m100_model_is_typed(client, monkeypatch, tmp_path):
+    monkeypatch.setattr(settings, "mt_m2m100_model", str(tmp_path / "absent"))
+    response = client.post(
+        "/translate", json={"text": "Solde", "target": "ybb", "provider": "m2m100"}
+    )
+    assert response.status_code == 503
+    assert response.json()["detail"]["code"] == "model_missing"
 
 
 def test_translate_empty_text_is_rejected(client):

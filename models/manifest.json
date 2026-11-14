@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-13.1",
+  "version": "2026-11-14.1",
   "models": {
     "mms": {
       "repo": "facebook/mms-tts-ful",
@@ -125,6 +125,133 @@
           "name": "francais-fufulde/vocab.json",
           "size": 1458196,
           "sha256": "f2ba9c69ae20f96b8bd821239a9152be422394f980350b77907cffc183db5f2d"
+        }
+      ]
+    },
+    "mt-yemba-cameroon": {
+      "repo": "flagship-ai/cameroon-int8",
+      "dir": "cameroon-int8",
+      "licence": "CC-BY-NC-4.0",
+      "alias": ["mt-ybb"],
+      "note": "int8 CTranslate2 Marian, FR->Yemba (ybb), AGLC normalised. French-pivot only: English stays on the nllb fallback.",
+      "files": [
+        {
+          "name": "francais-yemba/config.json",
+          "size": 223,
+          "sha256": "8f6496adfc930cbfecbe8281112197705c488fab47d34b4829b06d7f478909af"
+        },
+        {
+          "name": "francais-yemba/model.bin",
+          "size": 76714395,
+          "sha256": "a0cfb377d33c05d5eca7457eb8fa9ecbe9f1dbbfe279d73c12ed09bc52b210ea"
+        },
+        {
+          "name": "francais-yemba/shared_vocabulary.json",
+          "size": 1052697,
+          "sha256": "a157eb51a42817dd1ae4bc46cecf66e591ab32641df936da292bd09f2728631b"
+        },
+        {
+          "name": "francais-yemba/source.spm",
+          "size": 802397,
+          "sha256": "78d0e717c77053f1c4b856d8661d9cb87c64f083a35418c087b9146300e4f585"
+        },
+        {
+          "name": "francais-yemba/special_tokens_map.json",
+          "size": 74,
+          "sha256": "5e4d1f5e759d74cb1c2fe1d165cfc62b5237aa904de759380cd6f43042eec723"
+        },
+        {
+          "name": "francais-yemba/target.spm",
+          "size": 778395,
+          "sha256": "173e9f493a668fe396d599e28d414a201193094e6ffd7a4678e5aab0f6d3d838"
+        },
+        {
+          "name": "francais-yemba/tokenizer_config.json",
+          "size": 816,
+          "sha256": "ad8ca8690261cafefb6e996e67caf9a98c25756e3cef2ffa4be44e491af5a78b"
+        },
+        {
+          "name": "francais-yemba/vocab.json",
+          "size": 1458196,
+          "sha256": "f2ba9c69ae20f96b8bd821239a9152be422394f980350b77907cffc183db5f2d"
+        }
+      ]
+    },
+    "m2m100-yemba-fr2ybb": {
+      "repo": "danyanderson/m2m100-yemba-french-fr2ybb",
+      "dir": "m2m100-yemba-fr2ybb",
+      "licence": "MIT",
+      "alias": ["mt-ybb-m2m100"],
+      "note": "M2M100 418M fine-tune, FR->Yemba (ybb), MIT. Candidate; compare before adopting.",
+      "files": [
+        {
+          "name": "model.safetensors",
+          "size": 1935653216,
+          "sha256": "1f9710ce676debedff0a2702001d9ed6442ead1a84f624b5f541ab43581e13c8"
+        },
+        {
+          "name": "config.json",
+          "size": 822,
+          "sha256": "dd2ec2619fe153c6af75012ba80ffb61a0b343542b9182ef4ddccf89dbc74137"
+        },
+        {
+          "name": "generation_config.json",
+          "size": 962,
+          "sha256": "a9469b4b43c6523da95e5fca2c6ef7fd5b2a6bbc7cb33431e018009bc98e75fd"
+        },
+        {
+          "name": "tokenizer_config.json",
+          "size": 18603,
+          "sha256": "e4b969791dfa634e9bc2ae78c0cf9c366a421db9bd79572869956191c0528ee1"
+        },
+        {
+          "name": "vocab.json",
+          "size": 3708092,
+          "sha256": "b6e77e474aeea8f441363aca7614317c06381f3eacfe10fb9856d5081d1074cc"
+        },
+        {
+          "name": "added_tokens.json",
+          "size": 2027,
+          "sha256": "b5251e72a6d790ea79799f673eb1d79fa2cc55e790fc2437fa8a84a52d08a35b"
+        },
+        {
+          "name": "sentencepiece.bpe.model",
+          "size": 2423393,
+          "sha256": "d8f7c76ed2a5e0822be39f0a4f95a55eb19c78f4593ce609e2edbc2aea4d380a"
+        }
+      ]
+    },
+    "tts-yemba": {
+      "repo": "facebook/mms-tts-ybb",
+      "dir": "mms-tts-ybb",
+      "licence": "CC-BY-NC-4.0",
+      "alias": ["mms-ybb"],
+      "note": "VITS 16 kHz voice for Yemba (ybb). Orthography coverage 96% (no r); tone: high and mid only.",
+      "files": [
+        {
+          "name": "config.json",
+          "size": 1641,
+          "sha256": "7f48636cf8956cfd398c8dda72d2e4fc23d43aa16f5acde2119c1e572b8a65e5"
+        },
+        {
+          "name": "model.safetensors",
+          "size": 145233656,
+          "sha256": "17783a51aa6628d12661546d82a52f64ddc6bda81eb5f40595f7555eb10e6337"
+        },
+        {
+          "name": "special_tokens_map.json",
+          "size": 47,
+          "sha256": "845f635933c404f060a1d7a2f4c4494bf4a91f8ebec99a41108778d026426dfc"
+        },
+        {
+          "name": "tokenizer_config.json",
+          "size": 287,
+          "sha256": "b8c5c166df7ee09bcb6ebb4936a7f4764d7186cf2eb99ff6cd0cb2e35d6289f2"
+        },
+        {
+          "name": "vocab.json",
+          "size": 521,
+          "sha256": "72602d637bbd93e74dedd1e158b03507e9525e0531b7689c7f5f2ddc992fb648"
         }
       ]
     }

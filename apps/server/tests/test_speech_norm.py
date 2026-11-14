@@ -35,9 +35,28 @@ def test_nbsp_and_narrow_nbsp_collapse():
     assert normalize_for_speech("fub", "250\u00a0000\u202fFCFA") == "250 000 FCFA"
 
 
+@pytest.mark.parametrize(
+    ("source", "expected"),
+    [
+        ("ɲaamdu", "nyaamdu"),
+        ("Ɲaamdu", "Nyaamdu"),
+        ("jaŋngu ꞌe", "jaŋngu ʼe"),
+        # ʼ, ɛ, ɔ and ŋ are in the Yemba vocab: keep them.
+        ("ʼe ɛ́jɛ́ɛ ŋgɔ́", "ʼe ɛ́jɛ́ɛ ŋgɔ́"),
+    ],
+)
+def test_ybb_substitutions(source, expected):
+    assert normalize_for_speech("ybb", source) == expected
+
+
+def test_ybb_keeps_its_tone_marks():
+    # The Yemba tokenizer has high and mid tone, unlike fub.
+    assert normalize_for_speech("ybb", "ŋgɔ́ áā") == "ŋgɔ́ áā"
+
+
 def test_unknown_language_is_unchanged():
     text = "nɛɛsa ɲaamdu ɔ"
-    assert normalize_for_speech("ybb", text) == text
+    assert normalize_for_speech("deu", text) == text
 
 
 class _Batch(dict):
@@ -103,8 +122,18 @@ def _mms(lang: str) -> tuple[MMSTTS, _RecordingTokenizer]:
     tts._model = _Model()
     tts._sample_rate = 16_000
     tts._lang = lang
+    tts._substitutions = {}
     tts.model = "fake-mms"
     return tts, tokenizer
+
+
+def test_mms_applies_registry_substitutions():
+    tts, tokenizer = _mms("deu")
+    tts._substitutions = {"ɲ": "ny"}
+
+    tts.synthesize("ɲaamdu", "demo", 1.0)
+
+    assert tokenizer.seen == "nyaamdu"
 
 
 def test_mms_synthesizes_the_normalized_text():
@@ -118,8 +147,16 @@ def test_mms_synthesizes_the_normalized_text():
     assert result.sample_rate == 16_000
 
 
-def test_mms_leaves_an_unmeasured_language_alone():
+def test_mms_normalizes_ybb():
     tts, tokenizer = _mms("ybb")
+
+    tts.synthesize("Ɲaamdu ꞌe ŋgɔ́", "demo", 1.0)
+
+    assert tokenizer.seen == "Nyaamdu ʼe ŋgɔ́"
+
+
+def test_mms_leaves_an_unmeasured_language_alone():
+    tts, tokenizer = _mms("deu")
 
     tts.synthesize("nɛɛsa", "demo", 1.0)
 

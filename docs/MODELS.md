@@ -20,6 +20,7 @@ GPU vendor and the recommended backend; `pnpm models:download` uses
 | MT | `ollama` | local | model-dependent | Ollama on `127.0.0.1:11434` |
 | MT | `nllb` | local | CC-BY-NC-4.0 | speech extra + model dir |
 | MT | `marian` | local | CC-BY-NC-4.0 | speech extra + `models/cameroon-int8/francais-fufulde` |
+| MT | `m2m100` | local | MIT | speech extra + `models/m2m100-yemba-fr2ybb` (1.85 GB) |
 | MT | `google` | cloud | proprietary | `ZTEAM_GOOGLE_TRANSLATE_API_KEY` |
 | TTS | `stub` | local | project | nothing |
 | TTS | `mms` | local | CC-BY-NC-4.0 | speech extra + `models/mms-tts-ful` |
@@ -405,6 +406,53 @@ curl -s localhost:8002/translate -H 'content-type: application/json' \
   -d '{"text":"Enfant","source":"fr","target":"fub"}'
 # {"text":"ɓiŋngel", ...}
 ```
+
+## Yemba (`ybb`)
+
+| Item | Value |
+| --- | --- |
+| Text | `flagship-ai/cameroon-int8`, `francais-yemba` (77 MB int8, FR→Yemba, CC-BY-NC-4.0, AGLC) |
+| Voice | `facebook/mms-tts-ybb` (VITS 16 kHz, CC-BY-NC-4.0) |
+| Registry row | `languages/ybb.yaml` (`status: draft`) |
+| Candidate pack | `packages/phrasebank/entries/ybb/*.mt.yaml` (`origin: mt`) |
+
+The pair is French-pivot only: English pages stay on the NLLB fallback. The
+human pack is empty (`origin: human`). A local Marian run generated the
+candidate pack on 13 November 2026; it is **not validated**, and 11 of the 115
+entries failed the placeholder mask, so the release gate refuses the language
+until a native speaker reviews it.
+
+M2M100 (`danyanderson/m2m100-yemba-french-fr2ybb`, MIT, 1.85 GB) was evaluated
+on 14 November 2026 as a replacement. It beat Marian on digits, repetition and
+masked placeholders, but the generated pack fabricated “Yɛɛ́so Klísto”
+(Jesus Christ) in 11 of 80 UI strings, including `Bénéficiaire` four times. It is
+**rejected** for the pack and remains an explicit opt-in experiment only. See
+[ADR 0021](decisions/0021-reject-m2m100-yemba.md) and the
+[comparison](evidence/ybb-mt-comparison.md).
+
+```bash
+pnpm models:download mt-ybb mms-ybb
+# The registry resolves models/cameroon-int8/francais-yemba and
+# models/mms-tts-ybb; leave ZTEAM_MT_MARIAN_MODEL / ZTEAM_TTS_MODEL empty.
+```
+
+Measured on 14 November 2026 with `models/mms-tts-ybb`:
+
+| Metric | Value |
+| --- | --- |
+| Segmental | 27/28 (96.4%), missing `r` |
+| Tone | partial — high and mid marks |
+| Vocabulary | 46 pieces |
+| Synthesis | 16 kHz mono WAV, 1.38 s for a short sentence, local MMS, no stub |
+
+The voice has `ʼ`, `ɛ`, `ɔ`, `ŋ` and the tone marks, but lacks `ɲ`, `Ɲ`, `ꞌ`
+and `r`. The speech normalizer maps `ɲ → ny`, `Ɲ → Ny`, `ꞌ → ʼ` and keeps the
+tone marks. `r` is a recorded gap, not silently replaced. The strict
+`pnpm check:tokenizer` passes the Yemba row; the `--warn-only` variant in
+`ci:local` also shows the fub row (86.7%, missing `ɛ ɔ ɲ ʼ`) when
+`models/mms-tts-ful` is present.
+
+Do not claim a validated Yemba voice or a validated Yemba pack.
 
 ## Failure codes
 

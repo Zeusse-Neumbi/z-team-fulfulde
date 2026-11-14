@@ -20,13 +20,29 @@ test("the panel switches to Fulfulde without touching the translated page", asyn
 
     await panel.locator(".lang-switch select").selectOption("ff");
     await expect(panel.locator(".summary h2")).toHaveText("Ɗuɓɓere hello");
-    await expect(panel.getByText(/brouillon MT/).first()).toBeVisible();
+    await expect(panel.locator(".pack-source")).toHaveClass(/fixture|draft/);
 
     const after = clean(await page.locator("body").innerText());
     expect(after).toBe(before);
 
     await panel.locator(".lang-switch select").selectOption("fr");
     await expect(panel.locator(".summary h2")).toHaveText("Résumé de la page");
+  } finally {
+    await context.close();
+  }
+});
+
+test("the panel switches the target language and the page follows", async () => {
+  const { context, extensionId } = await launchExtension();
+  try {
+    const page = await openMock(context);
+    const panel = await openPanel(context, extensionId);
+    await startOnPanel(panel);
+
+    await expect(page.locator("body")).toContainText("⟦FUB:tm.");
+    await panel.locator(".target-switch select").selectOption("ybb");
+    await expect(page.locator("body")).toContainText("⟦YBB:tm.", { timeout: 10_000 });
+    await expect(panel.locator(".page-coverage")).toBeVisible();
   } finally {
     await context.close();
   }
@@ -42,7 +58,7 @@ test("a page action is announced with its translated name", async () => {
     await page.locator("#to-fees").click();
     const announcement = panel.locator(".notice").filter({ hasText: /Vous avez cliqué/ });
     await expect(announcement).toBeVisible({ timeout: 5_000 });
-    await expect(announcement).toContainText("⟦FF:tm.balance.start_transfer⟧");
+    await expect(announcement).toContainText("⟦FUB:tm.balance.start_transfer⟧");
   } finally {
     await context.close();
   }

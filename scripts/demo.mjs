@@ -178,8 +178,8 @@ function cudaAvailable() {
 function packState() {
   if (!existsSync(generated)) return { state: "missing", empty: 0, total: 0 };
   const text = readFileSync(generated, "utf8");
-  const total = (text.match(/"ff":/g) ?? []).length;
-  const empty = (text.match(/"ff": ""/g) ?? []).length;
+  const total = (text.match(/"text":/g) ?? []).length;
+  const empty = (text.match(/"text": ""/g) ?? []).length;
   const state =
     total === 0 ? "missing" : empty === 0 ? "validated" : empty === total ? "seed" : "partial";
   return { state, empty, total };
@@ -240,7 +240,7 @@ async function deepTranslate(url) {
       body: JSON.stringify({
         text: "Votre solde est de 250 000 FCFA.",
         source: "fr",
-        target: "ff",
+        target: "fub",
         provider: "nllb",
       }),
       signal: AbortSignal.timeout(180_000),

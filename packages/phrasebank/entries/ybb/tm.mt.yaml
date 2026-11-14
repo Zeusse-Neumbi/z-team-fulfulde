@@ -1,0 +1,1402 @@
+version: 2026-11-09.2+mt
+units:
+- id: tm.nav.online_banking
+  source:
+    fr: Banque en ligne
+    en: Online banking
+  target:
+    ybb:
+      text: Ŋ́gɔ́ eleʼé mbwɛ̄t epuɔ pīi, pɔ́ é si nzhɛ́ɛ á légɛ, eleʼé mbwɛ́né epuɔ
+        pīi, pɔ́ é si ŋgɔ́ epuɔ pīi, pɔ́ é si ŋgɔ́ epuɔ pīi, pɔ́ é si nzhɛ́ɛ á légɛ,
+        epuɔ menɔŋ epuɔ pīi, pɔ́ é si ŋ
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.nav.test_banner
+  source:
+    fr: Environnement de test — données fictives, aucune transaction réelle.
+    en: Test environment — fictional data, no real transaction.
+  target:
+    ybb:
+      text: Ajū mīi, ajū mīi mɛ́ é si nzhɛ́ɛ á légɛ, ajū mīi mɛ́ gɔ le lɔ̄k nzhɛ́ɛ
+        á légɛ, ajū mīi mɛ́ gɔ le lɔ̄k nzhɛ́ɛ á légɛ, ajū mīi mɛ́ gɔ le lɔ̄k nzhɛ́ɛ
+        á légɛ, aziɛ́ aziɛ́, aziɛ́ aziɛ́
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.nav.protocol
+  source:
+    fr: Protocole de test
+    en: Test protocol
+  target:
+    ybb:
+      text: Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́
+        mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ á apwɛne.
+        Ŋ́gɔ́ á apwɛ
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.nav.back_hackathon
+  source:
+    fr: Retour au hackathon
+    en: Back to hackathon
+  target:
+    ybb:
+      text: Ŋgʉ̄ɔ mé ŋakaŋ, ŋ́gɔ́ á ntē ŋgɔŋ ŋkāʼ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ
+        mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.step.balance
+  source:
+    fr: Solde
+    en: Balance
+  target:
+    ybb:
+      text: Ndém a lɛɛ́ ŋgɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ
+        yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á
+        ŋiŋ yīi, a á ŋiŋ yī
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.step.fees
+  source:
+    fr: Frais
+    en: Fees
+  target:
+    ybb:
+      text: Mɛ́ le zéŋ ŋgwɛ̄ azō, ńdɔkɔ ŋgwhʉ̄ɔ ŋgwhʉ̄ɛ azō. Mɛ́ le zéŋ ŋgwhʉ̄ azō,
+        ńdɔkɔ ŋgwhʉ̄ɛ azō.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.step.beneficiary
+  source:
+    fr: Bénéficiaire
+    en: Beneficiary
+  target:
+    ybb:
+      text: Ŋ́gɔ́ á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á
+        ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á
+        ŋiŋ yīi, a á ŋiŋ yīi a
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.step.summary
+  source:
+    fr: Récapitulatif
+    en: Summary
+  target:
+    ybb:
+      text: Ńdɔkɔ ŋ́gɛ, ajūɔ tsem zīi, pɔ́ é si ŋgɔ́ epuɔ pīi, pɔ́ é si ndʉ́ɛ́ épúp.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.step.confirmation
+  source:
+    fr: Confirmation
+    en: Confirmation
+  target:
+    ybb:
+      text: Kwaʼ anu zīi, Ndém a le lɔ̄k ntswīi á légɛ, Ndém a le lɔ̄k ntswīi á légɛ,
+        Ndém a le lɔ̄k ntswīi á légɛ, Ndém a le lɔ̄k ntswīi á légɛ, Ndém a le lɔ̄k
+        ntswīi á légɛ, Ndém a le lɔ̄k ntswīi á légɛ, a le lɔ
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.account.title
+  source:
+    fr: Votre compte
+    en: Your account
+  target:
+    ybb:
+      text: Ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ á légɛ, ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ á
+        légɛ, ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ á légɛ, pɛ é si nzhɛ́ɛ á légɛ, ajūɔ tsem
+        zīi, pɛ é si nzhɛ́ɛ á légɛ, pɛ é si ŋgɔ
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.security.title
+  source:
+    fr: Sécurité
+    en: Security
+  target:
+    ybb:
+      text: Púp, páʼ mɛ́ le zéŋ nzéŋ ŋgɔ́ á mbū Ndém. Páʼ mɛ́ le zéŋ nzéŋ ŋgɔ́ á mbū
+        Ndém. Páʼ mɛ́ le zéŋ nzéŋ ŋgɔ́ á mbū Ndém. Páʼ mɛ́ le zéŋ nzéŋ ŋgɔ́ á mbū
+        Ndém. Páʼ mɛ́ le zéŋ ŋgɔ́
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.security.secure_connection
+  source:
+    fr: Connexion sécurisée
+    en: Secure connection
+  target:
+    ybb:
+      text: Secured ntē tepɔŋ, ńnɔŋ ŋkɔ̄ŋɔ ŋ́gɛ, epuɔ menɔŋ é si ŋkɔ̄ŋɔ ŋ́gɛ, epuɔ
+        menɔŋ e e láʼ ezéŋ ŋgɔ́ á ŋiŋ yīi, epuɔ menɔŋ é si ŋkɔ̄ŋɔ.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.balance.greeting
+  source:
+    fr: Bonjour, {name}
+    en: Hello, {name}
+  target:
+    ybb:
+      text: Ŋ́gɛ, Zzftɛzaz, ŋ́gɔ́ á athʉ́ lepé, mbɔɔ á mbū pɔ́p, ŋ́gɔ́ á athʉ́ lepé.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  placeholders:
+  - name
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: false
+- id: tm.account.line
+  source:
+    fr: 'Numéro de compte : {account}'
+    en: 'Account number : {account}'
+  target:
+    ybb:
+      text: Ajūɔ tsem zīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́
+        le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi,
+        mɛ́ le zéŋ ŋgɔ
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  placeholders:
+  - account
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: false
+- id: tm.balance.subtitle
+  source:
+    fr: Consultez votre solde et lancez un transfert en toute sécurité.
+    en: Check your balance and start a secure transfer.
+  target:
+    ybb:
+      text: Pɛ ezéŋ nzɛ́ttɛ ŋ́gɛ, ndɛ́ʼ pɛ ezéŋ ŋgwɛ̄ azō, ńdɔk ŋgʉ̄ɔ mé mvhɔ.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.balance.available
+  source:
+    fr: Solde disponible
+    en: Available balance
+  target:
+    ybb:
+      text: Ndém a lɛɛ́ ŋkɔ̄ŋɔ azō á mbū Ndém, ńdɔkɔ nzwíʼtɛ á mbū yí.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.account.number_label
+  source:
+    fr: Numéro de compte
+    en: Account number
+  target:
+    ybb:
+      text: 'Azwakne Ndém, ńdɔkɔ ndʉ́ɛ́ ŋ́gɛ:'
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.2
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.balance.current_account
+  source:
+    fr: Compte courant
+    en: Current account
+  target:
+    ybb:
+      text: Ajūɔ tsem zīi, mɛ́ gɔ́ áa ntsem yīi, mɛ́ gɔ áa ntsem yīi, mɛ́ gɔ́ áa ntsem
+        yīi, mɛ́ gɔ́ áa ntsem yīi, mɛ́ gɔ́ áa ntsem yīi, mɛ́ gɔ́ áa ntsem yīi, mɛ́
+        gɔ́ áa ntsem yīi, mɛ́ gɔ́ áa ntsem y
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.balance.start_transfer
+  source:
+    fr: Effectuer un transfert
+    en: Make a transfer
+  target:
+    ybb:
+      text: Ŋ́gɔ́ mé apwɛne, ńdɔkɔ ŋgʉ̄ɔ mé apwɛne. Ŋ́gɔ́ mé apwɛne, ńdɔkɔ ŋgʉ̄ɔ mé
+        apwɛne. Ŋ́gɔ́ mé apwɛne.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.balance.see_fees
+  source:
+    fr: Consulter les frais
+    en: View fees
+  target:
+    ybb:
+      text: Ŋ́gɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ azō á leghʉ azō á mbū pɔ́p, ŋ́gɔ́ éyi, mɛ́
+        le zéŋ ŋghʉ̄ɛ azō á mbū pɔ́p. Ŋ́gɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ éyi, mɛ́ le zéŋ ŋghʉ̄ɛ
+        azō á mbū meŋ.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.balance.recent
+  source:
+    fr: Transactions récentes
+    en: Recent transactions
+  target:
+    ybb:
+      text: Táʼ, afʉʼ zīi a á si ŋgɔ́ ajūɔ tsem zīi, Ndém a le lɔ̄k ŋgɔ́ á ŋiŋ ndeŋ
+        ndeŋ, á mbū pɔ́p, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ, ńdɔkɔ ŋgʉ̄ɔ mé
+        ayiŋne.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.tx.merchant
+  source:
+    fr: Paiement marchand
+    en: Merchant payment
+  target:
+    ybb:
+      text: Ŋ́gɔ́ mé mvhɔ, mbɔ ŋgaŋ afaʼ mɛ́t, ŋ́gɔ́ á mbū pɔ́p, ŋ́gɔ́ á mbū pɔ́p.
+        Ŋ́gɔ́ á mbū pɔ́p. Ŋ́gɔ́ á mbū pɔ́p, ŋ́gɔ́ á mbū yí.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.tx.salary
+  source:
+    fr: Salaire reçu
+    en: Salary received
+  target:
+    ybb:
+      text: Ewɔŋkhʉ̄ páʼā, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ
+        ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ, ŋ́gɔ́ á ŋiŋ
+        páʼā,
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.tx.received
+  source:
+    fr: Transfert reçu
+    en: Transfer received
+  target:
+    ybb:
+      text: Ndém a lɛɛ́ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ
+        ŋgʉ̄ɔ mé mvhɔ.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.tx.electricity
+  source:
+    fr: Facture électricité
+    en: Electricity bill
+  target:
+    ybb:
+      text: Púp, ḿbīŋ ntswīi ŋgɔ́ éyi, mɛ́ lɔkɔ ntswīi ŋgɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́
+        gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ ezwhí
+        á yí.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.warn.verify_beneficiary
+  source:
+    fr: Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un
+      transfert.
+    en: Always verify the beneficiary name and number before confirming a transfer.
+  target:
+    ybb:
+      text: Pɛ ezéŋ nnɔ̄ŋ nzhɛ́ɛ á légɛ, ndɛ́ʼ pɛ ezwhí á légɛ, Ndém a a láʼ ezwhí
+        á mbū Ndém, ńzwhí á mbū Ndém, ńdɔk ŋgwɛ̄ azō.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.fees.title
+  source:
+    fr: Frais de transfert
+    en: Transfer fees
+  target:
+    ybb:
+      text: Ŋ́gɔ́ mé apwɛne, ńdɔkɔ ntswīi ŋ́gɛ, afʉʼ zīi a gɔ́ éyi a á ŋiŋ ndeŋ ndeŋ,
+        á mbū pɔ́p, á mbū pɔ́p, ńdɔkɔ ntswīi á mbū yí.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.fees.subtitle
+  source:
+    fr: Choisissez le type de transfert et le montant. Les frais sont calculés automatiquement.
+    en: Choose the transfer type and amount. Fees are calculated automatically.
+  target:
+    ybb:
+      text: Pɛ etswíʼte ŋ́gɛ, ndɛ́ʼ pɛ ezéŋ ŋgwɛ̄ azō, ŋ́gwɛ̄ azō. Epuɔ menɔŋ é zéŋ
+        ŋgwɛ̄ azō.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.fees.operation_type
+  source:
+    fr: Type d'opération
+    en: Operation type
+  target:
+    ybb:
+      text: Ŋ́gɔ́ mé afʉʼ zīi, a gɔ́ éyi, a gɔ́ éyi, mɛ́ éyi mɛ́ gɔ́ éyi, mɛ́ gɔ́
+        éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ ezwhíte á yí, ŋ́gɔ́ á ŋiŋ yīi, mɛ́ gɔ́ éyi, mɛ́ éyi
+        mɛ́ gɔ́ éyi, mɛ́ g
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.fees.safinum
+  source:
+    fr: Compte Safinum
+    en: Safinum account
+  target:
+    ybb:
+      text: Safinum méŋwɛ̄t azō á mbū pɔ́p, ńdɔkɔ ntswīi á mbū yí.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.fees.safinum_desc
+  source:
+    fr: Transfert instantané et gratuit
+    en: Instant, free transfer
+  target:
+    ybb:
+      text: Ŋ́kó éwú, ŋ́kó ánɛ ajʉʼ zīi, Ndém a á si ŋgɔ́ á ntē aŋwaʼne Ndém. Ŋ́kó
+        éwú, ńdɔkɔ ŋkó á ntē aŋwaʼne Ndém. Ŋ́kó á ntē aŋwaʼne Ndém. Ŋ́kó á ntē aŋwaʼne
+        Ndém. Ŋ́kó á ntē a
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.fees.other_bank
+  source:
+    fr: Autre banque
+    en: Other bank
+  target:
+    ybb:
+      text: Ŋ́gɔ́ éyi, ajʉʼ mɛ́t á gɔ́ éwú, ŋ́gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ ezwhí á
+        yímpɛ azímpɛ.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.fees.amount
+  source:
+    fr: Montant à envoyer
+    en: Amount to send
+  target:
+    ybb:
+      text: Ndém a lɛɛ́ ŋgʉ̄ɔ mé mvhɔ, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ yīi, mɛ́
+        tɔ́ŋ ŋkó á yímpɛ, a egɔ́ á yímpɛ, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.fees.fee
+  source:
+    fr: Frais
+    en: Fee
+  target:
+    ybb:
+      text: Mɛ́ le zéŋ ŋgwɛ̄ azō, ńdɔkɔ ŋgwhʉ̄ɔ ŋgwhʉ̄ɛ azō. Mɛ́ le zéŋ ŋgwhʉ̄ azō,
+        ńdɔkɔ ŋgwhʉ̄ɛ azō.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.fees.free
+  source:
+    fr: Gratuit
+    en: Free
+  target:
+    ybb:
+      text: Ŋ́gɔ́ mé pɔ́k, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ yīi, Ndém a le lɔ̄k
+        á yímpɛ, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ yīi, a le lɔ̄k á yímpɛ, ńdɔkɔ
+        ŋiŋ ndeŋ ndeŋ, ńdɔk
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.fees.total
+  source:
+    fr: Total à débiter
+    en: Total to debit
+  target:
+    ybb:
+      text: Púp, ndɛ́ʼ ŋgwɛ̄ ajūɔ tsem zīi, pɔ́ é si ŋgɔ́ á ŋiŋ yīi, pɔ́ é si ŋgɔ́
+        á ŋiŋ yīi, pɔ́ é si ŋgɔ́ á ŋiŋ yīi, pɔ́ é si ŋgɔ́ á ŋiŋ yīi, pɔ́ é si ŋgɔ́
+        á ŋiŋ yīi, pɔ́ é si
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.fees.balance_after
+  source:
+    fr: Solde après opération
+    en: Balance after transfer
+  target:
+    ybb:
+      text: Páʼ mbɔɔ afʉʼ zīi, mɛ́ lɔkɔ nzhɛ́ɛ á légɛ, afʉʼ zīi mɛ́ gɔ le zapá ánɛ
+        afʉʼ zīi, mɛ́ lɔkɔ ŋgʉɔ̄ʼ mɛ́t, a á si ŋgɔ́ áa afʉʼ zīi, mɛ́ lɔkɔ nzhɛ́ɛ afʉʼ
+        zīi, mɛ́ lɔkɔ ŋ
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.ben.title
+  source:
+    fr: Bénéficiaire
+    en: Beneficiary
+  target:
+    ybb:
+      text: Ŋ́gɔ́ á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á
+        ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á
+        ŋiŋ yīi, a á ŋiŋ yīi a
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.ben.subtitle
+  source:
+    fr: Renseignez les informations du destinataire. Vérifiez toujours le numéro avant
+      de valider.
+    en: Enter the recipient details. Always verify the number before confirming.
+  target:
+    ybb:
+      text: Pɛ ezhɛ́ á légɛ, epuɔ menɔŋ é si nzhɛ́ɛ á légɛ, epuɔ menɔŋ é si nzhɛ́ɛ
+        á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ ajū mīi, a á si nzhɛ́ɛ á légɛ, pɛ ezhɛ́
+        á légɛ, ajū mīi a á si nzhɛ́ɛ á légɛ, pɛ
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.ben.warning_new
+  source:
+    fr: Ce bénéficiaire n'a jamais été utilisé sur ce compte. Vérifiez le numéro avant
+      de continuer.
+    en: This beneficiary has never been used on this account. Verify the number before
+      continuing.
+  target:
+    ybb:
+      text: Ndém a le gē ezéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le
+        zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi,
+        a gɔ le zéŋ ŋgɔ́ á ŋiŋ y
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.ben.name
+  source:
+    fr: Nom du bénéficiaire
+    en: Beneficiary name
+  target:
+    ybb:
+      text: Ndém a le ghʉ̄ʉ̄, ŋiŋ a gɔ́ áa ánɛ ŋiŋ yīi, Ndém a le ghʉ̄ʉ̄ʉ̄, ńdɔkɔ
+        ŋghʉ̄ɛ afaʼ zīi, Ndém a le ghʉ̄ʉ̄ʉ̄, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi,
+        a á ŋiŋ yīi, a á ŋiŋ yī
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.ben.phone
+  source:
+    fr: Numéro de téléphone
+    en: Phone number
+  target:
+    ybb:
+      text: Ŋ́gɔ́ mé pɔ́p, ŋ́gɔ́ áa ŋiŋ yīi, a á si ŋgɔ́ áa ŋiŋ yīi, a á si ŋgɔ́ á
+        ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋkɔ̄ŋɔ.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.ben.reason
+  source:
+    fr: Motif du transfert
+    en: Transfer reason
+  target:
+    ybb:
+      text: Menu mīi, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ, mɛ́ gɔ́ áa ánɛ ajʉʼ zīi, mɛ́ lɔkɔ ntswīi
+        á légɛ, Ndém a á si ŋgɔ́ áa ánɛ ajʉʼ zīi, mɛ́ lɔkɔ ntswīi á légɛ, Ndém a á
+        si ŋgɔ́ áa ánɛ ajʉʼ zīi, mɛ
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.ben.note
+  source:
+    fr: Note (optionnel)
+    en: Note (optional)
+  target:
+    ybb:
+      text: Ŋ́gɔ́ éyi, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ, mɛ́ lɔkɔ ndʉ́ɛ́ɛ́ ŋ́gɛ, mɛ́ lɔkɔ ndʉ́ɛ́
+        ŋ́gɛ, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ, mɛ́ lɔkɔ ndʉ́ɛ́ɛ́ ŋ́gɛ, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.ben.verified
+  source:
+    fr: J'ai vérifié le nom et le numéro du bénéficiaire.
+    en: I have verified the beneficiary name and phone number.
+  target:
+    ybb:
+      text: Meŋ ke nɔ̄ŋ nzhɛ́ɛ á légɛ, meŋ ndɛ́ɛ́ ŋ́gɛ, mbɔɔ akɔ̄ lɛ́, ŋ́gɔ́ akɔ̄
+        lɛ́.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.fees.percent_desc
+  source:
+    fr: Frais de {rate} % (min. {min} FCFA, max. {max} FCFA)
+    en: '{rate}% fee (min. {min} FCFA, max. {max} FCFA)'
+  target:
+    ybb:
+      text: Pɔ́ zɔ́p ŋ́gɛ, zɔ́fɛ́t zɔ́p zɔ́p zɔ́p zɔp zɔp zɔp zɔp zɔp zɔp zɔp zɔp,
+        ńzɔp zɔp Ffɛ́t zɔp zɔp zɔp zɔp zɔp zɔp zɔp, ńdɔkɔ efāʼa. Pɔ́ gɔ́ áa zɔp zɔp
+        zɔp zɔp zɔp
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.2
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: false
+- id: tm.footer.disclaimer
+  source:
+    fr: Safinum Pay — environnement de démonstration. Ne saisissez aucune donnée personnelle
+      réelle.
+    en: Safinum Pay — demonstration environment. Do not enter real personal data.
+  target:
+    ybb:
+      text: Safinum Pɔ́ɔl páʼā, ńdɔkɔ eshúŋɔ á anuúnē. Ndɛ́ʼ pɛ ezéŋ ŋgwɛ̄ anuúnē,
+        ńdɔk nzhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, ajūɔ tsem zīi, a á si
+        ŋkɔ̄ŋɔ á légɛ, ajūɔ tsem
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.2
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+  mtWithheld: true
+  mtWithheldReason: "target changes the protected brand/name 'Safinum Pay'"
+- id: tm.summary.title
+  source:
+    fr: Récapitulatif
+    en: Summary
+  target:
+    ybb:
+      text: Ńdɔkɔ ŋ́gɛ, ajūɔ tsem zīi, pɔ́ é si ŋgɔ́ epuɔ pīi, pɔ́ é si ndʉ́ɛ́ épúp.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.summary.subtitle
+  source:
+    fr: Vérifiez les informations avant de confirmer le transfert.
+    en: Check the details before confirming the transfer.
+  target:
+    ybb:
+      text: Púp, ndɛ́ʼ pɛ ezéŋ njúʼ ajū mīi, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ, ajū mīi a á si
+        nzɛ́ttɛ á légɛ, ajū mīi a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋkɔ̄ŋɔ.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.summary.amount
+  source:
+    fr: Montant
+    en: Amount
+  target:
+    ybb:
+      text: Ndém a lɛɛ́ ŋgɔ́ áa mbū Ndém, ŋ́gɔ́ áa mbū Ndém. Ndém a lɛɛ́ ŋgɔ́ áa mbū
+        Ndém, ŋ́gɔ́ áa mbū Ndém.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.summary.fee
+  source:
+    fr: Frais
+    en: Fee
+  target:
+    ybb:
+      text: Mɛ́ le zéŋ ŋgwɛ̄ azō, ńdɔkɔ ŋgwhʉ̄ɔ ŋgwhʉ̄ɛ azō. Mɛ́ le zéŋ ŋgwhʉ̄ azō,
+        ńdɔkɔ ŋgwhʉ̄ɛ azō.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.summary.total
+  source:
+    fr: Total débité
+    en: Total debited
+  target:
+    ybb:
+      text: Mbɔ ajʉʼ zīi, a gɔ́ éyi, mɛ́ lɔkɔ ntswīi ŋgɔ́ á ŋiŋ yīi, mɛ́ lɔkɔ ntswīi
+        ŋgɔ́ á yí, mɛ́ lɔkɔ ntswīi á yí á lelɔk ŋgʉ̄ɔ mé yí.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.summary.beneficiary
+  source:
+    fr: Bénéficiaire
+    en: Beneficiary
+  target:
+    ybb:
+      text: Ŋ́gɔ́ á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á
+        ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á
+        ŋiŋ yīi, a á ŋiŋ yīi a
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.summary.phone
+  source:
+    fr: Téléphone
+    en: Phone
+  target:
+    ybb:
+      text: Púp, pɛ ezhɛ́ á légɛ, Ndém a elɛ ŋghʉ̄, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ,
+        pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́
+        á légɛ, pɛ ezhɛ́ á légɛ, pɛ
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.summary.reference
+  source:
+    fr: Référence
+    en: Reference
+  target:
+    ybb:
+      text: Ndém a lɛɛ́ ŋghʉ̄ɛ épúp, mbɔ Ndém a lɛɛ́ ŋghʉ̄ɛ azō á mbū Ndém, ńdɔkɔ
+        ŋghʉ̄ɛ azō á mbū Ndém.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.summary.operation
+  source:
+    fr: Opération
+    en: Operation
+  target:
+    ybb:
+      text: Ŋ́gɔ́ mé afʉʼ zīi, Ndém a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋkɔ̄ŋɔ á yí, á mbū
+        pɔ́p.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.summary.confirm_check
+  source:
+    fr: Je confirme que les informations ci-dessus sont correctes.
+    en: I confirm that the information above is correct.
+  target:
+    ybb:
+      text: Meŋ á si nzhɛ́ɛ á légɛ, anu zīi anu zīi, anu zīi mɛ́ gɔ le lɔ̄kɔ nzhɛ́ɛ
+        á légɛ, anu zīi mɛ́ gɔ le lɔ̄kɔ ŋkɔ̄ŋɔ.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.summary.edit
+  source:
+    fr: Modifier
+    en: Edit
+  target:
+    ybb:
+      text: Ŋ́gɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ éyi, mɛ́ le zéŋ ŋghʉ̄, mɛ́ le zéŋ ŋghʉ̄, mbɔ
+        Ndém a le zéŋ ŋgyá á mbū Ndém.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.summary.confirm
+  source:
+    fr: Confirmer le transfert
+    en: Confirm transfer
+  target:
+    ybb:
+      text: Ŋ́gɔ́ mé agáʼ akɛtte zīi, mɛ́ lɔkɔ ntswīi á légɛ, Ndém a á si ŋgɔ́ ajūɔ
+        tsem zīi, mɛ́ lɔkɔ ntswīi á légɛ, Ndém a á si ŋgɔ́ azō ánɛ ajūɔ tsem zīi,
+        mɛ́ lɔkɔ ntswīi á légɛ, Ndém a á si
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.receipt.title
+  source:
+    fr: Transfert effectué
+    en: Transfer completed
+  target:
+    ybb:
+      text: Ŋ́gɔ́ mé afʉʼ zīi, Ndém a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi,
+        a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋkɔ̄ŋɔ á yí, a á si ŋgɔ́
+        áa afʉʼ zīi, a á si ŋgɔ́ á
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.receipt.subtitle
+  source:
+    fr: Votre transfert a été envoyé avec succès.
+    en: Your transfer has been sent successfully.
+  target:
+    ybb:
+      text: Mɛ́ le tó á wɛ́ ŋkó á wɛ́, mbɔ akɔ̄ lɛ́, mbɔ akɔ̄ lɛ́, mbɔ akɔ̄ lɛ́.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.receipt.reference
+  source:
+    fr: Référence
+    en: Reference
+  target:
+    ybb:
+      text: Ndém a lɛɛ́ ŋghʉ̄ɛ épúp, mbɔ Ndém a lɛɛ́ ŋghʉ̄ɛ azō á mbū Ndém, ńdɔkɔ
+        ŋghʉ̄ɛ azō á mbū Ndém.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.receipt.amount
+  source:
+    fr: Montant
+    en: Amount
+  target:
+    ybb:
+      text: Ndém a lɛɛ́ ŋgɔ́ áa mbū Ndém, ŋ́gɔ́ áa mbū Ndém. Ndém a lɛɛ́ ŋgɔ́ áa mbū
+        Ndém, ŋ́gɔ́ áa mbū Ndém.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.receipt.fee
+  source:
+    fr: Frais
+    en: Fee
+  target:
+    ybb:
+      text: Mɛ́ le zéŋ ŋgwɛ̄ azō, ńdɔkɔ ŋgwhʉ̄ɔ ŋgwhʉ̄ɛ azō. Mɛ́ le zéŋ ŋgwhʉ̄ azō,
+        ńdɔkɔ ŋgwhʉ̄ɛ azō.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.receipt.total
+  source:
+    fr: Total débité
+    en: Total debited
+  target:
+    ybb:
+      text: Mbɔ ajʉʼ zīi, a gɔ́ éyi, mɛ́ lɔkɔ ntswīi ŋgɔ́ á ŋiŋ yīi, mɛ́ lɔkɔ ntswīi
+        ŋgɔ́ á yí, mɛ́ lɔkɔ ntswīi á yí á lelɔk ŋgʉ̄ɔ mé yí.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.receipt.beneficiary
+  source:
+    fr: Bénéficiaire
+    en: Beneficiary
+  target:
+    ybb:
+      text: Ŋ́gɔ́ á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á
+        ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á
+        ŋiŋ yīi, a á ŋiŋ yīi a
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.receipt.status
+  source:
+    fr: Statut
+    en: Status
+  target:
+    ybb:
+      text: Ŋ́gɔ́ ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á ŋiŋ yīi,
+        a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi,
+        a á ŋiŋ yīi,
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.receipt.success
+  source:
+    fr: Succès
+    en: Success
+  target:
+    ybb:
+      text: Ŋ́gɔ́ mé afʉʼ zīi, Ndém a le lɔ̄k á wɛ́ á leghʉ afʉʼ zīi, Ndém a le lɔ̄k
+        á wɛ́ á leghʉ afʉʼ zīi, Ndém a le lɔ̄k á wɛ́ á leghʉ afʉʼ zīi, a le lɔ̄k á
+        wɛ́.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.receipt.new_transfer
+  source:
+    fr: Nouveau transfert
+    en: New transfer
+  target:
+    ybb:
+      text: Ŋ́gɔ́ mé afʉʼ zīi, Ndém a á si ŋgɔ́ á ŋiŋ yīi, Ndém a á si ŋgɔ́ á ŋiŋ
+        yīi, Ndém a a láʼ ezéŋ ŋgɔ́ á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi,
+        a á ŋiŋ yīi, a á si ŋgɔ
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.novel.example
+  source:
+    fr: Un message important pour les clients…
+    en: An important message for customers…
+  target:
+    ybb:
+      text: Ajūɔ tsem zīi, a á si ŋgɔ́ á mbū epuɔ pīi, pɔ́ é si ŋgɔ́ á mbū epuɔ menɔŋ.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.2
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.error.title
+  source:
+    fr: Une erreur est survenue
+    en: An error occurred
+  target:
+    ybb:
+      text: Mɛ́ le zéŋ ŋgɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ éwú, ŋ́gɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ éyi,
+        mɛ́ le zéŋ ŋgɔ́ éwú.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.2
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.error.amount_zero
+  source:
+    fr: Le montant doit être supérieur à zéro.
+    en: The amount must be greater than zero.
+  target:
+    ybb:
+      text: Ajū mīi mɛ́ gɔ eghʉ̄ʉ ajū mīi, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ,
+        ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi
+        mɛ́ gɔ eghʉ̄ʉ̄ʉ,
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.2
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.error.insufficient
+  source:
+    fr: Solde insuffisant pour effectuer ce transfert.
+    en: Insufficient balance for this transfer.
+  target:
+    ybb:
+      text: Ajū mīi mɛ́ le zéŋ ŋgwɛ̄ azō á mbū Ndém, á mbū pɔ́p, ńdɔkɔ ŋgwɛ̄ azō.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.2
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.error.beneficiary_missing
+  source:
+    fr: Veuillez renseigner le nom et le numéro du bénéficiaire.
+    en: Please provide the beneficiary name and phone number.
+  target:
+    ybb:
+      text: Pɛ ezhɛ́ á légɛ, akɔ̄ akɔ̄ lɛ́, pɛ ezhɛ́ á légɛ, akɔ̄ akɔ̄ lɛ́, pɛ ezhɛ́
+        á légɛ, Ndém a a láʼ eghʉ, pɛ ezhɛ́ á légɛ, Ndém a a láʼ eghʉ, pɛ ezhɛ́ á
+        légɛ, Ndém a a láʼ eghʉ, pɛ ezhɛ́
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.2
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.error.network
+  source:
+    fr: 'Erreur réseau : le service est temporairement indisponible. Réessayez.'
+    en: 'Network error: the service is temporarily unavailable. Please try again.'
+  target:
+    ybb:
+      text: Ŋ́gɔ́ mé ajʉʼ mɛ́t, ŋ́gɔ́ éyi, ŋgaŋ aziɛ́, aziɛ́ a te zéŋ ŋgɔ́ éyi, ŋgaŋ
+        aziɛ́. Pɛ ezéŋ njʉ́ɔ áa ajʉʼ zīi, ŋgaŋ aziɛ́.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.2
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.error.confirm_required
+  source:
+    fr: Vous devez confirmer les informations avant de valider le transfert.
+    en: You must confirm the details before validating the transfer.
+  target:
+    ybb:
+      text: Pɛ ezéŋ ŋgwɛ̄ akɔ̄ lɛ́, pɛ ezéŋ ndɔk nzwíʼtɛ akɔ̄ lɛ́, tɛ́ ndɔk ŋgwɛ̄
+        akɔ̄ lɛ́.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.2
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.warning.security_verify
+  source:
+    fr: 'Alerte de sécurité : vérifiez le numéro du bénéficiaire avant de continuer.'
+    en: 'Security warning: verify the beneficiary phone number before continuing.'
+  target:
+    ybb:
+      text: Púp, pɛ ezéŋ njhʉ́ ajū mīi, a á si ŋgɔ́ á ajū mīi, a gɔ́ éyi, a gɔ́ éyi,
+        a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi,
+        a gɔ́ éyi, a gɔ́ éyi, a
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.2
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.warning.security_new
+  source:
+    fr: 'Alerte de sécurité : ce bénéficiaire n''a jamais été utilisé sur ce compte.'
+    en: 'Security warning: this beneficiary has never been used on this account.'
+  target:
+    ybb:
+      text: Awíɛ awíɛ a á si ŋgɔ́ ajʉʼ zīi, a á si ŋgɔ́ á ajʉʼ zīi, a gɔ le zéŋ ŋgɔ́
+        á ajʉʼ zīi, a gɔ le zéŋ ŋgɔ́ á ajʉʼ zīi, a gɔ le zéŋ ŋgɔ́ á ayiŋne.
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: high
+  version: 2026-11-09.2
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.action.back
+  source:
+    fr: Retour
+    en: Back
+  target:
+    ybb:
+      text: Ŋ́gɔ́ mé nnɔ̄ŋ nzhɛ́ɛ á légɛ, Ndém a á si nzhɛ́ɛ á légɛ, pɔ́ egʉɔ nnɛ̄t
+        ŋgyáa á mbū Ndém. Ŋ́gɔ́ mé nzhɛ́ɛ á légɛ, pɔ́ egʉɔ nnɛ̄t ŋgyáa á mbū Ndém.
+        Ŋ́gɔ́ mé nzhɛ́ á légɛ, pɔ
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: low
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true
+- id: tm.action.continue
+  source:
+    fr: Continuer
+    en: Continue
+  target:
+    ybb:
+      text: Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́
+        mé apwɛne. Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne,
+        ŋ́gɔ́ mé apwɛ
+      origin: mt
+      validatedBy: []
+      backTranslationFr: ''
+  risk: medium
+  version: 2026-11-09.1
+  mtProvider: marian
+  mtModel: cameroon-int8/francais-yemba
+  mtAt: '2026-11-13'
+  mtPlaceholdersOk: true

@@ -1,0 +1,21 @@
+code: ybb
+endonym: Yemba
+names:
+  fr: Yemba
+  en: Yemba
+script: Latn
+direction: ltr
+orthography: AGLC
+status: draft # validated | draft | text-only
+letters: "abcdefghijklmnŋoprstuʉvwyzɛɔ"
+mt:
+  provider: marian
+  model: models/cameroon-int8/francais-yemba
+  pivot: fr
+speech:
+  provider: mms
+  model: models/mms-tts-ybb
+  tone: partial # tokenizer has high (á) and mid (ā) only
+  substitutions: { "ɲ": "ny", "Ɲ": "Ny", "ꞌ": "ʼ" }
+numbers: numbers/ybb.json
+pack: entries/ybb

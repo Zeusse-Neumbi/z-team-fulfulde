@@ -16,6 +16,9 @@ export interface TmHit {
   model?: string;
 }
 
+/** The pack the panel selects; the content script passes the real value. */
+export const DEFAULT_TARGET_LANG = "fub";
+
 interface PatternEntry {
   unit: TranslationUnit;
   regex: RegExp;
@@ -29,14 +32,24 @@ interface RuntimeEntry {
   model: string;
 }
 
-function runtimeUnit(target: string, provider: string, model: string): TranslationUnit {
+function runtimeUnit(
+  target: string,
+  provider: string,
+  model: string,
+  language: string,
+): TranslationUnit {
   return {
     id: `mt.${provider}`,
     source: { fr: "", en: "" },
-    target: { ff: target },
+    target: {
+      [language]: {
+        text: target,
+        origin: "mt",
+        validatedBy: [],
+        backTranslationFr: "",
+      },
+    },
     risk: "medium",
-    validatedBy: [],
-    backTranslationFr: "",
     version: `mt:${provider}:${model}`,
   };
 }
@@ -65,11 +78,13 @@ export class TranslationMemory {
   private readonly en = new Map<string, TranslationUnit>();
   private readonly patterns: PatternEntry[] = [];
   private readonly runtime = new Map<string, RuntimeEntry>();
+  private readonly lang: string;
   private runtimeFirst = false;
 
-  constructor(units: TranslationUnit[]) {
+  constructor(units: TranslationUnit[], lang: string = DEFAULT_TARGET_LANG) {
+    this.lang = lang;
     for (const unit of units) {
-      if (!unit.target.ff) continue;
+      if (!this.targetOf(unit)) continue;
       const fr = normalizeSource(unit.source.fr);
       const en = normalizeSource(unit.source.en);
       if (fr && !this.fr.has(fr)) this.fr.set(fr, unit);
@@ -79,6 +94,10 @@ export class TranslationMemory {
       if (frPattern) this.patterns.push(frPattern);
       if (enPattern) this.patterns.push(enPattern);
     }
+  }
+
+  private targetOf(unit: TranslationUnit): string {
+    return unit.target[this.lang]?.text ?? "";
   }
 
   lookup(text: string): TmHit | null {
@@ -91,20 +110,23 @@ export class TranslationMemory {
     }
 
     const exact = this.fr.get(normalized) ?? this.en.get(normalized);
-    if (exact?.target.ff) {
-      return {
-        unit: exact,
-        target: exact.target.ff,
-        source: text,
-        captures: [],
-        origin: "tm",
-      };
+    if (exact) {
+      const target = this.targetOf(exact);
+      if (target) {
+        return {
+          unit: exact,
+          target,
+          source: text,
+          captures: [],
+          origin: "tm",
+        };
+      }
     }
 
     for (const pattern of this.patterns) {
       const match = pattern.regex.exec(normalized);
       if (!match) continue;
-      let target = pattern.unit.target.ff;
+      let target = this.targetOf(pattern.unit);
       const captures: TmCapture[] = [];
       pattern.keys.forEach((key, index) => {
         const value = match[index + 1] ?? "";
@@ -152,7 +174,7 @@ export class TranslationMemory {
     if (!override && (this.fr.has(normalized) || this.en.has(normalized))) return false;
     this.runtime.set(normalized, {
       target: value,
-      unit: runtimeUnit(value, provider, model),
+      unit: runtimeUnit(value, provider, model, this.lang),
       provider,
       model,
     });

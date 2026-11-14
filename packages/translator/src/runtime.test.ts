@@ -13,8 +13,6 @@ function unit(
 ): TranslationUnit {
   return {
     risk: "high",
-    validatedBy: ["speaker_1"],
-    backTranslationFr: "",
     version: "test",
     ...partial,
   };
@@ -43,7 +41,7 @@ describe("runtime machine translation", () => {
       unit({
         id: "tm.balance",
         source: { fr: "Solde disponible", en: "Available balance" },
-        target: { ff: "FF_SOLDE" },
+        target: { fub: { text: "FF_SOLDE", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     expect(tm.addRuntime("Solde disponible", "MT_SOLDE", "nllb", "model")).toBe(false);
@@ -56,7 +54,7 @@ describe("runtime machine translation", () => {
       unit({
         id: "tm.balance",
         source: { fr: "Solde disponible", en: "Available balance" },
-        target: { ff: "FF_SOLDE" },
+        target: { fub: { text: "FF_SOLDE", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     expect(tm.addRuntime("Solde disponible", "MT_SOLDE", "nllb", "model", true)).toBe(true);
@@ -78,7 +76,7 @@ describe("runtime machine translation", () => {
       unit({
         id: "tm.fees",
         source: { fr: "Frais", en: "Fee" },
-        target: { ff: "FF_FRAIS" },
+        target: { fub: { text: "FF_FRAIS", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const values: VaultValue[] = [];
@@ -100,7 +98,7 @@ describe("runtime machine translation", () => {
       unit({
         id: "tm.fees",
         source: { fr: "Frais", en: "Fee" },
-        target: { ff: "FF_FRAIS" },
+        target: { fub: { text: "FF_FRAIS", origin: "human", validatedBy: [], backTranslationFr: "" } },
       }),
     ]);
     const translator = new DomTranslator();

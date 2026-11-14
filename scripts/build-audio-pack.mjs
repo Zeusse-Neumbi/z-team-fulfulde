@@ -35,14 +35,29 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
 const check = args.includes("--check");
 
+function option(name, fallback) {
+  const index = args.indexOf(name);
+  if (index >= 0 && args[index + 1]) return args[index + 1];
+  const inline = args.find((arg) => arg.startsWith(`${name}=`));
+  return inline ? inline.slice(name.length + 1) : fallback;
+}
+
+const lang = option("--lang", "fub");
+if (!/^[a-z]{3}$/.test(lang)) {
+  console.error(`[audio] --lang must be an ISO 639-3 code, got ${lang}`);
+  process.exit(2);
+}
+
 const sessionDir = join(root, "eval/linguistic/session");
 const sessionManifestPath = join(sessionDir, "manifest.json");
-const blockedPath = join(root, "packages/phrasebank/entries/audio.blocked.yaml");
+const blockedPath = join(root, `packages/phrasebank/entries/${lang}/audio.blocked.yaml`);
 const outDir = join(root, "apps/extension/public/audio/demo");
 const manifestPath = join(outDir, "manifest.json");
 const BITRATE = "32k";
 
-const blocked = YAML.parse(readFileSync(blockedPath, "utf8"));
+const blocked = existsSync(blockedPath)
+  ? YAML.parse(readFileSync(blockedPath, "utf8"))
+  : { blocked: [] };
 const explicit = new Map((blocked.blocked ?? []).map((entry) => [entry.id, entry.reason]));
 
 const WARNING_OR_ERROR = /^(WARN_|ERROR_|SAFE_GENERIC_)|^tm\.(warn|warning|error)\./i;

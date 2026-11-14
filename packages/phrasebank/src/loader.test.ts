@@ -1,47 +1,214 @@
+import { readdirSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { loadAll, releaseErrors } from "./loader";
+import {
+  type LanguagePack,
+  assertKnownTargets,
+  loadAll,
+  loadRegistry,
+  releaseErrors,
+  releaseGate,
+} from "./loader";
 
-describe("phrasebank data", () => {
-  const data = loadAll();
+const registry = loadRegistry();
+const packs = loadAll();
 
-  it("loads the seed translation memory", () => {
-    expect(data.translationUnits.length).toBeGreaterThan(10);
-    expect(new Set(data.translationUnits.map((u) => u.id)).size).toBe(
-      data.translationUnits.length,
+describe("language registry", () => {
+  it("loads one row per language", () => {
+    const codes = registry.map((entry) => entry.code);
+    expect(codes).toEqual(expect.arrayContaining(["fub", "ybb"]));
+    expect(new Set(codes).size).toBe(registry.length);
+    for (const code of codes) expect(code).toMatch(/^[a-z]{3}$/);
+  });
+
+  it("keeps the registry and the pack directories in bijection", () => {
+    const directories = readdirSync(fileURLToPath(new URL("../entries/", import.meta.url)), {
+      withFileTypes: true,
+    })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .sort();
+    expect(directories).toEqual(registry.map((entry) => entry.code).sort());
+  });
+});
+
+describe("phrasebank packs", () => {
+  it("loads the seed translation memory and phrases for every language", () => {
+    for (const code of Object.keys(packs)) {
+      const pack = packs[code];
+      expect(pack).toBeDefined();
+      expect(pack?.translationUnits.length).toBeGreaterThan(10);
+      expect(pack?.phrases.length).toBeGreaterThan(5);
+      expect(new Set(pack?.translationUnits.map((unit) => unit.id)).size).toBe(
+        pack?.translationUnits.length,
+      );
+      expect(new Set(pack?.phrases.map((phrase) => phrase.id)).size).toBe(pack?.phrases.length);
+    }
+  });
+
+  it("isolates each pack: no cross-language targets", () => {
+    for (const code of Object.keys(packs)) {
+      const pack = packs[code];
+      expect(pack).toBeDefined();
+      expect(
+        pack?.translationUnits.every((unit) =>
+          Object.keys(unit.target).every((target) => target === code),
+        ),
+      ).toBe(true);
+      expect(
+        pack?.phrases.every((phrase) =>
+          Object.keys(phrase.target).every((target) => target === code),
+        ),
+      ).toBe(true);
+      for (const other of Object.keys(packs)) {
+        if (other === code) continue;
+        expect(pack?.translationUnits.every((unit) => unit.target[other] === undefined)).toBe(
+          true,
+        );
+      }
+    }
+  });
+
+  it("warns on empty targets instead of inventing text", () => {
+    for (const code of Object.keys(packs)) {
+      const pack = packs[code];
+      expect(pack?.warnings.length).toBeGreaterThan(0);
+      expect(pack?.translationUnits.every((unit) => !unit.target[code]?.text)).toBe(true);
+    }
+  });
+});
+
+describe("target validation", () => {
+  it("rejects a target key that is not in the registry", () => {
+    expect(() =>
+      assertKnownTargets([{ id: "tm.unknown", target: { deu: { text: "" } } }], new Set(["fub"]), "tm"),
+    ).toThrow(/deu/);
+  });
+
+  it("accepts a registered target key", () => {
+    expect(() =>
+      assertKnownTargets([{ id: "tm.known", target: { fub: { text: "" } } }], new Set(["fub"]), "tm"),
+    ).not.toThrow();
+  });
+});
+
+function packWith(overrides: Partial<LanguagePack>): LanguagePack {
+  return {
+    code: "fub",
+    status: "draft",
+    packSource: "validated",
+    tmVersion: "test",
+    phrasebankVersion: "test",
+    translationUnits: [],
+    phrases: [],
+    numbers: packs.fub?.numbers as LanguagePack["numbers"],
+    warnings: [],
+    ...overrides,
+  };
+}
+
+const unvalidatedHighRisk: LanguagePack["translationUnits"][number] = {
+  id: "tm.high",
+  source: { fr: "Solde", en: "Balance" },
+  target: {
+    fub: { text: "", origin: "human", validatedBy: [], backTranslationFr: "" },
+  },
+  risk: "high",
+  version: "1",
+};
+
+describe("per-language release gate", () => {
+  it("does not fail a draft language with missing validators", () => {
+    expect(releaseGate({ fub: packWith({ translationUnits: [unvalidatedHighRisk] }) })).toEqual(
+      [],
     );
   });
 
-  it("loads the seed spoken phrases", () => {
-    expect(data.phrases.length).toBeGreaterThan(5);
-    expect(new Set(data.phrases.map((p) => p.id)).size).toBe(data.phrases.length);
+  it("does not fail a text-only language", () => {
+    expect(
+      releaseGate({
+        fub: packWith({ status: "text-only", translationUnits: [unvalidatedHighRisk] }),
+      }),
+    ).toEqual([]);
   });
 
-  it("reports unvalidated high-risk entries in development", () => {
-    expect(data.warnings.length).toBeGreaterThan(0);
+  it("fails a validated language with missing validators", () => {
+    const errors = releaseGate({
+      fub: packWith({ status: "validated", translationUnits: [unvalidatedHighRisk] }),
+    });
+    expect(errors.length).toBeGreaterThan(0);
+    expect(errors[0]).toContain("fub");
+    expect(errors[0]).toContain("tm.high");
   });
 
-  it("blocks a release while high-risk entries are unvalidated", () => {
-    expect(releaseErrors(data).length).toBeGreaterThan(0);
+  it("keeps the low-risk exemption", () => {
+    const lowRisk = { ...unvalidatedHighRisk, risk: "low" as const };
+    expect(releaseErrors(packWith({ translationUnits: [lowRisk] }))).toEqual([]);
+  });
+
+  it("accepts a fully validated high-risk unit", () => {
+    const validated = {
+      ...unvalidatedHighRisk,
+      target: {
+        fub: {
+          text: "Solde",
+          origin: "human" as const,
+          validatedBy: ["speaker_1"],
+          backTranslationFr: "Balance",
+        },
+      },
+    };
+    expect(
+      releaseGate({ fub: packWith({ status: "validated", translationUnits: [validated] }) }),
+    ).toEqual([]);
   });
 
   it("marks the default pack as validated-source and unvalidated in content", () => {
-    expect(data.packSource).toBe("validated");
-    expect(releaseErrors(data).length).toBeGreaterThan(0);
+    expect(packs.fub?.packSource).toBe("validated");
+    expect(releaseErrors(packs.fub as LanguagePack).length).toBeGreaterThan(0);
   });
 });
 
 describe("machine-translated candidate pack", () => {
-  it("loads the mt pack without turning it into a validated release", () => {
+  it("loads fub candidates and keeps them out of the release", () => {
     const previous = process.env.ZTEAM_PHRASEBANK;
     process.env.ZTEAM_PHRASEBANK = "mt";
     try {
-      const data = loadAll();
-      expect(data.packSource).toBe("mt");
-      expect(data.tmVersion).toContain("+mt");
-      expect(data.translationUnits.length).toBeGreaterThan(10);
-      expect(data.translationUnits.every((unit) => unit.target.ff.length > 0)).toBe(true);
-      expect(data.translationUnits.every((unit) => unit.validatedBy.length === 0)).toBe(true);
-      expect(releaseErrors(data).length).toBeGreaterThan(0);
+      const candidate = loadAll();
+      expect(candidate.fub?.packSource).toBe("mt");
+      expect(candidate.fub?.tmVersion).toContain("+mt");
+      expect(candidate.fub?.translationUnits.length).toBeGreaterThan(10);
+      expect(
+        candidate.fub?.translationUnits.every((unit) => (unit.target.fub?.text.length ?? 0) > 0),
+      ).toBe(true);
+      expect(candidate.fub?.translationUnits.every((unit) => unit.target.fub?.origin === "mt")).toBe(
+        true,
+      );
+      expect(
+        candidate.fub?.translationUnits.every(
+          (unit) => (unit.target.fub?.validatedBy.length ?? 1) === 0,
+        ),
+      ).toBe(true);
+      expect(
+        releaseGate({ fub: { ...candidate.fub, status: "validated" } as LanguagePack }).length,
+      ).toBeGreaterThan(0);
+      // Both packs now have candidates; neither is a validated release.
+      expect(candidate.ybb?.packSource).toBe("mt");
+      const ybbWithheld =
+        candidate.ybb?.translationUnits.filter((unit) => unit.mtPlaceholdersOk === false) ?? [];
+      expect(ybbWithheld.length).toBeGreaterThan(0);
+      expect(ybbWithheld.every((unit) => !unit.target.ybb?.text)).toBe(true);
+      expect(
+        candidate.ybb?.phrases.some(
+          (phrase) => phrase.mtPlaceholdersOk === false && !phrase.target.ybb?.text,
+        ),
+      ).toBe(true);
+      expect(
+        candidate.ybb?.warnings.some((warning) => warning.startsWith("Withheld unsafe candidate")),
+      ).toBe(true);
+      expect(
+        candidate.ybb?.warnings.some((warning) => warning.startsWith("No ybb candidate")),
+      ).toBe(false);
     } finally {
       if (previous === undefined) delete process.env.ZTEAM_PHRASEBANK;
       else process.env.ZTEAM_PHRASEBANK = previous;

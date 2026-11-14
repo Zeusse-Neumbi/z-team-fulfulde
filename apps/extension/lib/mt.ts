@@ -6,7 +6,7 @@ export const MT_MAX_CHARS = 3_500;
 export const MT_CONCURRENCY = 4;
 export const MT_TIMEOUT_MS = 20_000;
 export const MT_DEADLINE_MS = 45_000;
-export const MT_TARGET = "fub";
+export const DEFAULT_TARGET_LANG = "fub";
 
 const CACHE_LIMIT = 500;
 const cache = new Map<string, MtTranslation>();
@@ -23,6 +23,8 @@ interface TranslatePayload {
 export interface TranslateTextsOptions {
   texts: string[];
   source: "fr" | "en";
+  /** Target language pack; defaults to fub for older callers. */
+  targetLang?: string;
   baseUrl?: string | null;
   provider?: string | null;
   fetcher?: typeof fetch;
@@ -72,8 +74,13 @@ export function clearMtCache(): void {
   cache.clear();
 }
 
-function cacheKey(source: string, provider: string | null, text: string): string {
-  return `${provider ?? "auto"}|${source}|${text}`;
+function cacheKey(
+  source: string,
+  provider: string | null,
+  targetLang: string,
+  text: string,
+): string {
+  return `${provider ?? "auto"}|${source}|${targetLang}|${text}`;
 }
 
 function cachePut(key: string, translation: MtTranslation): void {
@@ -89,6 +96,7 @@ async function requestOne(
   source: "fr" | "en",
   baseUrl: string,
   provider: string | null,
+  targetLang: string,
   fetcher: typeof fetch,
   timeoutMs: number,
   signal: AbortSignal | undefined,
@@ -105,7 +113,7 @@ async function requestOne(
       body: JSON.stringify({
         text,
         source,
-        target: MT_TARGET,
+        target: targetLang,
         ...(provider ? { provider } : {}),
       }),
       signal: controller.signal,
@@ -157,6 +165,7 @@ export async function translateTexts(
   const apiBaseUrl: string = baseUrl;
 
   const provider = options.provider ?? null;
+  const targetLang = options.targetLang ?? DEFAULT_TARGET_LANG;
   const timeoutMs = options.timeoutMs ?? MT_TIMEOUT_MS;
   const deadline = Date.now() + (options.deadlineMs ?? MT_DEADLINE_MS);
   const concurrency = Math.max(1, options.concurrency ?? MT_CONCURRENCY);
@@ -166,7 +175,7 @@ export async function translateTexts(
   let firstError = "";
 
   for (const text of texts) {
-    const cached = cache.get(cacheKey(options.source, provider, text));
+    const cached = cache.get(cacheKey(options.source, provider, targetLang, text));
     if (cached) {
       translations.push(cached);
       done += 1;
@@ -192,13 +201,14 @@ export async function translateTexts(
           options.source,
           apiBaseUrl,
           provider,
+          targetLang,
           fetcher,
           timeoutMs,
           options.signal,
         );
         if (translation) {
           translations.push(translation);
-          cachePut(cacheKey(options.source, provider, text), translation);
+          cachePut(cacheKey(options.source, provider, targetLang, text), translation);
         } else {
           firstError ||= "empty_translation";
         }

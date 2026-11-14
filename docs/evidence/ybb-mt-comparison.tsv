@@ -1,0 +1,21 @@
+source_fr	marian_ybb	marian_digits_kept	marian_repeat3	marian_aglc	marian_ms	m2m100_ybb	m2m100_digits_kept	m2m100_repeat3	m2m100_aglc	m2m100_ms
+Votre solde est de 250 000 FCFA.	Pɛ é si ŋgɔ́ nzhɛ́ɛ á légɛ, Ndém a a láʼ efāʼa efāʼa efāʼa.	false	1	ŋɔɛʼ	780	Ŋkāp zīi o pɔɔ́ŋɔ lā, é lɛ ŋgɔ́ ajūɔ ŋkāp zīi, mɛ́ pɔŋteé á lekūʼte, ŋ́gɔ́ éyi mɛ́ pɔŋteé á lekūʼte, ŋ́gɔ́ éyi mɛ́ pɔŋteé á lekūʼte.	false	3	ŋɔɛʼ	67041
+Le montant est de 250 000 FCFA.	Ajūɔ tsem zīi, Ndém a le zapá ánɛ lefɔ, mbɔ Ndém a le zapá ánɛ lefɔ tsí.	false	2	ɔɛ	924	Ŋgɔ̄ʼ zīi mɛ́ pɔŋteé á lekō éwú, e é páʼā, ŋ́gɔ́ ajūɔ tsem zīi mɛ́ pɔŋteé á lekō éwú, ŋ́gɔ́ ajūɔ tsem zīi mɛ́ pɔŋteé á lekō éwú.	false	3	ŋɔɛʼ	75356
+Frais de transfert : 1 000 FCFA.	Ŋ́gɔ́ mé agáʼa, ŋ́gɔ́ mé agáʼa, ŋ́gɔ́ mé agáʼa.	false	3	ŋɔʼ	1238	Ŋ́gɔ́ á ŋiŋ yīi, mɛ́ gɔ etém nzem ŋgyá á mbū yí, ánɛ mbaŋne paŋné. Ŋ́gɔ́ á ŋiŋ yīi mɛ́ gɔ etém nzem ŋgyá á mbū yí, ánɛ mbaŋne paŋné. Ŋ́gɔ́ á ŋiŋ yīi mɛ́ gɔ etém nzem, ánɛ mbaŋne paŋné.	false	3	ŋɔɛ	93079
+Total à payer : 25 500 FCFA.	Mbɔ Ndém a lɛɛ́ ŋgɔ́ á mbū yí ŋ́gɛ: Ŋ́gɔ́ á ŋiŋ efāʼa.	false	1	ŋɔɛʼ	1215	Ŋ́gɔ́ á ŋiŋ yīi, mɛ́ gɔ elɔ̄ɔk ntswíte á yí. Ŋ́gɔ́ á ŋiŋ yīi, mɛ́ gɔ elɔ̄ɔk ntswíte á yí. Ŋ́gɔ́ á ŋiŋ yīi, mɛ́ gɔ elɔ̄ɔk ntswíte á yí. Ŋ́gɔ́ á ŋiŋ yīi, mɛ́ gɔ elɔ̄ɔk nts	false	4	ŋɔɛ	94360
+Votre solde est disponible.	Pɛ ezéŋ ŋgɔ́ páʼa, pɛ ezéŋ ŋgɔ́ páʼā, pɛ ezéŋ ŋgɔ́ páʼa.	true	3	ŋɔɛʼ	985	Ŋkāp zɛ́ á gɔ́ á ntē pɛ.	true	1	ɔɛ	20895
+Le compte est bloqué.	Ajū mīi mɛ́ le zéŋ ŋgɔ́ éwú, ajū mīi mɛ́ gɔ le zéŋ ŋgɔ́ éwú.	true	2	ŋɔɛ	1176	Á páʼa ndɔkɔ nd́ɛ́ ŋ́gɛ, mɛ́ lɔk mb́ʼte anu jɔ mɛ́t.	true	1	ŋɔɛʼ	31096
+Le transfert est terminé.	Pɛ ezéŋ ŋgwhʉ̄ á légɛ, Ndém a a láʼ eghʉ, ŋ́gɔ́ á nzem.	true	1	ŋɔɛʼ	752	Á páʼa ndɔkɔ ŋ́gɛ, mɛ́ gɔ á ntē ntshi yīi, mɛ́ gɔ etém nzem ŋgyá á mbū yí.	true	1	ŋɔɛʼ	33845
+Confirmer le paiement	Ŋ́gɔ́ mé pɔ́p, ńdɔkɔ ŋgwɛ̄ á mbū pɔ́p, ńdɔkɔ ŋgwɛ̄ á mbū pɔ́p, ńdɔkɔ ŋgwɛ̄ á mbū pɔ́p.	true	3	ŋɔɛ	2091	Á lɔk ntswī ŋke yīi, mɛ́ gɔ elɔ̄ɔk ntɔ́ŋ ntɔ́ŋ	true	1	ŋɔɛ	27117
+Annuler	Ŋ́gɔ́ mé ajʉʼ zīi, Ndém a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ azí, a á si ŋgɔ́ azí, ńdɔkɔ ŋ́gɛ, a egɔ́ á ŋiŋ yīi, a á si ŋgɔ́ azí.	true	5	ŋɔɛʼ	1978	Ŋ́gɛ ndɛ́ʼ	true	1	ɛʼ	8874
+Continuer	Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛ	true	10	ŋɔɛ	2704	Ŋ́gɔ nzɛ́t	true	1	ɔɛ	7568
+Numéro de compte	Azwakne Ndém, ńdɔkɔ ndʉ́ɛ́ ŋ́gɛ:	true	1	ŋɔɛ	1338	Nɔ́ŋ ŋkāp	true	1	ŋɔ	11693
+Numéro de téléphone : 6 12 34 56 78	Ŋ́gɔ́ mé ŋiŋ yīi, a gɔ́ éyi, a gɔ́ éyi mɛ́t á ŋiŋ yīi, mɛ́ gɔ ezwhí á mbū Ndém. Ŋ́gɔ́ á ŋiŋ yīi, mɛ́ gɔ ezwhí á mbū ŋiŋ yīi, mɛ́ gɔ́ á ŋiŋ yīi, mɛ́ gɔ ezwhí á mbū	false	4	ŋɔɛ	2239	Ńnɔŋ ntɔ́ŋɔ ŋ́gɛ: 6 12 34 56 78	true	1	ŋɔɛ	14713
+Référence : ABC-1234	Ndém a lɛɛ́ ŋ́gɛ: Abɔ̄ʼ‐ncu, ŋ́gɔ́ á ntē aŋwaʼne Ndém, ńnɔŋ ŋgɔ́ ntsem.	false	1	ŋɔɛʼ	1009	Ŋ́gɔ́ ajʼ zīi, mɛ́ é si nd́ɛ́ ŋ́gɛ: ABC-1234	true	1	ŋɔɛʼ	29794
+Bonjour, Aïssatou	Á lɛ amɔ̄ʼ aleʼé, ŋ́gɔ́ yīi, a á si ŋgɔ́ á ŋiŋyatu.	true	1	ŋɔɛʼ	984	«Hɔ́ á mbū meŋ, Izatú	true	1	ŋɔ	15049
+Le bénéficiaire a reçu l'argent.	Ŋiŋ yīi a gɔ́ éyi, a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ y	true	12	ŋɔ	2238	Ŋ́gɛ mɛ́ eyá ŋkāp á mbū ŋgaŋ ŋkāp.	true	1	ŋɛ	24372
+Une erreur est survenue.	Mɛ́ le zéŋ ŋgɔ́ éyi, ajʉʼ mɛ́t a á si ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ́ éwú.	true	2	ŋɔɛʼ	1075	Meŋ nd́ɛ́ páʼa, ńdɔkɔ ŋ́gɛ, mefa é tó á nzem Yɛɛ́so.	true	1	ŋɔɛʼ	23733
+Votre compte a été débité.	Ajū mīi mɛ́ le zéŋ ŋgwɛ̄ ajū mīi, mɛ́ le zéŋ ŋgwɛ̄ ajū mīi, mɛ́ le zéŋ ŋgwɛ̄ azō.	true	3	ŋɛ	1303	Ndém a lē ndáʼ ŋkāp á athū pɛ.	true	1	ŋɛʼ	32395
+Payer maintenant	Pɛ ezéŋ ŋgwɛ̄ á mbū epuɔ pīi, pɔ́ é si nzɛ́ttɛ á mbū Ndém. Pɛ ezéŋ ŋgwɛ̄ á mbū Ndém. Pɛ ezéŋ ŋgwɛ̄ á mbū Ndém. Pɛ ezéŋ ŋgwɛ̄ á mbū Ndém.	true	4	ŋɔɛ	1687	Á tsetsɔŋɔ, ŋ́gɛ	true	1	ŋɔɛ	10066
+Solde du compte	Ŋ́gɔ́ mé apwɛne, mbɔ apwɛne zīi, mɛ́ lɔkɔ ntswīi á légɛ, ajūɔ tsem zīi, mɛ́ lɔkɔ ntswīi á légɛ, ajūɔ tsem zīi, mɛ́ lɔkɔ ntswīi á lɔkɔ ntswīi á légɛ, ajūɔ tsem zīi, mɛ́ lɔkɔ n	true	4	ɔɛ	2083	Á páʼa ndɔkɔ nd́ɛ́ ŋ́gɛ, yí e láʼ efók á ŋkāp.	true	1	ŋɔɛʼ	23832
+Merci beaucoup	Ŋ́gɔ́ mé akɔ̄ lɛ́, akʉ̄ɛ akʉ̄ɛ akʉ̄ɛ zīi, pek é si ŋgɔ́ éyi, pek é si ŋkɔ̄ŋɔ ŋ́gɛ, pek é si ŋkɔ̄ŋɔ ŋkɔ̄ŋɔ á mbū Ndém.	true	3	ŋɔɛ	1439	Meŋ á si esyáknɛ á Ndém tɛʼ	true	1	ŋɛʼ	13304

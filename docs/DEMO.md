@@ -2,10 +2,11 @@
 
 Two paths, never mixed:
 
-- **Product demo** — `pnpm build:submission`: the labelled MT draft pack plus the
-  bundled Opus clips. This is the jury path and the video, and the panel states
-  **Fulfulde : MT — non validée** on every screen.
-- **Mechanics test** — fixture build with `⟦FF:…⟧` tokens. This is for e2e and `check:live`; never record it as Fulfulde.
+- **Product demo** — `pnpm build:submission`: the labelled MT draft packs (NLLB
+  for Fulfulde, cameroon-int8 Marian for Yemba) plus the bundled Opus clips.
+  This is the jury path and the video, and the panel states **MT — non validée**
+  on every screen.
+- **Mechanics test** — fixture build with `⟦FUB:…⟧` tokens. This is for e2e and `check:live`; never record it as Fulfulde.
 
 The production build is honest about the pack. The submission build bundles the NLLB draft
 (`packSource: "mt"`); the panel states **MT — non validée** and the audio player withholds 33
@@ -81,7 +82,7 @@ unpacked).
 | Build | Command | What it shows | Use |
 | --- | --- | --- | --- |
 | Production | `pnpm build` | validated pack first; optional local NLLB fallback marked **MT — non validée**; otherwise source + “pack missing” | Product demo, video |
-| Fixture | `pnpm build:test` | `⟦FF:…⟧` tokens, never Fulfulde; API MT disabled | e2e, `check:live` only |
+| Fixture | `pnpm build:test` | `⟦FUB:…⟧` tokens, never Fulfulde; API MT disabled | e2e, `check:live` only |
 | Stub API | `pnpm demo:stub` | no models; stub voice and stub MT (source unchanged) | UI-only smoke test |
 
 Do not record the fixture build. Do not claim the page is translated when the panel says the pack
@@ -217,7 +218,7 @@ read-back, not input.
 | Panel says the pack is missing | the validated pack is still a seed. Enable **Repli après la TM** with the local API running, or run `pnpm --filter @zteam/phrasebank build:release` after validation. |
 | Page shows MT output | the local-API fallback is active. It is machine translation, not validated Fulfulde; the panel marks it **MT — non validée**. |
 | Voice button is disabled | API not running, or TTS not ready; `pnpm demo -- --check` |
-| `check:live` shows `⟦FF:…⟧` | fixture build; never record it |
+| `check:live` shows `⟦FUB:…⟧` | fixture build; never record it |
 | The live page changed | `pnpm check:live` fails; use the mock, capture a screenshot and note the change |
 | Side panel does not open | click the extension icon; check the active tab permission |
 
@@ -245,7 +246,7 @@ read-back, not input.
   the production build leaves it in the source language. Labelled local-API output is machine
   translation, not validation.
 - Do not claim recorded fallback audio.
-- Do not present the fixture `⟦FF:…⟧` tokens as Fulfulde.
+- Do not present the fixture `⟦FUB:…⟧` tokens as Fulfulde.
 - Do not claim the production page is translated by a validated pack while the pack is
   missing. Local NLLB output is machine translation and must be labelled as such.
 - Do not enter real data.

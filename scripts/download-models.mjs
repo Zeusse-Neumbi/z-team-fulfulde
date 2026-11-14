@@ -72,7 +72,7 @@ if (options.list || args.includes("--help") || args.includes("-h")) {
   }
   console.log(`\nOutput: ${options.out}`);
   console.log(
-    "Usage: node scripts/download-models.mjs [--out DIR] [--check] [--force] [mms] [nllb-ct2] [mt-fub]",
+    "Usage: node scripts/download-models.mjs [--out DIR] [--check] [--force] [mms] [mms-ybb] [nllb-ct2] [mt-fub] [mt-ybb] [mt-ybb-m2m100]",
   );
   process.exit(0);
 }
@@ -229,11 +229,24 @@ if (failed > 0) {
 console.log("\n[models] done. Suggested environment:");
 for (const target of options.targets) {
   const model = manifest.models[target];
-  if (target === "mms") console.log(`  ZTEAM_TTS_MODEL=${join(options.out, model.dir)}`);
+  if (target === "mms" || target === "tts-yemba") {
+    console.log(`  ZTEAM_TTS_MODEL=${join(options.out, model.dir)}`);
+  }
   if (target === "nllb-ct2") console.log(`  ZTEAM_MT_MODEL=${join(options.out, model.dir)}`);
   if (target === "mt-fufulde-cameroon") {
     console.log(`  ZTEAM_MT_BACKEND=marian`);
     console.log(`  ZTEAM_MT_MARIAN_MODEL=${join(options.out, model.dir, "francais-fufulde")}`);
+  }
+  if (target === "mt-yemba-cameroon") {
+    console.log("  # ybb resolves languages/ybb.yaml; leave ZTEAM_MT_MARIAN_MODEL empty.");
+    console.log(`  # model: ${join(options.out, model.dir, "francais-yemba")}`);
+  }
+  if (target === "m2m100-yemba-fr2ybb") {
+    console.log("  # Candidate Yemba M2M100 model; compare before making it the registry default.");
+    console.log(`  # model: ${join(options.out, model.dir)}`);
+  }
+  if (target === "tts-yemba") {
+    console.log("  # ybb resolves languages/ybb.yaml; leave ZTEAM_TTS_MODEL empty.");
   }
 }
 console.log("  curl -s http://127.0.0.1:8000/health");

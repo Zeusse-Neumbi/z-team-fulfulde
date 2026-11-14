@@ -52,14 +52,16 @@ submission/
 5. Open https://safinum.cm/hackathon-test
 6. Click the extension icon, then **Activer sur ce site**.
 
-The ZIP carries the **labelled MT draft pack** (NLLB-200, generated locally) and
-82 playable Opus clips, so the page is translated and the voice works without
-installing a model. The panel shows **Fulfulde : MT — non validée** at all times;
-no native-speaker session has been run yet, and the note says so. Two action
+The ZIP carries the **labelled MT draft packs** (NLLB-200 for Fulfulde,
+cameroon-int8 Marian for Yemba) and 82 playable Opus clips, so the page is
+translated and the Fulfulde voice works without installing a model. The panel
+shows **Fulfulde** or **Yemba** with **MT — non validée** at all times; no
+native-speaker session has been run yet, and the note says so. Two action
 labels whose draft would read the same stay in French on purpose. Without the
 API, strings outside the pack stay in the source language. The optional local
-API adds the live NLLB fallback and live speech for sentences without a clip;
-see [`SETUP.md`](SETUP.md). The ZIP contains `INSTALL.md` with the same steps.
+API adds the live translation fallback and live speech for sentences without a
+clip; see [`SETUP.md`](SETUP.md). The ZIP contains `INSTALL.md` and `LICENSE`
+with the same steps and the licence.
 
 ## Before submitting
 
@@ -83,7 +85,7 @@ see [`SETUP.md`](SETUP.md). The ZIP contains `INSTALL.md` with the same steps.
       text.
 - [ ] If the local API fallback is enabled for the demo, the panel shows
       **MT — non validée** and the output is not presented as validated Fulfulde.
-- [ ] The production ZIP contains no `⟦FF:` or `FF:tm` fixture token.
+- [ ] The production ZIP contains no `⟦<code>:` fixture token.
 - [ ] Stop restores the page.
 - [ ] The novel-content path works without a reload.
 - [ ] The technical note is French, **5 pages maximum**, **10 MB maximum**, no

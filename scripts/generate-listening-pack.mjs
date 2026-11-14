@@ -2,14 +2,15 @@
 /**
  * Build the native-speaker listening pack.
  *
- * Reads the NLLB candidate pack (`tm.mt.yaml`, `phrases.mt.yaml`), renders the
- * placeholders with fictional values, asks the local MMS voice for a WAV per
- * entry, and writes a two-pass HTML page:
+ * Reads the NLLB candidate pack (`entries/<lang>/tm.mt.yaml`,
+ * `entries/<lang>/phrases.mt.yaml`), renders the placeholders with fictional
+ * values, asks the local MMS voice for a WAV per entry, and writes a two-pass
+ * HTML page:
  *
- *   - correction: French source + Fulfulde audio
- *   - blind:      Fulfulde audio only
+ *   - correction: French source + target-language audio
+ *   - blind:      target-language audio only
  *
- *   node scripts/generate-listening-pack.mjs --base-url http://127.0.0.1:8011
+ *   node scripts/generate-listening-pack.mjs --base-url http://127.0.0.1:8011 --lang fub
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -27,6 +28,11 @@ function option(name, fallback) {
 }
 
 const baseUrl = option("--base-url", process.env.ZTEAM_API ?? "http://127.0.0.1:8000").replace(/\/$/, "");
+const lang = option("--lang", "fub");
+if (!/^[a-z]{3}$/.test(lang)) {
+  console.error(`[listening] --lang must be an ISO 639-3 code, got ${lang}`);
+  process.exit(2);
+}
 const outDir = resolve(option("--out", join(root, "eval/linguistic/session")));
 const only = option("--only", "all");
 const limit = Number.parseInt(option("--limit", "0"), 10);
@@ -57,13 +63,13 @@ function readYaml(path) {
   return YAML.parse(readFileSync(path, "utf8"));
 }
 
-const tm = readYaml(join(root, "packages/phrasebank/entries/tm.mt.yaml"));
-const phrases = readYaml(join(root, "packages/phrasebank/entries/phrases.mt.yaml"));
+const tm = readYaml(join(root, `packages/phrasebank/entries/${lang}/tm.mt.yaml`));
+const phrases = readYaml(join(root, `packages/phrasebank/entries/${lang}/phrases.mt.yaml`));
 
 const entries = [];
 if (only === "all" || only === "tm") {
   for (const unit of tm.units ?? []) {
-    const target = unit.target?.ff?.trim();
+    const target = unit.target?.[lang]?.text?.trim();
     if (!target) continue;
     entries.push({
       kind: "tm",
@@ -71,13 +77,13 @@ if (only === "all" || only === "tm") {
       risk: unit.risk ?? "unknown",
       fr: unit.source?.fr ?? "",
       en: unit.source?.en ?? "",
-      ff: render(target),
+      targetText: render(target),
     });
   }
 }
 if (only === "all" || only === "phrases") {
   for (const phrase of phrases.phrases ?? []) {
-    const target = phrase.ff?.trim();
+    const target = phrase.target?.[lang]?.text?.trim();
     if (!target) continue;
     entries.push({
       kind: "phrase",
@@ -85,7 +91,7 @@ if (only === "all" || only === "phrases") {
       risk: phrase.risk ?? "unknown",
       fr: phrase.fr ?? "",
       en: phrase.en ?? "",
-      ff: render(target),
+      targetText: render(target),
     });
   }
 }
@@ -134,7 +140,7 @@ for (const [index, entry] of selected.entries()) {
       const response = await fetch(`${baseUrl}/tts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: entry.ff, provider: "mms", speed: 1 }),
+        body: JSON.stringify({ text: entry.targetText, provider: "mms", speed: 1, language: lang }),
         signal: AbortSignal.timeout(180_000),
       });
       if (!response.ok) {
@@ -160,14 +166,15 @@ function csv(value) {
   return `"${String(value ?? "").replace(/"/g, '""')}"`;
 }
 
-const backHeader = "kind,id,risk,source_fr,source_en,target_ff,back_translation_fr,meaning_1_5,naturalness_1_5,critical_error,fix";
+const targetColumn = lang === "fub" ? "target_ff" : `target_${lang}`;
+const backHeader = `kind,id,risk,source_fr,source_en,${targetColumn},back_translation_fr,meaning_1_5,naturalness_1_5,critical_error,fix`;
 const backRows = selected.map((entry) =>
-  [entry.kind, entry.id, entry.risk, entry.fr, entry.en ?? "", entry.ff, "", "", "", "", ""].map(csv).join(","),
+  [entry.kind, entry.id, entry.risk, entry.fr, entry.en ?? "", entry.targetText, "", "", "", "", ""].map(csv).join(","),
 );
 writeFileSync(join(root, "eval/linguistic/back-translation.template.csv"), `${backHeader}\n${backRows.join("\n")}\n`);
 
 const mosHeader = "sample,sentence,naturalness_1_5,intelligibility_1_5,wrong_word,notes";
-const mosRows = selected.map((entry) => [entry.id, entry.ff, "", "", "", ""].map(csv).join(","));
+const mosRows = selected.map((entry) => [entry.id, entry.targetText, "", "", "", ""].map(csv).join(","));
 writeFileSync(join(root, "eval/linguistic/tts-mos.template.csv"), `${mosHeader}\n${mosRows.join("\n")}\n`);
 
 const rows = manifest
@@ -178,7 +185,7 @@ const rows = manifest
             <span class="risk risk-${entry.risk}">${entry.risk}</span>
           </div>
           <p class="source" lang="fr">${entry.fr.replace(/</g, "&lt;")}</p>
-          <p class="target" lang="fub">${entry.ff.replace(/</g, "&lt;")}</p>
+          <p class="target" lang="${lang}">${entry.targetText.replace(/</g, "&lt;")}</p>
           <audio controls preload="none" src="${entry.audio}"></audio>
         </article>`,
   )
@@ -220,8 +227,8 @@ const html = `<!doctype html>
   </header>
   <main>
     <div class="intro">
-      <p><strong>Passe 1 — correction.</strong> Le français est visible. Écoutez le fulfulde, dites si le sens est correct, puis dictez la forme corrigée.</p>
-      <p><strong>Passe 2 — écoute aveugle.</strong> Cochez la case ci-dessus : le français et le fulfulde sont masqués. Écoutez et dites le sens en français.</p>
+      <p><strong>Passe 1 — correction.</strong> Le français est visible. Écoutez la langue cible (${lang}), dites si le sens est correct, puis dictez la forme corrigée.</p>
+      <p><strong>Passe 2 — écoute aveugle.</strong> Cochez la case ci-dessus : le français et la langue cible (${lang}) sont masqués. Écoutez et dites le sens en français.</p>
       <p>Notez le sens (1–5), la naturalité (1–5), l'erreur critique (oui/non) et la correction dans <code>eval/linguistic/back-translation.csv</code>. L'intelligibilité et la naturalité de la voix vont dans <code>eval/linguistic/tts-mos.csv</code>.</p>
       <p>Ouvrez ce dossier avec <code>pnpm serve:listening</code>, puis <code>http://127.0.0.1:4175/</code>. Le serveur est local et ne sert que ce dossier.</p>
     </div>

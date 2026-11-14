@@ -1,0 +1,116 @@
+kind,id,risk,source,candidate,placeholders,placeholders_ok
+tm,tm.nav.online_banking,low,Banque en ligne,"Ŋ́gɔ́ eleʼé mbwɛ̄t epuɔ pīi, pɔ́ é si nzhɛ́ɛ á légɛ, eleʼé mbwɛ́né epuɔ pīi, pɔ́ é si ŋgɔ́ epuɔ pīi, pɔ́ é si ŋgɔ́ epuɔ pīi, pɔ́ é si nzhɛ́ɛ á légɛ, epuɔ menɔŋ epuɔ pīi, pɔ́ é si ŋ",,true
+tm,tm.nav.test_banner,low,"Environnement de test — données fictives, aucune transaction réelle.","Ajū mīi, ajū mīi mɛ́ é si nzhɛ́ɛ á légɛ, ajū mīi mɛ́ gɔ le lɔ̄k nzhɛ́ɛ á légɛ, ajū mīi mɛ́ gɔ le lɔ̄k nzhɛ́ɛ á légɛ, ajū mīi mɛ́ gɔ le lɔ̄k nzhɛ́ɛ á légɛ, aziɛ́ aziɛ́, aziɛ́ aziɛ́",,true
+tm,tm.nav.protocol,low,Protocole de test,"Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ á apwɛne. Ŋ́gɔ́ á apwɛ",,true
+tm,tm.nav.back_hackathon,low,Retour au hackathon,"Ŋgʉ̄ɔ mé ŋakaŋ, ŋ́gɔ́ á ntē ŋgɔŋ ŋkāʼ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ.",,true
+tm,tm.step.balance,low,Solde,"Ndém a lɛɛ́ ŋgɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yī",,true
+tm,tm.step.fees,low,Frais,"Mɛ́ le zéŋ ŋgwɛ̄ azō, ńdɔkɔ ŋgwhʉ̄ɔ ŋgwhʉ̄ɛ azō. Mɛ́ le zéŋ ŋgwhʉ̄ azō, ńdɔkɔ ŋgwhʉ̄ɛ azō.",,true
+tm,tm.step.beneficiary,low,Bénéficiaire,"Ŋ́gɔ́ á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a",,true
+tm,tm.step.summary,low,Récapitulatif,"Ńdɔkɔ ŋ́gɛ, ajūɔ tsem zīi, pɔ́ é si ŋgɔ́ epuɔ pīi, pɔ́ é si ndʉ́ɛ́ épúp.",,true
+tm,tm.step.confirmation,low,Confirmation,"Kwaʼ anu zīi, Ndém a le lɔ̄k ntswīi á légɛ, Ndém a le lɔ̄k ntswīi á légɛ, Ndém a le lɔ̄k ntswīi á légɛ, Ndém a le lɔ̄k ntswīi á légɛ, Ndém a le lɔ̄k ntswīi á légɛ, Ndém a le lɔ̄k ntswīi á légɛ, a le lɔ",,true
+tm,tm.account.title,low,Votre compte,"Ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ á légɛ, ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ á légɛ, ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ á légɛ, pɛ é si nzhɛ́ɛ á légɛ, ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ á légɛ, pɛ é si ŋgɔ",,true
+tm,tm.security.title,low,Sécurité,"Púp, páʼ mɛ́ le zéŋ nzéŋ ŋgɔ́ á mbū Ndém. Páʼ mɛ́ le zéŋ nzéŋ ŋgɔ́ á mbū Ndém. Páʼ mɛ́ le zéŋ nzéŋ ŋgɔ́ á mbū Ndém. Páʼ mɛ́ le zéŋ nzéŋ ŋgɔ́ á mbū Ndém. Páʼ mɛ́ le zéŋ ŋgɔ́",,true
+tm,tm.security.secure_connection,low,Connexion sécurisée,"Secured ntē tepɔŋ, ńnɔŋ ŋkɔ̄ŋɔ ŋ́gɛ, epuɔ menɔŋ é si ŋkɔ̄ŋɔ ŋ́gɛ, epuɔ menɔŋ e e láʼ ezéŋ ŋgɔ́ á ŋiŋ yīi, epuɔ menɔŋ é si ŋkɔ̄ŋɔ.",,true
+tm,tm.balance.greeting,low,"Bonjour, {name}","Ŋ́gɛ, Zzftɛzaz, ŋ́gɔ́ á athʉ́ lepé, mbɔɔ á mbū pɔ́p, ŋ́gɔ́ á athʉ́ lepé.",{name},false
+tm,tm.account.line,high,Numéro de compte : {account},"Ajūɔ tsem zīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ",{account},false
+tm,tm.balance.subtitle,medium,Consultez votre solde et lancez un transfert en toute sécurité.,"Pɛ ezéŋ nzɛ́ttɛ ŋ́gɛ, ndɛ́ʼ pɛ ezéŋ ŋgwɛ̄ azō, ńdɔk ŋgʉ̄ɔ mé mvhɔ.",,true
+tm,tm.balance.available,high,Solde disponible,"Ndém a lɛɛ́ ŋkɔ̄ŋɔ azō á mbū Ndém, ńdɔkɔ nzwíʼtɛ á mbū yí.",,true
+tm,tm.account.number_label,medium,Numéro de compte,"Azwakne Ndém, ńdɔkɔ ndʉ́ɛ́ ŋ́gɛ:",,true
+tm,tm.balance.current_account,low,Compte courant,"Ajūɔ tsem zīi, mɛ́ gɔ́ áa ntsem yīi, mɛ́ gɔ áa ntsem yīi, mɛ́ gɔ́ áa ntsem yīi, mɛ́ gɔ́ áa ntsem yīi, mɛ́ gɔ́ áa ntsem yīi, mɛ́ gɔ́ áa ntsem yīi, mɛ́ gɔ́ áa ntsem yīi, mɛ́ gɔ́ áa ntsem y",,true
+tm,tm.balance.start_transfer,medium,Effectuer un transfert,"Ŋ́gɔ́ mé apwɛne, ńdɔkɔ ŋgʉ̄ɔ mé apwɛne. Ŋ́gɔ́ mé apwɛne, ńdɔkɔ ŋgʉ̄ɔ mé apwɛne. Ŋ́gɔ́ mé apwɛne.",,true
+tm,tm.balance.see_fees,medium,Consulter les frais,"Ŋ́gɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ azō á leghʉ azō á mbū pɔ́p, ŋ́gɔ́ éyi, mɛ́ le zéŋ ŋghʉ̄ɛ azō á mbū pɔ́p. Ŋ́gɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ éyi, mɛ́ le zéŋ ŋghʉ̄ɛ azō á mbū meŋ.",,true
+tm,tm.balance.recent,low,Transactions récentes,"Táʼ, afʉʼ zīi a á si ŋgɔ́ ajūɔ tsem zīi, Ndém a le lɔ̄k ŋgɔ́ á ŋiŋ ndeŋ ndeŋ, á mbū pɔ́p, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ, ńdɔkɔ ŋgʉ̄ɔ mé ayiŋne.",,true
+tm,tm.tx.merchant,medium,Paiement marchand,"Ŋ́gɔ́ mé mvhɔ, mbɔ ŋgaŋ afaʼ mɛ́t, ŋ́gɔ́ á mbū pɔ́p, ŋ́gɔ́ á mbū pɔ́p. Ŋ́gɔ́ á mbū pɔ́p. Ŋ́gɔ́ á mbū pɔ́p, ŋ́gɔ́ á mbū yí.",,true
+tm,tm.tx.salary,medium,Salaire reçu,"Ewɔŋkhʉ̄ páʼā, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ ndeŋ, ŋ́gɔ́ á ŋiŋ páʼā,",,true
+tm,tm.tx.received,medium,Transfert reçu,"Ndém a lɛɛ́ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ, ńdɔkɔ ŋgʉ̄ɔ mé mvhɔ.",,true
+tm,tm.tx.electricity,medium,Facture électricité,"Púp, ḿbīŋ ntswīi ŋgɔ́ éyi, mɛ́ lɔkɔ ntswīi ŋgɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ ezwhí á yí.",,true
+tm,tm.warn.verify_beneficiary,high,Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un transfert.,"Pɛ ezéŋ nnɔ̄ŋ nzhɛ́ɛ á légɛ, ndɛ́ʼ pɛ ezwhí á légɛ, Ndém a a láʼ ezwhí á mbū Ndém, ńzwhí á mbū Ndém, ńdɔk ŋgwɛ̄ azō.",,true
+tm,tm.fees.title,medium,Frais de transfert,"Ŋ́gɔ́ mé apwɛne, ńdɔkɔ ntswīi ŋ́gɛ, afʉʼ zīi a gɔ́ éyi a á ŋiŋ ndeŋ ndeŋ, á mbū pɔ́p, á mbū pɔ́p, ńdɔkɔ ntswīi á mbū yí.",,true
+tm,tm.fees.subtitle,low,Choisissez le type de transfert et le montant. Les frais sont calculés automatiquement.,"Pɛ etswíʼte ŋ́gɛ, ndɛ́ʼ pɛ ezéŋ ŋgwɛ̄ azō, ŋ́gwɛ̄ azō. Epuɔ menɔŋ é zéŋ ŋgwɛ̄ azō.",,true
+tm,tm.fees.operation_type,medium,Type d'opération,"Ŋ́gɔ́ mé afʉʼ zīi, a gɔ́ éyi, a gɔ́ éyi, mɛ́ éyi mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ ezwhíte á yí, ŋ́gɔ́ á ŋiŋ yīi, mɛ́ gɔ́ éyi, mɛ́ éyi mɛ́ gɔ́ éyi, mɛ́ g",,true
+tm,tm.fees.safinum,medium,Compte Safinum,"Safinum méŋwɛ̄t azō á mbū pɔ́p, ńdɔkɔ ntswīi á mbū yí.",,true
+tm,tm.fees.safinum_desc,medium,Transfert instantané et gratuit,"Ŋ́kó éwú, ŋ́kó ánɛ ajʉʼ zīi, Ndém a á si ŋgɔ́ á ntē aŋwaʼne Ndém. Ŋ́kó éwú, ńdɔkɔ ŋkó á ntē aŋwaʼne Ndém. Ŋ́kó á ntē aŋwaʼne Ndém. Ŋ́kó á ntē aŋwaʼne Ndém. Ŋ́kó á ntē a",,true
+tm,tm.fees.other_bank,medium,Autre banque,"Ŋ́gɔ́ éyi, ajʉʼ mɛ́t á gɔ́ éwú, ŋ́gɔ́ éyi, mɛ́ gɔ́ éyi, mɛ́ gɔ ezwhí á yímpɛ azímpɛ.",,true
+tm,tm.fees.amount,high,Montant à envoyer,"Ndém a lɛɛ́ ŋgʉ̄ɔ mé mvhɔ, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ yīi, mɛ́ tɔ́ŋ ŋkó á yímpɛ, a egɔ́ á yímpɛ, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ.",,true
+tm,tm.fees.fee,high,Frais,"Mɛ́ le zéŋ ŋgwɛ̄ azō, ńdɔkɔ ŋgwhʉ̄ɔ ŋgwhʉ̄ɛ azō. Mɛ́ le zéŋ ŋgwhʉ̄ azō, ńdɔkɔ ŋgwhʉ̄ɛ azō.",,true
+tm,tm.fees.free,high,Gratuit,"Ŋ́gɔ́ mé pɔ́k, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ yīi, Ndém a le lɔ̄k á yímpɛ, ŋ́gɔ́ á ŋiŋ ndeŋ ndeŋ, ŋ́gɔ́ á ŋiŋ yīi, a le lɔ̄k á yímpɛ, ńdɔkɔ ŋiŋ ndeŋ ndeŋ, ńdɔk",,true
+tm,tm.fees.total,high,Total à débiter,"Púp, ndɛ́ʼ ŋgwɛ̄ ajūɔ tsem zīi, pɔ́ é si ŋgɔ́ á ŋiŋ yīi, pɔ́ é si ŋgɔ́ á ŋiŋ yīi, pɔ́ é si ŋgɔ́ á ŋiŋ yīi, pɔ́ é si ŋgɔ́ á ŋiŋ yīi, pɔ́ é si ŋgɔ́ á ŋiŋ yīi, pɔ́ é si",,true
+tm,tm.fees.balance_after,high,Solde après opération,"Páʼ mbɔɔ afʉʼ zīi, mɛ́ lɔkɔ nzhɛ́ɛ á légɛ, afʉʼ zīi mɛ́ gɔ le zapá ánɛ afʉʼ zīi, mɛ́ lɔkɔ ŋgʉɔ̄ʼ mɛ́t, a á si ŋgɔ́ áa afʉʼ zīi, mɛ́ lɔkɔ nzhɛ́ɛ afʉʼ zīi, mɛ́ lɔkɔ ŋ",,true
+tm,tm.ben.title,medium,Bénéficiaire,"Ŋ́gɔ́ á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a",,true
+tm,tm.ben.subtitle,medium,Renseignez les informations du destinataire. Vérifiez toujours le numéro avant de valider.,"Pɛ ezhɛ́ á légɛ, epuɔ menɔŋ é si nzhɛ́ɛ á légɛ, epuɔ menɔŋ é si nzhɛ́ɛ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ ajū mīi, a á si nzhɛ́ɛ á légɛ, pɛ ezhɛ́ á légɛ, ajū mīi a á si nzhɛ́ɛ á légɛ, pɛ",,true
+tm,tm.ben.warning_new,high,Ce bénéficiaire n'a jamais été utilisé sur ce compte. Vérifiez le numéro avant de continuer.,"Ndém a le gē ezéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ y",,true
+tm,tm.ben.name,high,Nom du bénéficiaire,"Ndém a le ghʉ̄ʉ̄, ŋiŋ a gɔ́ áa ánɛ ŋiŋ yīi, Ndém a le ghʉ̄ʉ̄ʉ̄, ńdɔkɔ ŋghʉ̄ɛ afaʼ zīi, Ndém a le ghʉ̄ʉ̄ʉ̄, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yī",,true
+tm,tm.ben.phone,high,Numéro de téléphone,"Ŋ́gɔ́ mé pɔ́p, ŋ́gɔ́ áa ŋiŋ yīi, a á si ŋgɔ́ áa ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋkɔ̄ŋɔ.",,true
+tm,tm.ben.reason,medium,Motif du transfert,"Menu mīi, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ, mɛ́ gɔ́ áa ánɛ ajʉʼ zīi, mɛ́ lɔkɔ ntswīi á légɛ, Ndém a á si ŋgɔ́ áa ánɛ ajʉʼ zīi, mɛ́ lɔkɔ ntswīi á légɛ, Ndém a á si ŋgɔ́ áa ánɛ ajʉʼ zīi, mɛ",,true
+tm,tm.ben.note,low,Note (optionnel),"Ŋ́gɔ́ éyi, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ, mɛ́ lɔkɔ ndʉ́ɛ́ɛ́ ŋ́gɛ, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ, mɛ́ lɔkɔ ndʉ́ɛ́ɛ́ ŋ́gɛ, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ",,true
+tm,tm.ben.verified,high,J'ai vérifié le nom et le numéro du bénéficiaire.,"Meŋ ke nɔ̄ŋ nzhɛ́ɛ á légɛ, meŋ ndɛ́ɛ́ ŋ́gɛ, mbɔɔ akɔ̄ lɛ́, ŋ́gɔ́ akɔ̄ lɛ́.",,true
+tm,tm.fees.percent_desc,medium,"Frais de {rate} % (min. {min} FCFA, max. {max} FCFA)","Pɔ́ zɔ́p ŋ́gɛ, zɔ́fɛ́t zɔ́p zɔ́p zɔ́p zɔp zɔp zɔp zɔp zɔp zɔp zɔp zɔp, ńzɔp zɔp Ffɛ́t zɔp zɔp zɔp zɔp zɔp zɔp zɔp, ńdɔkɔ efāʼa. Pɔ́ gɔ́ áa zɔp zɔp zɔp zɔp zɔp",{rate};{min};{max},false
+tm,tm.footer.disclaimer,low,Safinum Pay — environnement de démonstration. Ne saisissez aucune donnée personnelle réelle.,"Safinum Pɔ́ɔl páʼā, ńdɔkɔ eshúŋɔ á anuúnē. Ndɛ́ʼ pɛ ezéŋ ŋgwɛ̄ anuúnē, ńdɔk nzhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, ajūɔ tsem zīi, a á si ŋkɔ̄ŋɔ á légɛ, ajūɔ tsem",,true
+tm,tm.summary.title,medium,Récapitulatif,"Ńdɔkɔ ŋ́gɛ, ajūɔ tsem zīi, pɔ́ é si ŋgɔ́ epuɔ pīi, pɔ́ é si ndʉ́ɛ́ épúp.",,true
+tm,tm.summary.subtitle,medium,Vérifiez les informations avant de confirmer le transfert.,"Púp, ndɛ́ʼ pɛ ezéŋ njúʼ ajū mīi, mɛ́ lɔkɔ ndʉ́ɛ́ ŋ́gɛ, ajū mīi a á si nzɛ́ttɛ á légɛ, ajū mīi a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋkɔ̄ŋɔ.",,true
+tm,tm.summary.amount,high,Montant,"Ndém a lɛɛ́ ŋgɔ́ áa mbū Ndém, ŋ́gɔ́ áa mbū Ndém. Ndém a lɛɛ́ ŋgɔ́ áa mbū Ndém, ŋ́gɔ́ áa mbū Ndém.",,true
+tm,tm.summary.fee,high,Frais,"Mɛ́ le zéŋ ŋgwɛ̄ azō, ńdɔkɔ ŋgwhʉ̄ɔ ŋgwhʉ̄ɛ azō. Mɛ́ le zéŋ ŋgwhʉ̄ azō, ńdɔkɔ ŋgwhʉ̄ɛ azō.",,true
+tm,tm.summary.total,high,Total débité,"Mbɔ ajʉʼ zīi, a gɔ́ éyi, mɛ́ lɔkɔ ntswīi ŋgɔ́ á ŋiŋ yīi, mɛ́ lɔkɔ ntswīi ŋgɔ́ á yí, mɛ́ lɔkɔ ntswīi á yí á lelɔk ŋgʉ̄ɔ mé yí.",,true
+tm,tm.summary.beneficiary,high,Bénéficiaire,"Ŋ́gɔ́ á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a",,true
+tm,tm.summary.phone,medium,Téléphone,"Púp, pɛ ezhɛ́ á légɛ, Ndém a elɛ ŋghʉ̄, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ",,true
+tm,tm.summary.reference,high,Référence,"Ndém a lɛɛ́ ŋghʉ̄ɛ épúp, mbɔ Ndém a lɛɛ́ ŋghʉ̄ɛ azō á mbū Ndém, ńdɔkɔ ŋghʉ̄ɛ azō á mbū Ndém.",,true
+tm,tm.summary.operation,medium,Opération,"Ŋ́gɔ́ mé afʉʼ zīi, Ndém a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋkɔ̄ŋɔ á yí, á mbū pɔ́p.",,true
+tm,tm.summary.confirm_check,high,Je confirme que les informations ci-dessus sont correctes.,"Meŋ á si nzhɛ́ɛ á légɛ, anu zīi anu zīi, anu zīi mɛ́ gɔ le lɔ̄kɔ nzhɛ́ɛ á légɛ, anu zīi mɛ́ gɔ le lɔ̄kɔ ŋkɔ̄ŋɔ.",,true
+tm,tm.summary.edit,low,Modifier,"Ŋ́gɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ éyi, mɛ́ le zéŋ ŋghʉ̄, mɛ́ le zéŋ ŋghʉ̄, mbɔ Ndém a le zéŋ ŋgyá á mbū Ndém.",,true
+tm,tm.summary.confirm,high,Confirmer le transfert,"Ŋ́gɔ́ mé agáʼ akɛtte zīi, mɛ́ lɔkɔ ntswīi á légɛ, Ndém a á si ŋgɔ́ ajūɔ tsem zīi, mɛ́ lɔkɔ ntswīi á légɛ, Ndém a á si ŋgɔ́ azō ánɛ ajūɔ tsem zīi, mɛ́ lɔkɔ ntswīi á légɛ, Ndém a á si",,true
+tm,tm.receipt.title,medium,Transfert effectué,"Ŋ́gɔ́ mé afʉʼ zīi, Ndém a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋkɔ̄ŋɔ á yí, a á si ŋgɔ́ áa afʉʼ zīi, a á si ŋgɔ́ á",,true
+tm,tm.receipt.subtitle,medium,Votre transfert a été envoyé avec succès.,"Mɛ́ le tó á wɛ́ ŋkó á wɛ́, mbɔ akɔ̄ lɛ́, mbɔ akɔ̄ lɛ́, mbɔ akɔ̄ lɛ́.",,true
+tm,tm.receipt.reference,high,Référence,"Ndém a lɛɛ́ ŋghʉ̄ɛ épúp, mbɔ Ndém a lɛɛ́ ŋghʉ̄ɛ azō á mbū Ndém, ńdɔkɔ ŋghʉ̄ɛ azō á mbū Ndém.",,true
+tm,tm.receipt.amount,high,Montant,"Ndém a lɛɛ́ ŋgɔ́ áa mbū Ndém, ŋ́gɔ́ áa mbū Ndém. Ndém a lɛɛ́ ŋgɔ́ áa mbū Ndém, ŋ́gɔ́ áa mbū Ndém.",,true
+tm,tm.receipt.fee,high,Frais,"Mɛ́ le zéŋ ŋgwɛ̄ azō, ńdɔkɔ ŋgwhʉ̄ɔ ŋgwhʉ̄ɛ azō. Mɛ́ le zéŋ ŋgwhʉ̄ azō, ńdɔkɔ ŋgwhʉ̄ɛ azō.",,true
+tm,tm.receipt.total,high,Total débité,"Mbɔ ajʉʼ zīi, a gɔ́ éyi, mɛ́ lɔkɔ ntswīi ŋgɔ́ á ŋiŋ yīi, mɛ́ lɔkɔ ntswīi ŋgɔ́ á yí, mɛ́ lɔkɔ ntswīi á yí á lelɔk ŋgʉ̄ɔ mé yí.",,true
+tm,tm.receipt.beneficiary,high,Bénéficiaire,"Ŋ́gɔ́ á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi a",,true
+tm,tm.receipt.status,medium,Statut,"Ŋ́gɔ́ ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi,",,true
+tm,tm.receipt.success,medium,Succès,"Ŋ́gɔ́ mé afʉʼ zīi, Ndém a le lɔ̄k á wɛ́ á leghʉ afʉʼ zīi, Ndém a le lɔ̄k á wɛ́ á leghʉ afʉʼ zīi, Ndém a le lɔ̄k á wɛ́ á leghʉ afʉʼ zīi, a le lɔ̄k á wɛ́.",,true
+tm,tm.receipt.new_transfer,low,Nouveau transfert,"Ŋ́gɔ́ mé afʉʼ zīi, Ndém a á si ŋgɔ́ á ŋiŋ yīi, Ndém a á si ŋgɔ́ á ŋiŋ yīi, Ndém a a láʼ ezéŋ ŋgɔ́ á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi, a á si ŋgɔ",,true
+tm,tm.novel.example,low,Un message important pour les clients…,"Ajūɔ tsem zīi, a á si ŋgɔ́ á mbū epuɔ pīi, pɔ́ é si ŋgɔ́ á mbū epuɔ menɔŋ.",,true
+tm,tm.error.title,high,Une erreur est survenue,"Mɛ́ le zéŋ ŋgɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ éwú, ŋ́gɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ éyi, mɛ́ le zéŋ ŋgɔ́ éwú.",,true
+tm,tm.error.amount_zero,high,Le montant doit être supérieur à zéro.,"Ajū mīi mɛ́ gɔ eghʉ̄ʉ ajū mīi, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ̄ʉ,",,true
+tm,tm.error.insufficient,high,Solde insuffisant pour effectuer ce transfert.,"Ajū mīi mɛ́ le zéŋ ŋgwɛ̄ azō á mbū Ndém, á mbū pɔ́p, ńdɔkɔ ŋgwɛ̄ azō.",,true
+tm,tm.error.beneficiary_missing,high,Veuillez renseigner le nom et le numéro du bénéficiaire.,"Pɛ ezhɛ́ á légɛ, akɔ̄ akɔ̄ lɛ́, pɛ ezhɛ́ á légɛ, akɔ̄ akɔ̄ lɛ́, pɛ ezhɛ́ á légɛ, Ndém a a láʼ eghʉ, pɛ ezhɛ́ á légɛ, Ndém a a láʼ eghʉ, pɛ ezhɛ́ á légɛ, Ndém a a láʼ eghʉ, pɛ ezhɛ́",,true
+tm,tm.error.network,high,Erreur réseau : le service est temporairement indisponible. Réessayez.,"Ŋ́gɔ́ mé ajʉʼ mɛ́t, ŋ́gɔ́ éyi, ŋgaŋ aziɛ́, aziɛ́ a te zéŋ ŋgɔ́ éyi, ŋgaŋ aziɛ́. Pɛ ezéŋ njʉ́ɔ áa ajʉʼ zīi, ŋgaŋ aziɛ́.",,true
+tm,tm.error.confirm_required,high,Vous devez confirmer les informations avant de valider le transfert.,"Pɛ ezéŋ ŋgwɛ̄ akɔ̄ lɛ́, pɛ ezéŋ ndɔk nzwíʼtɛ akɔ̄ lɛ́, tɛ́ ndɔk ŋgwɛ̄ akɔ̄ lɛ́.",,true
+tm,tm.warning.security_verify,high,Alerte de sécurité : vérifiez le numéro du bénéficiaire avant de continuer.,"Púp, pɛ ezéŋ njhʉ́ ajū mīi, a á si ŋgɔ́ á ajū mīi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a",,true
+tm,tm.warning.security_new,high,Alerte de sécurité : ce bénéficiaire n'a jamais été utilisé sur ce compte.,"Awíɛ awíɛ a á si ŋgɔ́ ajʉʼ zīi, a á si ŋgɔ́ á ajʉʼ zīi, a gɔ le zéŋ ŋgɔ́ á ajʉʼ zīi, a gɔ le zéŋ ŋgɔ́ á ajʉʼ zīi, a gɔ le zéŋ ŋgɔ́ á ayiŋne.",,true
+tm,tm.action.back,low,Retour,"Ŋ́gɔ́ mé nnɔ̄ŋ nzhɛ́ɛ á légɛ, Ndém a á si nzhɛ́ɛ á légɛ, pɔ́ egʉɔ nnɛ̄t ŋgyáa á mbū Ndém. Ŋ́gɔ́ mé nzhɛ́ɛ á légɛ, pɔ́ egʉɔ nnɛ̄t ŋgyáa á mbū Ndém. Ŋ́gɔ́ mé nzhɛ́ á légɛ, pɔ",,true
+tm,tm.action.continue,medium,Continuer,"Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne. Ŋ́gɔ́ mé apwɛne, ŋ́gɔ́ mé apwɛ",,true
+phrases,PAGE_INTRO_BALANCE,low,Voici la page de votre solde.,"Ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ á légɛ, pɛ é si nzhɛ́ɛ ajūɔ tsem zīi, pɛ é si nzhɛ́ɛ azō.",,true
+phrases,BALANCE_IS,high,Votre solde est de {amount}.,"Pɛ é si nzɛ́ttɛ ŋ́gɛ, ńdɔkɔ ŋgɔ́ á ZZghɛza.",{amount},false
+phrases,ACCOUNT_IS,high,Votre numéro de compte est {account}.,"Pɛ é si ŋkɔ̄ŋɔ á wɛ́, ńdɔkɔ ŋ́gɛ, ZZghīz azɔ́p.",{account},false
+phrases,PAGE_INTRO_FEES,low,Voici la page des frais.,"Ajūɔ tsem zīi, pɔ́ é si nzhɛ́ɛ á légɛ, ajūɔ tsem zīi, pɔ́ é si nzhɛ́ɛ á légɛ, ajūɔ tsem zīi, pɔ́ é si nzhɛ́ɛ á légɛ, ajūɔ tsem zīi, pɔ́ é si nzhɛ́ɛ á légɛ, ajūɔ tsem zīi, pɔ́ é si nzhɛ",,true
+phrases,FEE_IS,high,Les frais sont de {amount}.,Pɛ ezéŋ ŋgwɛ̄ á Zzftɛza.,{amount},false
+phrases,FEE_FREE,high,Il n'y a pas de frais pour cette opération.,"Ndɛ́ʼ pɛ ezéŋ ŋgɔ́ éyi, ajū mīi mɛ́ le zéŋ ŋgɔ́ éyi mɛ́ gɔ le zéŋ ŋgɔ́ éyi.",,true
+phrases,FEE_TOTAL,high,Le total sera de {amount}.,"Ajū mīi a gɔ eghʉ̄ʉ, ajū mīi a gɔ eghʉ̄ʉ, ajū mīi á zɔ́p á zɔ́p.",{amount},false
+phrases,BALANCE_AFTER,high,Le solde après l'opération sera de {amount}.,"Ajū mīi afʉʼ zīi, afʉʼ zīi a á zéŋ ŋgɔ́ azō á mbū ZZftɛza.",{amount},false
+phrases,PAGE_INTRO_TRANSFER,low,Voici le formulaire de transfert.,"Ajūɔ tsem zīi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi, a gɔ́ éyi.",,true
+phrases,TRANSFER_AMOUNT_TO,high,Vous allez envoyer {amount} à {name}.,"Pɛ egʉ̄ɔ mé ZZftɛza ŋ́gɛ, pɛ egʉ̄ɔ mé ZZftɛza ŋ́gɛ, pɛ egʉ̄ɔ mé ZZftɛza.",{amount};{name},false
+phrases,TRANSFER_RECIPIENT,high,Le bénéficiaire est {name}.,Ŋ́gɔ́ mé Zzftɛza.,{name},false
+phrases,TRANSFER_REFERENCE,high,La référence est {reference}.,"Ajūɔ tsem zīi, a á si ŋgɔ́ á ZZftɛza.",{reference},false
+phrases,SUMMARY_INTRO,low,Voici le récapitulatif avant confirmation.,"Ajūɔ tsem zīi, ajūɔ tsem zīi a á si nzɛ́ttɛ, ajūɔ tsem zīi, a á si nzɛ́ttɛ.",,true
+phrases,SUMMARY_CONFIRM,high,Voulez-vous confirmer cette opération ?,"Pɛ ké ŋgɔ́ páʼā, ńdɔkɔ ndʉ́ɛ́ ŋ́gɛ, akɔ̄?",,true
+phrases,WARN_PIN,high,Ne partagez jamais votre code secret.,"Ndɛ́ʼ pɛ ezéŋ ŋkɔ̄ŋɔ á wɛ́, ndɛ́ʼ pɛ ezéŋ ŋkɔ̄ŋɔ á wɛ́.",,true
+phrases,WARN_UNKNOWN_REQUEST,high,"Si vous n'avez pas demandé cette opération, annulez.","Ŋ́gɔ́ éyi, pɛ kɛ te ndʉ́ɛ́ azō ɛ́, ńdɔkɔ ŋ́gɛ, pɛ elɔ̄ɔk azō.",,true
+phrases,WARN_CHECK_BEFORE_CONFIRM,high,Vérifiez le montant et le bénéficiaire avant de confirmer.,"Pɛ etswíʼte ŋ́gɛ, mbɔ ajū mīi, a gɔ́ éyi, mɛ́ gɔ ezwhíte á mbū Ndém, ńdɔkɔ ntswīi á mbū yí, ńdɔkɔ ntswīi á mbū yí.",,true
+phrases,WARN_NEW_BENEFICIARY,high,Ce bénéficiaire n'a jamais été utilisé sur ce compte. Vérifiez le numéro avant de continuer.,"Ndém a le gē ezéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ yīi, a gɔ le zéŋ ŋgɔ́ á ŋiŋ y",,true
+phrases,WARN_VERIFY_NAME_NUMBER,high,Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un transfert.,"Pɛ ezéŋ nnɔ̄ŋ nzhɛ́ɛ á légɛ, ndɛ́ʼ pɛ ezwhí á légɛ, Ndém a a láʼ ezwhí á mbū Ndém, ńzwhí á mbū Ndém, ńdɔk ŋgwɛ̄ azō.",,true
+phrases,ERROR_INSUFFICIENT,high,Solde insuffisant pour effectuer ce transfert.,"Ajū mīi mɛ́ le zéŋ ŋgwɛ̄ azō á mbū Ndém, á mbū pɔ́p, ńdɔkɔ ŋgwɛ̄ azō.",,true
+phrases,ERROR_AMOUNT_ZERO,high,Le montant doit être supérieur à zéro.,"Ajū mīi mɛ́ gɔ eghʉ̄ʉ ajū mīi, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ, ajū mīi mɛ́ gɔ eghʉ̄ʉ̄ʉ,",,true
+phrases,ERROR_MISSING_BENEFICIARY,high,Veuillez renseigner le nom et le numéro du bénéficiaire.,"Pɛ ezhɛ́ á légɛ, akɔ̄ akɔ̄ lɛ́, pɛ ezhɛ́ á légɛ, akɔ̄ akɔ̄ lɛ́, pɛ ezhɛ́ á légɛ, Ndém a a láʼ eghʉ, pɛ ezhɛ́ á légɛ, Ndém a a láʼ eghʉ, pɛ ezhɛ́ á légɛ, Ndém a a láʼ eghʉ, pɛ ezhɛ́",,true
+phrases,ERROR_CONFIRM_REQUIRED,high,Vous devez confirmer les informations avant de valider le transfert.,"Pɛ ezéŋ ŋgwɛ̄ akɔ̄ lɛ́, pɛ ezéŋ ndɔk nzwíʼtɛ akɔ̄ lɛ́, tɛ́ ndɔk ŋgwɛ̄ akɔ̄ lɛ́.",,true
+phrases,ERROR_NETWORK,high,Erreur réseau : le service est temporairement indisponible. Réessayez.,"Ŋ́gɔ́ mé ajʉʼ mɛ́t, ŋ́gɔ́ éyi, ŋgaŋ aziɛ́, aziɛ́ a te zéŋ ŋgɔ́ éyi, ŋgaŋ aziɛ́. Pɛ ezéŋ njʉ́ɔ áa ajʉʼ zīi, ŋgaŋ aziɛ́.",,true
+phrases,ACTION_CONFIRM,high,Confirmer,"Anu zīi, Ndém a le lɔ̄k ashuŋne zīi, Ndém a le lɔ̄k ashuŋne zīi, Ndém a le lɔ̄k ashuŋne zīi, Ndém a le lɔ̄k ashuŋne á yí, ńdɔkɔ ntswīi á yí.",,true
+phrases,ACTION_CANCEL,low,Annuler,"Ŋ́gɔ́ mé ajʉʼ zīi, Ndém a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ á ŋiŋ yīi, a á si ŋgɔ́ azí, a á si ŋgɔ́ azí, ńdɔkɔ ŋ́gɛ, a egɔ́ á ŋiŋ yīi, a á si ŋgɔ́ azí.",,true
+phrases,ACTION_BACK,low,Retour,"Ŋ́gɔ́ mé nnɔ̄ŋ nzhɛ́ɛ á légɛ, Ndém a á si nzhɛ́ɛ á légɛ, pɔ́ egʉɔ nnɛ̄t ŋgyáa á mbū Ndém. Ŋ́gɔ́ mé nzhɛ́ɛ á légɛ, pɔ́ egʉɔ nnɛ̄t ŋgyáa á mbū Ndém. Ŋ́gɔ́ mé nzhɛ́ á légɛ, pɔ",,true
+phrases,ACTION_REPEAT,low,Répéter,"Púp, pɛ etswíʼte á Ndém, ńdɔkɔ ntswīi á légɛ, pɛ ezéŋ ntswíte á Ndém. Pɛ etswíte á Ndém, ńtswíte á Ndém.",,true
+phrases,ACTION_SLOWER,low,Plus lentement,"Pɛ eké nnɔ̄ŋ nzɛ́ttɛ ŋ́gɛ, Ndém a lɛɛ́ ndáʼ ndɔkɔ ndáʼa ŋgɔ́ áa mbū Ndém, ńdɔkɔ ndáʼa ŋgɔ́ áa mbū Ndém, ńdɔkɔ ndáʼa ŋgɔ́ áa mbū Ndém.",,true
+phrases,ACTION_YES,low,Oui,Yɛɛ́so á zéŋ ndé ŋ́gɛ:,,true
+phrases,ACTION_NO,low,Non,"Ndɛ́ʼ ŋ́gɛ: «Ndɛ́ʼ ŋiŋ á légɛ, Ndɛ́ʼ ŋiŋ á lɔkɔ ŋiŋ á lɔkɔ ŋgʉɔ̄ʼɔ, ŋiŋ á lɔkɔ ŋiŋ á lɔkɔ ŋiŋ yīi, a á ŋiŋ yīi, a á ŋiŋ yīi a á ŋiŋ yīi, a á ŋiŋ yīi, a á ŋ",,true
+phrases,ACTION_DONT_UNDERSTAND,low,Je n'ai pas compris.,"Meŋ ndɛ́ɛ́ páʼa, meŋ ndɛ́ɛ́ páʼa.",,true
+phrases,SAFE_GENERIC_WARNING,high,Attention : un message de sécurité est affiché. Regardez l'écran ou demandez de l'aide.,"Ndɛ́ʼ pɛ ezéŋ ŋgɔ́ á ajʉʼ zīi, a shʉʼ ezéŋ eshúŋɔ á wɛ́. Pɛ ezéŋ njʉ́ɔ á ajʉʼ zīi, a á si ŋgɔ́ á ajʉʼ zīi, a á si ŋgɔ́ á ajʉʼ zīi, a á si ŋgɔ́ á ajʉʼ zīi, a á si ŋgɔ́ á ajʉ",,true
+phrases,SAFE_GENERIC_ERROR,high,Une erreur est affichée. Regardez l'écran ou demandez de l'aide.,"Mɛ́ é si ŋgɔ́ ajʉʼ mɛ́t, ńjʉ́ɔ ajʉʼ mɛ́t. Pɛ ezéŋ njʉ́ɔ á ajʉʼ mɛ́t, ńdɔkɔ ŋ́gɛ, ajʉʼ mɛ́t anu zīi, a á si ŋgɔ́ á ajʉʼ mɛ́t, á gɔ́ á ajʉʼ mɛ́t.",,true
+phrases,SAFE_GENERIC_INFO,medium,Un nouveau message est affiché. Regardez l'écran ou demandez de l'aide.,Awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ awíɛ.,,true

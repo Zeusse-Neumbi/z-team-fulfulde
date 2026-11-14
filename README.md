@@ -115,7 +115,7 @@ pnpm check:live   # real SAFINUM page, test tokens only
 pnpm check:sites  # 30 public pages, canary values, dynamic content, restore
 ```
 
-The fixture target is `⟦FF:<id>⟧` plus the source string, so every protected value stays
+The fixture target is `⟦<code>:<id>⟧` plus the source string, so every protected value stays
 byte-identical. It is written to `apps/extension/.output-test/`, is gitignored and is never
 included in the production ZIP.
 

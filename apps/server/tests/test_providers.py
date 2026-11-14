@@ -13,6 +13,7 @@ def test_provider_matrix_lists_all_options(client):
         "nllb",
         "marian",
         "google",
+        "m2m100",
     }
     assert {item["name"] for item in body["tts"]} == {
         "stub",
@@ -109,3 +110,34 @@ def test_mms_config_with_weights_is_ready(monkeypatch, tmp_path):
 
     assert readiness.ready is True
     assert readiness.reason is None
+
+
+def test_mms_readiness_follows_the_target_language(monkeypatch):
+    from app import provider_catalog
+
+    monkeypatch.setattr(settings, "target_lang", "ybb")
+    monkeypatch.setattr(settings, "tts_model", "")
+    readiness = provider_catalog.describe(settings, "tts", "mms")
+
+    assert readiness.model.endswith("mms-tts-ybb")
+
+
+def test_marian_readiness_follows_the_target_language(monkeypatch):
+    from app import provider_catalog
+
+    monkeypatch.setattr(settings, "target_lang", "ybb")
+    readiness = provider_catalog.describe(settings, "mt", "marian")
+
+    assert readiness.model.endswith("francais-yemba")
+
+
+def test_m2m100_is_an_opt_in_local_mit_provider():
+    from app import provider_catalog
+
+    readiness = provider_catalog.describe(settings, "mt", "m2m100")
+
+    assert readiness.local is True
+    assert readiness.requires_credentials is False
+    assert readiness.licence == "MIT"
+    assert readiness.model == settings.mt_m2m100_model
+    assert settings.mt_backend != "m2m100"

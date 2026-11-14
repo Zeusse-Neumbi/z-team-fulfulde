@@ -11,10 +11,12 @@ import yaml
 
 from .config import Settings
 from .errors import ProviderError
+from .languages import get_language
 
 
 @dataclass
 class PhrasebankSnapshot:
+    language: str
     directory: str
     tm_path: str
     phrases_path: str
@@ -35,6 +37,7 @@ class PhrasebankSnapshot:
 
     def summary(self) -> dict[str, Any]:
         return {
+            "language": self.language,
             "directory": self.directory,
             "tm_path": self.tm_path,
             "phrases_path": self.phrases_path,
@@ -47,8 +50,12 @@ class PhrasebankSnapshot:
             "counts": {
                 "tm_units": len(self.tm_units),
                 "phrases": len(self.phrases),
-                "tm_with_target": sum(1 for unit in self.tm_units if _ff(unit)),
-                "phrases_with_target": sum(1 for phrase in self.phrases if _ff(phrase)),
+                "tm_with_target": sum(
+                    1 for unit in self.tm_units if _target(unit, self.language)[0]
+                ),
+                "phrases_with_target": sum(
+                    1 for phrase in self.phrases if _target(phrase, self.language)[0]
+                ),
             },
             "warnings_count": len(self.warnings),
             "release_errors_count": len(self.release_errors),
@@ -63,11 +70,13 @@ _SIGNATURE: tuple[Any, ...] | None = None
 _LOCK = threading.Lock()
 
 
-def _ff(entry: dict[str, Any]) -> str:
+def _target(entry: dict[str, Any], language: str) -> tuple[str, dict[str, Any]]:
     target = entry.get("target")
     if isinstance(target, dict):
-        return str(target.get("ff") or "")
-    return str(entry.get("ff") or "")
+        value = target.get(language)
+        if isinstance(value, dict):
+            return str(value.get("text") or ""), value
+    return "", {}
 
 
 def _read_yaml(path: Path) -> dict[str, Any]:
@@ -88,10 +97,28 @@ def _read_yaml(path: Path) -> dict[str, Any]:
     return data
 
 
+def _pack_paths(settings: Settings) -> tuple[Path, Path, Path, Path]:
+    """Resolve the pack for the configured target language.
+
+    An explicit `phrasebank_dir` or `phrasebank_numbers` still wins, so tests
+    and out-of-tree packs keep working; otherwise the registry row decides.
+    """
+    language = get_language(settings.target_lang, settings)
+    directory = (
+        settings.resolve_path(settings.phrasebank_dir)
+        if settings.phrasebank_dir
+        else language.pack_dir
+    )
+    numbers_path = (
+        settings.resolve_path(settings.phrasebank_numbers)
+        if settings.phrasebank_numbers
+        else language.numbers_path
+    )
+    return directory, directory / "tm.yaml", directory / "phrases.yaml", numbers_path
+
+
 def _signature(settings: Settings) -> tuple[Any, ...]:
-    tm = settings.resolve_path(settings.phrasebank_dir) / "tm.yaml"
-    phrases = settings.resolve_path(settings.phrasebank_dir) / "phrases.yaml"
-    numbers = settings.resolve_path(settings.phrasebank_numbers)
+    _, tm, phrases, numbers = _pack_paths(settings)
     return tuple(
         (str(path), path.stat().st_mtime_ns if path.exists() else None)
         for path in (tm, phrases, numbers)
@@ -105,10 +132,7 @@ def load_phrasebank(
 ) -> PhrasebankSnapshot:
     global _SNAPSHOT, _SIGNATURE
 
-    directory = settings.resolve_path(settings.phrasebank_dir)
-    tm_path = directory / "tm.yaml"
-    phrases_path = directory / "phrases.yaml"
-    numbers_path = settings.resolve_path(settings.phrasebank_numbers)
+    directory, tm_path, phrases_path, numbers_path = _pack_paths(settings)
     missing = [str(path) for path in (tm_path, phrases_path, numbers_path) if not path.exists()]
     if missing:
         raise ProviderError(
@@ -142,43 +166,47 @@ def load_phrasebank(
                 status_code=500,
             )
 
+        language = settings.target_lang
         warnings: list[str] = []
         release_errors: list[str] = []
         for unit in tm_units:
             if not isinstance(unit, dict):
                 continue
             uid = str(unit.get("id", "?"))
-            if not _ff(unit):
-                warnings.append(f"Missing FF target: {uid}")
-            if not unit.get("validatedBy"):
+            text, validation = _target(unit, language)
+            if not text:
+                warnings.append(f"Missing {language} target: {uid}")
+            if not validation.get("validatedBy"):
                 warnings.append(f"Missing validator: {uid}")
-            if not unit.get("backTranslationFr"):
+            if not validation.get("backTranslationFr"):
                 warnings.append(f"Missing back-translation: {uid}")
-            if unit.get("risk") != "low" and not _ff(unit):
-                release_errors.append(f"Missing FF target: {uid}")
-            if unit.get("risk") != "low" and not unit.get("validatedBy"):
+            if unit.get("risk") != "low" and not text:
+                release_errors.append(f"Missing {language} target: {uid}")
+            if unit.get("risk") != "low" and not validation.get("validatedBy"):
                 release_errors.append(f"Missing validator: {uid}")
-            if unit.get("risk") != "low" and not unit.get("backTranslationFr"):
+            if unit.get("risk") != "low" and not validation.get("backTranslationFr"):
                 release_errors.append(f"Missing back-translation: {uid}")
 
         for phrase in phrases:
             if not isinstance(phrase, dict):
                 continue
             pid = str(phrase.get("id", "?"))
-            if not _ff(phrase):
-                warnings.append(f"Missing FF phrase: {pid}")
-            if not phrase.get("validatedBy"):
+            text, validation = _target(phrase, language)
+            if not text:
+                warnings.append(f"Missing {language} phrase: {pid}")
+            if not validation.get("validatedBy"):
                 warnings.append(f"Missing phrase validator: {pid}")
-            if not phrase.get("backTranslationFr"):
+            if not validation.get("backTranslationFr"):
                 warnings.append(f"Missing phrase back-translation: {pid}")
-            if phrase.get("risk") != "low" and not _ff(phrase):
-                release_errors.append(f"Missing FF phrase: {pid}")
-            if phrase.get("risk") != "low" and not phrase.get("validatedBy"):
+            if phrase.get("risk") != "low" and not text:
+                release_errors.append(f"Missing {language} phrase: {pid}")
+            if phrase.get("risk") != "low" and not validation.get("validatedBy"):
                 release_errors.append(f"Missing phrase validator: {pid}")
-            if phrase.get("risk") != "low" and not phrase.get("backTranslationFr"):
+            if phrase.get("risk") != "low" and not validation.get("backTranslationFr"):
                 release_errors.append(f"Missing phrase back-translation: {pid}")
 
         _SNAPSHOT = PhrasebankSnapshot(
+            language=language,
             directory=str(directory),
             tm_path=str(tm_path),
             phrases_path=str(phrases_path),

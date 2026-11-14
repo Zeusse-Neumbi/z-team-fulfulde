@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  languageRegistryEntrySchema,
   panelSettingsSchema,
   readbackSchema,
   translationStatusSchema,
@@ -7,29 +8,100 @@ import {
 } from "./schemas";
 
 describe("translationUnitSchema", () => {
-  it("accepts a validated unit", () => {
+  it("accepts a validated unit with a per-language target", () => {
     const result = translationUnitSchema.safeParse({
       id: "tm.balance.available",
       source: { fr: "Solde disponible", en: "Available balance" },
-      target: { ff: "..." },
+      target: {
+        fub: {
+          text: "...",
+          origin: "human",
+          validatedBy: ["speaker_1", "speaker_2"],
+          backTranslationFr: "Available balance",
+        },
+      },
       risk: "high",
-      validatedBy: ["speaker_1", "speaker_2"],
-      backTranslationFr: "Available balance",
       version: "2026-11-09.1",
     });
     expect(result.success).toBe(true);
   });
 
-  it("rejects a missing source", () => {
+  it("fills the validation fields for a minimal target", () => {
     const result = translationUnitSchema.safeParse({
-      id: "x",
+      id: "tm.balance.available",
+      source: { fr: "Solde disponible", en: "Available balance" },
+      target: { fub: { text: "", origin: "human" } },
+      risk: "high",
+      version: "2026-11-09.1",
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.target.fub).toEqual({
+        text: "",
+        origin: "human",
+        validatedBy: [],
+        backTranslationFr: "",
+      });
+    }
+  });
+
+  it("rejects the legacy single-language target", () => {
+    const result = translationUnitSchema.safeParse({
+      id: "tm.balance.available",
+      source: { fr: "Solde disponible", en: "Available balance" },
       target: { ff: "" },
       risk: "high",
       validatedBy: [],
       backTranslationFr: "",
+      version: "2026-11-09.1",
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects a missing source", () => {
+    const result = translationUnitSchema.safeParse({
+      id: "x",
+      target: { fub: { text: "", origin: "human" } },
+      risk: "high",
       version: "1",
     });
     expect(result.success).toBe(false);
+  });
+});
+
+describe("languageRegistryEntrySchema", () => {
+  const entry = {
+    code: "fub",
+    endonym: "Fulfulde",
+    names: { fr: "Fulfulde (Adamaoua)", en: "Adamawa Fulfulde" },
+    script: "Latn",
+    direction: "ltr",
+    orthography: "AGLC",
+    status: "draft",
+    letters: "abcdefghijklmnoprstuwyɛɔɓɗƴŋɲʼ",
+    mt: { provider: "marian", model: "models/cameroon-int8/francais-fufulde", pivot: "fr" },
+    speech: {
+      provider: "mms",
+      model: "models/mms-tts-ful",
+      tone: "none",
+      substitutions: { "ɛ": "e" },
+    },
+    numbers: "numbers/fub.json",
+    pack: "entries/fub",
+  };
+
+  it("accepts a registry row", () => {
+    expect(languageRegistryEntrySchema.safeParse(entry).success).toBe(true);
+  });
+
+  it("rejects a non-ISO-639-3 code", () => {
+    expect(languageRegistryEntrySchema.safeParse({ ...entry, code: "ff" }).success).toBe(false);
+  });
+
+  it("defaults speech substitutions", () => {
+    const { substitutions: _substitutions, ...speech } = entry.speech;
+    const result = languageRegistryEntrySchema.parse({ ...entry, speech });
+    expect(result.speech.substitutions).toEqual({});
   });
 });
 
@@ -136,7 +208,16 @@ describe("panelSettingsSchema", () => {
     const fr = panelSettingsSchema.parse({ uiLang: "fr", speed: 1 });
     expect(fr.apiTranslation).toBe("fallback");
     expect(fr.mtProvider).toBeNull();
+    expect(fr.targetLang).toBe("fub");
     expect(panelSettingsSchema.safeParse({ uiLang: "en", speed: 0.8 }).success).toBe(true);
+  });
+
+  it("accepts a per-language translation target", () => {
+    const settings = panelSettingsSchema.parse({ uiLang: "fr", speed: 1, targetLang: "ybb" });
+    expect(settings.targetLang).toBe("ybb");
+    expect(panelSettingsSchema.safeParse({ uiLang: "fr", speed: 1, targetLang: "ff" }).success).toBe(
+      false,
+    );
   });
 
   it("accepts an explicit local API mode, provider and Fulfulde UI", () => {
