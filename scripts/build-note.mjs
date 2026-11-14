@@ -55,9 +55,9 @@ mkdirSync(dirname(outPath), { recursive: true });
 
 let browser;
 try {
-  browser = await chromium.launch();
+  browser = await chromium.launch({ channel: "chromium" });
 } catch (error) {
-  console.warn("[note] bundled Chromium unavailable, falling back to the installed Chrome.");
+  console.warn("[note] Playwright Chromium unavailable, falling back to the installed Chrome.");
   console.warn(`       ${error instanceof Error ? error.message.split("\n")[0] : String(error)}`);
   browser = await chromium.launch({ channel: "chrome" });
 }
