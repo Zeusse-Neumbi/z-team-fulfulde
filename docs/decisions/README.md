@@ -26,3 +26,4 @@ accepted record.
 | [0018](0018-a1-smoke-gate-evidence.md) | Record what the ɛ/ɔ/ŋ smoke-test gate can and cannot prove for `cameroon-int8` |
 | [0019](0019-nllb-default-mt.md) | Keep NLLB as the default Fulfulde MT; `cameroon-int8` stays opt-in |
 | [0020](0020-multi-language-packs.md) | Make language packs data-driven with per-language validation |
+| [0021](0021-yemba-m2m100.md) | Use the MIT M2M100 pair for the Yemba candidate pack |

@@ -20,6 +20,7 @@ GPU vendor and the recommended backend; `pnpm models:download` uses
 | MT | `ollama` | local | model-dependent | Ollama on `127.0.0.1:11434` |
 | MT | `nllb` | local | CC-BY-NC-4.0 | speech extra + model dir |
 | MT | `marian` | local | CC-BY-NC-4.0 | speech extra + `models/cameroon-int8/francais-fufulde` |
+| MT | `m2m100` | local | MIT | speech extra + `models/m2m100-yemba-fr2ybb` (1.85 GB) |
 | MT | `google` | cloud | proprietary | `ZTEAM_GOOGLE_TRANSLATE_API_KEY` |
 | TTS | `stub` | local | project | nothing |
 | TTS | `mms` | local | CC-BY-NC-4.0 | speech extra + `models/mms-tts-ful` |
