@@ -5,7 +5,8 @@
 - **Source set:** the 20 fictional financial sentences in
   [`mt-head-to-head.tsv`](mt-head-to-head.tsv), plus a 5-sentence
   placeholder-masked set drawn from the real Yemba pack
-- **Raw output:** [`ybb-mt-comparison.tsv`](ybb-mt-comparison.tsv)
+- **Raw output:** [`ybb-mt-comparison.tsv`](ybb-mt-comparison.tsv) and
+  [`ybb-mt-masked.tsv`](ybb-mt-masked.tsv)
 - **Harness:** [`scripts/compare-ybb-mt.py`](../../scripts/compare-ybb-mt.py)
 
 Both models are French-pivot only and local. Nothing was sent off the machine.
