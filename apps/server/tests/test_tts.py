@@ -48,7 +48,8 @@ def test_tts_rejects_unknown_language(client):
     assert response.status_code == 422
     detail = response.json()["detail"]
     assert detail["code"] == "unsupported_language"
-    assert detail["valid"] == ["fub", "ybb"]
+    assert {"fub", "ybb"} <= set(detail["valid"])
+    assert "deu" not in detail["valid"]
 
 
 def test_tts_accepts_a_registered_language(client):

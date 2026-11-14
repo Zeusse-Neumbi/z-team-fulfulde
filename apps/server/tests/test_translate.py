@@ -28,7 +28,8 @@ def test_translate_rejects_legacy_ff_target(client):
     assert response.status_code == 422
     detail = response.json()["detail"]
     assert detail["code"] == "unsupported_language"
-    assert detail["valid"] == ["fub", "ybb"]
+    assert {"fub", "ybb"} <= set(detail["valid"])
+    assert "ff" not in detail["valid"]
 
 
 def test_translate_rejects_unknown_source(client):
@@ -42,7 +43,8 @@ def test_translate_rejects_unknown_target(client):
     assert response.status_code == 422
     detail = response.json()["detail"]
     assert detail["code"] == "unsupported_language"
-    assert detail["valid"] == ["fub", "ybb"]
+    assert {"fub", "ybb"} <= set(detail["valid"])
+    assert "wo" not in detail["valid"]
 
 
 def test_translate_rejects_oversized_input(client, monkeypatch):

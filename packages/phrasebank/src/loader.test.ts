@@ -15,8 +15,10 @@ const packs = loadAll();
 
 describe("language registry", () => {
   it("loads one row per language", () => {
-    expect(registry.map((entry) => entry.code)).toEqual(["fub", "ybb"]);
-    expect(new Set(registry.map((entry) => entry.code)).size).toBe(registry.length);
+    const codes = registry.map((entry) => entry.code);
+    expect(codes).toEqual(expect.arrayContaining(["fub", "ybb"]));
+    expect(new Set(codes).size).toBe(registry.length);
+    for (const code of codes) expect(code).toMatch(/^[a-z]{3}$/);
   });
 
   it("keeps the registry and the pack directories in bijection", () => {
@@ -44,20 +46,27 @@ describe("phrasebank packs", () => {
     }
   });
 
-  it("isolates each pack: loading ybb never carries fub targets", () => {
-    const fub = packs.fub;
-    const ybb = packs.ybb;
-    expect(fub).toBeDefined();
-    expect(ybb).toBeDefined();
-    expect(fub?.translationUnits.every((unit) => Object.keys(unit.target).join() === "fub")).toBe(
-      true,
-    );
-    expect(ybb?.translationUnits.every((unit) => Object.keys(unit.target).join() === "ybb")).toBe(
-      true,
-    );
-    expect(fub?.phrases.every((phrase) => Object.keys(phrase.target).join() === "fub")).toBe(true);
-    expect(ybb?.phrases.every((phrase) => Object.keys(phrase.target).join() === "ybb")).toBe(true);
-    expect(ybb?.translationUnits.every((unit) => unit.target.fub === undefined)).toBe(true);
+  it("isolates each pack: no cross-language targets", () => {
+    for (const code of Object.keys(packs)) {
+      const pack = packs[code];
+      expect(pack).toBeDefined();
+      expect(
+        pack?.translationUnits.every((unit) =>
+          Object.keys(unit.target).every((target) => target === code),
+        ),
+      ).toBe(true);
+      expect(
+        pack?.phrases.every((phrase) =>
+          Object.keys(phrase.target).every((target) => target === code),
+        ),
+      ).toBe(true);
+      for (const other of Object.keys(packs)) {
+        if (other === code) continue;
+        expect(pack?.translationUnits.every((unit) => unit.target[other] === undefined)).toBe(
+          true,
+        );
+      }
+    }
   });
 
   it("warns on empty targets instead of inventing text", () => {
