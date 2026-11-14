@@ -62,7 +62,7 @@ Dependabot security updates, vulnerability alerts and both rulesets.
 | `Web` | lint, typecheck, unit tests, build, extension package, size limit, JS audit |
 | `API` | Ruff lint and format, MyPy, Pytest, Python audit |
 | `E2E / Playwright` | the built extension loads and the side panel renders |
-| `Submission pack` | the labelled draft translates the demo page, keeps values, and the note is 5 pages |
+| `Submission pack` | the labelled draft translates the demo page, keeps values, and the FR/EN notes are 5 pages |
 | `Workflows` | every workflow passes `actionlint` |
 | `Security` | gitleaks secret scan, JS and Python dependency audits |
 | `Repository guard` | git-hook self-test and tracked-file hygiene |

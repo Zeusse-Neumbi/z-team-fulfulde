@@ -32,7 +32,7 @@ The board is the execution view; the product and contract decisions stay in
 
 ```mermaid
 gantt
-    title Z-Team Fulfulde preselection
+    title Z-Team Lingua preselection
     dateFormat  YYYY-MM-DD
     axisFormat  %d %b
     section Build

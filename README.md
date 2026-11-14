@@ -1,4 +1,4 @@
-# Z-Team Fulfulde Assistant
+# Z-Team Lingua
 
 **A local-first Cameroonian-language accessibility layer for digital financial services.**
 
@@ -8,15 +8,15 @@ available. **Fulfulde (`fub`) is the demonstrated language; Yemba (`ybb`) is the
 data-only pack.** It never modifies the service's source code, and it never sends page data
 off the device.
 
-[![CI](https://github.com/Zeusse-Neumbi/z-team-fulfulde/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Zeusse-Neumbi/z-team-fulfulde/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/Zeusse-Neumbi/z-team-fulfulde?include_prereleases&sort=semver&label=release)](https://github.com/Zeusse-Neumbi/z-team-fulfulde/releases)
+[![CI](https://github.com/Zeusse-Neumbi/z-team-lingua/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Zeusse-Neumbi/z-team-lingua/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/Zeusse-Neumbi/z-team-lingua?include_prereleases&sort=semver&label=release)](https://github.com/Zeusse-Neumbi/z-team-lingua/releases)
 [![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-blue)](LICENSE)
 [![Node](https://img.shields.io/badge/Node-%E2%89%A522-339933?logo=node.js&logoColor=white)](package.json)
 [![Chrome MV3](https://img.shields.io/badge/Chrome-MV3-4285F4?logo=googlechrome&logoColor=white)](apps/extension)
 
-**Execution board:** [Z-Team Fulfulde Assistant — Preselection](https://github.com/users/Zeusse-Neumbi/projects/4)
+**Execution board:** [Z-Team Lingua — Preselection](https://github.com/users/Zeusse-Neumbi/projects/4)
 
-**Latest release:** [v0.2.1-preselection](https://github.com/Zeusse-Neumbi/z-team-fulfulde/releases/tag/v0.2.1-preselection) — extension ZIP, French 5-page note, listening pack and checksums.
+**Latest release:** [v0.3.0-preselection](https://github.com/Zeusse-Neumbi/z-team-lingua/releases/tag/v0.3.0-preselection) — extension ZIP, French and English 5-page notes, listening pack and checksums.
 
 > **Status: preselection draft. Two language packs ship as labelled machine-translation
 > drafts: Fulfulde 115/115 units and Yemba 103/115 (12 withheld when the draft lost a
@@ -196,6 +196,7 @@ e2e/                     Playwright smoke test
 | `pnpm package` | Zip the built extension into `dist/` |
 | `pnpm size:check` | Fail if the ZIP exceeds 8 MB |
 | `pnpm note:build` | Build the French technical note PDF |
+| `pnpm note:build:en` | Build the English technical note PDF |
 | `pnpm submission` | Assemble the local submission folder and checksums |
 | `pnpm setup:e2e` | Install Chromium for the Playwright smoke test |
 | `pnpm audit --audit-level high` | Fail on high or critical JS vulnerabilities |
@@ -296,6 +297,7 @@ upstream tools.
 - [`docs/PROJECT_BOARD.md`](docs/PROJECT_BOARD.md) — D1–D7 plan, board views and operating cadence
 - [`docs/REPO_AUDIT.md`](docs/REPO_AUDIT.md) — repository checklist and CI wall
 - [`docs/SUBMISSION.md`](docs/SUBMISSION.md) — form fields and package
+- [`docs/note/note.fr.html`](docs/note/note.fr.html) · [`note.en.html`](docs/note/note.en.html) — bilingual 5-page note sources
 - [`docs/RELEASE.md`](docs/RELEASE.md) — versioning, assets and release checks
 
 **Contributing and decisions**

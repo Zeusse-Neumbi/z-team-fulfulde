@@ -1,6 +1,6 @@
 # Z-Team local API
 
-Local-only speech and translation services for the Fulfulde assistant. It binds
+Local-only speech and translation services for the Z-Team Lingua assistant. It binds
 to `127.0.0.1` and makes no outbound network call unless a cloud provider is
 selected for a measurement run.
 

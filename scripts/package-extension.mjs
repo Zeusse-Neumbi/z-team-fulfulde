@@ -6,7 +6,7 @@ import { APP_VERSION } from "./version.mjs";
 const root = path.resolve(import.meta.dirname, "..");
 const source = path.join(root, "apps/extension/.output/chrome-mv3");
 const outDir = path.join(root, "dist");
-const out = path.join(outDir, `zteam-fulfulde-extension-v${APP_VERSION}.zip`);
+const out = path.join(outDir, `zteam-lingua-extension-v${APP_VERSION}.zip`);
 
 if (!existsSync(source)) {
   console.error("Extension build not found. Run: pnpm --filter @zteam/extension build");
@@ -36,7 +36,7 @@ const decoder = new TextDecoder();
 
 files["LICENSE"] = new Uint8Array(readFileSync(path.join(root, "LICENSE")));
 
-files["INSTALL.md"] = new TextEncoder().encode(`# Z-Team Fulfulde Assistant — installation
+files["INSTALL.md"] = new TextEncoder().encode(`# Z-Team Lingua — installation
 
 1. Unzip this archive into a folder.
 2. Open \`chrome://extensions\` in Chrome or Edge.
@@ -77,7 +77,7 @@ Use fictional data only. This is a simulated prototype; there is no real
 transfer and no real bank identifier. The extension talks only to
 \`127.0.0.1\`.
 
-Repository and documentation: https://github.com/Zeusse-Neumbi/z-team-fulfulde
+Repository and documentation: https://github.com/Zeusse-Neumbi/z-team-lingua
 
 ## Licence
 

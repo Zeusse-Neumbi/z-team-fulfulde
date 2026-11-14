@@ -143,7 +143,7 @@ export const ffCopy: PanelCopy = {
   summary: "Ɗuɓɓere hello",
   summaryHint: "Ballitoowo oo haalata ko ɓuri himmude e kuɗe ɗe njogii, walaa hello fof. Limɗe ina mbaɗi e ekran.",
   target: "Fulfulde",
-  title: "Assistant Fulfulde",
+  title: "Z-Team Lingua",
   tmApplied: "TM jaɓaandi",
   tmBadge: "TM",
   total: "Ko fof",

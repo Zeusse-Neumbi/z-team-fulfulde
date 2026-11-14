@@ -34,7 +34,7 @@ winget install --id Git.Git -e
 winget install --id OpenJS.NodeJS.LTS -e
 corepack enable pnpm
 winget install --id astral-sh.uv -e
-git clone https://github.com/Zeusse-Neumbi/z-team-fulfulde.git C:\zteam
+git clone https://github.com/Zeusse-Neumbi/z-team-lingua.git C:\zteam
 cd C:\zteam
 pnpm install --frozen-lockfile
 uv python install 3.12

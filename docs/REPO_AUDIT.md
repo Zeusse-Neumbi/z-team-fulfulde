@@ -53,7 +53,7 @@ weakening the value or privacy rules.
 - [x] 29. A nightly e2e workflow repeats the extension smoke test and opens a
       deduplicated issue on failure.
 - [x] 30. A tag-driven release workflow re-runs the checks, builds the extension and
-      the French note, writes `SHA256SUMS.txt` and creates a pre-release.
+      the French/English notes, writes `SHA256SUMS.txt` and creates a pre-release.
 - [x] 31. A public GitHub Project tracks the D1–D7 plan, milestones, risks and
       submission; `scripts/bootstrap-github-project.mjs` recreates it from
       `scripts/project-plan.json`.

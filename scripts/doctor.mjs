@@ -123,7 +123,7 @@ for (const [name, model] of Object.entries(manifest.models)) {
   }
 }
 
-const zip = join(root, `dist/zteam-fulfulde-extension-v${APP_VERSION}.zip`);
+const zip = join(root, `dist/zteam-lingua-extension-v${APP_VERSION}.zip`);
 check("Extension ZIP", existsSync(zip) ? formatBytes(statSync(zip).size) : "missing (run pnpm package)");
 
 const port = process.env.ZTEAM_PORT ?? "8000";
@@ -142,7 +142,7 @@ try {
   apiState = "not running";
 }
 
-console.log("\nZ-Team Fulfulde — doctor\n");
+console.log("\nZ-Team Lingua — doctor\n");
 for (const item of checks) {
   console.log(`  ${item.ok ? "ok  " : "warn"} ${item.label.padEnd(26)} ${item.value}`);
 }

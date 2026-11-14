@@ -20,7 +20,7 @@ Ready to use:
 - `docs/SPEAKER_PACKET.md` — the 45-minute protocol, written for a speaker who
   does not read Fulfulde.
 - `pnpm pack:listening` — the 115-clip two-pass pack as a single ZIP
-  (`dist/zteam-listening-pack-v0.2.1.zip`, ~0.7 MB), attached as a draft release
+  (`dist/zteam-lingua-listening-pack-v0.3.0.zip`, ~0.7 MB), attached as a draft release
   asset. It opens offline in a browser.
 - `eval/linguistic/back-translation.template.csv` and
   `eval/linguistic/tts-mos.template.csv` — 115 rows each.

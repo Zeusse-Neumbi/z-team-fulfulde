@@ -6,7 +6,7 @@ test("the extension loads and the side panel renders", async () => {
 
   try {
     const panel = await openPanel(context, extensionId);
-    await expect(panel.getByRole("heading", { name: "Assistant Fulfulde" })).toBeVisible();
+    await expect(panel.getByRole("heading", { name: "Z-Team Lingua" })).toBeVisible();
     await expect(panel.getByText("Rien — traitement local")).toBeVisible();
   } finally {
     await context.close();

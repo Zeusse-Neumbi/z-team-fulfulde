@@ -70,8 +70,8 @@ pnpm e2e
 ## Manual setup
 
 ```bash
-git clone https://github.com/Zeusse-Neumbi/z-team-fulfulde.git
-cd z-team-fulfulde
+git clone https://github.com/Zeusse-Neumbi/z-team-lingua.git
+cd z-team-lingua
 corepack enable pnpm
 pnpm install --frozen-lockfile
 uv sync --project apps/server --frozen --extra dev

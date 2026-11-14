@@ -32,7 +32,7 @@ flowchart LR
 ## The 60-second path
 
 ```bash
-cd ~/Projects/Z-Team/z-team-fulfulde
+cd ~/Projects/Z-Team/z-team-lingua
 pnpm build:submission   # labelled Fulfulde + Yemba draft packs
 pnpm demo               # leave this terminal open
 ```
@@ -47,7 +47,7 @@ In Chrome:
    `apps/extension/.output/chrome-mv3`.
 5. Open `http://127.0.0.1:4173/journey/` (run `pnpm serve:eval` if it is not
    already running).
-6. Click the **Z-Team Fulfulde Assistant** toolbar icon.
+6. Click the **Z-Team Lingua** toolbar icon.
 7. Click **Démarrer sur cette page**.
 8. The panel shows progress and a permanent **MT — non validée** pack banner. With the
 default **Repli après la TM** mode and the API running, plain misses are translated locally
@@ -99,7 +99,7 @@ Already installed on this machine:
 On a fresh clone:
 
 ```bash
-cd ~/Projects/Z-Team/z-team-fulfulde
+cd ~/Projects/Z-Team/z-team-lingua
 pnpm install
 uv sync --project apps/server --extra dev
 ```
@@ -194,7 +194,7 @@ Then click the circular **Reload** arrow on the extension card in
 5. Chrome may show **"Review 1 extension that may be unsafe"** or **"Chrome
    can't verify where this extension comes from."** This is normal for any
    unpacked local build. Do not click Remove.
-6. Pin the extension: puzzle-piece icon → pin **Z-Team Fulfulde Assistant**.
+6. Pin the extension: puzzle-piece icon → pin **Z-Team Lingua**.
 
 Load one build at a time. If you load both, they have the same name and two
 identical toolbar icons.
@@ -454,7 +454,7 @@ confirmation in the panel; the extension never clicks or submits for you.
 | Chrome cannot find `.output*` | Dot-folders are hidden. Use `~/zteam-extension-demo/...`, or press `Ctrl+L` in the picker and paste the full path. |
 | "Manifest file is missing or unreadable" | You selected the parent folder. Select the folder that directly contains `manifest.json`. |
 | Chrome says the extension may be unsafe | Expected for an unpacked build. Keep it; do not click Remove. |
-| No toolbar icon | Puzzle-piece icon → pin **Z-Team Fulfulde Assistant**. |
+| No toolbar icon | Puzzle-piece icon → pin **Z-Team Lingua**. |
 | The side panel does not open | Click the extension icon again, or right-click it → **Open side panel**. |
 | **Démarrer** is disabled | The tab is `chrome://`, the Chrome Web Store or another restricted page. Open an `http://` or `https://` page. |
 | The page stays French | Mode is **Désactivée**, the API is offline, or the API returned no target. Check the Traduction card and `curl http://127.0.0.1:8000/health`. |

@@ -91,6 +91,6 @@ console.log("  Load:     apps/extension/.output/chrome-mv3 in chrome://extension
 if (!existsSync(resolve(root, "models/mms-tts-ful/model.safetensors"))) {
   console.log("  Models:   pnpm models:download mms nllb-ct2");
 }
-if (!existsSync(resolve(root, `dist/zteam-fulfulde-extension-v${APP_VERSION}.zip`))) {
+if (!existsSync(resolve(root, `dist/zteam-lingua-extension-v${APP_VERSION}.zip`))) {
   console.log("  Package:  pnpm package");
 }
