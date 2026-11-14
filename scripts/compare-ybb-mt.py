@@ -68,9 +68,11 @@ def load_m2m100(model_path: Path):
     from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
 
     tokenizer = M2M100Tokenizer.from_pretrained(
-        str(model_path), src_lang="fr", extra_special_tokens={}
+        str(model_path), src_lang="fr", extra_special_tokens={}, local_files_only=True
     )
-    model = M2M100ForConditionalGeneration.from_pretrained(str(model_path)).to("cpu")
+    model = M2M100ForConditionalGeneration.from_pretrained(
+        str(model_path), local_files_only=True
+    ).to("cpu")
     model.eval()
     ybb_id = tokenizer.convert_tokens_to_ids("__ybb__")
     if ybb_id == tokenizer.unk_token_id:

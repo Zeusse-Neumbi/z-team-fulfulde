@@ -28,6 +28,9 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 ENTRIES = ROOT / "packages/phrasebank/entries"
 PLACEHOLDER = re.compile(r"\{[a-zA-Z_][a-zA-Z0-9_]*\}")
+# Names and brands must survive byte-for-byte. A candidate that renames one is
+# withheld even when its placeholders are intact.
+PROTECTED_BRANDS = ("Safinum Pay",)
 YEMBA_TOKEN = "__ybb__"
 
 
@@ -59,9 +62,11 @@ def load_model(model_path: Path):
     from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
 
     tokenizer = M2M100Tokenizer.from_pretrained(
-        str(model_path), src_lang="fr", extra_special_tokens={}
+        str(model_path), src_lang="fr", extra_special_tokens={}, local_files_only=True
     )
-    model = M2M100ForConditionalGeneration.from_pretrained(str(model_path)).to("cpu")
+    model = M2M100ForConditionalGeneration.from_pretrained(
+        str(model_path), local_files_only=True
+    ).to("cpu")
     model.eval()
     ybb_id = tokenizer.convert_tokens_to_ids(YEMBA_TOKEN)
     if ybb_id == tokenizer.unk_token_id:
@@ -104,6 +109,12 @@ def candidate(
     copy["mtModel"] = "danyanderson/m2m100-yemba-french-fr2ybb"
     copy["mtAt"] = datetime.now(UTC).strftime("%Y-%m-%d")
     copy["mtPlaceholdersOk"] = placeholders_ok
+    renamed = [brand for brand in PROTECTED_BRANDS if brand in text and brand not in restored]
+    if renamed:
+        copy["mtWithheld"] = True
+        copy["mtWithheldReason"] = (
+            "target changes the protected brand/name " + ", ".join(f"'{brand}'" for brand in renamed)
+        )
     target = dict(copy.get("target") or {})
     target[lang] = {
         "text": restored,
