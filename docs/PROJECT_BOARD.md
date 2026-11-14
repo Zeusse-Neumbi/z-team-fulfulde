@@ -1,5 +1,9 @@
 # Project board
 
+> **Status 2026-11-14:** the draft repository and release tooling are ready.
+> Both language packs are unvalidated drafts; no speaker session has run. The
+> board keeps validation, video and form items open until evidence exists.
+
 The preselection work is tracked in a public GitHub Project:
 
 **<https://github.com/users/Zeusse-Neumbi/projects/4>**

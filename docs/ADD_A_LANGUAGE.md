@@ -29,7 +29,9 @@ invented target is not.
    the language. The tokenizer guard measures the voice against it.
 2. **Registry names.** Set `endonym`, `names.fr` and `names.en`. The panel
    picker reads them.
-3. **Models.** Fill the manifest stubs with the real file names, sizes and
+3. **Voice policy.** Set `speech.voice` to `bundled`, `api` or `none`. A new
+   language cannot inherit the Fulfulde clips; the panel checks the clip pack
+   language. Fill the manifest stubs with the real file names, sizes and
    SHA-256 values, then `pnpm models:download mt-<code> mms-<code>`. The
    downloader verifies every hash.
 4. **Numbers.** Fill `numbers/<code>.json` or leave it empty; an empty lexicon
@@ -61,6 +63,7 @@ It fails while any medium/high-risk entry has no validator or back-translation.
 Only then set `status: validated` in `languages/<code>.yaml` and run:
 
 ```bash
+pnpm check:evidence
 pnpm --filter @zteam/phrasebank build:release
 pnpm check:tokenizer
 ```

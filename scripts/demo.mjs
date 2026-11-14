@@ -20,6 +20,7 @@ import { existsSync, readFileSync, statSync } from "node:fs";
 import { createServer } from "node:net";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { APP_VERSION } from "./version.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -66,7 +67,7 @@ const mmsModel = join(mmsDir, "model.safetensors");
 const nllbModel = join(nllbDir, "model.bin");
 const generated = join(root, "packages/phrasebank/src/generated.ts");
 const extension = join(root, "apps/extension/.output/chrome-mv3");
-const zip = join(root, "dist/zteam-fulfulde-extension-v0.1.0.zip");
+const zip = join(root, `dist/zteam-fulfulde-extension-v${APP_VERSION}.zip`);
 const ports = Array.from({ length: 11 }, (_, index) => 8000 + index);
 
 function formatBytes(bytes) {
@@ -176,13 +177,35 @@ function cudaAvailable() {
 }
 
 function packState() {
-  if (!existsSync(generated)) return { state: "missing", empty: 0, total: 0 };
+  if (!existsSync(generated)) return { state: "missing", packs: [] };
   const text = readFileSync(generated, "utf8");
-  const total = (text.match(/"text":/g) ?? []).length;
-  const empty = (text.match(/"text": ""/g) ?? []).length;
+  const marker = "export const languages: Record<string, Pack> = ";
+  const start = text.indexOf(marker);
+  if (start < 0) return { state: "missing", packs: [] };
+  const packs = JSON.parse(text.slice(start + marker.length).trim().replace(/;\s*$/, ""));
+  const rows = Object.entries(packs).map(([code, pack]) => {
+    const entries = [...(pack.translationUnits ?? []), ...(pack.phrases ?? [])];
+    const missing = entries.filter((entry) => !entry.target?.[code]?.text).length;
+    return {
+      code,
+      status: pack.status,
+      packSource: pack.packSource,
+      total: entries.length,
+      missing,
+      valid: entries.length - missing,
+    };
+  });
+  const empty = rows.reduce((sum, row) => sum + row.missing, 0);
+  const total = rows.reduce((sum, row) => sum + row.total, 0);
   const state =
-    total === 0 ? "missing" : empty === 0 ? "validated" : empty === total ? "seed" : "partial";
-  return { state, empty, total };
+    total === 0
+      ? "missing"
+      : rows.every((row) => row.missing === 0)
+        ? "complete"
+        : rows.every((row) => row.valid === 0)
+          ? "seed"
+          : "partial";
+  return { state, packs: rows, empty, total };
 }
 
 function apiSummary(state) {
@@ -193,14 +216,22 @@ function apiSummary(state) {
 }
 
 function printPack(pack) {
+  if (!pack.packs.length) {
+    console.log(`  pack      ${pack.state}`);
+    return;
+  }
+  for (const row of pack.packs) {
+    console.log(
+      `  pack      ${row.code}: ${row.status}/${row.packSource} ${row.valid}/${row.total}` +
+        (row.missing > 0 ? ` (${row.missing} withheld)` : ""),
+    );
+  }
   if (pack.state === "seed") {
     console.log(
-      `  pack      seed (${pack.empty}/${pack.total} empty) — TM-only stays source; local MT is labelled. Do not record the jury video yet.`,
+      "            seed packs stay in the source language; the API fallback is labelled.",
     );
   } else if (pack.state === "partial") {
-    console.log(`  pack      partial (${pack.empty}/${pack.total} empty) — check the missing entries.`);
-  } else {
-    console.log(`  pack      ${pack.state}`);
+    console.log("            withheld entries stay in the source language and are counted as missed.");
   }
 }
 
@@ -218,7 +249,7 @@ function printRunbook({ tts, mt, device, pack }) {
   console.log("  panel     discovers the API on 127.0.0.1:8000-8010");
   console.log("  mode      Traduction → Repli après la TM (MT local, non validée)");
   console.log("  guide     docs/MANUAL_DEMO.md");
-  console.log("  build     pnpm build          # product; pnpm build:test for mechanics");
+  console.log("  build     pnpm build:submission  # demo/video; pnpm build:test for mechanics");
   console.log(`  load      ${loadPath}`);
   console.log("  page      https://safinum.cm/hackathon-test");
   console.log(`  reset     curl -X POST ${baseUrl}/demo/reset`);

@@ -19,7 +19,8 @@ Applies to `apps/extension/**`, `packages/translator/**` and
 
 ## Extension shell
 
-- The side panel must show coverage, applied, protected and missed counts.
+- The side panel must show coverage, applied, protected and missed counts, the
+selected target language, and the pack status (`draft`/`validated`).
 - Amounts and references are displayed verbatim, never reformatted.
 - Stop restores the original text and cancels audio.
 - The privacy badge says "Rien — traitement local" and is visible.

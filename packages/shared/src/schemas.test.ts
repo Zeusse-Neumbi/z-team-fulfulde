@@ -103,6 +103,17 @@ describe("languageRegistryEntrySchema", () => {
     const result = languageRegistryEntrySchema.parse({ ...entry, speech });
     expect(result.speech.substitutions).toEqual({});
   });
+
+  it("defaults the voice policy to none and accepts the registry values", () => {
+    const { voice: _voice, ...speech } = entry.speech;
+    expect(languageRegistryEntrySchema.parse({ ...entry, speech }).speech.voice).toBe("none");
+    for (const voice of ["bundled", "api", "none"] as const) {
+      expect(
+        languageRegistryEntrySchema.safeParse({ ...entry, speech: { ...entry.speech, voice } })
+          .success,
+      ).toBe(true);
+    }
+  });
 });
 
 describe("translationStatusSchema", () => {

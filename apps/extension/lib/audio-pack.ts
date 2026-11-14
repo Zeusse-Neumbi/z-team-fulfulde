@@ -27,6 +27,8 @@ export interface AudioClip {
 
 export interface AudioPack {
   version: string;
+  /** ISO 639-3 code the clips were rendered in; a clip never crosses languages. */
+  language: string;
   source?: string;
   bitrate?: string;
   total: number;

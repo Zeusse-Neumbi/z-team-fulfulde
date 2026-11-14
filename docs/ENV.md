@@ -1,7 +1,8 @@
 # Environment
 
-Two machines are used for the preselection. Fill the second one on the day of
-the transfer; do not commit credentials or personal paths.
+The development machine is the measured environment for this submission. The
+Windows path is documented but was not executed; do not commit credentials or
+personal paths.
 
 ## Development machine (current)
 
@@ -16,7 +17,7 @@ the transfer; do not commit credentials or personal paths.
 | uv | 0.11.16 |
 | Python | 3.13.9 (system); the project requires >=3.11, CI uses 3.12 |
 | Chrome/Chromium | installed through Playwright |
-| Models | `models/mms-tts-ful`, `models/nllb-200-600m-int8`, `models/cameroon-int8/francais-fufulde` |
+| Models | `models/mms-tts-ful`, `models/nllb-200-600m-int8`, `models/cameroon-int8/francais-fufulde`; optional `cameroon-int8/francais-yemba`, `mms-tts-ybb` |
 | Model checksums | `models/manifest.json` |
 | API | `127.0.0.1:8000` |
 
@@ -30,34 +31,13 @@ Measured on this machine (from [`MODELS.md`](MODELS.md)):
 | `mms` warm | `Jam waali.` | 1.4–1.8 s for 1.3–1.5 s audio |
 | `mms` cache | repeat | 6.6 ms |
 
-## Windows 11 machine (to fill)
+## Windows 11 machine
 
-| Item | Value |
-| --- | --- |
-| OS | _to fill_ |
-| CPU | _to fill_ |
-| RAM | _to fill_ |
-| GPU | _to fill_ (`pnpm doctor`) |
-| Driver | _to fill_ (`nvidia-smi`) |
-| Node | _to fill_ |
-| pnpm | _to fill_ |
-| uv | _to fill_ |
-| Python | _to fill_ |
-| Chrome/Edge | _to fill_ |
-| Models | _to fill_ (copied or downloaded) |
-| CUDA / cuDNN | _to fill_ (or "CPU only") |
-| API | _to fill_ |
-
-Fill it with:
-
-```bash
-pnpm doctor
-nvidia-smi            # if NVIDIA
-uv run --project apps/server python scripts/probe-models.py \
-  --base-url http://127.0.0.1:8000 --tts mms --mt nllb \
-  --out eval/latency/models.csv
-pnpm prewarm
-```
+The Windows transfer was **not executed for this submission**. The commands and
+the CPU/CUDA decision are kept in [`SETUP.md`](SETUP.md) and
+[`TRANSFER.md`](TRANSFER.md); they are a guide, not measured evidence. Do not
+publish a Windows GPU or latency number without running `pnpm doctor` and
+`pnpm models:verify` on that machine.
 
 ## Runtime choice
 

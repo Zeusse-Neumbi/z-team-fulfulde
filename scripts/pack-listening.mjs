@@ -9,7 +9,7 @@
  * only accepts the 10 MB extension and the PDF.
  *
  *   node scripts/pack-listening.mjs
- *   gh release upload <tag> dist/zteam-listening-pack-v0.1.0.zip
+ *   gh release upload <tag> dist/zteam-listening-pack-v0.2.0.zip
  */
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -17,12 +17,13 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, wri
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { zipSync } from "fflate";
+import { APP_VERSION } from "./version.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const sessionDir = join(root, "eval/linguistic/session");
 const outDir = join(root, "dist");
 const stage = join(outDir, "listening-pack");
-const zipPath = join(outDir, "zteam-listening-pack-v0.1.0.zip");
+const zipPath = join(outDir, `zteam-listening-pack-v${APP_VERSION}.zip`);
 
 if (!existsSync(join(sessionDir, "manifest.json"))) {
   console.error(`[listening] missing ${join(sessionDir, "manifest.json")}`);

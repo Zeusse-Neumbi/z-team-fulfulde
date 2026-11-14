@@ -1,5 +1,10 @@
 # End-to-end and stress report
 
+> **Historical snapshot (2026-11-09).** The current suite has 16 Playwright
+> specs; the local run on 14 November 2026 was **15 passed, 1 skipped** (the
+> skipped backend test needs a live API). Unit tests are **184** across shared,
+> translator, phrasebank and extension. CI on `main` is the live source.
+
 - Date: 2026-11-09
 - Models: `mms-tts-ful` (TTS) and `nllb-200-600m-int8` (MT), both local
 - API: `127.0.0.1:8000`, `tts=mms`, `mt=nllb`, `ready={tts:true, mt:true}`
@@ -14,7 +19,7 @@ The side panel now:
 4. asks for a confirmation after announcing an action, and only then shows it
    on the page.
 
-Playwright suite (`pnpm e2e`), 12 tests:
+Playwright suite (`pnpm e2e`), 12 tests at the time of this snapshot:
 
 | Spec | What it proves |
 |---|---|
@@ -101,8 +106,8 @@ assertions are unchanged.
 ```
 ZTEAM_PHRASEBANK=mt pnpm --filter @zteam/phrasebank build
   → generated 80 TM units and 35 phrases, version 2026-11-09.2+mt
-ZTEAM_PHRASEBANK=mt pnpm --filter @zteam/phrasebank build:release
-  → Exit status 1 (Missing validator / back-translation)
+ZTEAM_PHRASEBANK=mt pnpm check:evidence
+  → Exit status 1 (both packs are drafts)
 pnpm --filter @zteam/phrasebank build
   → back to 2026-11-09.2, no candidate in generated.ts
 ```
@@ -117,7 +122,7 @@ translated=115 skipped=0 placeholder_failures=0 in 120.5s
 ```
 
 The candidate pack is evaluation-only; `validatedBy` is empty and
-`build:release` still fails.
+`pnpm check:evidence` still fails while the packs are drafts.
 
 ## 5. Artefacts
 

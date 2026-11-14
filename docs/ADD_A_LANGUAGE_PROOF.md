@@ -1,10 +1,10 @@
 # Data-only proof: adding Lamnso (`lns`)
 
-A third Cameroonian language was added on a scratch branch to test the claim
-that a language is data, not code. The proof branch is
-`scratch/proof-lns`, based on Track B commit `0011440`; it is intentionally
-**not merged**. The full run log is in `/tmp/lns-proof-report.md` on the
-machine that ran it.
+A third Cameroonian language was added in a scratch worktree to test the claim
+that a language is data, not code. The generated rows are archived in
+[`evidence/lamnso-proof/`](evidence/lamnso-proof/README.md); they are
+intentionally **not merged** into `languages/`, so they cannot ship. The
+commands below reproduce the run.
 
 ## Scaffold
 

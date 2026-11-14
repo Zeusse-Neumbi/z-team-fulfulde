@@ -13,6 +13,7 @@ import { dirname, join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { pipeline } from "node:stream/promises";
 import { fileURLToPath } from "node:url";
+import { APP_VERSION } from "./version.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const verify = process.argv.includes("--verify");
@@ -122,7 +123,7 @@ for (const [name, model] of Object.entries(manifest.models)) {
   }
 }
 
-const zip = join(root, "dist/zteam-fulfulde-extension-v0.1.0.zip");
+const zip = join(root, `dist/zteam-fulfulde-extension-v${APP_VERSION}.zip`);
 check("Extension ZIP", existsSync(zip) ? formatBytes(statSync(zip).size) : "missing (run pnpm package)");
 
 const port = process.env.ZTEAM_PORT ?? "8000";

@@ -1,6 +1,8 @@
 # Phrasebank and language rules
 
-Applies to `packages/phrasebank/**` and `eval/linguistic/**`.
+Applies to `packages/phrasebank/**`, `languages/**` and `eval/linguistic/**`.
+Every rule is per language; Fulfulde (`fub`) and Yemba (`ybb`) are separate
+packs and separate validation sessions.
 
 ## Source of truth
 
@@ -30,12 +32,16 @@ pnpm --filter @zteam/phrasebank test
 pnpm --filter @zteam/phrasebank build
 ```
 
-The release build (`pnpm --filter @zteam/phrasebank build:release`) must fail
-while any medium/high-risk entry is unvalidated. Do not weaken that gate.
+`build:release` enforces evidence only for a language whose registry row says
+`status: validated` (ADR 0020). A draft may ship only when the panel labels it
+as a draft and `packValidated` is false. `pnpm check:evidence` is the stricter
+check and must fail while any language is not validated. Do not weaken either
+gate.
 
 ## Orthography
 
-- Target is Adamawa Fulfulde, ISO 639-3 `fub`.
+- Target languages are registered in `languages/<code>.yaml`. The demonstrated
+  language is Adamawa Fulfulde, ISO 639-3 `fub`; Yemba (`ybb`) is a draft.
 - Normalize `ɲ` → `ny`, `ꞌ` → `'`, NBSP and narrow NBSP to a normal space only
   in lookup keys, never in displayed protected values.
 - Record the sub-variety and speaker in the validation evidence.

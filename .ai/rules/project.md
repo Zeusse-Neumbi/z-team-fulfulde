@@ -4,8 +4,9 @@
 
 Z-Team Fulfulde Assistant is a local-first Chrome MV3 extension plus a loopback
 FastAPI service. It translates the visible interface of a financial web page
-into Adamawa Fulfulde (`fub`) in place, speaks it, and never changes a financial
-value.
+into a selected Cameroonian language pack in place, speaks it when a voice is
+available, and never changes a financial value. Fulfulde (`fub`) is the
+demonstrated language; Yemba (`ybb`) is the second draft.
 
 ## Non-negotiables
 
@@ -17,9 +18,11 @@ value.
 3. **No network egress** except `127.0.0.1`. No cloud LLM, no API key, no
    telemetry, no remote config.
 4. **No auto-submit** and no bypassed confirmation. The user taps to confirm.
-5. **Fulfulde comes from validated assets**, never an invented translation.
-   Medium/high-risk entries need a validator and a French back-translation.
-6. **Native-speaker validation is evidence**, not a claim.
+5. **Translations come from the selected pack**, never an invented target.
+   Each language is validated separately; medium/high-risk entries need a
+   validator and a French back-translation. A draft is always labelled.
+6. **Native-speaker validation is evidence**, not a claim. No session has run
+   for Fulfulde or Yemba.
 
 ## Licence
 

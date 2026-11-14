@@ -19,7 +19,9 @@ Applies to `docs/**`, `README.md`, `CONTRIBUTING.md`, `AGENTS.md`, `LICENSE` and
 - Every external number is traceable to a source.
 - Label unverified claims as unverified and name the test that will settle them.
 - Do not claim native validation that has not happened.
-- Do not claim a Fulfulde voice when the backend is the stub.
+- Do not claim a Fulfulde or Yemba voice when the backend is the stub or the
+  pack has no voice.
+- State the pack status per language: draft, validated or text-only.
 - Do not paste page values, credentials, personal data or local secrets.
 
 ## Licence

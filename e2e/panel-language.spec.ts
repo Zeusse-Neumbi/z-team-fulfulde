@@ -43,6 +43,11 @@ test("the panel switches the target language and the page follows", async () => 
     await panel.locator(".target-switch select").selectOption("ybb");
     await expect(page.locator("body")).toContainText("⟦YBB:tm.", { timeout: 10_000 });
     await expect(panel.locator(".page-coverage")).toBeVisible();
+    // No Yemba clips are bundled and no API is running in this test. The
+    // Fulfulde clips must not be offered under the Yemba label.
+    await expect(panel.locator(".audio-actions button").first()).toBeDisabled();
+    await expect(panel.locator(".voice")).toContainText(/API/i);
+    await expect(panel.locator(".voice")).not.toContainText("clips inclus");
   } finally {
     await context.close();
   }

@@ -189,7 +189,7 @@ config change.
 | `ZTEAM_ALLOW_CLOUD` | `false` | explicit opt-in for a cloud run |
 | `ZTEAM_CLOUD_TIMEOUT_S` | `20` | cloud HTTP timeout |
 | `ZTEAM_PHRASEBANK_DIR` | `packages/phrasebank/entries` | TM + phrases |
-| `ZTEAM_PHRASEBANK_NUMBERS` | `packages/phrasebank/numbers/numbers.fub.json` | number lexicon |
+| `ZTEAM_PHRASEBANK_NUMBERS` | empty (registry resolves `packages/phrasebank/numbers/<code>.json`) | number lexicon override |
 
 Relative paths resolve from the current directory first, then from the
 repository root, so the API starts from either the root or `apps/server`.

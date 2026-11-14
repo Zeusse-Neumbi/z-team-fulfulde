@@ -7,6 +7,7 @@ They are downloaded into `models/` (gitignored) with the cross-platform
 ```bash
 pnpm models:download              # MMS-TTS Fulah, ~145 MB
 pnpm models:download mt-fub       # Cameroonian FR→Fufulde, ~78 MB
+pnpm models:download mt-ybb mms-ybb # optional Yemba text + API voice
 pnpm models:download mms nllb-ct2 # + NLLB-200 600M int8, ~647 MB
 pnpm models:verify                # size + SHA-256 from models/manifest.json
 ```
@@ -23,6 +24,8 @@ GPU notes are in [`docs/SETUP.md`](../docs/SETUP.md).
 | Fine-tuned MMS/VITS | CC-BY-NC-4.0 (inherits) | Optional demo voice |
 | `flagship-ai/cameroon-int8` (`francais-fufulde`) | CC-BY-NC-4.0 (fp32 originals CC-BY-4.0) | Optional FR→Fufulde candidate, opt-in (failed the value-preservation head-to-head) |
 | `DS4H-ICTU/linguo_mt_en_fub` | Apache-2.0 | Optional local EN→FUB fallback |
+| `flagship-ai/cameroon-int8` (`francais-yemba`) | CC-BY-NC-4.0 | Optional FR→Yemba draft (API/registry) |
+| `facebook/mms-tts-ybb` | CC-BY-NC-4.0 | Optional Yemba API voice; no clips bundled |
 | Intent classifier | Project licence | Closed-set voice commands |
 
 Rules:

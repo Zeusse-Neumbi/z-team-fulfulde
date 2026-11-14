@@ -1,6 +1,8 @@
 # Demo audio
 
-Clips in this directory are bundled into the extension ZIP. They are generated
+Clips in this directory are bundled into the extension ZIP. This pack is
+**Fulfulde (`fub`) only**; `manifest.json` carries `"language": "fub"` and the
+panel refuses to use it for another target. They are generated
 by `node scripts/build-audio-pack.mjs` from the listener pack in
 `eval/linguistic/session` and committed together with `manifest.json`.
 
@@ -19,7 +21,7 @@ Rules:
   `text` exactly, so a clip can never read a value that is not on screen.
 - Clips with `"blocked": true` keep their transcript but are never played: the
   draft is a warning, an error, a colliding control, a source echo or a
-  degenerate repetition. See `packages/phrasebank/entries/audio.blocked.yaml`.
+  degenerate repetition. See `packages/phrasebank/entries/fub/audio.blocked.yaml`.
 - Rebuild and verify with:
 
   ```bash

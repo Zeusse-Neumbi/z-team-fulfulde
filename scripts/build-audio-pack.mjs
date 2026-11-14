@@ -114,6 +114,12 @@ if (check) {
     process.exit(1);
   }
   const committed = JSON.parse(readFileSync(manifestPath, "utf8"));
+  if (committed.language !== lang) {
+    console.error(
+      `[audio] manifest language is ${committed.language ?? "missing"}, expected ${lang}`,
+    );
+    process.exit(1);
+  }
   const onDisk = readdirSync(outDir).filter((name) => name.endsWith(".opus"));
   const expected = new Set(committed.clips.map((clip) => clip.file));
   const missing = [...expected].filter((name) => !onDisk.includes(name));
@@ -213,6 +219,7 @@ if (missingAudio.length > 0) {
 clips.sort((left, right) => left.id.localeCompare(right.id));
 const manifest = {
   version: blocked.version,
+  language: lang,
   source: "facebook/mms-tts-ful (synthetic, CC-BY-NC-4.0), rendered by the local API",
   note: "A clip is played only when the spoken text equals `text` exactly. Blocked clips keep their transcript but are never played.",
   bitrate: BITRATE,

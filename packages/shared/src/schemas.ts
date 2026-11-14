@@ -88,6 +88,8 @@ export const languageRegistryEntrySchema = z.object({
     provider: z.string().min(1),
     model: z.string().min(1),
     tone: z.enum(["none", "partial", "full"]),
+    /** Where the submission build gets the voice: bundled clips, local API only, or none. */
+    voice: z.enum(["bundled", "api", "none"]).default("none"),
     substitutions: z.record(z.string(), z.string()).default({}),
   }),
   numbers: z.string().min(1),

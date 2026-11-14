@@ -1,0 +1,22 @@
+code: lns
+endonym: Lamnso
+names:
+  fr: Lamnso
+  en: Lamnso
+script: Latn
+direction: ltr
+orthography: AGLC
+status: draft
+letters: abcdefghijklmnopqrstuvwxyz
+mt:
+  provider: marian
+  model: models/cameroon-int8/francais-lamnso
+  pivot: fr
+speech:
+  provider: mms
+  model: models/mms-tts-lns
+  tone: none
+  voice: api
+  substitutions: {}
+numbers: numbers/lns.json
+pack: entries/lns

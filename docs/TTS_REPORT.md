@@ -1,16 +1,16 @@
 # TTS report
 
-> **Status: baseline measured; speaker evaluation pending.** The MMS Fulfulde
-> baseline runs locally and is the demo voice. No fine-tune was attempted for
-> this preselection. The speaker evaluates intelligibility and naturalness by
-> listening; this report is completed at submission time.
+> **Status: baseline measured; no speaker evaluation.** The MMS Fulfulde and
+> Yemba models load locally. No fine-tune was attempted for this preselection.
+> No native speaker has rated intelligibility or naturalness; the report does
+> not publish a MOS, a naturalness score or a validation claim.
 
 ## 1. Data
 
 | Item | Value |
 |---|---|
-| Speaker | Native Adamawa Fulfulde; sub-variety to confirm and record |
-| Consent | Recorded; prototype, demo and validation; deletion on request |
+| Speaker | None recorded; no session has run |
+| Consent | Not applicable until a session is booked |
 | Recordings | None used for training in this preselection |
 | Script | The 35 spoken phrases and the 20 number entries are the evaluation set |
 | Format | WAV mono 16 kHz, generated locally by the MMS baseline |
@@ -61,23 +61,28 @@ validation method is recorded in
 
 Source: [`MODELS.md`](MODELS.md). GPU numbers are added after the transfer.
 
-### Speaker evaluation (to fill at the session)
+### Speaker evaluation
 
-| Test | Result | Pass |
+**Not measured — no session has run.** No MOS, intelligibility, naturalness or
+number/name rating is published. The listening pack and the protocol are ready;
+see `docs/SPEAKER_PACKET.md`.
+
+| Test | Result | Target when a session runs |
 |---|---|---|
-| Naturalness MOS (1–5, single speaker) | _to fill_ | ≥ 3.8 |
-| Intelligibility (1–5) | _to fill_ | ≥ 4 |
-| Critical words (implosives, `ɲ`, vowel length) | _to fill_ | 0 meaning-changing errors |
-| Numbers (20 amounts) | _to fill_ | 100% intelligible |
-| Names (10) | _to fill_ | 100% intelligible |
-| Latency GPU / CPU | _to fill_ | GPU < 300 ms; CPU < 1 s |
+| Naturalness MOS (1–5, single speaker) | not measured | ≥ 3.8 |
+| Intelligibility (1–5) | not measured | ≥ 4 |
+| Critical words (implosives, `ɲ`, vowel length) | not measured | 0 meaning-changing errors |
+| Numbers (20 amounts) | not measured | 100% intelligible |
+| Names (10) | not measured | 100% intelligible |
+| Latency GPU / CPU | CPU measured; GPU not measured | GPU < 300 ms; CPU < 1 s |
 
 The evidence is `eval/linguistic/tts-mos.csv`. The listening page is
 `eval/linguistic/session/index.html` (local, not committed).
 
 ## 6. Decision
 
-- [x] Use the MMS baseline as the optional demo voice.
+- [x] Use the MMS Fulfulde baseline as the optional demo voice.
+- [x] Keep the Yemba MMS voice API-only; it is not bundled and has no MOS.
 - [ ] Ship a fine-tuned voice (not attempted).
 - [ ] Do not ship the voice; document the negative result.
 
@@ -90,6 +95,6 @@ disabled by default and recorded clips or a fine-tune become the roadmap.
 
 ## 7. Licence
 
-The fine-tuned model, if any, would inherit **CC-BY-NC-4.0** from the MMS base.
+The Yemba voice uses `facebook/mms-tts-ybb`, also CC-BY-NC-4.0. A fine-tuned model, if any, would inherit the same licence from the MMS base.
 It is not used in a commercial path. The model is not bundled in the extension
 ZIP; it lives in `models/` (gitignored) or a release asset.

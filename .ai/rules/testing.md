@@ -12,14 +12,17 @@ Applies to `**/*.test.ts`, `apps/server/tests/**` and `e2e/**`.
 
 ## Non-negotiable regressions
 
-Every change that touches translation must cover:
+Every change that touches translation must cover, for every registered
+language it affects:
 
 - amount, fee, total, balance, name, phone, account, reference, date and user
   input;
 - a mixed label/value node;
 - a failed translation that reverts;
 - a second pass that is idempotent;
-- novel content added after load.
+- novel content added after load;
+- target-language switching and the per-language voice policy (a bundled clip
+  never plays for another language).
 
 Use fictional values only. Never copy a real account, phone number, document or
 page value into a fixture.

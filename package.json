@@ -1,8 +1,8 @@
 {
   "name": "z-team-fulfulde",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "Local-first Fulfulde accessibility layer for digital financial services.",
+  "description": "Local-first Cameroonian-language accessibility layer for digital financial services.",
   "license": "SEE LICENSE IN LICENSE",
   "packageManager": "pnpm@11.9.0",
   "engines": {
@@ -30,7 +30,7 @@
     "ai:check": "node scripts/check-ai-config.mjs",
     "verify": "bash scripts/verify-submission.sh",
     "verify:node": "pnpm ci:local && pnpm e2e && pnpm audit --audit-level high",
-    "ci:local": "pnpm ai:check && pnpm lint && pnpm build:submission && pnpm typecheck && pnpm test && pnpm audio:check && pnpm package && pnpm size:check && uv run --project apps/server ruff check apps/server && uv run --project apps/server ruff format --check apps/server && uv run --project apps/server mypy apps/server/app --config-file apps/server/pyproject.toml && uv run --project apps/server pytest && pnpm check:tokenizer:warn",
+    "ci:local": "pnpm ai:check && pnpm lint && pnpm build:submission && pnpm typecheck && pnpm test && pnpm audio:check && pnpm package && pnpm size:check && pnpm check:evidence:warn && uv run --project apps/server ruff check apps/server && uv run --project apps/server ruff format --check apps/server && uv run --project apps/server mypy apps/server/app --config-file apps/server/pyproject.toml && uv run --project apps/server pytest && pnpm check:tokenizer:warn",
     "build:test": "node scripts/build-test-extension.mjs",
     "build:submission": "node scripts/build-submission-extension.mjs",
     "audio:build": "node scripts/build-audio-pack.mjs",
@@ -43,6 +43,8 @@
     "check:sites": "node scripts/check-sites.mjs",
     "check:tokenizer": "uv run --project apps/server python scripts/check-tokenizer-coverage.py --registry",
     "check:tokenizer:warn": "uv run --project apps/server python scripts/check-tokenizer-coverage.py --registry --warn-only",
+    "check:evidence": "pnpm --filter @zteam/phrasebank check:evidence",
+    "check:evidence:warn": "pnpm --filter @zteam/phrasebank check:evidence -- --warn-only",
     "lang:add": "node scripts/add-language.mjs",
     "models:download": "node scripts/download-models.mjs",
     "models:verify": "node scripts/download-models.mjs --check",

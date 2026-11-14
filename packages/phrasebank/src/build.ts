@@ -81,6 +81,7 @@ const generated = Object.fromEntries(
           provider: entry?.speech.provider ?? "none",
           model: entry?.speech.model ?? "",
           tone: entry?.speech.tone ?? "none",
+          voice: entry?.speech.voice ?? "none",
         },
         tmVersion: pack.tmVersion,
         phrasebankVersion: pack.phrasebankVersion,
@@ -121,6 +122,7 @@ export interface Pack {
     provider: string;
     model: string;
     tone: "none" | "partial" | "full";
+    voice: "bundled" | "api" | "none";
   };
   tmVersion: string;
   phrasebankVersion: string;

@@ -22,6 +22,7 @@ speech:                   # text to speech
   provider: mms
   model: models/mms-tts-ful
   tone: none              # none | partial | full
+  voice: bundled          # bundled | api | none
   substitutions: { ... }  # speech-only letter fallbacks
 numbers: numbers/fub.json # relative to packages/phrasebank
 pack: entries/fub         # relative to packages/phrasebank
@@ -40,6 +41,10 @@ instead of silently shipping an empty pack.
   back-translation. `build:release` refuses the language otherwise.
 - `text-only` — there is no voice for this language; the audio control is
   disabled with a reason.
+
+`speech.voice` separates the pack status from the voice: `bundled` means clips
+ship in the ZIP (`fub`), `api` means only the local API may speak it (`ybb`),
+and `none` means text only. A bundled clip pack is bound to one ISO 639-3 code.
 
 A draft pack is never rendered as a validated pack, and no translation is
 invented to fill an empty target.

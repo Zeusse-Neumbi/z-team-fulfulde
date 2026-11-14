@@ -95,9 +95,13 @@ downloaded into `models/` (gitignored).
 | `mms` | `facebook/mms-tts-ful` | ~145 MB | CC-BY-NC-4.0 | Local voice baseline |
 | `nllb-ct2` | `JustFrederik/nllb-200-distilled-600M-ct2-int8` | ~647 MB | CC-BY-NC-4.0 | Local FR/EN → Fulfulde draft |
 | `nllb` | `facebook/nllb-200-distilled-600M` | ~2.6 GB | CC-BY-NC-4.0 | Only for a local conversion |
+| `mt-ybb` | `flagship-ai/cameroon-int8`, `francais-yemba` | ~81 MB | CC-BY-NC-4.0 | Yemba text draft (FR pivot) |
+| `mms-ybb` | `facebook/mms-tts-ybb` | ~36M VITS | CC-BY-NC-4.0 | Optional Yemba API voice |
 
 ```bash
 pnpm models:download mms nllb-ct2
+# optional Yemba text + API voice:
+pnpm models:download mt-ybb mms-ybb
 pnpm models:verify
 ```
 
@@ -105,7 +109,8 @@ pnpm models:verify
 downloads, and verifies sizes and SHA-256 against `models/manifest.json`.
 
 To avoid the download, copy `models/mms-tts-ful` and
-`models/nllb-200-600m-int8` from the other machine (about 790 MB). Do not copy
+`models/nllb-200-600m-int8` from the other machine (about 790 MB). The Yemba
+pair is optional: `models/cameroon-int8/francais-yemba` and `models/mms-tts-ybb`. Do not copy
 `models/` into git.
 
 ## GPU

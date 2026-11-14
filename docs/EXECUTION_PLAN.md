@@ -1,5 +1,11 @@
 # Preselection execution plan
 
+> **Status 2026-11-14, 11:30 WAT.** The repository, packs, note and release
+> tooling are ready for the draft submission. The native-speaker sessions have
+> **not** run; the 3-minute video is **not** recorded. Those two items are open,
+> not claimed. See [`LANGUAGES.md`](LANGUAGES.md), [`RELEASE.md`](RELEASE.md) and
+> [`SUBMISSION.md`](SUBMISSION.md).
+
 Living checklist for the SAFINUM Innovate Challenge 2026 submission. Tick a
 box only when the evidence exists. The public board stays
 [`docs/PROJECT_BOARD.md`](PROJECT_BOARD.md); this file is the working order of
@@ -29,8 +35,9 @@ battle.
 - [x] **D1 — Language access is the brief.** The form asks for a Cameroonian
   national language on an existing or simulated FR/EN financial interface,
   without modifying the source code, with simulated operations only.
-- [x] **D2 — Adamawa Fulfulde (`fub`) is the language.** Translation memory,
-  spoken phrase bank and local voice.
+- [x] **D2 — Fulfulde (`fub`) is the demonstrated language; Yemba (`ybb`) is
+  the second data-only draft pack.** Translation memory, spoken phrase bank and
+  local voice are per language.
 - [x] **D3 — Validation is by listening, not by writing.** A native speaker
   hears the synthesized Fulfulde, gives the French meaning, and rates
   intelligibility. The TTS is both the access layer and the validation
@@ -56,7 +63,7 @@ battle.
   full listening pack (80 TM + 35 phrases).
   Evidence: `eval/linguistic/session/index.html`, `manifest.json`.
 - [ ] A1.5 Fill the 20 number entries in
-  `packages/phrasebank/numbers/numbers.fub.json` with the speaker.
+  `packages/phrasebank/numbers/fub.json` with the speaker.
 - [ ] A1.6 Record the speaker consent, dialect and session date in
   `docs/LINGUISTIC_VALIDATION.md`.
 
@@ -185,8 +192,8 @@ battle.
 | Team names and lead contact | Form fields and `docs/TEAM.md` | 3 names, lead name, email, WhatsApp |
 | Form file filter | ZIP must be accepted for the extension | Click **Add file**, check `.zip`, screenshot the fields below **Extension** |
 | Video host | Form link must work in incognito | YouTube unlisted or Drive link |
-| Speaker session | The validated pack and the final demo | Date/time; today or Thursday morning |
-| Windows machine | GPU numbers and final measurements | `pnpm doctor` / `nvidia-smi` output |
+| Speaker sessions | Fulfulde and Yemba need separate speakers | Book and record two sessions |
+| Video | Not recorded | Record and upload the 3-minute demo |
 
 ## Cut from this submission
 
@@ -199,10 +206,11 @@ battle.
 
 ## Definition of done
 
-- [ ] The release gate passes on the validated pack.
+- [ ] `pnpm check:evidence` passes (it fails today: both packs are drafts).
 - [ ] The production ZIP translates the live page, and the panel shows it.
 - [ ] Protected values are byte-identical; the 14/14 matrix is attached.
-- [ ] The voice works through the local API and is evaluated by the speaker.
+- [ ] The Fulfulde voice works from the ZIP; the Yemba voice is API-only and unevaluated.
+- [ ] The speaker evaluations are recorded (not done).
 - [ ] The note is French, 5 pages, under 10 MB, with no placeholders.
 - [ ] The video is under 3:00 with French subtitles and plays in incognito.
 - [ ] The ZIP is under 10 MB and installs in a clean Chrome profile.

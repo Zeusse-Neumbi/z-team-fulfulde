@@ -1,43 +1,59 @@
 # Z-Team Fulfulde Assistant
 
-**A local-first Fulfulde accessibility layer for digital financial services.**
+**A local-first Cameroonian-language accessibility layer for digital financial services.**
 
 It attaches to an existing web interface as a Chrome extension, translates the visible
-interface into **Adamawa Fulfulde (`fub`)** in place, and speaks it. It never modifies the
-service's source code, and it never sends page data off the device.
+interface into a selected Cameroonian language in place, and speaks it when a voice is
+available. **Fulfulde (`fub`) is the demonstrated language; Yemba (`ybb`) is the second,
+data-only pack.** It never modifies the service's source code, and it never sends page data
+off the device.
 
-[![CI](https://github.com/Zeusse-Neumbi/z-team-fulfulde/actions/workflows/ci.yml/badge.svg)](https://github.com/Zeusse-Neumbi/z-team-fulfulde/actions/workflows/ci.yml)
+[![CI](https://github.com/Zeusse-Neumbi/z-team-fulfulde/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Zeusse-Neumbi/z-team-fulfulde/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/Zeusse-Neumbi/z-team-fulfulde?include_prereleases&sort=semver&label=release)](https://github.com/Zeusse-Neumbi/z-team-fulfulde/releases)
+[![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-blue)](LICENSE)
+[![Node](https://img.shields.io/badge/Node-%E2%89%A522-339933?logo=node.js&logoColor=white)](package.json)
+[![Chrome MV3](https://img.shields.io/badge/Chrome-MV3-4285F4?logo=googlechrome&logoColor=white)](apps/extension)
 
 **Execution board:** [Z-Team Fulfulde Assistant — Preselection](https://github.com/users/Zeusse-Neumbi/projects/4)
 
-> **Status: browser mechanics, labelled MT draft pack and bundled audio complete; the
-> native-speaker session is scheduled and the validated pack is pending.**
-> The extension scans FR/EN pages, translates in place from a validated TM, protects values
-> byte-for-byte, survives re-renders, restores on Stop and exposes a guided panel with
-> read-back. The checked-in TM still has empty Fulfulde targets. The production build can now
-> use the local NLLB API as a clearly labelled fallback (`MT local — non validée`), or stay in
-> the source language when that mode is off. Machine output is not native-speaker validation.
-> The fixture build (`pnpm build:test`) proves the full pipeline with test tokens; it is never
-> shipped. The panel switches FR/EN/FF without touching the page; the FF UI is a machine-
-> translated draft. It reports both translatable coverage and a per-step page coverage with its
-> safe protected-value ceiling, and reads a structured page brief in Fulfulde — never a
-> French/English line — instead of a flat sentence list.
-> The native-speaker pack, the fine-tuned voice and the closed-set voice classifier are the next
-> milestones.
+> **Status: preselection draft. Two language packs ship as labelled machine-translation
+> drafts: Fulfulde 115/115 units and Yemba 103/115 (12 withheld when the draft lost a
+> protected value). No native-speaker session has run; `pnpm check:evidence` fails by
+> design and every pack reports `packValidated: false`.**
+> The extension scans FR/EN pages, translates in place, protects values byte-for-byte,
+> survives re-renders, restores on Stop and exposes a guided panel with read-back. The ZIP
+> bundles the Fulfulde voice (82 playable clips out of 115; 33 are withheld). The Yemba
+> voice is **API-only** and is never replaced by a Fulfulde clip. Machine output is not
+> native-speaker validation. The fixture build (`pnpm build:test`) proves the pipeline with
+> test tokens; it is never shipped.
 
 ## What it does
 
 1. **Reads the page semantically** — roles, accessible names, form labels and text nodes.
 2. **Translates the interface in place** — headings, labels, buttons, sentences, warnings —
-   from a native-speaker-validated translation memory, with an optional local-API fallback
-   that is always labelled as machine translation.
+   from a translation memory and, for the submission build, a pack labelled as machine
+   translation. It never presents a draft as validated.
 3. **Never touches financial values** — amounts, fees, totals, balances, account numbers,
    phone numbers, references, names and user input stay byte-identical.
 4. **Speaks the page** — a structured brief (page purpose, sections, warnings, primary actions)
-   plus click announcements, with recorded phrases and the local voice.
+   plus click announcements, with bundled phrases and the local voice when the selected
+   language has one. Fulfulde ships 82 playable clips; the Yemba voice is API-only.
 5. **Handles new content** — a `MutationObserver` detects text added after load and
    translates it or falls back to a validated safe message.
 6. **Runs entirely locally** — no cloud LLM, no API key, no page data leaving the machine.
+
+## Two languages, one engine
+
+| Language | Code | Pack | Targets | Voice in the ZIP |
+| --- | --- | --- | --- | --- |
+| Adamawa Fulfulde | `fub` | NLLB-200 int8 draft | 115/115 | 82 playable MMS clips |
+| Yemba | `ybb` | cameroon-int8 Marian draft | 103/115 (12 withheld) | API-only |
+
+Both packs are **drafts**: `packValidated: false`, no validators, no
+back-translations. Yemba is the proof that a language is data, not code. See
+[`docs/LANGUAGES.md`](docs/LANGUAGES.md) for the status table, the withheld
+IDs and the validation rules. A Fulfulde clip is never played under a Yemba
+label; the panel resolves `speech.voice` per language.
 
 ## Why the value rule matters
 
@@ -92,19 +108,20 @@ still available:
 uv run --project apps/server uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
-Terminal 2 — extension dev build:
+Terminal 2 — submission build:
 
 ```bash
-pnpm dev
+pnpm build:submission
 ```
 
 Then load `.output/chrome-mv3` in `chrome://extensions` (Developer mode → Load unpacked),
-open `https://safinum.cm/hackathon-test`, and click the extension. With the API running and
-the default **Repli après la TM** mode, plain labels are translated by NLLB and marked
-**MT — non validée**; amounts, names, accounts, phones, references and input stay exact.
-Choose **Désactivée** in the panel to return to TM-only, or **API locale d’abord** to try the
-other priority. Without the API, the page stays in French or English and the panel says so.
-The full walkthrough is in [`docs/MANUAL_DEMO.md`](docs/MANUAL_DEMO.md).
+open `https://safinum.cm/hackathon-test`, and click the extension. The submission build
+carries the labelled Fulfulde and Yemba drafts, so the page is translated without the API.
+The panel marks every draft **MT — non validée**; amounts, names, accounts, phones,
+references and input stay exact. The Fulfulde voice plays from the bundled clips. Choose
+**Yemba** to see the second pack; its voice needs the local API and is disabled otherwise.
+`pnpm dev` is the hot-reload development loop; run `pnpm build:submission` again after a
+pack change. The full walkthrough is in [`docs/MANUAL_DEMO.md`](docs/MANUAL_DEMO.md).
 
 To exercise the translation pipeline before the pack, build the test fixture instead:
 
@@ -162,10 +179,13 @@ e2e/                     Playwright smoke test
 | `pnpm models:download` | Download MMS and NLLB int8 with checksums |
 | `pnpm models:verify` | Check the local model sizes and SHA-256 |
 | `pnpm doctor` | Print OS, tools, GPU, models, API and ZIP state |
-| `pnpm build` | Build the production extension (validated pack, or honest source view) |
+| `pnpm build` | Build the validated-pack extension; refuses to package an empty Fulfulde demo pack |
+| `pnpm build:submission` | Build the labelled MT draft ZIP (Fulfulde + Yemba) |
 | `pnpm build:test` | Build the test-only fixture extension to `.output-test` |
 | `pnpm test` | Vitest across packages |
 | `pnpm e2e` | Local five-step journey, English page, novel content, a11y |
+| `pnpm check:draft` | Run the submission draft against the local demo page |
+| `pnpm check:evidence` | Report which language packs are validated; fails on drafts |
 | `pnpm check:live` | Run the fixture mechanics against the live SAFINUM page |
 | `pnpm check:sites` | Run the canary sweep over 30 public pages (network needed) |
 | `pnpm serve:eval` | Serve the local mock pages on `127.0.0.1:4173` |
@@ -173,8 +193,9 @@ e2e/                     Playwright smoke test
 | `pnpm typecheck` | TypeScript across packages |
 | `pnpm package` | Zip the built extension into `dist/` |
 | `pnpm size:check` | Fail if the ZIP exceeds 8 MB |
+| `pnpm note:build` | Build the French technical note PDF |
+| `pnpm submission` | Assemble the local submission folder and checksums |
 | `pnpm setup:e2e` | Install Chromium for the Playwright smoke test |
-| `pnpm e2e` | Load the fixture extension and run the journey, error, novel-content and a11y tests |
 | `pnpm audit --audit-level high` | Fail on high or critical JS vulnerabilities |
 | `pnpm ci:local` | Run the web and API checks in one command |
 | `pnpm hooks` | Enable the repository hooks once per clone |
@@ -246,30 +267,52 @@ upstream tools.
 
 ## Documentation
 
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — components, data flow, translation pipeline
-- [`docs/MANUAL_DEMO.md`](docs/MANUAL_DEMO.md) — build, load in Chrome, run the five-step demo and switch the local API mode
+**Product**
+
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — components, language registry, data flow, translation pipeline
+- [`docs/LANGUAGES.md`](docs/LANGUAGES.md) — Fulfulde and Yemba status, withheld units, validation rules
+- [`docs/MANUAL_DEMO.md`](docs/MANUAL_DEMO.md) — build, load in Chrome, run the five-step demo and switch language
+- [`docs/DEMO.md`](docs/DEMO.md) — 3-minute video and live demo script
 - [`docs/PRIVACY.md`](docs/PRIVACY.md) — data handling and permissions
+- [`docs/ADD_A_LANGUAGE.md`](docs/ADD_A_LANGUAGE.md) — data-only language checklist
+- [`docs/ADD_A_LANGUAGE_PROOF.md`](docs/ADD_A_LANGUAGE_PROOF.md) — the Lamnso reproducibility run
+
+**Language and evidence**
+
+- [`docs/LINGUISTIC_VALIDATION.md`](docs/LINGUISTIC_VALIDATION.md) — native-speaker protocol (validation by listening)
+- [`docs/PHRASEBANK_MT.md`](docs/PHRASEBANK_MT.md) — candidate generation and promotion
+- [`docs/MODELS.md`](docs/MODELS.md) — providers, models, licences and measurements
+- [`docs/TTS_REPORT.md`](docs/TTS_REPORT.md) — voice baseline, speaker evaluation and decision
+- [`docs/evidence/`](docs/evidence/) — Yemba MT comparison and model evidence
+
+**Run and release**
+
 - [`docs/SETUP.md`](docs/SETUP.md) — Windows/macOS/Linux setup, models, GPU, troubleshooting
 - [`docs/TRANSFER.md`](docs/TRANSFER.md) — moving the demo to another computer
-- [`docs/ENV.md`](docs/ENV.md) — the two machines and their measurements
-- [`docs/LINGUISTIC_VALIDATION.md`](docs/LINGUISTIC_VALIDATION.md) — native-speaker protocol (validation by listening)
-- [`docs/TTS_REPORT.md`](docs/TTS_REPORT.md) — voice baseline, speaker evaluation and decision
-- [`docs/DEMO.md`](docs/DEMO.md) — 3-minute video and live demo script
-- [`docs/REPO_AUDIT.md`](docs/REPO_AUDIT.md) — minimal repository checklist and CI wall
-- [`docs/EXECUTION_PLAN.md`](docs/EXECUTION_PLAN.md) — dated checkable plan to submission
+- [`docs/ENV.md`](docs/ENV.md) — development machine and measurements
+- [`docs/EXECUTION_PLAN.md`](docs/EXECUTION_PLAN.md) — final submission runbook
 - [`docs/PROJECT_BOARD.md`](docs/PROJECT_BOARD.md) — D1–D7 plan, board views and operating cadence
-- [`docs/AI_WORKFLOW.md`](docs/AI_WORKFLOW.md) — skills, MCP servers and agent guardrails
-- [`docs/decisions/`](docs/decisions/README.md) — squash, protection, CI, guard and licence decisions
+- [`docs/REPO_AUDIT.md`](docs/REPO_AUDIT.md) — repository checklist and CI wall
+- [`docs/SUBMISSION.md`](docs/SUBMISSION.md) — form fields and package
+- [`docs/RELEASE.md`](docs/RELEASE.md) — versioning, assets and release checks
+
+**Contributing and decisions**
+
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — branches, commits, merge policy and verification
 - [`AGENTS.md`](AGENTS.md) — the short contract for agent sessions
-- [`docs/SUBMISSION.md`](docs/SUBMISSION.md) — form fields and package
+- [`docs/AI_WORKFLOW.md`](docs/AI_WORKFLOW.md) — skills, MCP servers and agent guardrails
+- [`docs/decisions/`](docs/decisions/README.md) — dated decisions
 - [`LICENSING.md`](LICENSING.md) — noncommercial and commercial-use terms
 - [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) — components, models and licences
 
-## Language
+## Languages
 
-**Adamawa Fulfulde**, ISO 639-3 `fub`, Cameroon. The sub-variety (Ngaoundéré, Garoua or
-Maroua) is confirmed with the speaker and recorded in the validation evidence.
+- **Adamawa Fulfulde (`fub`)** — demonstrated language; NLLB-200 int8 MT draft;
+  115/115 units; 82 bundled MMS clips; no native validation yet.
+- **Yemba (`ybb`)** — second pack; cameroon-int8 Marian MT draft; 103/115 units
+  (12 withheld); API-only voice; no native validation yet.
+- The sub-variety for Fulfulde (Ngaoundéré, Garoua or Maroua) and the Yemba
+  speaker are recorded only when a session runs. Neither has run.
 
 ## Team
 
