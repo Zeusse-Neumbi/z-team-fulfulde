@@ -89,6 +89,8 @@ def load_m2m100(model_path: Path):
         tokenizer.add_special_tokens({"additional_special_tokens": ["__ybb__"]})
         model.resize_token_embeddings(len(tokenizer))
         ybb_id = tokenizer.convert_tokens_to_ids("__ybb__")
+    else:
+        tokenizer.add_special_tokens({"additional_special_tokens": ["__ybb__"]})
     tokenizer.lang_code_to_token["ybb"] = "__ybb__"
     tokenizer.lang_token_to_id["__ybb__"] = ybb_id
 
@@ -99,8 +101,8 @@ def load_m2m100(model_path: Path):
             generated = model.generate(
                 **inputs,
                 forced_bos_token_id=ybb_id,
-                max_length=128,
-                num_beams=4,
+                max_length=200,
+                num_beams=5,
             )
         return tokenizer.batch_decode(generated, skip_special_tokens=True)[0].strip()
 

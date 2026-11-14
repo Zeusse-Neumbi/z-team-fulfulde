@@ -73,6 +73,8 @@ def load_model(model_path: Path):
         tokenizer.add_special_tokens({"additional_special_tokens": [YEMBA_TOKEN]})
         model.resize_token_embeddings(len(tokenizer))
         ybb_id = tokenizer.convert_tokens_to_ids(YEMBA_TOKEN)
+    else:
+        tokenizer.add_special_tokens({"additional_special_tokens": [YEMBA_TOKEN]})
     tokenizer.lang_code_to_token["ybb"] = YEMBA_TOKEN
     tokenizer.lang_token_to_id[YEMBA_TOKEN] = ybb_id
 
@@ -83,8 +85,8 @@ def load_model(model_path: Path):
             generated = model.generate(
                 **inputs,
                 forced_bos_token_id=ybb_id,
-                max_length=128,
-                num_beams=4,
+                max_length=200,
+                num_beams=5,
             )
         return tokenizer.batch_decode(generated, skip_special_tokens=True)[0].strip()
 

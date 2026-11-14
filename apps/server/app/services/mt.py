@@ -408,7 +408,7 @@ class M2M100MT:
         self,
         model_path: str,
         device: str = "cpu",
-        beam_size: int = 4,
+        beam_size: int = 5,
     ) -> None:
         if not Path(model_path).exists():
             raise ProviderError(
@@ -440,12 +440,15 @@ class M2M100MT:
             self._model = model_class.from_pretrained(model_path, local_files_only=True).to(device)
             self._model.eval()
             # transformers 5's M2M100Tokenizer has no additional_special_tokens
-            # property; the added-token id is the reliable check.
+            # property; the added-token id is the reliable check. Marking the
+            # existing token special makes decode(strip specials) drop it.
             ybb_id = cast(int, self._tokenizer.convert_tokens_to_ids("__ybb__"))
             if ybb_id == self._tokenizer.unk_token_id:
                 self._tokenizer.add_special_tokens({"additional_special_tokens": ["__ybb__"]})
                 self._model.resize_token_embeddings(len(self._tokenizer))
                 ybb_id = cast(int, self._tokenizer.convert_tokens_to_ids("__ybb__"))
+            else:
+                self._tokenizer.add_special_tokens({"additional_special_tokens": ["__ybb__"]})
             self._tokenizer.lang_code_to_token["ybb"] = "__ybb__"
             self._tokenizer.lang_token_to_id["__ybb__"] = ybb_id
         except Exception as exc:  # noqa: BLE001
@@ -474,7 +477,7 @@ class M2M100MT:
             generated = self._model.generate(
                 **inputs,
                 forced_bos_token_id=self._ybb_id,
-                max_length=128,
+                max_length=200,
                 num_beams=self.beam_size,
             )
         translated = cast(
@@ -718,7 +721,7 @@ def _build_mt(
         return M2M100MT(
             model_path=str(settings.resolve_path(model)),
             device=settings.mt_device,
-            beam_size=4,
+            beam_size=5,
         )
     if name == "google":
         return GoogleMT(
