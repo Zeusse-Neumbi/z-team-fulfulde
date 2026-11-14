@@ -9,7 +9,7 @@
  * only accepts the 10 MB extension and the PDF.
  *
  *   node scripts/pack-listening.mjs
- *   gh release upload <tag> dist/zteam-listening-pack-v0.2.0.zip
+ *   gh release upload <tag> dist/zteam-listening-pack-v0.2.1.zip
  */
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";

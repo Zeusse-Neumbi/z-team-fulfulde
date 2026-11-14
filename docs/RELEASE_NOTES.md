@@ -1,4 +1,4 @@
-# Z-Team Fulfulde Assistant — preselection 0.2.0
+# Z-Team Fulfulde Assistant — preselection 0.2.1
 
 Two Cameroonian language packs, one local-first engine. This is a **labelled
 machine-translation draft release**, not a native-speaker-validated release.
@@ -29,10 +29,10 @@ machine-translation draft release**, not a native-speaker-validated release.
 
 ## Assets
 
-- `zteam-fulfulde-extension-v0.2.0.zip` — load unpacked; install steps in
+- `zteam-fulfulde-extension-v0.2.1.zip` — load unpacked; install steps in
   `INSTALL.md`.
 - `Z-Team_Fulfulde_Assistant_Technical_Note_v1.1.pdf` — French, 5 pages.
-- `zteam-listening-pack-v0.2.0.zip` — the Fulfulde oral-validation instrument,
+- `zteam-listening-pack-v0.2.1.zip` — the Fulfulde oral-validation instrument,
   when uploaded locally.
 - `SHA256SUMS.txt` — checksums for the form files.
 

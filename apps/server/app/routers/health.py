@@ -17,7 +17,7 @@ def health() -> dict[str, object]:
     return {
         "status": health_status(settings),
         "service": "zteam-server",
-        "version": "0.2.0",
+        "version": "0.2.1",
         "local_only": local_only(settings),
         "backends": {
             "tts": tts.name,
@@ -42,7 +42,7 @@ def version() -> VersionResponse:
     except ProviderError:
         phrasebank_version = "unavailable"
     return VersionResponse(
-        api="0.2.0",
+        api="0.2.1",
         schema_version="2026-11-07.1",
         phrasebank=phrasebank_version,
         tts_backend=settings.tts_backend,

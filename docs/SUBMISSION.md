@@ -19,7 +19,7 @@ extension. The documentation and the extension are uploaded separately.
 | Lien de la vidéo de présentation | to record and upload | ≤ 3:00 |
 | Documentation | `dist/Z-Team_Fulfulde_Assistant_Technical_Note_v1.1.pdf` | **≤ 5 pages, ≤ 10 MB** |
 | Lien du dépôt GitHub | https://github.com/Zeusse-Neumbi/z-team-fulfulde | public |
-| Extension | `dist/zteam-fulfulde-extension-v0.2.0.zip` | ≤ 10 MB |
+| Extension | `dist/zteam-fulfulde-extension-v0.2.1.zip` | ≤ 10 MB |
 | Licence | PolyForm Noncommercial 1.0.0 (source-available; commercial use requires a separate licence) | — |
 
 The brief, from the form itself: enable a user to access the information and
@@ -32,7 +32,7 @@ source code**, with **simulated operations only** and no real bank data.
 ```
 submission/
 ├── Z-Team_Fulfulde_Assistant_Technical_Note_v1.1.pdf
-├── zteam-fulfulde-extension-v0.2.0.zip
+├── zteam-fulfulde-extension-v0.2.1.zip
 ├── video-link.txt
 ├── github-link.txt
 ├── SHA256SUMS.txt

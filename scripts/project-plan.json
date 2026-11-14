@@ -114,7 +114,7 @@
     },
     {
       "title": "D6 — Validation and submission",
-      "description": "0 critical errors; PDF; video; submitted before 18:00; tag v0.2.0-preselection.",
+      "description": "0 critical errors; PDF; video; submitted before 18:00; tag v0.2.1-preselection.",
       "due_on": "2026-11-13T23:59:59Z"
     },
     {
@@ -418,7 +418,7 @@
       "milestone": "D5 — Novel content and freeze",
       "state": "open",
       "fields": { "Status": "Todo", "Priority": "P0", "Area": "Repo", "Track": "Repo", "Phase": "D5 Freeze", "Size": "S", "Role": "D Product QA", "Risk": "High", "Target": "2026-11-12" },
-      "body": "## Goal\n\nFreeze the build and prove it installs from a clean profile.\n\n## Acceptance criteria\n\n- [ ] `pnpm ci:local` is green on the freeze commit.\n- [ ] The ZIP is ≤8 MB and installs in a clean Chrome profile.\n- [ ] The tag `v0.2.0-preselection` is created after submission.\n- [ ] No new feature is merged after 18:00.\n\n## Evidence\n\n- CI run\n- Clean-profile screenshot\n- `pnpm size:check`"
+      "body": "## Goal\n\nFreeze the build and prove it installs from a clean profile.\n\n## Acceptance criteria\n\n- [ ] `pnpm ci:local` is green on the freeze commit.\n- [ ] The ZIP is ≤8 MB and installs in a clean Chrome profile.\n- [ ] The tag `v0.2.1-preselection` is created after submission.\n- [ ] No new feature is merged after 18:00.\n\n## Evidence\n\n- CI run\n- Clean-profile screenshot\n- `pnpm size:check`"
     },
     {
       "title": "docs: native-speaker validation report and back-translation evidence",
@@ -453,12 +453,12 @@
       "body": "## Goal\n\nAssemble the submission package and verify every link from a clean browser.\n\n## Acceptance criteria\n\n- [ ] The package contains the note, ZIP, video link, GitHub link, checksums, form screenshot and confirmation email.\n- [ ] `SHA256SUMS.txt` matches the uploaded ZIP.\n- [ ] Every link works in an incognito window.\n- [ ] A backup copy exists locally.\n\n## Evidence\n\n- `submission/` directory listing\n- `sha256sum -c SHA256SUMS.txt`"
     },
     {
-      "title": "chore: final regression, tag v0.2.0-preselection and release",
+      "title": "chore: final regression, tag v0.2.1-preselection and release",
       "labels": ["type/chore", "area/repo", "priority/p0", "preselection", "risk/high"],
       "milestone": "D6 — Validation and submission",
       "state": "open",
       "fields": { "Status": "Todo", "Priority": "P0", "Area": "Repo", "Track": "Submission", "Phase": "D6 Submission", "Size": "M", "Role": "A Extension", "Risk": "High", "Target": "2026-11-13" },
-      "body": "## Goal\n\nRun the full regression and publish the exact commit that was submitted.\n\n## Acceptance criteria\n\n- [ ] `pnpm ci:local`, `pnpm e2e` and `pnpm audit --audit-level high` are green.\n- [ ] The release workflow publishes the ZIP and checksums for the tag.\n- [ ] The tag points at the submitted commit.\n- [ ] The README and repository are public and render in incognito.\n\n## Evidence\n\n- GitHub release URL\n- `git rev-parse v0.2.0-preselection`"
+      "body": "## Goal\n\nRun the full regression and publish the exact commit that was submitted.\n\n## Acceptance criteria\n\n- [ ] `pnpm ci:local`, `pnpm e2e` and `pnpm audit --audit-level high` are green.\n- [ ] The release workflow publishes the ZIP and checksums for the tag.\n- [ ] The tag points at the submitted commit.\n- [ ] The README and repository are public and render in incognito.\n\n## Evidence\n\n- GitHub release URL\n- `git rev-parse v0.2.1-preselection`"
     },
     {
       "title": "chore: D7 buffer and emergency-fix checklist",
