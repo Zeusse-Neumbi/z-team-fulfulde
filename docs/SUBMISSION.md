@@ -19,6 +19,7 @@ extension. The documentation and the extension are uploaded separately.
 | Lien de la vidéo de présentation | to record and upload | ≤ 3:00 |
 | Documentation | `dist/Z-Team_Fulfulde_Assistant_Technical_Note_v1.1.pdf` | **≤ 5 pages, ≤ 10 MB** |
 | Lien du dépôt GitHub | https://github.com/Zeusse-Neumbi/z-team-fulfulde | public |
+| Release | https://github.com/Zeusse-Neumbi/z-team-fulfulde/releases/tag/v0.2.1-preselection | public pre-release |
 | Extension | `dist/zteam-fulfulde-extension-v0.2.1.zip` | ≤ 10 MB |
 | Licence | PolyForm Noncommercial 1.0.0 (source-available; commercial use requires a separate licence) | — |
 
@@ -109,6 +110,6 @@ same steps and the licence.
 
 Saturday 14 November 2026, 23:59 Africa/Douala (UTC+1), per the organiser email.
 
-Status on 14 November 2026: the draft repository, ZIP, PDF and checksums are
-ready. The video is **not recorded**; the native-speaker sessions have **not**
+Status on 14 November 2026: the draft repository, ZIP, PDF, checksums and
+public pre-release are ready. The video is **not recorded**; the native-speaker sessions have **not**
 run. Those are open items, not claims.
