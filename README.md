@@ -16,6 +16,8 @@ off the device.
 
 **Execution board:** [Z-Team Fulfulde Assistant — Preselection](https://github.com/users/Zeusse-Neumbi/projects/4)
 
+**Latest release:** [v0.2.1-preselection](https://github.com/Zeusse-Neumbi/z-team-fulfulde/releases/tag/v0.2.1-preselection) — extension ZIP, French 5-page note, listening pack and checksums.
+
 > **Status: preselection draft. Two language packs ship as labelled machine-translation
 > drafts: Fulfulde 115/115 units and Yemba 103/115 (12 withheld when the draft lost a
 > protected value). No native-speaker session has run; `pnpm check:evidence` fails by
