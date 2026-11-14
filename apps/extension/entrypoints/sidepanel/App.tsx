@@ -593,7 +593,12 @@ export default function App() {
     const response = await fetch(`${apiBaseUrl}/tts`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: source.text.slice(0, 500), voice: "demo", speed: settings.speed }),
+      body: JSON.stringify({
+        text: source.text.slice(0, 500),
+        voice: "demo",
+        speed: settings.speed,
+        language: settings.targetLang,
+      }),
       signal,
     });
     if (!response.ok) {
