@@ -59,6 +59,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -76,6 +77,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -93,6 +95,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -110,6 +113,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -127,6 +131,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -144,6 +149,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -161,6 +167,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -178,6 +185,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -195,6 +203,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -212,6 +221,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -229,6 +239,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -246,6 +257,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -263,6 +275,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "placeholders": [
           "name"
         ],
@@ -283,6 +296,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "placeholders": [
           "account"
         ],
@@ -303,6 +317,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -320,6 +335,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -337,6 +353,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.2"
       },
@@ -354,6 +371,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -371,6 +389,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -388,6 +407,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -405,6 +425,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -422,6 +443,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -439,6 +461,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -456,6 +479,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -473,6 +497,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -490,6 +515,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -507,6 +533,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -524,6 +551,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -541,6 +569,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -558,6 +587,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -575,6 +605,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -592,6 +623,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -609,6 +641,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -626,6 +659,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -643,6 +677,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -660,6 +695,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -677,6 +713,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -694,6 +731,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -711,6 +749,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -728,6 +767,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -745,6 +785,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -762,6 +803,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -779,6 +821,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -796,6 +839,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -813,6 +857,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -830,6 +875,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.2"
       },
@@ -847,6 +893,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.2"
       },
@@ -864,6 +911,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -881,6 +929,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -898,6 +947,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -915,6 +965,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -932,6 +983,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -949,6 +1001,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -966,6 +1019,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -983,6 +1037,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -1000,6 +1055,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -1017,6 +1073,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -1034,6 +1091,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -1051,6 +1109,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -1068,6 +1127,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -1085,6 +1145,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -1102,6 +1163,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -1119,6 +1181,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -1136,6 +1199,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -1153,6 +1217,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -1170,6 +1235,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -1187,6 +1253,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -1204,6 +1271,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -1221,6 +1289,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -1238,6 +1307,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.2"
       },
@@ -1255,6 +1325,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.2"
       },
@@ -1272,6 +1343,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.2"
       },
@@ -1289,6 +1361,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.2"
       },
@@ -1306,6 +1379,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.2"
       },
@@ -1323,6 +1397,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.2"
       },
@@ -1340,6 +1415,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.2"
       },
@@ -1357,6 +1433,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.2"
       },
@@ -1374,6 +1451,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.2"
       },
@@ -1391,6 +1469,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -1408,6 +1487,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       }
@@ -1428,6 +1508,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1446,6 +1527,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [
           {
             "slot": "amount"
@@ -1473,6 +1555,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [
           {
             "slot": "account"
@@ -1500,6 +1583,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1518,6 +1602,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [
           {
             "slot": "amount"
@@ -1545,6 +1630,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1563,6 +1649,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [
           {
             "slot": "amount"
@@ -1590,6 +1677,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [
           {
             "slot": "amount"
@@ -1617,6 +1705,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1635,6 +1724,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [
           {
             "slot": "amount"
@@ -1669,6 +1759,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [
           {
             "slot": "name"
@@ -1696,6 +1787,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [
           {
             "slot": "reference"
@@ -1723,6 +1815,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1741,6 +1834,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1759,6 +1853,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1777,6 +1872,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1795,6 +1891,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1813,6 +1910,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1831,6 +1929,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1849,6 +1948,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1867,6 +1967,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1885,6 +1986,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1903,6 +2005,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1921,6 +2024,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1939,6 +2043,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1957,6 +2062,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1975,6 +2081,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -1993,6 +2100,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -2011,6 +2119,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -2029,6 +2138,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -2047,6 +2157,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -2065,6 +2176,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -2083,6 +2195,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -2101,6 +2214,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -2119,6 +2233,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       }
@@ -2199,6 +2314,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -2216,6 +2332,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -2233,6 +2350,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -2250,6 +2368,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -2267,6 +2386,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -2284,6 +2404,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -2301,6 +2422,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -2318,6 +2440,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -2335,6 +2458,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -2352,6 +2476,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -2369,6 +2494,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -2386,6 +2512,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -2397,12 +2524,13 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "Ŋ́gɛ, Zzftɛzaz, ŋ́gɔ́ á athʉ́ lepé, mbɔɔ á mbū pɔ́p, ŋ́gɔ́ á athʉ́ lepé.",
+            "text": "",
             "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": false,
         "placeholders": [
           "name"
         ],
@@ -2417,12 +2545,13 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "Ajūɔ tsem zīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ́ á ŋiŋ yīi, mɛ́ le zéŋ ŋgɔ",
+            "text": "",
             "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": false,
         "placeholders": [
           "account"
         ],
@@ -2443,6 +2572,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -2460,6 +2590,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -2477,6 +2608,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.2"
       },
@@ -2494,6 +2626,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -2511,6 +2644,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -2528,6 +2662,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -2545,6 +2680,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -2562,6 +2698,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -2579,6 +2716,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -2596,6 +2734,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -2613,6 +2752,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -2630,6 +2770,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -2647,6 +2788,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -2664,6 +2806,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -2681,6 +2824,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -2698,6 +2842,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -2715,6 +2860,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -2732,6 +2878,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -2749,6 +2896,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -2766,6 +2914,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -2783,6 +2932,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -2800,6 +2950,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -2817,6 +2968,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -2834,6 +2986,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -2851,6 +3004,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -2868,6 +3022,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -2885,6 +3040,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -2902,6 +3058,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -2919,6 +3076,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -2936,6 +3094,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -2953,6 +3112,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -2964,12 +3124,13 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "Pɔ́ zɔ́p ŋ́gɛ, zɔ́fɛ́t zɔ́p zɔ́p zɔ́p zɔp zɔp zɔp zɔp zɔp zɔp zɔp zɔp, ńzɔp zɔp Ffɛ́t zɔp zɔp zɔp zɔp zɔp zɔp zɔp, ńdɔkɔ efāʼa. Pɔ́ gɔ́ áa zɔp zɔp zɔp zɔp zɔp",
+            "text": "",
             "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": false,
         "risk": "medium",
         "version": "2026-11-09.2"
       },
@@ -2981,12 +3142,15 @@ export const languages: Record<string, Pack> = {
         },
         "target": {
           "ybb": {
-            "text": "Safinum Pɔ́ɔl páʼā, ńdɔkɔ eshúŋɔ á anuúnē. Ndɛ́ʼ pɛ ezéŋ ŋgwɛ̄ anuúnē, ńdɔk nzhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, pɛ ezhɛ́ á légɛ, ajūɔ tsem zīi, a á si ŋkɔ̄ŋɔ á légɛ, ajūɔ tsem",
+            "text": "",
             "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
+        "mtWithheld": true,
+        "mtWithheldReason": "target changes the protected brand/name 'Safinum Pay'",
         "risk": "low",
         "version": "2026-11-09.2"
       },
@@ -3004,6 +3168,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -3021,6 +3186,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -3038,6 +3204,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -3055,6 +3222,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -3072,6 +3240,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -3089,6 +3258,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -3106,6 +3276,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -3123,6 +3294,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -3140,6 +3312,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -3157,6 +3330,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -3174,6 +3348,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -3191,6 +3366,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -3208,6 +3384,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -3225,6 +3402,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -3242,6 +3420,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -3259,6 +3438,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -3276,6 +3456,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -3293,6 +3474,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -3310,6 +3492,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.1"
       },
@@ -3327,6 +3510,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -3344,6 +3528,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       },
@@ -3361,6 +3546,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -3378,6 +3564,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.2"
       },
@@ -3395,6 +3582,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.2"
       },
@@ -3412,6 +3600,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.2"
       },
@@ -3429,6 +3618,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.2"
       },
@@ -3446,6 +3636,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.2"
       },
@@ -3463,6 +3654,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.2"
       },
@@ -3480,6 +3672,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.2"
       },
@@ -3497,6 +3690,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.2"
       },
@@ -3514,6 +3708,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "high",
         "version": "2026-11-09.2"
       },
@@ -3531,6 +3726,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "low",
         "version": "2026-11-09.1"
       },
@@ -3548,6 +3744,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "risk": "medium",
         "version": "2026-11-09.1"
       }
@@ -3568,6 +3765,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -3580,12 +3778,13 @@ export const languages: Record<string, Pack> = {
         "en": "Your balance is {amount}.",
         "target": {
           "ybb": {
-            "text": "Pɛ é si nzɛ́ttɛ ŋ́gɛ, ńdɔkɔ ŋgɔ́ á ZZghɛza.",
+            "text": "",
             "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": false,
         "segments": [
           {
             "slot": "amount"
@@ -3607,12 +3806,13 @@ export const languages: Record<string, Pack> = {
         "en": "Your account number is {account}.",
         "target": {
           "ybb": {
-            "text": "Pɛ é si ŋkɔ̄ŋɔ á wɛ́, ńdɔkɔ ŋ́gɛ, ZZghīz azɔ́p.",
+            "text": "",
             "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": false,
         "segments": [
           {
             "slot": "account"
@@ -3640,6 +3840,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -3652,12 +3853,13 @@ export const languages: Record<string, Pack> = {
         "en": "The fee is {amount}.",
         "target": {
           "ybb": {
-            "text": "Pɛ ezéŋ ŋgwɛ̄ á Zzftɛza.",
+            "text": "",
             "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": false,
         "segments": [
           {
             "slot": "amount"
@@ -3685,6 +3887,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -3697,12 +3900,13 @@ export const languages: Record<string, Pack> = {
         "en": "The total will be {amount}.",
         "target": {
           "ybb": {
-            "text": "Ajū mīi a gɔ eghʉ̄ʉ, ajū mīi a gɔ eghʉ̄ʉ, ajū mīi á zɔ́p á zɔ́p.",
+            "text": "",
             "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": false,
         "segments": [
           {
             "slot": "amount"
@@ -3724,12 +3928,13 @@ export const languages: Record<string, Pack> = {
         "en": "The balance after the operation will be {amount}.",
         "target": {
           "ybb": {
-            "text": "Ajū mīi afʉʼ zīi, afʉʼ zīi a á zéŋ ŋgɔ́ azō á mbū ZZftɛza.",
+            "text": "",
             "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": false,
         "segments": [
           {
             "slot": "amount"
@@ -3757,6 +3962,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -3769,12 +3975,13 @@ export const languages: Record<string, Pack> = {
         "en": "You are going to send {amount} to {name}.",
         "target": {
           "ybb": {
-            "text": "Pɛ egʉ̄ɔ mé ZZftɛza ŋ́gɛ, pɛ egʉ̄ɔ mé ZZftɛza ŋ́gɛ, pɛ egʉ̄ɔ mé ZZftɛza.",
+            "text": "",
             "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": false,
         "segments": [
           {
             "slot": "amount"
@@ -3803,12 +4010,13 @@ export const languages: Record<string, Pack> = {
         "en": "The beneficiary is {name}.",
         "target": {
           "ybb": {
-            "text": "Ŋ́gɔ́ mé Zzftɛza.",
+            "text": "",
             "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": false,
         "segments": [
           {
             "slot": "name"
@@ -3830,12 +4038,13 @@ export const languages: Record<string, Pack> = {
         "en": "The reference is {reference}.",
         "target": {
           "ybb": {
-            "text": "Ajūɔ tsem zīi, a á si ŋgɔ́ á ZZftɛza.",
+            "text": "",
             "origin": "mt",
             "validatedBy": [],
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": false,
         "segments": [
           {
             "slot": "reference"
@@ -3863,6 +4072,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -3881,6 +4091,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -3899,6 +4110,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -3917,6 +4129,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -3935,6 +4148,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -3953,6 +4167,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -3971,6 +4186,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -3989,6 +4205,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -4007,6 +4224,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -4025,6 +4243,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -4043,6 +4262,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -4061,6 +4281,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -4079,6 +4300,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -4097,6 +4319,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -4115,6 +4338,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -4133,6 +4357,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -4151,6 +4376,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -4169,6 +4395,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -4187,6 +4414,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -4205,6 +4433,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -4223,6 +4452,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -4241,6 +4471,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       },
@@ -4259,6 +4490,7 @@ export const languages: Record<string, Pack> = {
             "backTranslationFr": ""
           }
         },
+        "mtPlaceholdersOk": true,
         "segments": [],
         "slots": {}
       }

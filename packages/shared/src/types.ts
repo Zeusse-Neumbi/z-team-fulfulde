@@ -151,6 +151,11 @@ export interface TranslationUnit {
   id: string;
   source: { fr: string; en: string };
   target: Record<LanguageCode, LanguageTarget>;
+  /** Candidate-pack only: the MT run preserved every placeholder. */
+  mtPlaceholdersOk?: boolean;
+  /** Candidate-pack only: a reviewer marked the target unsafe to apply. */
+  mtWithheld?: boolean;
+  mtWithheldReason?: string;
   placeholders?: string[];
   risk: "low" | "medium" | "high";
   protected?: boolean;
@@ -165,6 +170,11 @@ export interface PhraseEntry {
   fr: string;
   en: string;
   target: Record<LanguageCode, LanguageTarget>;
+  /** Candidate-pack only: the MT run preserved every placeholder. */
+  mtPlaceholdersOk?: boolean;
+  /** Candidate-pack only: a reviewer marked the target unsafe to apply. */
+  mtWithheld?: boolean;
+  mtWithheldReason?: string;
   segments: Array<{ audio: string } | { slot: string }>;
   slots: Record<string, { type: string; currency?: string; doNotTranslate?: boolean }>;
 }

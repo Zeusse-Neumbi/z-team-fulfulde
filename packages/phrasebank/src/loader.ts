@@ -3,6 +3,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   type LanguageRegistryEntry,
+  type LanguageTarget,
   type NumbersLexicon,
   type PhraseEntry,
   type TranslationUnit,
@@ -169,14 +170,42 @@ interface PackFile {
   fallback: boolean;
 }
 
+/**
+ * A candidate whose MT run lost a placeholder is not safe to apply: the
+ * translator would abort the whole page pass. Withhold the text so the node
+ * stays in the source language and is counted as missed.
+ */
+function withholdUnsafeCandidates<
+  T extends {
+    id: string;
+    mtPlaceholdersOk?: boolean;
+    mtWithheld?: boolean;
+    mtWithheldReason?: string;
+    target: Record<string, LanguageTarget>;
+  },
+>(entries: T[], code: string, warnings: string[]): void {
+  for (const entry of entries) {
+    const unsafe = entry.mtPlaceholdersOk === false || entry.mtWithheld === true;
+    if (!unsafe) continue;
+    const target = entry.target[code];
+    entry.target[code] = {
+      text: "",
+      origin: target?.origin ?? "mt",
+      validatedBy: [],
+      backTranslationFr: "",
+    };
+    const reason = entry.mtWithheldReason ?? "placeholder mismatch";
+    warnings.push(`Withheld unsafe candidate (${reason}): ${entry.id}`);
+  }
+}
+
 function readPackFile(
   pack: string,
   name: string,
   suffix: string,
   code: string,
   warnings: string[],
-): PackFile {
-  const candidate = `${pack}/${name}${suffix}.yaml`;
+): PackFile {  const candidate = `${pack}/${name}${suffix}.yaml`;
   if (!suffix || existsSync(resolve(packageRoot, candidate))) {
     return { path: candidate, fallback: false };
   }
@@ -202,6 +231,8 @@ export function loadLanguage(
   assertUnique(phraseRaw.phrases.map((phrase) => phrase.id));
   assertKnownTargets(tmRaw.units, registryCodes, "tm");
   assertKnownTargets(phraseRaw.phrases, registryCodes, "phrase");
+  withholdUnsafeCandidates(tmRaw.units, entry.code, warnings);
+  withholdUnsafeCandidates(phraseRaw.phrases, entry.code, warnings);
 
   for (const unit of tmRaw.units) {
     const target = unit.target[entry.code];

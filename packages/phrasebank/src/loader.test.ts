@@ -184,16 +184,22 @@ describe("machine-translated candidate pack", () => {
         releaseGate({ fub: { ...candidate.fub, status: "validated" } as LanguagePack }).length,
       ).toBeGreaterThan(0);
       // Both packs now have candidates; neither is a validated release.
-      expect(candidate.fub?.packSource).toBe("mt");
       expect(candidate.ybb?.packSource).toBe("mt");
+      const ybbWithheld =
+        candidate.ybb?.translationUnits.filter((unit) => unit.mtPlaceholdersOk === false) ?? [];
+      expect(ybbWithheld.length).toBeGreaterThan(0);
+      expect(ybbWithheld.every((unit) => !unit.target.ybb?.text)).toBe(true);
       expect(
-        candidate.ybb?.translationUnits.every(
-          (unit) => (unit.target.ybb?.text.length ?? 0) > 0,
+        candidate.ybb?.phrases.some(
+          (phrase) => phrase.mtPlaceholdersOk === false && !phrase.target.ybb?.text,
         ),
       ).toBe(true);
-      expect(candidate.ybb?.warnings.some((warning) => warning.includes("candidate"))).toBe(
-        false,
-      );
+      expect(
+        candidate.ybb?.warnings.some((warning) => warning.startsWith("Withheld unsafe candidate")),
+      ).toBe(true);
+      expect(
+        candidate.ybb?.warnings.some((warning) => warning.startsWith("No ybb candidate")),
+      ).toBe(false);
     } finally {
       if (previous === undefined) delete process.env.ZTEAM_PHRASEBANK;
       else process.env.ZTEAM_PHRASEBANK = previous;

@@ -828,6 +828,8 @@ units:
   mtModel: cameroon-int8/francais-yemba
   mtAt: '2026-11-13'
   mtPlaceholdersOk: true
+  mtWithheld: true
+  mtWithheldReason: "target changes the protected brand/name 'Safinum Pay'"
 - id: tm.summary.title
   source:
     fr: Récapitulatif

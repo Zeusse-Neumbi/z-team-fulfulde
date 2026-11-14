@@ -160,6 +160,11 @@ export const translationUnitSchema = z.object({
   id: z.string(),
   source: z.object({ fr: z.string(), en: z.string() }),
   target: z.record(languageCodeSchema, languageTargetSchema),
+  /** Candidate-pack only: the MT run preserved every placeholder. */
+  mtPlaceholdersOk: z.boolean().optional(),
+  /** Candidate-pack only: a reviewer marked the target unsafe to apply. */
+  mtWithheld: z.boolean().optional(),
+  mtWithheldReason: z.string().optional(),
   placeholders: z.array(z.string()).optional(),
   risk: z.enum(["low", "medium", "high"]),
   protected: z.boolean().optional(),
@@ -174,6 +179,11 @@ export const phraseEntrySchema = z.object({
   fr: z.string(),
   en: z.string(),
   target: z.record(languageCodeSchema, languageTargetSchema),
+  /** Candidate-pack only: the MT run preserved every placeholder. */
+  mtPlaceholdersOk: z.boolean().optional(),
+  /** Candidate-pack only: a reviewer marked the target unsafe to apply. */
+  mtWithheld: z.boolean().optional(),
+  mtWithheldReason: z.string().optional(),
   segments: z.array(z.union([z.object({ audio: z.string() }), z.object({ slot: z.string() })])),
   slots: z.record(
     z.string(),
