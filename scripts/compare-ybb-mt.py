@@ -38,7 +38,9 @@ def digits(text: str) -> list[str]:
 
 def repeated_ngrams(text: str, size: int = 3) -> int:
     words = re.findall(r"\w+", text.lower(), flags=re.UNICODE)
-    grams = [tuple(words[index : index + size]) for index in range(len(words) - size + 1)]
+    grams = [
+        tuple(words[index : index + size]) for index in range(len(words) - size + 1)
+    ]
     return max(Counter(grams).values(), default=0)
 
 
@@ -46,11 +48,19 @@ def aglc_letters(text: str) -> str:
     return "".join(sorted({char for char in text if char in "ɛɔɓɗƴŋɲʼ"}))
 
 
+def digits_kept(source: str, candidate: str) -> bool:
+    source_digits = set(digits(source))
+    candidate_digits = set(digits(candidate))
+    return source_digits <= candidate_digits and not (candidate_digits - source_digits)
+
+
 def load_marian(model_path: Path):
     import ctranslate2
     from transformers import AutoTokenizer
 
-    translator = ctranslate2.Translator(str(model_path), device="cpu", compute_type="int8")
+    translator = ctranslate2.Translator(
+        str(model_path), device="cpu", compute_type="int8"
+    )
     tokenizer = AutoTokenizer.from_pretrained(str(model_path), local_files_only=True)
 
     def translate(text: str) -> str:
@@ -141,7 +151,6 @@ def main() -> int:
     output: list[dict[str, str]] = []
     for index, row in enumerate(rows, start=1):
         source = row["source_fr"]
-        source_digits = set(digits(source))
 
         started = time.perf_counter()
         marian_text = marian(source)
@@ -150,20 +159,16 @@ def main() -> int:
         m2m_text = m2m100(source)
         m2m_ms = round((time.perf_counter() - started) * 1000)
 
-        def kept(candidate: str) -> bool:
-            candidate_digits = set(digits(candidate))
-            return source_digits <= candidate_digits and not (candidate_digits - source_digits)
-
         output.append(
             {
                 "source_fr": source,
                 "marian_ybb": marian_text,
-                "marian_digits_kept": str(kept(marian_text)).lower(),
+                "marian_digits_kept": str(digits_kept(source, marian_text)).lower(),
                 "marian_repeat3": str(repeated_ngrams(marian_text)),
                 "marian_aglc": aglc_letters(marian_text),
                 "marian_ms": str(marian_ms),
                 "m2m100_ybb": m2m_text,
-                "m2m100_digits_kept": str(kept(m2m_text)).lower(),
+                "m2m100_digits_kept": str(digits_kept(source, m2m_text)).lower(),
                 "m2m100_repeat3": str(repeated_ngrams(m2m_text)),
                 "m2m100_aglc": aglc_letters(m2m_text),
                 "m2m100_ms": str(m2m_ms),

@@ -109,11 +109,14 @@ def candidate(
     copy["mtModel"] = "danyanderson/m2m100-yemba-french-fr2ybb"
     copy["mtAt"] = datetime.now(UTC).strftime("%Y-%m-%d")
     copy["mtPlaceholdersOk"] = placeholders_ok
-    renamed = [brand for brand in PROTECTED_BRANDS if brand in text and brand not in restored]
+    renamed = [
+        brand for brand in PROTECTED_BRANDS if brand in text and brand not in restored
+    ]
     if renamed:
         copy["mtWithheld"] = True
         copy["mtWithheldReason"] = (
-            "target changes the protected brand/name " + ", ".join(f"'{brand}'" for brand in renamed)
+            "target changes the protected brand/name "
+            + ", ".join(f"'{brand}'" for brand in renamed)
         )
     target = dict(copy.get("target") or {})
     target[lang] = {
@@ -129,7 +132,9 @@ def candidate(
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--lang", default="ybb")
-    parser.add_argument("--model", type=Path, default=ROOT / "models/m2m100-yemba-fr2ybb")
+    parser.add_argument(
+        "--model", type=Path, default=ROOT / "models/m2m100-yemba-fr2ybb"
+    )
     parser.add_argument("--limit", type=int, default=0)
     args = parser.parse_args()
     if not re.fullmatch(r"[a-z]{3}", args.lang):
@@ -137,7 +142,9 @@ def main() -> int:
 
     lang_dir = ENTRIES / args.lang
     tm_data = yaml.safe_load((lang_dir / "tm.yaml").read_text(encoding="utf-8"))
-    phrase_data = yaml.safe_load((lang_dir / "phrases.yaml").read_text(encoding="utf-8"))
+    phrase_data = yaml.safe_load(
+        (lang_dir / "phrases.yaml").read_text(encoding="utf-8")
+    )
 
     print(f"[ybb-m2m100] loading {args.model}")
     translate = load_model(args.model)
@@ -151,8 +158,9 @@ def main() -> int:
 
     phrases = []
     for entry in phrase_data.get("phrases", []):
-        phrases.append(candidate(entry, args.lang, translate, str(entry.get("fr") or "")))
-
+        phrases.append(
+            candidate(entry, args.lang, translate, str(entry.get("fr") or ""))
+        )
 
     tm_out = {"version": f"{tm_data.get('version', '')}+mt", "units": units}
     phrase_out = {"version": f"{phrase_data.get('version', '')}+mt", "phrases": phrases}
@@ -160,9 +168,12 @@ def main() -> int:
         yaml.safe_dump(tm_out, allow_unicode=True, sort_keys=False), encoding="utf-8"
     )
     (lang_dir / "phrases.mt.yaml").write_text(
-        yaml.safe_dump(phrase_out, allow_unicode=True, sort_keys=False), encoding="utf-8"
+        yaml.safe_dump(phrase_out, allow_unicode=True, sort_keys=False),
+        encoding="utf-8",
     )
-    failures = sum(1 for entry in [*units, *phrases] if entry.get("mtPlaceholdersOk") is False)
+    failures = sum(
+        1 for entry in [*units, *phrases] if entry.get("mtPlaceholdersOk") is False
+    )
     print(
         json.dumps(
             {

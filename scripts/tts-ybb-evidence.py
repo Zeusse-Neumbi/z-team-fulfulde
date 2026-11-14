@@ -22,8 +22,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "apps/server"))
 
-from app.config import settings  # noqa: E402
-from app.services.tts import get_tts  # noqa: E402
+from app.config import settings
+from app.services.tts import get_tts
 
 
 def main() -> int:
@@ -48,7 +48,11 @@ def main() -> int:
 
     samples = memoryview(frames).cast("h")
     peak = max(abs(value) for value in samples) if samples else 0
-    rms = int((sum(value * value for value in samples) / len(samples)) ** 0.5) if samples else 0
+    rms = (
+        int((sum(value * value for value in samples) / len(samples)) ** 0.5)
+        if samples
+        else 0
+    )
 
     print(
         json.dumps(
