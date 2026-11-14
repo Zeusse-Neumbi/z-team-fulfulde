@@ -1,6 +1,7 @@
 # Speaker packet — oral validation session
 
-This packet is for the native speaker session. It is written so the session can
+This packet is for the Fulfulde native-speaker session. Yemba needs a separate
+speaker and a separate packet; the Fulfulde session does not validate Yemba. It is written so the session can
 run without the speaker reading Fulfulde: the speaker listens, speaks and rates;
 the team transcribes.
 
@@ -61,7 +62,7 @@ Regenerate the audio for the corrected entries and let the speaker confirm.
 ## Number lexicon
 
 The speaker says each item; the team fills
-`packages/phrasebank/numbers/numbers.fub.json`:
+`packages/phrasebank/numbers/fub.json`:
 
 | Field | Items |
 | --- | --- |
@@ -107,7 +108,7 @@ Fill `eval/linguistic/tts-mos.csv` with the voice ratings:
 
 1. Apply the corrections to `tm.yaml` and `phrases.yaml`; set `validatedBy` and
    `backTranslationFr`.
-2. Fill `numbers.fub.json`.
+2. Fill `packages/phrasebank/numbers/fub.json`.
 3. Run `pnpm --filter @zteam/phrasebank build:release`.
 4. Run `pnpm build` and `pnpm package`.
 5. Update `docs/LINGUISTIC_VALIDATION.md` with the speaker, dialect, date,

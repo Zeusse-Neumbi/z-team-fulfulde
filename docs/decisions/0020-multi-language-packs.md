@@ -51,6 +51,10 @@ A (`0017`/`0019`) is already merged; this record covers Track B.
 - `build:release` can pass with drafts. That is deliberate: the ZIP ships a
   labelled draft, not a false claim. The panel's draft badge, the
   `packValidated` flag and the packaging warning are the compensating controls.
+  `pnpm check:evidence` is the stricter check and fails while any language is a
+  draft, so the submission can cite the real gate.
+- `pnpm package` refuses an empty Fulfulde demo pack even when its status is
+  `draft`; Yemba's withheld units are allowed and labelled.
 - `0016`'s blanket "refuse the MT candidate as release" is superseded for
   **draft** languages only. A language that claims `validated` still fails on
   the first missing validator.

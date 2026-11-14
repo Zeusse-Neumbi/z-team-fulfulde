@@ -2,7 +2,7 @@
 
 This is the complete, beginner-level walkthrough: build the extension, load it in
 Chrome, start the local API and the demo bank page, run the five-step journey,
-and switch the local Fulfulde mode without touching code.
+switch the target language and the local API mode without touching code.
 
 Use fictional demo data only. The mock page already uses fake values.
 
@@ -33,8 +33,8 @@ flowchart LR
 
 ```bash
 cd ~/Projects/Z-Team/z-team-fulfulde
-pnpm build
-pnpm demo        # leave this terminal open
+pnpm build:submission   # labelled Fulfulde + Yemba draft packs
+pnpm demo               # leave this terminal open
 ```
 
 In Chrome:
@@ -49,14 +49,16 @@ In Chrome:
    already running).
 6. Click the **Z-Team Fulfulde Assistant** toolbar icon.
 7. Click **Démarrer sur cette page**.
-8. The panel shows progress, then **MT local — non validée** and the API count.
+8. The panel shows progress and a permanent **MT — non validée** pack banner. With the
+default **Repli après la TM** mode and the API running, plain misses are translated locally
+and the API count is non-zero.
 9. Click **Arrêter / restaurer** to put the French page back.
 
 ## What was verified on this machine
 
 - Build and load in Google Chrome 156; automated five-step runs in Playwright
   Chromium.
-- Production build with the local NLLB API: **24 API translations** on the
+- Submission build with the local NLLB API: **24 API translations** on the
   balance step, amounts, names and account numbers unchanged, page coverage
   **58%** with a **60% safe ceiling** (17 protected values cannot change).
 - Page coverage reaches the safe ceiling on the other steps: **65% fees,
@@ -64,21 +66,23 @@ In Chrome:
 - Mixed label/value nodes translate through masked placeholders: the model never
   receives the name or account number, and the displayed value is restored
   byte-for-byte.
-- The panel switches to Fulfulde without re-translating the page; the FF UI is
-  marked as a machine-translated draft.
+- The panel switches its UI to Fulfulde without re-translating the page; the FF
+  UI is marked as a machine-translated draft. The target-language picker switches
+the page to the Yemba draft without a reload.
 - The summary reads the page purpose, section headings and primary actions; a
-  clicked action is announced with its translated name.
-- The audio plan is built from Fulfulde strings regardless of the panel
-  language, with a guard that drops any remaining French/English item. TTS
-  payloads for all five steps were checked with **no French/English line**.
+  clicked action is announced with its translated name. Fulfulde uses bundled clips; Yemba
+  has no bundled voice and disables Play until the local API is ready.
+- The Fulfulde audio plan uses Fulfulde fixed strings and a guard that drops any
+  remaining French/English item. Yemba uses only the translated page brief and
+  has no bundled clips, so no Fulfulde line is spoken under the Yemba label.
 - Full five-step journey with MT enabled: **no integrity abort**, every amount,
   phone, reference and name still exact; 0 compromised submission entries.
 - Mode **Désactivée**: page stays French, zero API calls.
 - **Stop during the API batch**: page restored, no partial API text left behind.
 - Explicit **NLLB** provider: works.
-- Fixture e2e: **14 tests passed**, including accessibility, FF switch, click
-  announcements and overflow.
-- Unit tests: 83 translator, 43 extension, 8 shared.
+- Fixture e2e: the suite now has **16 scenarios**, including accessibility, the
+  FF switch, the Yemba switch, click announcements and overflow.
+- Unit tests: **184** across shared, translator, phrasebank and extension (`pnpm test`).
 
 The automated browser runs used Playwright's Chromium. The Chrome extension page
 screenshot was captured from the installed Google Chrome 156.
@@ -126,13 +130,22 @@ Output:
 apps/extension/.output/chrome-mv3
 ```
 
-This is the real extension. It uses the validated translation memory first. When
-no validated entry exists and the local-API mode is enabled, it can use the
-local NLLB service. Machine output is always labelled **MT — non validée**.
+This is the **validated-pack** build. It uses the human translation memory and
+refuses to package an empty Fulfulde demo pack. The human pack is still empty, so
+this build leaves the page in French or English unless the local-API mode is on.
+It is the build to use after a native speaker validates a pack.
 
-The checked-in translation memory still has empty Fulfulde targets, so without
-the API the page stays in French or English and the panel says the validated
-pack is missing. That is intentional; the project does not invent translations.
+### Submission build
+
+```bash
+pnpm build:submission
+```
+
+This is the build that is submitted: it carries the labelled Fulfulde and Yemba
+machine-translation drafts, plus the bundled Fulfulde clips. The panel always
+says **MT — non validée**. Use this build for the demo and the video. It writes
+the same `.output/chrome-mv3` folder, so run it **after** `pnpm build` and before
+`pnpm package`.
 
 ### Test / fixture build
 
@@ -252,9 +265,10 @@ The demo is fictional:
 
 These values must stay byte-identical.
 
-## 6. The local Fulfulde mode
+## 6. Target language and local API mode
 
-The production build can ask the local API for Fulfulde when the validated
+The submission build carries the labelled Fulfulde and Yemba drafts. The local API can
+add live machine translation for plain misses when the
 translation memory has no entry. This is configurable in the panel and persists
 in `chrome.storage.local` — no code change, no rebuild.
 
@@ -262,9 +276,9 @@ in `chrome.storage.local` — no code change, no rebuild.
 
 | Mode | Behaviour |
 | --- | --- |
-| **Désactivée (TM validée)** | Validated TM only. This is the old production behaviour: the page stays source if the pack is empty. |
-| **Repli après la TM** *(default)* | Validated TM first. Plain labels with no TM entry go to the local API. |
-| **API locale d’abord** | The API is asked first, even for strings that have a validated TM entry. The TM is the fallback when the API is unavailable. |
+| **Désactivée (TM validée)** | Pack translation memory only. The page stays in the source language while the human pack is empty. |
+| **Repli après la TM** *(default)* | Pack translation memory first. Plain labels with no entry go to the local API. |
+| **API locale d’abord** | The API is asked first, even for strings that have a TM entry. The TM is the fallback when the API is unavailable. |
 
 ### Provider
 
@@ -298,7 +312,7 @@ Never sent to the API:
 - dates and error codes;
 - user input, inputs, textareas and contenteditable text.
 
-A mixed label/value node stays in French unless a validated TM pattern covers it.
+A mixed label/value node stays in French unless a TM pattern covers it.
 That is why `Bonjour, Aïssatou` stays French: sending it to NLLB changed
 `Aïssatou` to `Aissatou`. Preserving the name is more important than translating
 the greeting.
@@ -320,8 +334,8 @@ Local screenshots: `17-mt-card.png`, `18-page-local-api.png` and
 ### Speed
 
 NLLB-600M sometimes returns English or a repeated form. That is why the panel
-labels the whole path **MT — non validée**, and why the native-speaker pack
-remains the release gate. Do not present this output as validated Fulfulde.
+labels the whole path **MT — non validée**, and why native-speaker evidence
+remains the release gate. Do not present this output as validated.
 
 On this CPU, 25 short strings take about **10–16 seconds** with four requests in
 flight. The panel shows `Traduction locale en cours : 8/25` while it works.
@@ -344,7 +358,7 @@ rescan.
 
 | Build | Output | Page | Use |
 | --- | --- | --- | --- |
-| Production | `.output/chrome-mv3` | Validated TM first; optional local NLLB marked MT; source if both unavailable | Real demo, local try |
+| Production | `.output/chrome-mv3` | Pack TM first; optional local NLLB marked MT; source if both unavailable | Real demo, local try |
 | Fixture | `.output-test/chrome-mv3` | `⟦FUB:…⟧` test markers; API MT disabled | e2e and mechanics tests only |
 
 The fixture is a harness. Its tokens are not Fulfulde. Do not record it as a
@@ -451,9 +465,9 @@ confirmation in the panel; the extension never clicks or submits for you.
 | Page coverage is lower than translatable coverage | Page coverage includes protected values, which must not change. Compare it with the **safe ceiling** shown next to it. |
 | Provider error after choosing Ollama | Ollama is not running, or its model is missing. Switch to **Auto (API)** or **NLLB local**, or start Ollama. |
 | Mixed greeting stays French | Intentional: the name is protected and mixed nodes are never sent. |
-| Panel says the pack is missing | The validated TM is empty. Enable **Repli après la TM** with the API running, or install the validated pack. |
-| Page shows `⟦FUB:...⟧` | Fixture build. Not Fulfulde. |
-| Voice buttons are disabled | The API is offline, the voice is a stub, or TTS is not ready. Page text still works. |
+| Panel says the pack is missing | The human pack is empty. Use `pnpm build:submission` for the labelled draft, or install a validated pack. |
+| Page shows `⟦FUB:...⟧` / `⟦YBB:...⟧` | Fixture build. Not a language demo. |
+| Voice buttons are disabled on Yemba | Expected: no Yemba clips are bundled. Start the local API with `mms-tts-ybb` to enable the API-only voice. |
 | Port 4173 is busy | `pnpm serve:eval -- --port 4175`, then open the new URL. |
 | Old version after a rebuild | Click **Reload** on the extension card, then reopen/rescan. |
 | Extension disappeared after a Chrome restart | Load it again from the same folder. Keep the folder path stable. |
@@ -463,7 +477,7 @@ confirmation in the panel; the extension never clicks or submits for you.
 After changing extension code:
 
 ```bash
-pnpm build
+pnpm build:submission
 ~/zteam-extension-demo/refresh.sh
 ```
 
@@ -549,14 +563,16 @@ pnpm check:sites  # 30 public pages, canary values
 
 **Not real yet**
 
-- A native-speaker-validated Fulfulde pack. The checked-in `generated.ts` is the
-  NLLB draft (`packSource: "mt"`), not a validated pack.
-- Native validation of the NLLB output. The panel says **non validée** for a
+- A native-speaker-validated pack. Both `generated.ts` packs are drafts
+  (`packSource: "mt"`, `packValidated: false`). Fulfulde is 115/115; Yemba is 103/115
+  because 12 units are withheld.
+- Native validation of the NLLB or Marian output. The panel says **non validée** for a
   reason.
 - A native-validated Fulfulde panel. The **FF** option is a machine-translated
   draft, labelled **Fulfulde (MT)**.
+- A bundled Yemba voice. The Yemba voice is API-only; the ZIP carries Fulfulde clips.
 - Voice input / ASR. The classifier is a stub.
 - The fixture `⟦FUB:…⟧` tokens are test markers, not Fulfulde.
 
-Do not claim the machine output is validated Fulfulde. Do not record the fixture
-build as a language demo. The validated pack remains the release gate.
+Do not claim the machine output is validated. Do not record the fixture
+build as a language demo. Native-speaker evidence remains the release gate.

@@ -20,9 +20,10 @@ Run summary:
 ```
 
 Every placeholder (`{amount}`, `{name}`, `{account}`, `{reference}`) survived the
-mask/translate/unmask pass. `validatedBy` and `backTranslationFr` are empty in
-every candidate, so `releaseErrors()` still lists the pack and
-`pnpm --filter @zteam/phrasebank build:release` still fails.
+mask/translate/unmask pass for the Fulfulde pack. `validatedBy` and
+`backTranslationFr` are empty in every candidate. `pnpm check:evidence` reports
+the real state and fails while any pack is a draft; `build:release` only enforces
+evidence for a language that claims `status: validated` (ADR 0020).
 
 ## How to preview the candidates
 
@@ -48,6 +49,30 @@ ZTEAM_MT_MODEL=models/nllb-200-600m-int8 \
 uv run --project apps/server python scripts/translate-phrasebank.py \
   --base-url http://127.0.0.1:8002
 ```
+
+
+## Yemba candidates
+
+The Yemba pack was generated with the local `cameroon-int8` Marian pair:
+
+| Artefact | Content |
+| --- | --- |
+| `packages/phrasebank/entries/ybb/tm.mt.yaml` | 80 interface strings, `origin: mt` |
+| `packages/phrasebank/entries/ybb/phrases.mt.yaml` | 35 spoken phrases, `origin: mt` |
+| `eval/linguistic/mt-candidates.ybb.csv` | one row per entry, placeholders and mask check |
+
+The raw run filled all 115 units, but 11 lost a protected placeholder and one
+was marked unsafe. The loader withholds those 12 targets, so the shipped pack
+has **103/115** applied entries. The rest stay in French and are counted as
+missed. This is a draft signal, not a release pack.
+
+M2M100 (`danyanderson/m2m100-yemba-french-fr2ybb`) was evaluated as a
+replacement and **rejected**: it fabricated a religious proper name in 11 of 80
+UI strings. See [`evidence/ybb-mt-comparison.md`](evidence/ybb-mt-comparison.md)
+and [ADR 0021](decisions/0021-reject-m2m100-yemba.md).
+
+Yemba needs a separate native speaker; the Fulfulde listening pack does not
+validate it.
 
 ## Quality: what the model gets right and wrong
 
@@ -83,7 +108,8 @@ through the native-speaker back-translation workflow in
 3. A second speaker back-translates blind; the result is recorded in
    `eval/linguistic/back-translation.csv`.
 4. `validatedBy` and `backTranslationFr` are filled.
-5. `build:release` is the gate; it must pass only after step 4.
+5. `pnpm check:evidence` must pass only after step 4; `build:release` enforces
+the evidence for a `validated` row.
 
 No candidate was copied into the main pack automatically. That is deliberate:
 the repository rule is that a machine translation is never a validator.

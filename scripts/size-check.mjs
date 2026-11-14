@@ -1,9 +1,10 @@
 import { existsSync } from "node:fs";
 import { stat } from "node:fs/promises";
 import path from "node:path";
+import { APP_VERSION } from "./version.mjs";
 
 const root = path.resolve(import.meta.dirname, "..");
-const zip = path.join(root, "dist/zteam-fulfulde-extension-v0.1.0.zip");
+const zip = path.join(root, `dist/zteam-fulfulde-extension-v${APP_VERSION}.zip`);
 
 const TARGET_MB = 8;
 const HARD_MB = 10;

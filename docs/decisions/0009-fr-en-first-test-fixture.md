@@ -27,7 +27,7 @@ the product and repository rules.
    copies the source strings so every value stays byte-identical. The build goes
    to `apps/extension/.output-test/`, which is gitignored and never packaged.
 5. **The release gate is unchanged.** `pnpm --filter @zteam/phrasebank
-   build:release` fails while a medium/high-risk entry lacks a target, validator
+   build:release` fails for a `validated` language while a medium/high-risk entry lacks a target, validator
    or French back-translation. The fixture build does not weaken it.
 6. **The fixture must never appear in a demo as Fulfulde.** It is a mechanics
    harness. The final video waits for the validated pack.

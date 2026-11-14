@@ -148,6 +148,63 @@ jobs:
       - name: Run Playwright
         run: pnpm e2e
 
+  submission:
+    name: Submission pack
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          version: 11.9.0
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build the submission draft pack
+        run: pnpm build:submission
+
+      - name: Serve the local demo page
+        run: |
+          node scripts/serve-eval.mjs > "$RUNNER_TEMP/serve-eval.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/serve-eval.pid"
+          for _ in $(seq 1 30); do
+            if curl -fsS -o /dev/null http://127.0.0.1:4173/journey/; then exit 0; fi
+            sleep 1
+          done
+          cat "$RUNNER_TEMP/serve-eval.log"
+          exit 1
+
+      - name: Check the submission pack on the demo page
+        run: pnpm check:draft
+
+      - name: Build the 5-page technical note
+        run: pnpm note:build
+
+      - name: Upload submission artifacts
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: submission-${{ github.run_id }}
+          path: |
+            dist/zteam-fulfulde-extension-v*.zip
+            dist/Z-Team_Fulfulde_Assistant_Technical_Note_v*.pdf
+          retention-days: 14
+
   workflows:
     name: Workflows
     runs-on: ubuntu-latest
@@ -263,6 +320,7 @@ jobs:
       - web
       - api
       - e2e
+      - submission
       - workflows
       - security
       - repo-guard

@@ -1,6 +1,6 @@
 {
   "name": "@zteam/phrasebank",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "main": "./src/index.ts",
@@ -11,10 +11,15 @@
       "import": "./src/index.ts"
     }
   },
-  "files": ["dist", "entries", "numbers"],
+  "files": [
+    "dist",
+    "entries",
+    "numbers"
+  ],
   "scripts": {
     "build": "tsx src/build.ts && tsc -p tsconfig.build.json",
     "build:release": "tsx src/build.ts --release && tsc -p tsconfig.build.json",
+    "check:evidence": "tsx src/check-evidence.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "build:fixture": "tsx src/build.ts --fixture"

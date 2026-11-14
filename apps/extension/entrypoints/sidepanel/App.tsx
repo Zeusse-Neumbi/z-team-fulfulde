@@ -44,6 +44,7 @@ import {
   type AudioSource,
 } from "../../lib/audio-pack";
 import { packStatusLabel } from "../../lib/pack-status";
+import { resolveVoicePolicy } from "../../lib/voice-policy";
 import { copy, type PanelCopy } from "./copy";
 
 const SETTINGS_KEY = "zteam.panel.settings.v1";
@@ -79,6 +80,8 @@ function humanizeError(message: string, t: PanelCopy): string {
   return message;
 }
 
+declare const __APP_VERSION__: string;
+
 export default function App() {
   const [tab, setTab] = useState<chrome.tabs.Tab | null>(null);
   const [status, setStatus] = useState<TranslationStatus | null>(null);
@@ -107,7 +110,6 @@ export default function App() {
   const pack = languages[settings.targetLang];
   const currentPackSource = packSource[settings.targetLang] ?? "validated";
   const currentPackValidated = packValidated[settings.targetLang] ?? false;
-  const targetHasVoice = pack?.status !== "text-only" && pack?.speech.provider !== "none";
   const packStatusClass = currentPackValidated
     ? "validated"
     : currentPackSource === "fixture"
@@ -117,8 +119,19 @@ export default function App() {
     const language = languages[code];
     return language?.names[settings.uiLang] ?? language?.endonym ?? code;
   };
-  const clipIndex = useMemo(() => indexPack(audioPack), [audioPack]);
-  const audioReady = voice === "ready" || (audioPack?.spoken ?? 0) > 0;
+  const targetVoice = pack?.speech.voice ?? "none";
+  const voicePolicy = resolveVoicePolicy({
+    targetLang: settings.targetLang,
+    voice: targetVoice,
+    audioLanguage: audioPack?.language,
+    audioSpoken: audioPack?.spoken,
+    apiReady: voice === "ready",
+  });
+  const { bundledVoice, apiVoice, targetHasVoice, audioReady } = voicePolicy;
+  const clipIndex = useMemo(
+    () => (bundledVoice ? indexPack(audioPack) : new Map()),
+    [audioPack, bundledVoice],
+  );
   const plan = useMemo(
     () =>
       status
@@ -136,17 +149,40 @@ export default function App() {
     [status, t, settings.speakValues, voiceLocal],
   );
   const audioStrings = useMemo<SpeechPlanStrings>(
-    () => ({
-      step: copy.ff.step,
-      stepLabels: copy.ff.stepLabels,
-      valuesNote: copy.ff.valuesNotSpoken,
-      amountLabel: copy.ff.amount,
-      feeLabel: copy.ff.fee,
-      actionsNote: copy.ff.actionsPlanNote,
-      noContent: copy.ff.noContentPlan,
-      pagePurpose: copy.ff.pagePurpose,
-    }),
-    [],
+    () =>
+      settings.targetLang === "fub"
+        ? {
+            step: copy.ff.step,
+            stepLabels: copy.ff.stepLabels,
+            valuesNote: copy.ff.valuesNotSpoken,
+            amountLabel: copy.ff.amount,
+            feeLabel: copy.ff.fee,
+            actionsNote: copy.ff.actionsPlanNote,
+            noContent: copy.ff.noContentPlan,
+            pagePurpose: copy.ff.pagePurpose,
+          }
+        : {
+            // No fixed spoken copy exists for this language yet. The plan uses
+            // only the translated page brief, so a Fulfulde frame can never be
+            // spoken under a Yemba label.
+            step: "",
+            stepLabels: { 1: "", 2: "", 3: "", 4: "", 5: "" },
+            valuesNote: "",
+            amountLabel: "",
+            feeLabel: "",
+            actionsNote: "",
+            noContent: "",
+            pagePurpose: {
+              balance: "",
+              fees: "",
+              beneficiary: "",
+              summary: "",
+              receipt: "",
+              error: "",
+              unknown: "",
+            },
+          },
+    [settings.targetLang],
   );
   const audioPlan = useMemo(
     () =>
@@ -476,7 +512,7 @@ export default function App() {
     setPendingAction(action);
     setMessage(t.actionSpoken);
     const name = action.spokenName ?? action.name;
-    if (audioReady && isLikelyFulfulde(name)) await playTexts([name]);
+    if (audioReady && targetHasVoice && isLikelyFulfulde(name)) await playTexts([name]);
   }
 
   function confirmAction() {
@@ -540,7 +576,9 @@ export default function App() {
       return;
     }
 
-    const bundle = planAudioSources(clipIndex, texts, { voiceReady: voice === "ready" });
+    const bundle = planAudioSources(clipIndex, texts, {
+      voiceReady: voice === "ready" && targetHasVoice,
+    });
     if (bundle.clips === 0 && bundle.tts === 0) {
       setMessage(bundle.blocked > 0 ? t.audioBlocked : t.audioUnavailable);
       return;
@@ -640,9 +678,12 @@ export default function App() {
 
   actionAnnounceRef.current = (name: string) => {
     const display = t.actionClicked.replace("{name}", name);
-    const audioText = copy.ff.actionClicked.replace("{name}", name);
+    const audioText =
+      settings.targetLang === "fub"
+        ? copy.ff.actionClicked.replace("{name}", name)
+        : name;
     setMessage(display);
-    if (audioReady && isLikelyFulfulde(name)) void playTexts([audioText]);
+    if (audioReady && targetHasVoice && isLikelyFulfulde(name)) void playTexts([audioText]);
   };
 
   useEffect(() => {
@@ -1026,7 +1067,7 @@ export default function App() {
                 </div>
                 <div className="sentence-target">
                   <span className="sentence-label">
-                    {t.target}
+                    {targetName(settings.targetLang)}
                     {sentence.origin ? (
                       <span className={`origin ${sentence.origin}`}>
                         {sentence.origin === "mt"
@@ -1179,16 +1220,23 @@ export default function App() {
           <span className={`voice ${audioReady ? "ready" : voice}`}>
             {voice === "stub"
               ? t.audioStub
-              : audioPack && audioPack.spoken > 0
+              : bundledVoice && audioPack
                 ? `${t.audioBundled} · ${audioPack.spoken}`
-                : voice === "unavailable"
-                  ? t.voiceUnavailable
-                  : voice === "offline" || voice === "unknown"
-                    ? t.audioUnavailable
-                    : `${t.audio} : ${voice}`}
+                : targetVoice === "api"
+                  ? apiVoice
+                    ? `${t.audio} : ${t.mtReady}`
+                    : t.voiceApiOnly
+                  : voice === "unavailable"
+                    ? t.voiceUnavailable
+                    : voice === "offline" || voice === "unknown"
+                      ? t.audioUnavailable
+                      : `${t.audio} : ${voice}`}
           </span>
         </div>
         {!targetHasVoice ? <p className="hint">{t.noVoice}</p> : null}
+        {targetHasVoice && targetVoice === "api" && !apiVoice ? (
+          <p className="hint">{t.voiceApiOnly}</p>
+        ) : null}
         <div className="actions audio-actions">
           <button
             type="button"
@@ -1230,7 +1278,7 @@ export default function App() {
       </section>
 
       <footer className="footer">
-        <span>v0.1.0</span>
+        <span>v{__APP_VERSION__}</span>
         <label className="footer-setting">
           {t.language}
           <select

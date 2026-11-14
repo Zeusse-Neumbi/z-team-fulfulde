@@ -9,6 +9,7 @@ import {
 
 const pack: AudioPack = {
   version: "test",
+  language: "fub",
   total: 3,
   spoken: 2,
   blocked: 1,

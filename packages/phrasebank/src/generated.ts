@@ -13,6 +13,7 @@ export interface Pack {
     provider: string;
     model: string;
     tone: "none" | "partial" | "full";
+    voice: "bundled" | "api" | "none";
   };
   tmVersion: string;
   phrasebankVersion: string;
@@ -40,7 +41,8 @@ export const languages: Record<string, Pack> = {
     "speech": {
       "provider": "mms",
       "model": "models/mms-tts-ful",
-      "tone": "none"
+      "tone": "none",
+      "voice": "bundled"
     },
     "tmVersion": "2026-11-09.2+mt",
     "phrasebankVersion": "2026-11-09.1+mt",
@@ -2295,7 +2297,8 @@ export const languages: Record<string, Pack> = {
     "speech": {
       "provider": "mms",
       "model": "models/mms-tts-ybb",
-      "tone": "partial"
+      "tone": "partial",
+      "voice": "api"
     },
     "tmVersion": "2026-11-09.2+mt",
     "phrasebankVersion": "2026-11-09.1+mt",

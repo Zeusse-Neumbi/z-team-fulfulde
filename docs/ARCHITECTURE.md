@@ -7,7 +7,7 @@ flowchart LR
   subgraph Browser["Chrome (user's machine)"]
     P["Target page<br/>(unmodified bank UI)"]
     CS["Content script<br/>scanner + translator + action executor"]
-    TM["Translation memory<br/>(validated FF strings)"]
+    TM["Language packs<br/>(TM + phrases + status)"]
     SP["Side panel (React)<br/>audio + mic + controls + transcript"]
     P -->|DOM / accessibility| CS
     CS --> TM
@@ -48,7 +48,7 @@ same integrity checks before a node is written.
 - Builds an in-memory vault of **value substrings**, not whole label/value sentences:
   amounts, names, phones, accounts, references, dates, error codes, user input, brands and
   currencies.
-- Applies translation from the validated translation memory, preserving whitespace and
+- Applies translation from the selected language pack, preserving whitespace and
   protecting values. With the local-API mode enabled, a runtime layer can supply targets for
   plain nodes and for mixed nodes whose values were replaced by `[[Z1]]` placeholders.
 - Verifies every protected value and every mixed-node capture after the pass. A mismatch
@@ -58,7 +58,9 @@ same integrity checks before a node is written.
   plus the protected-value floor and the safe ceiling.
 - Builds a structured page brief (page kind, purpose sentence, section headings, warnings and
   primary actions) for the audio summary instead of reading the flat sentence list. The audio
-  plan always uses Fulfulde strings and filters any remaining French/English item.
+  plan uses the selected target language and filters any remaining French/English item. For
+  Fulfulde the fixed step labels and purpose lines are Fulfulde; for an API-only language
+  such as Yemba the plan uses only the translated page brief and never a Fulfulde frame.
 - Announces a clicked action with its translated name. High-risk clicks are still paused and
   require confirmation.
 - Makes a second pass idempotent: an already translated node is counted, a node that renders
@@ -72,6 +74,41 @@ same integrity checks before a node is written.
   never clicks it, never checks a confirmation box and never submits.
 - Captures action names before translation, so a translated button keeps its original risk.
 - Restores the original page on Stop.
+
+### Language registry and packs
+
+A target language is a registry row, not a code branch:
+
+```
+languages/fub.yaml   languages/ybb.yaml
+        │                    │
+        └──── loadRegistry ──┘
+                 │
+        packages/phrasebank/entries/<code>/
+        packages/phrasebank/numbers/<code>.json
+                 │
+        generated.ts (status, packSource, speech.voice)
+          │                    │
+   side panel picker     FastAPI /translate + /tts
+```
+
+Each row carries the ISO 639-3 code, endonym, MT provider/model, speech
+provider/model, tone, letter inventory, substitutions, numbers path, pack path
+and `status` (`draft`, `validated`, `text-only`). The loader rejects a row whose
+pack or numbers file is missing, an unknown target key, or a directory that is
+not registered. A draft never becomes `packValidated: true`.
+
+`speech.voice` decides the submission voice:
+
+| Value | Meaning | Current |
+| --- | --- | --- |
+| `bundled` | Clips ship in the ZIP and are bound to this language | `fub` |
+| `api` | Only the local API may speak this language | `ybb` |
+| `none` | Text-only language | any future pack |
+
+The panel indexes a clip pack only when its `language` matches the selected
+target. A Yemba selection therefore never plays a Fulfulde clip; without the API
+the Play control is disabled and the panel says the Yemba voice is API-only.
 
 ### Translation memory
 
@@ -112,9 +149,10 @@ aborts.
   labelled and never presented as Fulfulde.
 - French/English/Fulfulde UI, stored locally in `chrome.storage.local`. The Fulfulde option is
   a machine-translated draft, labelled **Fulfulde (MT)**, and never re-translates the page.
-- Page brief with page identity, a Fulfulde page-purpose line, sections, warnings and primary
+- Page brief with page identity, a target-language page-purpose line, sections, warnings and primary
   actions; click announcements use the translated action name. The spoken plan is always
-  Fulfulde, even when the panel UI is French or English.
+  target language, even when the panel UI is French or English. For Yemba the fixed
+  Fulfulde labels are omitted.
 - "Rien — traitement local" privacy badge, visible without scrolling.
 
 ### Local API
@@ -213,8 +251,8 @@ but the classifier is not wired yet.
 | Target introduces a value | Revert all changed nodes, abort, show the abort reason |
 | Protected-node change | Revert all changed nodes, abort, show warning |
 | Layout truncation | Revert offending node, log, human review |
-| New warning/error | Leave the original visible if no validated phrase exists; a plain node may use the labelled local MT fallback |
-| Local API offline | Keep the validated TM result; leave plain misses in source and mark the API unavailable |
+| New warning/error | Leave the original visible if no reviewed phrase exists; a plain node may use the labelled local MT fallback |
+| Local API offline | Keep the selected TM result; leave plain misses in source and mark the API unavailable |
 | Local API target fails integrity | Revert all changed nodes, abort, show the abort reason |
 | TTS stub | Label “silence, not Fulfulde”; disable the read button |
 | TTS failure / backend down | No crash; translation stays in place |
@@ -229,9 +267,9 @@ but the classifier is not wired yet.
 - `pnpm e2e` runs the local journey, English page, novel content, errors, keyboard and axe tests.
 - `pnpm check:live` runs the same mechanics against `https://safinum.cm/hackathon-test` with the
   fixture build. It is a manual/nightly check, not a CI dependency.
-- The production build has empty validated Fulfulde targets. With the local-API mode off it
-  leaves the source page intact and shows the “no pack” warning; with the fallback on it writes
-  labelled NLLB output for plain nodes.
+- The submission build (`pnpm build:submission`) carries the labelled Fulfulde and Yemba
+  drafts. The validated build (`pnpm build`) has empty human targets and leaves the source
+  page intact; `pnpm package` refuses that empty Fulfulde demo pack.
 
 ## General pages
 
@@ -241,7 +279,7 @@ script and sends the same messages. The scanner uses text nodes, roles and
 accessible names, not bank-specific selectors.
 
 The production translation memory is domain-scoped. When a page string has no
-validated entry, production leaves the source visible and flags it as missed, or
+reviewed entry, production leaves the source visible and flags it as missed, or
 uses the labelled local-API fallback for a plain node when that mode is enabled.
 The **test fixture** adds a generic fallback (`⟦FUB:novel⟧ <source>`) so a
 30-page canary sweep can prove that every non-sensitive node reaches the
@@ -258,15 +296,19 @@ restored the page.
 ## Limits
 
 - Closed shadow roots and canvas-only interfaces are not readable.
-- The translation memory covers the demo domain, not general Fulfulde.
+- The translation memory covers the demo domain, not general Fulfulde or Yemba.
 - Local MT is optional, never used for mixed/protected nodes, and is always labelled
   machine translation. It is not native-speaker validation.
 - The first local-API pass takes about 10–16 seconds for the 25-string mock on CPU. The panel
   shows progress; a rescan reuses the in-memory cache.
 - The stub TTS is silence and must not be presented as speech.
-- The production build has no validated Fulfulde targets until the native-speaker pack lands.
-  With the API fallback on, plain labels show NLLB output marked **MT — non validée**; with it
-  off, the page stays in French or English. Neither case is a validated-pack claim.
+- Both shipped packs are drafts. Fulfulde has 115/115 MT targets; Yemba has 103/115 and
+  12 withheld entries that stay in French and are counted as missed. No pack is validated.
+- The bundled voice is Fulfulde only (82 playable clips out of 115). The Yemba voice is
+  API-only and is not replaced by a Fulfulde clip.
+- `build:release` enforces evidence only for a language whose registry row says
+  `status: validated` (ADR 0020). `pnpm check:evidence` is the stricter check and fails
+  while either pack is a draft.
 - Cross-origin iframes, closed shadow roots, canvas/SVG-only interfaces, input
   placeholders and `aria-label` attributes are not part of the text-node
   replacement contract.

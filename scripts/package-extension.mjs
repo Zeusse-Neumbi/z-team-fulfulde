@@ -1,11 +1,12 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { zipSync } from "fflate";
+import { APP_VERSION } from "./version.mjs";
 
 const root = path.resolve(import.meta.dirname, "..");
 const source = path.join(root, "apps/extension/.output/chrome-mv3");
 const outDir = path.join(root, "dist");
-const out = path.join(outDir, "zteam-fulfulde-extension-v0.1.0.zip");
+const out = path.join(outDir, `zteam-fulfulde-extension-v${APP_VERSION}.zip`);
 
 if (!existsSync(source)) {
   console.error("Extension build not found. Run: pnpm --filter @zteam/extension build");
@@ -61,7 +62,9 @@ purpose, so that a confirmation and a cancellation can never look identical.
 
 The page translation and the short spoken Fulfulde clips are bundled and work
 without the local API. The Yemba voice is optional and needs the local API and
-the mms-tts-ybb weights.
+the mms-tts-ybb weights. No Yemba clips are bundled, and a Fulfulde clip is
+never played under the Yemba label: without the API, Play is disabled on Yemba
+and the panel says why.
 
 The voice is optional. To enable live speech for text that has no bundled clip,
 start the local API from the repository:
@@ -112,11 +115,12 @@ if (existsSync(generated)) {
       if (missing > 0) empty[code] = missing;
     }
     const blocked = Object.entries(empty).filter(
-      ([code]) => packs[code]?.status === "validated",
+      ([code]) =>
+        packs[code]?.status === "validated" || code === "fub",
     );
     if (blocked.length > 0) {
       console.error(
-        `[package] refusing to package empty targets for validated language(s): ${blocked
+        `[package] refusing to package empty targets for the demo or validated language(s): ${blocked
           .map(([code, count]) => `${code} (${count})`)
           .join(", ")}.`,
       );

@@ -119,6 +119,8 @@ export interface PanelCopy {
   targetLanguage: string;
   /** Shown when the target language has no voice. */
   noVoice: string;
+  /** Shown when the voice exists only through the local API. */
+  voiceApiOnly: string;
   heldLabel: string;
   audioBundled: string;
   audioBlocked: string;
@@ -179,7 +181,7 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     sentences: "Phrases de cette étape",
     noSentences: "Aucune phrase traduisible détectée.",
     packMissing:
-      "Aucune traduction fulfulde validée n’est installée. Activez l’API locale ou installez le pack validé ; le pipeline et les valeurs protégées restent actifs.",
+      "Aucun pack de traduction validé n’est installé. Activez l’API locale ou installez un pack validé ; le pipeline et les valeurs protégées restent actifs.",
     original: "Original",
     target: "Fulfulde",
     missedBadge: "manquant",
@@ -210,7 +212,7 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     slower: "Plus lent",
     stopAudio: "Couper",
     audioStub:
-      "Voix non disponible : le serveur local renvoie un silence de test, pas du fulfulde.",
+      "Voix non disponible : le serveur local renvoie un silence de test, pas une voix validée.",
     audioUnavailable: "Voix non disponible sur ce serveur local.",
     voiceUnavailable:
       "Le modèle de voix configuré n’est pas prêt (modèle ou clé manquants). Voir docs/MODELS.md.",
@@ -232,7 +234,7 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     highlighted: "Action montrée sur la page. Appuyez dessus vous-même.",
     settings: "Réglages",
     language: "Langue de l’interface",
-    footer: "Local-first · Adamawa Fulfulde (fub)",
+    footer: "Local-first · Fulfulde (fub) / Yemba (ybb)",
     refresh: "Rafraîchir",
     summary: "Résumé de la page",
     speakSummary: "Lire le résumé",
@@ -275,6 +277,8 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     packDraft: "brouillon — non validé par un locuteur natif.",
     targetLanguage: "Langue de traduction",
     noVoice: "Aucune voix n’est disponible pour cette langue : la traduction texte reste active.",
+    voiceApiOnly:
+      "Voix disponible uniquement via l’API locale : aucun clip audio n’est inclus pour cette langue.",
     heldLabel: "conservé en français : deux contrôles liraient la même chose",
     audioBundled: "clips inclus",
     audioBlocked:
@@ -345,7 +349,7 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     sentences: "Sentences on this step",
     noSentences: "No translatable sentence detected.",
     packMissing:
-      "No validated Fulfulde pack is installed. Enable the local API or install the validated pack; the pipeline and protected values remain active.",
+      "No validated translation pack is installed. Enable the local API or install a validated pack; the pipeline and protected values remain active.",
     original: "Original",
     target: "Fulfulde",
     missedBadge: "missed",
@@ -375,7 +379,7 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     pause: "Pause",
     slower: "Slower",
     stopAudio: "Stop audio",
-    audioStub: "No voice available: the local server returns test silence, not Fulfulde.",
+    audioStub: "No voice available: the local server returns test silence, not a validated voice.",
     audioUnavailable: "No voice available on this local server.",
     voiceUnavailable:
       "The configured voice model is not ready (missing model or key). See docs/MODELS.md.",
@@ -396,7 +400,7 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     highlighted: "Action shown on the page. Tap it yourself.",
     settings: "Settings",
     language: "Interface language",
-    footer: "Local-first · Adamawa Fulfulde (fub)",
+    footer: "Local-first · Fulfulde (fub) / Yemba (ybb)",
     refresh: "Refresh",
     summary: "Page summary",
     speakSummary: "Read the summary",
@@ -439,6 +443,8 @@ export const copy: Record<UiLanguage, PanelCopy> = {
     packDraft: "draft — not validated by a native speaker.",
     targetLanguage: "Translation language",
     noVoice: "No voice is available for this language; text translation stays available.",
+    voiceApiOnly:
+      "Voice is available only through the local API: no audio clips are bundled for this language.",
     heldLabel: "kept in French: two controls would read the same",
     audioBundled: "clips bundled",
     audioBlocked:

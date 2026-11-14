@@ -11,8 +11,9 @@ Two paths, never mixed:
 The production build is honest about the pack. The submission build bundles the NLLB draft
 (`packSource: "mt"`); the panel states **MT — non validée** and the audio player withholds 33
 clips whose draft is a warning, an error, an ambiguous control, a source echo or a degenerate
-repetition. When the validated pack replaces the draft, `build:release` passes and the same
-panel reads **validated**. Machine output is never presented as native-speaker validation.
+repetition. A language that claims `status: validated` must pass the evidence gate; a draft never
+becomes `packValidated: true`. Machine output is never presented as native-speaker validation.
+`pnpm check:evidence` is the stricter check and fails while either pack is a draft.
 
 The complete build/load/run walkthrough is in
 [`MANUAL_DEMO.md`](MANUAL_DEMO.md).
@@ -51,9 +52,11 @@ Expected preflight:
   plan      start 8000 (mt=nllb)
   device    cpu (cuda=no)
   port      8000: free
-  pack      seed (115/115 empty) — TM-only stays source; local MT is labelled. Do not record the jury video yet.
+  pack      fub: draft/mt 115/115
+  pack      ybb: draft/mt 103/115 (12 withheld)
+            withheld entries stay in the source language and are counted as missed.
   extension built
-  zip       0.13 MB
+  zip       1.10 MB
 ```
 
 If 8000 is already a Z-Team API, the plan row says `reuse 8000` and the port row shows its
@@ -63,9 +66,9 @@ extension uses its bundled translation memory. The voice is the part that needs 
 `--deep` calls `/translate` end-to-end and prints the translated sentence and latency; it is
 skipped when `mt=stub` or no API is running.
 
-The extension build is separate: `pnpm build` (product) or `pnpm build:test` (mechanics). Load it
-from `apps/extension/.output/chrome-mv3` in `chrome://extensions` (Developer mode → Load
-unpacked).
+The extension build is separate: `pnpm build:submission` (labelled drafts, demo/video) or
+`pnpm build:test` (mechanics). Load it from `apps/extension/.output/chrome-mv3` in
+`chrome://extensions` (Developer mode → Load unpacked).
 
 ## Before you start
 
@@ -75,14 +78,15 @@ unpacked).
 - [ ] A clean Chrome profile with only this extension, 100% zoom, 1280×800.
 - [ ] Fictional data only; no real account, phone, name or reference.
 - [ ] The local API is running (`pnpm demo`) or the panel will disable the voice and the
-      local-MT fallback; the validated TM and protected-value pipeline still work.
+      local-MT fallback; the selected pack and the protected-value pipeline still work.
 
-## Two builds
+## Three builds
 
 | Build | Command | What it shows | Use |
 | --- | --- | --- | --- |
-| Production | `pnpm build` | validated pack first; optional local NLLB fallback marked **MT — non validée**; otherwise source + “pack missing” | Product demo, video |
-| Fixture | `pnpm build:test` | `⟦FUB:…⟧` tokens, never Fulfulde; API MT disabled | e2e, `check:live` only |
+| Submission | `pnpm build:submission` | labelled Fulfulde + Yemba MT drafts; bundled Fulfulde clips | Demo, video, form ZIP |
+| Validated | `pnpm build` | human pack only; empty today, so the page stays source unless the API is on | After native validation |
+| Fixture | `pnpm build:test` | `⟦FUB:…⟧` / `⟦YBB:…⟧` tokens, never a language | e2e, `check:live` only |
 | Stub API | `pnpm demo:stub` | no models; stub voice and stub MT (source unchanged) | UI-only smoke test |
 
 Do not record the fixture build. Do not claim the page is translated when the panel says the pack
@@ -92,7 +96,7 @@ is missing.
 
 1. `pnpm demo -- --check` — expected output above.
 2. `pnpm demo` — leave the terminal open.
-3. `pnpm build` — production build.
+3. `pnpm build:submission` — labelled Fulfulde + Yemba draft packs.
 4. Load `apps/extension/.output/chrome-mv3` in a clean profile.
 5. Open `https://safinum.cm/hackathon-test`.
 6. Click the extension icon, then **Activer sur ce site**.
@@ -109,9 +113,9 @@ is missing.
 11. Confirm: the assistant announces the action; the user taps Confirm; the extension never
     clicks or submits.
 12. Warning: the warning is translated; the original text is available.
-13. Novel content: validated content is translated; unknown content stays in the source
+13. Novel content: content with a pack entry is translated; unknown content stays in the source
     language and is counted, unless the labelled local-API fallback is on. In that case the
-    output is machine translation, not a validated phrase.
+    output is machine translation, not a reviewed phrase.
 14. Stop: the page is restored and the audio stops.
 15. `pnpm e2e` and `pnpm check:live` (mechanics path).
 
@@ -119,7 +123,7 @@ is missing.
 
 ```bash
 pnpm build:test
-pnpm e2e          # 12 tests: FR/EN, novel content, click guard, a11y, visual, errors
+pnpm e2e          # FR/EN, novel content, click guard, a11y, visual, language switch
 pnpm check:live   # real SAFINUM page with fixture tokens; values, read-back, restore
 pnpm check:sites  # 30 public pages; canary values, dynamic content, restore
 ```
@@ -139,7 +143,7 @@ harness, not a language demo.
 ## Product demo path
 
 1. `pnpm demo` — MMS voice, NLLB if available, prewarmed.
-2. `pnpm build` — production build with the validated pack.
+2. `pnpm build:submission` — labelled Fulfulde + Yemba draft packs.
 3. Load unpacked, clean profile, open the live page.
 4. Click the extension; the panel opens. Show the privacy badge before enabling.
 5. **Balance**: start; the page translates; the amount stays exact; play the summary; replay
@@ -148,7 +152,7 @@ harness, not a language demo.
    updates and the values stay exact.
 7. **Beneficiary**: the name and phone are untouched; the read-back reads them verbatim; the user
    taps Confirm.
-8. **Warning**: the warning is translated by a validated phrase; show the original text toggle.
+8. **Warning**: the warning is translated from the pack; show the original text toggle.
 9. **Novel content**: trigger the new message. Validated content is translated; unknown content
    stays in the source language and the panel counts it, unless the labelled local-API
    fallback is on. Say explicitly which mode is active.
@@ -173,7 +177,7 @@ recording.
 
 ## Three-minute video
 
-The video is the **after-pack target**: production build, validated Fulfulde, local voice.
+The video uses the **submission build**: labelled Fulfulde + Yemba drafts and the bundled Fulfulde voice. It must not claim native validation.
 
 | Time | Visual | Audio / subtitle |
 | --- | --- | --- |
@@ -183,8 +187,8 @@ The video is the **after-pack target**: production build, validated Fulfulde, lo
 | 0:55–1:20 | Fees page; fee/total/balance; change operation to Mobile Money; fee updates | “Fees and totals are preserved, whatever the operation.” |
 | 1:20–1:55 | Beneficiary; the assistant announces the action; name/phone untouched; read-back; the user taps Confirm | “User input is never translated. The assistant reads back before confirming.” |
 | 1:55–2:20 | Summary; reference; warning; original text toggle | “References and warnings stay exact and clear.” |
-| 2:20–2:40 | A new message appears; validated content translated; unknown content stays source; no reload | “New content is detected without a reload. The extension does not invent a translation.” |
-| 2:40–3:00 | Validation sheet, listener ratings, architecture, repo | “Reviewed by a native speaker through listening. Measured. Documented.” |
+| 2:20–2:40 | A new message appears; known content translated; unknown content stays source; no reload | “New content is detected without a reload. The extension does not invent a translation.” |
+| 2:40–3:00 | Validation gate, architecture, repo | “The validation gate is open. The draft is labelled, measured and documented.” |
 
 French subtitles; Fulfulde voice; English subtitles optional. 1080p H.264, ≤ 3:00.
 
@@ -198,13 +202,13 @@ read-back, not input.
 3. **Fees (45 s)** — fee/total/balance; change operation to Mobile Money; fee recalculated.
 4. **Transfer (120 s)** — the assistant announces the action; the user taps Confirm; the
    recipient and phone stay untouched; the read-back is exact. No voice command is used.
-5. **Warning (45 s)** — warning translated by a validated phrase; original available.
+5. **Warning (45 s)** — warning translated from the pack; original available.
 6. **Novel content (60 s)** — a new message appears; validated content is translated; unknown
    content stays in the source language and is counted, unless the labelled local-API
    fallback is on. No output is claimed as validated.
 7. **Panel language (30 s)** — toggle the panel between FR and EN; the page EN path is covered by
    `pnpm e2e` (the live page is FR).
-8. **Evidence (30 s)** — coverage, integrity, latency, single-speaker listening review, repo.
+8. **Evidence (30 s)** — coverage, integrity, latency, the open validation gate, repo.
 
 ## Troubleshooting
 
@@ -214,8 +218,8 @@ read-back, not input.
 | MMS model missing | `pnpm models:download mms nllb-ct2` |
 | CTranslate2 missing | `uv pip install ctranslate2` or `pnpm bootstrap --speech`; `mt=stub` is fine for the page |
 | `torch.cuda.is_available()` is false | CPU is fine; `pnpm demo -- --cpu`; for NVIDIA see `docs/SETUP.md` |
-| Extension does not load | `pnpm build`; load `apps/extension/.output/chrome-mv3`; Developer mode |
-| Panel says the pack is missing | the validated pack is still a seed. Enable **Repli après la TM** with the local API running, or run `pnpm --filter @zteam/phrasebank build:release` after validation. |
+| Extension does not load | `pnpm build:submission`; load `apps/extension/.output/chrome-mv3`; Developer mode |
+| Panel says the pack is missing | the human pack is empty. Use `pnpm build:submission` for the labelled draft; a validated pack needs a native-speaker session. |
 | Page shows MT output | the local-API fallback is active. It is machine translation, not validated Fulfulde; the panel marks it **MT — non validée**. |
 | Voice button is disabled | API not running, or TTS not ready; `pnpm demo -- --check` |
 | `check:live` shows `⟦FUB:…⟧` | fixture build; never record it |

@@ -1,5 +1,9 @@
 # Live audit — real test page, with and without the local API
 
+> **Snapshot: 2026-11-13, Fulfulde-only build.** The current submission ZIP
+> also carries the Yemba draft (103/115) and resolves the voice per language.
+> Re-run the audit after `pnpm build:submission`. Numbers below are historical.
+
 - **Date:** 2026-11-13
 - **Build:** `pnpm build:submission` (draft MT pack + 115 bundled clips)
 - **Page:** <https://safinum.cm/hackathon-test> (the page named in the form)

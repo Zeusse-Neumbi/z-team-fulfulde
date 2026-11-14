@@ -7,9 +7,9 @@ OS). The repository is the source of truth; models and build output are not.
 
 - [ ] The branch is pushed and the working tree is clean.
 - [ ] `pnpm ci:local` is green.
-- [ ] `pnpm build` and `pnpm package` produced the ZIP.
+- [ ] `pnpm build:submission` and `pnpm package` produced the ZIP.
 - [ ] `models/mms-tts-ful` and `models/nllb-200-600m-int8` are complete
-  (`pnpm models:verify`).
+  (`pnpm models:verify`). Yemba is optional: `mt-ybb mms-ybb`.
 - [ ] `eval/visual/` has the screenshots you need for the note.
 - [ ] No `.env` with development tokens is copied.
 - [ ] The final note PDF and the ZIP are in `dist/` (or will be rebuilt).
@@ -39,10 +39,10 @@ cd C:\zteam
 pnpm install --frozen-lockfile
 uv python install 3.12
 uv sync --project apps/server --frozen --extra dev
-pnpm models:download mms nllb-ct2
+pnpm models:download mms nllb-ct2   # add mt-ybb mms-ybb for Yemba
 pnpm doctor
 pnpm setup:e2e
-pnpm build
+pnpm build:submission
 pnpm e2e
 ```
 

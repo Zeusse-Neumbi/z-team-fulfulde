@@ -9,11 +9,11 @@
 <body>
   <section class="page">
     <h1>Z-Team Fulfulde Assistant</h1>
-    <p class="subtitle">Accès en fulfulde adamawa aux services financiers numériques, sans modifier le code source du service.</p>
+    <p class="subtitle">Accès en langues nationales camerounaises aux services financiers numériques — fulfulde (fub), extensible au yemba (ybb) — sans modifier le code source du service.</p>
     <div class="meta">
       <span>SAFINUM Innovate Challenge 2026 — Présélection</span>
       <span>Équipe Z-Team, Douala</span>
-      <span>Version 1.0 — 13 novembre 2026</span>
+      <span>Version 1.1 — 14 novembre 2026</span>
     </div>
 
     <h2>1. Le problème</h2>
@@ -23,13 +23,21 @@
     <p><strong>Persona illustrative.</strong> Nana, 34 ans, commerçante à Garoua, utilise Mobile Money tous les jours. Elle lit les chiffres, mais pas les libellés français qui les entourent. C'est ce décalage que l'extension comble.</p>
 
     <h2>2. La réponse</h2>
-    <p>Z-Team est une extension Chrome MV3 qui traduit en place l'interface visible d'un service financier existant ou simulé, en français ou en anglais, vers le fulfulde adamawa (<code>fub</code>), et qui la lit à voix haute. Le service n'est pas modifié : l'extension agit sur la page, comme une couche d'accessibilité. Les montants, frais, totaux, soldes, noms, téléphones, comptes, références et saisies de l'utilisateur restent identiques à l'octet près.</p>
+    <p>Z-Team est une extension Chrome MV3 qui traduit en place l'interface visible d'un service financier existant ou simulé, en français ou en anglais, vers une langue nationale camerounaise, et qui la lit à voix haute lorsqu'une voix est disponible. Le service n'est pas modifié : l'extension agit sur la page, comme une couche d'accessibilité. Les montants, frais, totaux, soldes, noms, téléphones, comptes, références et saisies de l'utilisateur restent identiques à l'octet près.</p>
+    <table>
+      <thead><tr><th>Langue</th><th>Code</th><th>Pack livré</th><th>Voix dans le ZIP</th><th>Statut</th></tr></thead>
+      <tbody>
+        <tr><td>Fulfulde adamawa</td><td><code>fub</code></td><td>NLLB-200 int8, 115/115 unités</td><td>82 clips MMS jouables</td><td>brouillon MT</td></tr>
+        <tr><td>Yemba</td><td><code>ybb</code></td><td>Marian cameroon-int8, 103/115 (12 retenues)</td><td>API locale uniquement</td><td>brouillon MT</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">Fulfulde est la langue démontrée ; Yemba prouve que la couche linguistique est une donnée, pas du code. Les deux packs sont des brouillons machine : aucun n'est validé par un locuteur natif. Un clip fulfulde n'est jamais joué sous l'étiquette yemba.</p>
 
     <h2>3. Conformité au cahier des charges</h2>
     <table>
       <thead><tr><th style="width:34%">Exigence du formulaire</th><th style="width:32%">Réponse Z-Team</th><th>Preuve</th></tr></thead>
       <tbody>
-        <tr><td>Accéder aux informations et fonctionnalités d'un service financier numérique au moyen d'une langue nationale camerounaise</td><td>Fulfulde adamawa (<code>fub</code>) : interface traduite et voix locale</td><td>Mémoire de traduction, banque de phrases, voix MMS, démonstration</td></tr>
+        <tr><td>Accéder aux informations et fonctionnalités d'un service financier numérique au moyen d'une langue nationale camerounaise</td><td>Fulfulde adamawa (<code>fub</code>) démontré ; Yemba (<code>ybb</code>) livré en brouillon texte</td><td>Registre de langues, packs, voix MMS, démonstration</td></tr>
         <tr><td>À partir d'une interface existante ou simulée en français ou en anglais</td><td>Page SAFINUM et pages de test FR/EN</td><td><code>pnpm check:live</code>, <code>pnpm e2e</code>, captures</td></tr>
         <tr><td>Sans modifier le code source du service</td><td>Extension MV3 + API locale, aucune injection dans le service</td><td>Architecture, en-têtes, absence d'appel sortant</td></tr>
         <tr><td>Opérations simulées, aucune donnée bancaire confidentielle ni identifiant réel</td><td>Données fictives, valeurs protégées, aucun transfert réel</td><td>Matrice sécurité 14/14, captures, politique de confidentialité</td></tr>
@@ -74,7 +82,7 @@
         <text class="small" x="38" y="150">scanner + classifieur</text>
         <text class="small" x="38" y="164">traduction + vérification</text>
         <rect class="box2" x="26" y="188" width="182" height="58"/>
-        <text class="label" x="38" y="210">Mémoire de traduction</text>
+        <text class="label" x="38" y="210">Packs de langues</text>
         <text class="small" x="38" y="226">FR/EN → fub, phrases</text>
         <rect class="box" x="270" y="18" width="215" height="250"/>
         <text class="label" x="284" y="42">Panneau latéral</text>
@@ -137,6 +145,7 @@
 
   <section class="page">
     <h2>9. Couche de traduction</h2>
+    <p><strong>La langue est une donnée.</strong> Un fichier <code>languages/&lt;code&gt;.yaml</code> déclare le code ISO 639-3, le pack, le lexique de nombres, le fournisseur MT, la voix et le statut. Le chargeur refuse un pack absent, une cible inconnue ou une ligne mal formée. Ajouter une langue ne modifie ni le serveur, ni le traducteur, ni l'extension : le preuve Lamnso est dans <code>docs/evidence/lamnso-proof/</code>. La validation reste propre à chaque langue.</p>
     <p>Le moteur lit la page par rôles, noms accessibles, libellés et nœuds de texte. Il ne dépend pas des sélecteurs CSS d'une banque. Chaque unité est classée <strong>traduisible</strong>, <strong>protégée</strong>, <strong>mixte</strong> ou <strong>ignorée</strong> avant toute réécriture.</p>
     <ul>
       <li><strong>Mémoire de traduction</strong> : chaînes exactes FR/EN et motifs à emplacements (<code>Numéro de compte : {account}</code>).</li>
@@ -149,7 +158,7 @@
 
     <h2>10. L'invariant des valeurs</h2>
     <p>Chaque valeur protégée est comparée à sa valeur d'origine après la passe. La comparaison est normalisée pour les espaces, mais <strong>identique à l'octet</strong> pour le contenu. Un écart restaure les nœuds modifiés et annule le plan. Cette règle couvre les montants, frais, totaux, soldes, noms, téléphones, comptes, références, dates et saisies.</p>
-    <div class="callout"><strong>Test de l'invariant :</strong> 50 cas unitaires, dont une altération volontaire qui doit provoquer le retour arrière et l'abandon du plan. Le test est dans <code>packages/translator/src/integrity.test.ts</code>.</div>
+    <div class="callout"><strong>Test de l'invariant :</strong> 52 cas unitaires, dont une altération volontaire qui doit provoquer le retour arrière et l'abandon du plan. Le test est dans <code>packages/translator/src/integrity.test.ts</code>.</div>
 
     <h2>11. Validation par l'écoute</h2>
     <p>Le fulfulde est d'abord une langue orale. Une validation qui demanderait au locuteur de lire et d'écrire une rétro-traduction exclurait les usagers que le produit vise. La validation se fait donc à l'écoute, avec la voix locale comme interface :</p>
@@ -159,25 +168,26 @@
       <li><strong>Confirmation</strong> : l'entrée corrigée est synthétisée à nouveau ; le locuteur écoute et confirme.</li>
     </ol>
     <p>La méthode et sa limite — un seul locuteur, revue orale, pas de rétro-traduction écrite — sont enregistrées dans l'ADR 0013. La note ne prétendra pas que le locuteur a traduit chaque chaîne : elle dira qu'il a <strong>révisé et évalué à l'écoute</strong>, et que les corrections ont été appliquées.</p>
-    <div class="callout"><strong>État au 13 novembre 2026 : session non exécutée.</strong> Le protocole, les 115 clips d'écoute, la page à deux passes et les gabarits de saisie sont prêts et versionnés. La session est planifiée avec un locuteur unique ; elle n'a pas eu lieu avant la soumission. Aucune note de sens, de naturalité ou d'intelligibilité n'est publiée dans cette note. Le pack livré est un <strong>brouillon machine étiqueté MT</strong>, jamais présenté comme validé.</div>
+    <div class="callout"><strong>État au 14 novembre 2026 : aucune session exécutée, ni pour le fulfulde ni pour le yemba.</strong> Le protocole, les 115 clips d'écoute fulfulde, la page à deux passes et les gabarits de saisie sont prêts et versionnés. Aucune session n'est planifiée à ce jour ; elle n'a pas eu lieu avant la soumission. Aucune note de sens, de naturalité ou d'intelligibilité n'est publiée dans cette note. Les deux packs livrés sont des <strong>brouillons machine étiquetés MT</strong>, jamais présentés comme validés. <code>pnpm check:evidence</code> échoue tant qu'une langue n'est pas validée ; <code>build:release</code> n'exige les preuves que pour une langue qui déclare <code>status: validated</code> (ADR 0020).</div>
 
     <h2>12. Résultats mesurés</h2>
     <table>
       <thead><tr><th>Mesure</th><th class="num">Résultat</th><th>Preuve</th></tr></thead>
       <tbody>
         <tr><td>Balayage de 30 pages publiques</td><td class="num">26 réussies, 4 ignorées (réseau), 0 échec produit</td><td><code>pnpm check:sites</code></td></tr>
-        <tr><td>Tests unitaires</td><td class="num">153 réussis</td><td><code>pnpm test</code></td></tr>
-        <tr><td>Tests Playwright</td><td class="num">14 réussis, 1 ignoré</td><td><code>pnpm e2e</code></td></tr>
+        <tr><td>Tests unitaires</td><td class="num">184 réussis</td><td><code>pnpm test</code></td></tr>
+        <tr><td>Tests Playwright</td><td class="num">16 scénarios dans la suite</td><td><code>pnpm e2e</code></td></tr>
         <tr><td>Couverture de la page de démonstration (brouillon MT)</td><td class="num">92 % (23 traduits, 2 conservés, 11 valeurs protégées)</td><td><code>node scripts/check-draft.mjs</code></td></tr>
         <tr><td>Libellés conservés pour ambiguïté</td><td class="num">2 : « Effectuer un transfert », « Consulter les frais »</td><td><code>check-draft.mjs</code></td></tr>
-        <tr><td>Erreurs critiques de sens, sens ≥ 4/5, naturalité ≥ 4/5</td><td class="num">non mesuré — session à venir</td><td><code>back-translation.csv</code> (vide)</td></tr>
+        <tr><td>Erreurs critiques de sens, sens ≥ 4/5, naturalité ≥ 4/5</td><td class="num">non mesuré — aucune session</td><td><code>back-translation.csv</code> (vide)</td></tr>
       </tbody>
     </table>
   </section>
 
   <section class="page">
     <h2>13. Voix locale</h2>
-    <p>La voix est le modèle <code>facebook/mms-tts-ful</code> (VITS 36 M, CC-BY-NC-4.0), exécuté localement par l'API. Elle ne dépend d'aucun service cloud. Le texte est normalisé pour le tokenizer : <code>ɲ → ny</code>, <code>ꞌ → '</code>, tandis que <code>ɓ ɗ ƴ ŋ</code> sont conservés. Le panneau ne lit pas toute la page : il lit l'étape, les faits importants, les avertissements et les actions. Une phrase qui contient une valeur protégée est exclue de l'envoi par défaut ; l'utilisateur peut choisir de lire les montants et les frais, jamais les comptes, téléphones, références ou noms.</p>
+    <p>La voix fulfulde est le modèle <code>facebook/mms-tts-ful</code> (VITS 36 M, CC-BY-NC-4.0), exécuté localement par l'API. Le texte est normalisé pour le tokenizer : <code>ɲ → ny</code>, <code>ꞌ → '</code>, tandis que <code>ɓ ɗ ƴ ŋ</code> sont conservés. Le panneau ne lit pas toute la page : il lit l'étape, les faits importants, les avertissements et les actions. Une phrase qui contient une valeur protégée est exclue de l'envoi par défaut ; l'utilisateur peut choisir de lire les montants et les frais, jamais les comptes, téléphones, références ou noms.</p>
+    <p>La voix yemba est <code>facebook/mms-tts-ybb</code> (CC-BY-NC-4.0). Elle n'est pas incluse dans le ZIP : elle n'est utilisée que si l'API locale et le modèle sont présents. Sans API, le bouton de lecture yemba est désactivé et le panneau l'explique. Aucun clip fulfulde ne peut être joué sous l'étiquette yemba.</p>
 
     <h2>14. Mesures</h2>
     <table>
@@ -193,14 +203,14 @@
     <p class="small muted">Le CPU est plus lent que le temps réel. Le cache et le préchauffage rendent la démonstration répétable ; le GPU est un bonus de vitesse, pas une condition de soumission.</p>
 
     <h2>15. Évaluation par le locuteur</h2>
-    <p><strong>Non exécutée à ce jour.</strong> Les cinq mesures prévues — naturalité, intelligibilité, mots critiques, nombres, noms — seront saisies dans <code>eval/linguistic/tts-mos.csv</code> et <code>back-translation.csv</code> à l'issue de la session. Tant que ces fichiers sont vides, la note n'avance aucune valeur, et <code>pnpm --filter @zteam/phrasebank build:release</code> échoue volontairement : c'est le garde-fou qui empêche un brouillon de devenir un pack « validé ».</p>
+    <p><strong>Non exécutée à ce jour.</strong> Les cinq mesures prévues — naturalité, intelligibilité, mots critiques, nombres, noms — seront saisies dans <code>eval/linguistic/tts-mos.csv</code> et <code>back-translation.csv</code> à l'issue d'une session. Tant que ces fichiers sont vides, la note n'avance aucune valeur. <code>pnpm check:evidence</code> échoue volontairement tant que les deux packs restent des brouillons ; c'est le garde-fou qui empêche un brouillon de devenir un pack « validé ».</p>
 
     <h2>16. Décision sur la voix</h2>
-    <p>La voix MMS est la voix optionnelle de la démonstration. Elle est locale, licenciée pour un usage non commercial, et déjà intégrée. Aucun fine-tune n'a été tenté pendant cette présélection : le corpus d'entraînement sous licence manque et le temps de GPU était incertain. Le résultat est documenté comme un résultat négatif, pas comme une promesse. Si le locuteur juge la voix inintelligible, elle est désactivée par défaut et des clips enregistrés ou un fine-tune deviennent la feuille de route. La traduction de la page, elle, ne dépend pas de l'API : l'archive contient le pack de brouillon MT et 82 clips audio jouables, donc l'examinateur voit la page traduite et entend les phrases sans installer de modèle. Le panneau affiche en permanence « Fulfulde : MT — non validée ».</p>
+    <p>La voix MMS est la voix optionnelle de la démonstration. Elle est locale, licenciée pour un usage non commercial, et déjà intégrée. Aucun fine-tune n'a été tenté pendant cette présélection : le corpus d'entraînement sous licence manque et le temps de GPU était incertain. Le résultat est documenté comme un résultat négatif, pas comme une promesse. Si le locuteur juge la voix inintelligible, elle est désactivée par défaut et des clips enregistrés ou un fine-tune deviennent la feuille de route. La traduction de la page, elle, ne dépend pas de l'API : l'archive contient les deux packs de brouillon MT et 82 clips fulfulde jouables, donc l'examinateur voit la page traduite et entend les phrases fulfulde sans installer de modèle. Le panneau affiche en permanence le pack sélectionné comme « MT — non validée ».</p>
 
     <h2>17. Limites de la voix</h2>
     <ul>
-      <li>Le MMS est un modèle de macrolangue : il n'est pas spécifiquement entraîné sur l'adamawa.</li>
+      <li>Le MMS fulfulde est un modèle de macrolangue : il n'est pas spécifiquement entraîné sur l'adamawa. Le MMS yemba n'est pas évalué par un locuteur.</li>
       <li>Le RTF dépasse 1 sur ce CPU ; la voix n'est pas fluide en temps réel sans GPU ou cache.</li>
       <li>Les nombres sont lus par le verbaliseur ; les mots hors lexique sont écartés plutôt que devinés.</li>
       <li>Trente-trois clips sont volontairement muets : avertissements, erreurs, libellés d'action ambigus, cibles qui recopient la source et répétitions dégénérées. Une phrase prononcée ne se relit pas.</li>
@@ -241,10 +251,10 @@
 
     <h2>20. Limites</h2>
     <ul>
-      <li><strong>Langue :</strong> un seul locuteur natif, revue orale, pas de seconde validation écrite. Limitation enregistrée dans l'ADR 0013 et dans cette note.</li>
-      <li><strong>Traduction :</strong> NLLB utilise <code>fuv_Latn</code> (fulfulde nigérian), pas <code>fub</code> ; le pack validé reste la seule source affichée.</li>
-      <li><strong>Couverture :</strong> le domaine de démonstration est couvert ; la traduction générale du fulfulde n'est pas revendiquée.</li>
-      <li><strong>Voix :</strong> MMS de macrolangue, RTF > 1 sur CPU, pas de fine-tune.</li>
+      <li><strong>Langues :</strong> aucun locuteur natif n'a encore validé le fulfulde ou le yemba. Ce sont deux sessions distinctes ; aucune n'est planifiée. La limite orale de l'ADR 0013 s'appliquera à chaque session.</li>
+      <li><strong>Traduction :</strong> NLLB utilise <code>fuv_Latn</code> (fulfulde nigérian), pas <code>fub</code> ; le pack étiqueté MT reste la seule source affichée. Yemba utilise Marian, qui perd des placeholders dans 12 unités : elles restent en français et sont comptées comme manquées.</li>
+      <li><strong>Couverture :</strong> le domaine de démonstration est couvert ; la traduction générale du fulfulde ou du yemba n'est pas revendiquée.</li>
+      <li><strong>Voix :</strong> MMS fulfulde, RTF > 1 sur CPU, pas de fine-tune. Voix yemba API uniquement, non incluse dans le ZIP.</li>
       <li><strong>Entrée vocale :</strong> le classifieur d'intentions est un stub ; les commandes vocales sont une feuille de route.</li>
     </ul>
 
@@ -254,21 +264,22 @@ Node 24 LTS · pnpm 11.9.0 · uv 0.11+ · Python 3.12
 git clone https://github.com/Zeusse-Neumbi/z-team-fulfulde
 pnpm install --frozen-lockfile
 uv sync --project apps/server --frozen --extra dev
-pnpm models:download mms nllb-ct2
-pnpm build
+pnpm models:download mms nllb-ct2   # + mt-ybb mms-ybb pour Yemba
+pnpm build:submission
 pnpm e2e
-pnpm check:live</pre>
-    <p>Le dépôt public contient les tests, la CI (<code>ci-required</code>), les décisions et les mesures. Le ZIP de l'extension est autonome pour la traduction ; la voix demande l'API locale et les modèles. Le commit soumis est étiqueté et publié dans la release.</p>
+pnpm check:draft
+pnpm check:evidence   # échoue tant que les packs sont des brouillons</pre>
+    <p>Le dépôt public contient les tests, la CI (<code>ci-required</code>), les décisions et les mesures. Le ZIP de l'extension est autonome pour la traduction fulfulde et yemba ; la voix fulfulde est incluse, la voix yemba demande l'API locale et le modèle. Le commit soumis est étiqueté et publié dans la release.</p>
 
     <h2>22. Feuille de route</h2>
     <ul>
-      <li>Deuxième locuteur natif et validation écrite lorsque c'est possible.</li>
+      <li>Session fulfulde puis session yemba, avec un locuteur distinct ; validation écrite lorsque c'est possible.</li>
       <li>Fine-tune MMS sur un corpus sous licence, ou clips enregistrés pour les phrases de démonstration.</li>
       <li>Classifieur d'intentions vocales fermé, avec rejet de l'inconnu et du silence.</li>
-      <li>Intégration partenaire : SDK ou couche d'accessibilité proposée aux banques, sans modifier leur cœur, puis extension à d'autres langues nationales.</li>
+      <li>Intégration partenaire : SDK ou couche d'accessibilité proposée aux banques, sans modifier leur cœur, puis extension à d'autres langues nationales via le registre.</li>
     </ul>
 
-    <p class="small muted">Licence : PolyForm Noncommercial 1.0.0. Usage commercial sur licence écrite séparée. Modèles : MMS-TTS Fulah et NLLB-200, CC-BY-NC-4.0. Dépôt : https://github.com/Zeusse-Neumbi/z-team-fulfulde</p>
+    <p class="small muted">Licence : PolyForm Noncommercial 1.0.0. Usage commercial sur licence écrite séparée. Modèles : MMS-TTS Fulah, MMS-TTS Yemba, NLLB-200 et cameroon-int8, CC-BY-NC-4.0. Dépôt : https://github.com/Zeusse-Neumbi/z-team-fulfulde</p>
   </section>
 </body>
 </html>

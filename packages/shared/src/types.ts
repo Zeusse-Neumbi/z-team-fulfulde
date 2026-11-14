@@ -54,6 +54,8 @@ export interface LanguageRegistryEntry {
     provider: string;
     model: string;
     tone: "none" | "partial" | "full";
+    /** Bundled clips, local API only, or no voice for this language. */
+    voice: "bundled" | "api" | "none";
     substitutions: Record<string, string>;
   };
   numbers: string;

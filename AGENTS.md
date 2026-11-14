@@ -6,8 +6,10 @@ before planning or editing.
 ## Project context
 
 Z-Team Fulfulde Assistant is a local-first Chrome MV3 extension plus a loopback
-FastAPI service. It translates the visible interface of a web page into Adamawa
-Fulfulde (`fub`) in place and speaks it. It never modifies the service, never
+FastAPI service. It translates the visible interface of a web page into a selected
+Cameroonian language pack in place — Adamawa Fulfulde (`fub`) is the
+demonstrated language; Yemba (`ybb`) is the second draft — and speaks it when a
+voice is available. It never modifies the service, never
 sends page data off the device and never changes financial values.
 
 The non-negotiable invariant: **protected nodes are byte-identical before and

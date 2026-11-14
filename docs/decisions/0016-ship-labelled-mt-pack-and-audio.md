@@ -1,5 +1,12 @@
 # 0016 — Ship the labelled MT draft pack, bundled synthetic clips and a label-collision guard
 
+> **Superseded in part by [0020](0020-multi-language-packs.md).** The blanket
+> "`build:release` refuses the MT pack" is replaced by the per-language gate:
+> `build:release` enforces evidence only for a language whose registry row says
+> `status: validated`; `pnpm check:evidence` is the stricter all-languages
+> check. The packaging rule now refuses an empty Fulfulde demo pack even when
+> its status is `draft`.
+
 - **Status:** accepted
 - **Date:** 2026-11-13
 - **Relates to:** [0013](0013-oral-validation-by-listening.md) (validation by

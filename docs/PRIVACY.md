@@ -18,7 +18,7 @@ on `127.0.0.1` only; protected values never do.
 | Mixed labels with values (local API mode only) | Masked text with `[[Z1]]` placeholders; the values stay in the page | No |
 | Page-coverage baseline | Visible text-node signatures in content-script memory | No |
 | Click announcements | Translated action name → local `/tts` | No request bodies logged |
-| Settings (`uiLang`, `speed`, `apiTranslation`, `mtProvider`) | `chrome.storage.local` | Yes, no page data |
+| Settings (`uiLang`, `targetLang`, `speed`, `speakValues`, `apiTranslation`, `mtProvider`) | `chrome.storage.local` | Yes, no page data |
 | Audio blobs | In-memory object URLs, only when a real voice is configured | No |
 | Local API requests | `/health`, `/translate` in local-API mode, and, with a real voice, `/tts` | No request bodies logged |
 
@@ -55,7 +55,8 @@ this table describes what ships.
   target is kept in memory only; the API does not log request bodies or write them to disk.
 - With a real voice, `/tts` receives the spoken summary: the step, the important labels,
   the warnings and the action names. By default a sentence that contains a protected value
-  is excluded before the request.
+  is excluded before the request. The bundled audio is Fulfulde only; selecting Yemba never
+  plays a Fulfulde clip, and the Yemba voice is used only through the local API.
 - The user may opt in to **spoken amounts** (`speakValues`). Only `amount` and `fee` values
   are then sent, only to a backend that reports `local: true`, and only to `127.0.0.1`.
   Accounts, phones, references, names and user input are still excluded. The API does not
@@ -84,9 +85,10 @@ deterministic. The extension does not run on other pages until the user enables 
 
 - The vault is cleared on Stop and when the page unloads; the content script keeps it in memory
   only.
-- `chrome.storage.local` holds the interface language (FR/EN/FF), the playback speed and the
-  local-API mode/provider. It never holds a page value, a name, an amount, a phone, an account
-  or a reference.
+- `chrome.storage.local` holds the interface language (FR/EN/FF), the target
+  language (`fub`/`ybb`), the playback speed, the local-API mode/provider and the
+  spoken-values preference. It never holds a page value, a name, an amount, a
+  phone, an account or a reference.
 - The runtime local-MT cache lives in the service worker and content-script memory only. It is
   cleared on Stop and when the service worker or page unloads; it is never written to storage.
 - The page-coverage baseline is a list of normalized visible text-node signatures in the content
@@ -94,9 +96,10 @@ deterministic. The extension does not run on other pages until the user enables 
   the visible page changed; protected values remain unchanged by design.
 - Click announcements send the translated action name to the local `/tts` endpoint. They never
   include amounts, accounts, phones, references or user input.
-- The spoken summary is built from Fulfulde copy and filters out any remaining French/English
-  item before calling `/tts`. The page-coverage baseline is kept per step and language in
-  memory only.
+- The spoken summary is built from target-language copy and filters out any remaining
+  French/English item before calling `/tts`. Fulfulde has bundled clips and fixed spoken
+  labels; an API-only language such as Yemba uses only the translated page brief and never a
+  Fulfulde frame. The page-coverage baseline is kept per step and language in memory only.
 - The local API keeps route-level metrics in memory; it does not log request bodies.
 - Audio blobs live in memory only; there is no disk audio cache in the browser build.
 

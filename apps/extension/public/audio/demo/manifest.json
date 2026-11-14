@@ -1,5 +1,6 @@
 {
   "version": "2026-11-13.1",
+  "language": "fub",
   "source": "facebook/mms-tts-ful (synthetic, CC-BY-NC-4.0), rendered by the local API",
   "note": "A clip is played only when the spoken text equals `text` exactly. Blocked clips keep their transcript but are never played.",
   "bitrate": "32k",

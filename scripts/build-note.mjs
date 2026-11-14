@@ -10,6 +10,7 @@ import { chromium } from "@playwright/test";
 import { mkdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { NOTE_VERSION } from "./version.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -24,7 +25,7 @@ function option(name, fallback) {
 
 const htmlPath = resolve(option("--html", resolve(root, "docs/note/note.fr.html")));
 const outPath = resolve(
-  option("--out", resolve(root, "dist/Z-Team_Fulfulde_Assistant_Technical_Note_v1.0.pdf")),
+  option("--out", resolve(root, `dist/Z-Team_Fulfulde_Assistant_Technical_Note_v${NOTE_VERSION}.pdf`)),
 );
 const maxBytes = 10 * 1024 * 1024;
 const maxPages = 5;

@@ -16,6 +16,7 @@ speech:
   provider: mms
   model: models/mms-tts-ful
   tone: none # none | partial | full
+  voice: bundled # bundled | api | none
   substitutions: { "ɛ": "e", "ɔ": "o", "ƴ": "y", "ɲ": "ny", "ʼ": "'", "ꞌ": "'" }
 numbers: numbers/fub.json
 pack: entries/fub

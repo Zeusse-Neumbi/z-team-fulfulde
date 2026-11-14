@@ -41,6 +41,7 @@ weakening the value or privacy rules.
 
 - [x] 22. Web: oxlint, typecheck, Vitest, build, package, size limit, npm audit.
 - [x] 23. API: Ruff lint and format, MyPy, Pytest, Python audit.
+- [x] 23b. Submission pack: the labelled draft is checked on the demo page and the note is built at 5 pages.
 - [x] 24. E2E: Playwright loads the fixture extension and runs the local five-step journey,
       English page, novel content, errors, on-demand injection, keyboard and axe checks.
       `pnpm check:live` covers the real page and `pnpm check:sites` the 30-page canary sweep.
@@ -51,8 +52,8 @@ weakening the value or privacy rules.
 - [x] 28. `ci-required` aggregates every blocking job.
 - [x] 29. A nightly e2e workflow repeats the extension smoke test and opens a
       deduplicated issue on failure.
-- [x] 30. A tag-driven release workflow re-runs the checks, packages the extension,
-      writes `SHA256SUMS.txt` and creates the GitHub release.
+- [x] 30. A tag-driven release workflow re-runs the checks, builds the extension and
+      the French note, writes `SHA256SUMS.txt` and creates a pre-release.
 - [x] 31. A public GitHub Project tracks the D1–D7 plan, milestones, risks and
       submission; `scripts/bootstrap-github-project.mjs` recreates it from
       `scripts/project-plan.json`.
@@ -76,11 +77,12 @@ bash scripts/check-repo-hygiene.sh
 bash scripts/verify-submission.sh
 ```
 
-`pnpm ci:local` covers lint, typecheck, unit tests, build, package, size, Ruff,
-MyPy and Pytest. `pnpm e2e` needs Chromium from `pnpm setup:e2e`.
+`pnpm ci:local` covers lint, typecheck, unit tests, build, package, size, the
+all-language evidence warning, Ruff, MyPy and Pytest. `pnpm check:draft` verifies
+the submission pack; `pnpm check:evidence` is the strict all-languages gate.
+`pnpm e2e` needs Chromium from `pnpm setup:e2e`.
 
 ## Not present by design
 
 `CODE_OF_CONDUCT.md`, `CITATION.cff`, model weights, datasets, the full audio
-bank and build artifacts. The project is a six-day hackathon build; the
-repository should stay reviewable.
+bank and build artifacts. The project is a hackathon prototype; the repository should stay reviewable.

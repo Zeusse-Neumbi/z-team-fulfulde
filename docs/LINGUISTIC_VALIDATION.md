@@ -1,28 +1,36 @@
 # Linguistic validation
 
-## Status (2026-11-13)
+## Status (2026-11-14)
 
-**The session has not run.** No entry has a validator, no back-translation has
-been recorded, and no score is published. The submission ships the NLLB
-candidate pack, labelled **MT — non validée** in the panel, in `INSTALL.md` and
-in the technical note. `pnpm --filter @zteam/phrasebank build:release` fails on
-purpose and must stay failing until the session fills `validatedBy` and
-`backTranslationFr`.
+**No session has run.** No entry has a validator, no back-translation has been
+recorded, and no score is published. Two packs ship as labelled drafts:
+
+| Language | Targets | Validators | Release errors | Status |
+| --- | --- | --- | --- | --- |
+| `fub` | 115/115 | 0 | 164 | draft |
+| `ybb` | 103/115 (12 withheld) | 0 | 174 | draft |
+
+`pnpm check:evidence` fails by design while either pack is a draft. `build:release`
+enforces evidence only for a language whose registry row says `status: validated`
+(ADR 0020); it does not turn a draft into a validated pack. The panel, `INSTALL.md`
+and the technical note all say **MT — non validée**.
 
 Ready to use:
 
 - `docs/SPEAKER_PACKET.md` — the 45-minute protocol, written for a speaker who
   does not read Fulfulde.
 - `pnpm pack:listening` — the 115-clip two-pass pack as a single ZIP
-  (`dist/zteam-listening-pack-v0.1.0.zip`, ~0.7 MB), attached as a draft release
+  (`dist/zteam-listening-pack-v0.2.0.zip`, ~0.7 MB), attached as a draft release
   asset. It opens offline in a browser.
 - `eval/linguistic/back-translation.template.csv` and
   `eval/linguistic/tts-mos.template.csv` — 115 rows each.
 
-## Language
+## Languages
 
-- **Adamawa Fulfulde**, ISO 639-3 `fub`, Cameroon.
-- Sub-variety: to confirm with the speaker at the session; record
+- **Adamawa Fulfulde**, ISO 639-3 `fub`, Cameroon. Demonstrated language.
+- **Yemba**, ISO 639-3 `ybb`, Cameroon. Second data-only pack; it needs its own
+  speaker and its own session.
+- Fulfulde sub-variety: to confirm with the speaker at the session; record
   Ngaoundéré / Garoua / Maroua here once known.
 - Script: Latin AGLC/GACL; `ɓ ɗ ƴ ŋ ɲ`; doubled vowels; no tone marks; NFC.
 - The target users may not read Fulfulde. The voice is therefore part of the
@@ -30,9 +38,9 @@ Ready to use:
 
 ## Two artefacts
 
-1. **Translation memory** (`packages/phrasebank/entries/tm.yaml`) — page strings, keyed by
+1. **Translation memory** (`packages/phrasebank/entries/<code>/tm.yaml`) — page strings, keyed by
    normalized FR/EN source.
-2. **Phrase bank** (`packages/phrasebank/entries/phrases.yaml`) — spoken plans, keyed by ID
+2. **Phrase bank** (`packages/phrasebank/entries/<code>/phrases.yaml`) — spoken plans, keyed by ID
    and slots.
 
 Both follow the same workflow.
@@ -102,16 +110,17 @@ If the session is compressed into one day, say so.
 
 ## Current status
 
-**Seed pack, oral validation pending.** The checked-in `tm.yaml` and
-`phrases.yaml` are seeds with empty Fulfulde columns. The NLLB candidates live
-in `tm.mt.yaml` and `phrases.mt.yaml` and are drafts, not validated. The
-development build warns; `pnpm --filter @zteam/phrasebank build:release` fails
+**Draft packs, oral validation pending.** The checked-in human packs
+`entries/<code>/tm.yaml` and `phrases.yaml` are seeds with empty targets. The NLLB
+and Marian candidates live in `tm.mt.yaml` and `phrases.mt.yaml` and are drafts,
+not validated. The development build warns. A generated language test stays red
 until medium/high-risk entries have a target, a validator and a French
-back-translation.
+back-translation. `pnpm check:evidence` reports the stricter all-languages state
+and fails while either pack is a draft.
 
-The session is scheduled with a native speaker. This section becomes the
-signed record when it is done: speaker pseudonym, dialect, date, method, number
-of entries, critical errors, scores and limitation.
+No session is booked. This section becomes the signed record when it runs:
+speaker pseudonym, language, dialect, date, method, number of entries, critical
+errors, scores and limitation.
 
 ## TTS normalisation
 
@@ -132,6 +141,6 @@ used.
 
 ## What we do not claim
 
-We do not claim general Fulfulde translation. We claim validated coverage of the demo
-domain, with a documented translation memory, a documented phrase bank and a
-recorded native-speaker review through listening.
+We do not claim general Fulfulde or Yemba translation, validated coverage, a
+recorded native-speaker review or a MOS. No session has run. The repository
+documents the candidate packs and the protocol that will produce that evidence.

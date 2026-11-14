@@ -84,6 +84,7 @@ describe("languageRegistryEntrySchema", () => {
       provider: "mms",
       model: "models/mms-tts-ful",
       tone: "none",
+      voice: "none",
       substitutions: { "ɛ": "e" },
     },
     numbers: "numbers/fub.json",
@@ -102,6 +103,17 @@ describe("languageRegistryEntrySchema", () => {
     const { substitutions: _substitutions, ...speech } = entry.speech;
     const result = languageRegistryEntrySchema.parse({ ...entry, speech });
     expect(result.speech.substitutions).toEqual({});
+  });
+
+  it("defaults the voice policy to none and accepts the registry values", () => {
+    const { voice: _voice, ...speech } = entry.speech;
+    expect(languageRegistryEntrySchema.parse({ ...entry, speech }).speech.voice).toBe("none");
+    for (const voice of ["bundled", "api", "none"] as const) {
+      expect(
+        languageRegistryEntrySchema.safeParse({ ...entry, speech: { ...entry.speech, voice } })
+          .success,
+      ).toBe(true);
+    }
   });
 });
 

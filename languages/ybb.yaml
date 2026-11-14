@@ -16,6 +16,7 @@ speech:
   provider: mms
   model: models/mms-tts-ybb
   tone: partial # tokenizer has high (á) and mid (ā) only
+  voice: api # no Yemba clips are bundled; the local API can speak it
   substitutions: { "ɲ": "ny", "Ɲ": "Ny", "ꞌ": "ʼ" }
 numbers: numbers/ybb.json
 pack: entries/ybb
