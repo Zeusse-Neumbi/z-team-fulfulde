@@ -33,10 +33,17 @@ class FakeMMS:
     name = "mms"
     local = True
 
-    def __init__(self, model_path: str, device: str = "cpu", lang: str = "fub") -> None:
+    def __init__(
+        self,
+        model_path: str,
+        device: str = "cpu",
+        lang: str = "fub",
+        substitutions: dict[str, str] | None = None,
+    ) -> None:
         self.model = model_path
         self.device = device
         self.lang = lang
+        self.substitutions = substitutions or {}
 
     def synthesize(self, text: str, voice: str, speed: float) -> TTSResult:
         return TTSResult(
@@ -184,6 +191,14 @@ def test_tts_resolves_the_registry_voice_for_ybb(monkeypatch):
     assert ybb.model.endswith("mms-tts-ybb")
     assert fub is not ybb
     assert ybb.lang == "ybb"
+
+
+def test_tts_passes_registry_substitutions_to_mms(monkeypatch):
+    monkeypatch.setattr(tts_module, "MMSTTS", FakeMMS)
+
+    provider = tts_module.get_tts(settings, provider="mms", language="ybb")
+
+    assert provider.substitutions == {"ɲ": "ny", "Ɲ": "Ny", "ꞌ": "ʼ"}
 
 
 def test_fake_wav_is_valid():

@@ -122,8 +122,18 @@ def _mms(lang: str) -> tuple[MMSTTS, _RecordingTokenizer]:
     tts._model = _Model()
     tts._sample_rate = 16_000
     tts._lang = lang
+    tts._substitutions = {}
     tts.model = "fake-mms"
     return tts, tokenizer
+
+
+def test_mms_applies_registry_substitutions():
+    tts, tokenizer = _mms("deu")
+    tts._substitutions = {"ɲ": "ny"}
+
+    tts.synthesize("ɲaamdu", "demo", 1.0)
+
+    assert tokenizer.seen == "nyaamdu"
 
 
 def test_mms_synthesizes_the_normalized_text():

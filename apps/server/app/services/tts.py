@@ -13,7 +13,7 @@ import httpx
 
 from ..config import Settings
 from ..errors import ProviderError
-from ..languages import resolve_speech_model
+from ..languages import get_language, resolve_speech_model
 from ..provider_catalog import spec_for
 from .speech_norm import normalize_for_speech
 
@@ -74,7 +74,13 @@ class MMSTTS:
     name = "mms"
     local = True
 
-    def __init__(self, model_path: str, device: str = "cpu", lang: str = "fub") -> None:
+    def __init__(
+        self,
+        model_path: str,
+        device: str = "cpu",
+        lang: str = "fub",
+        substitutions: dict[str, str] | None = None,
+    ) -> None:
         if not Path(model_path).exists():
             raise ProviderError(
                 "model_missing",
@@ -108,9 +114,14 @@ class MMSTTS:
         self.model = model_path
         self._sample_rate = int(self._model.config.sampling_rate)
         self._lang = lang
+        self._substitutions = substitutions or {}
 
     def synthesize(self, text: str, voice: str, speed: float) -> TTSResult:
         normalized = normalize_for_speech(self._lang, text)
+        # The registry may add grapheme fallbacks for a voice we have not
+        # hardcoded in speech_norm.py; data drives new languages.
+        for source, target in self._substitutions.items():
+            normalized = normalized.replace(source, target)
         inputs = self._tokenizer(normalized, return_tensors="pt").to(self._device)
         try:
             with self._torch.no_grad():
@@ -545,10 +556,12 @@ def _build_tts(
     if name == "stub":
         return StubTTS()
     if name == "mms":
+        language_info = get_language(language, settings)
         return MMSTTS(
             model_path=str(settings.resolve_path(model)),
             device=settings.tts_device,
             lang=language,
+            substitutions=language_info.substitutions,
         )
     if name == "camb":
         return CambTTS(
