@@ -89,7 +89,10 @@ branch before this document was written):
    `apps/server/tests/{test_translate,test_tts,test_phrasebank}.py` expected
    exactly `["fub","ybb"]`. They now require `fub`/`ybb` to be present and
    derive the rest from the registry, so a third language does not need a test
-   edit.
+   edit. Re-running the fixed checks in the proof worktree with `lns` present:
+   `generated.test.ts` + `loader.test.ts` **15 passed**, and the three Python
+   files **42 passed**. The generated `language-lns.test.ts` still fails by
+   design; the test files were restored so the branch remains data-only.
 2. **Registry substitutions were unused.** `speech.substitutions` was parsed
    but the voice grapheme map lived only in `speech_norm.py`. `MMSTTS` now
    applies the registry substitutions for the requested language, so a new
