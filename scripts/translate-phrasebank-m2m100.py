@@ -31,6 +31,9 @@ PLACEHOLDER = re.compile(r"\{[a-zA-Z_][a-zA-Z0-9_]*\}")
 # Names and brands must survive byte-for-byte. A candidate that renames one is
 # withheld even when its placeholders are intact.
 PROTECTED_BRANDS = ("Safinum Pay",)
+# The M2M100 Yemba checkpoint inserts religious proper names into financial
+# labels. A candidate with one is withheld; this is a guard, not a translation.
+BANNED_TERMS = ("yɛɛ́so", "yɛɛso", "klísto", "klisto", "kristo", "jésu", "jesu")
 YEMBA_TOKEN = "__ybb__"
 
 
@@ -119,6 +122,13 @@ def candidate(
         copy["mtWithheldReason"] = (
             "target changes the protected brand/name "
             + ", ".join(f"'{brand}'" for brand in renamed)
+        )
+    fabricated = [term for term in BANNED_TERMS if term in restored.lower()]
+    if fabricated:
+        copy["mtWithheld"] = True
+        copy["mtWithheldReason"] = (
+            "target fabricates a proper name/religious term: "
+            + ", ".join(f"'{term}'" for term in fabricated)
         )
     target = dict(copy.get("target") or {})
     target[lang] = {
